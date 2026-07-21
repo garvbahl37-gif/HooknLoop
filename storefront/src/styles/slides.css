@@ -46,7 +46,7 @@
 .hs__proof b { color: #fff; font-weight: 700; }
 .hs__stars2 { color: var(--orange); letter-spacing: 1px; font-size: 0.95rem; }
 .hs__proof-sep { color: var(--faint-navy); }
-.hs__cta { display: flex; flex-wrap: wrap; gap: var(--sp-3); }
+.hs__cta { display: flex; flex-wrap: wrap; gap: var(--sp-3); margin-top: 28px; }
 
 /* figure — product on a lit pedestal that floats off the navy */
 .hs__figure { position: relative; justify-self: center; width: 100%; max-width: 480px; }
@@ -81,8 +81,8 @@
 .hs__feat span, .hs__statc span { display: block; font-size: 0.76rem; color: var(--muted-ink); margin-top: 2px; }
 .hs__statc b { display: block; font-family: var(--font-head); font-weight: 800; font-size: 1.6rem; color: var(--navy); letter-spacing: -0.01em; line-height: 1; }
 /* banner copy — supporting text, benefit labels, offer, photo card */
-.hs__sub { color: rgba(255,255,255,0.82); font-size: 1.05rem; line-height: 1.5; max-width: 46ch; margin: 6px 0 0; }
-.hs__labels { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.hs__sub { color: rgba(255,255,255,0.82); font-size: 1.05rem; line-height: 1.55; max-width: 46ch; margin: 12px 0 0; }
+.hs__labels { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 22px; }
 .hs__label { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-size: 0.8rem; font-weight: 600; padding: 6px 12px; border-radius: var(--r-pill); }
 .hs__label svg { color: var(--orange-word); }
 .hs__offer { display: inline-flex; align-items: center; margin-top: 16px; background: rgba(232,119,34,0.16); border: 1px solid rgba(232,119,34,0.4); color: #ffd9b8; font-weight: 700; font-size: 0.9rem; padding: 8px 14px; border-radius: var(--r-pill); }

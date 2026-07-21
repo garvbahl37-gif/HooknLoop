@@ -25,10 +25,10 @@ const SLIDES = [
   {
     key: 'premium', pill: 'Tested for Real-World Use',
     h1: 'Premium Quality', accent: 'Products',
-    sub: 'Every product is chosen for material quality, performance testing and long-term reliability — genuine VELCRO® Brand and our own trade grades.',
-    labels: ['Performance tested', 'Genuine VELCRO®', 'Australian stocked'],
+    sub: 'Every product is chosen for material quality, performance testing and long-term reliability — trade-grade hook & loop, held in stock in Australia.',
+    labels: ['Performance tested', 'Long-term reliability', 'Australian stocked'],
     cta: { label: 'Shop the Range', to: 'collection' }, cta2: { label: 'Why Choose Us', to: 'about' },
-    fig: { img: '/img/products/velcro-brand-roll-1.webp', tag: 'GENUINE VELCRO®', priceFrom: '84.99' },
+    fig: { img: '/img/products/hook-and-loop-dots-1.jpg', tag: 'PREMIUM GRADE', priceFrom: '66.74' },
   },
   {
     key: 'bulk', pill: 'Trade, Commercial & Wholesale',

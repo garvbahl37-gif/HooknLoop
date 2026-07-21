@@ -19,19 +19,36 @@ function PageHero({ eyebrow, title, lead, center }) {
   )
 }
 
-/* ── Contact ── */
+/* ── Contact (real details from the live store) ── */
+const MAP_SRC = 'https://maps.google.com/maps?q=Level%205%2C%20111%20Cecil%20St%2C%20South%20Melbourne%20VIC%203205&t=&z=15&ie=UTF8&iwloc=&output=embed'
+const SOCIALS = [
+  ['Facebook', 'https://www.facebook.com/profile.php?id=61587201524181', <path key="f" d="M13.5 21v-8h2.7l.4-3h-3.1V8.1c0-.9.3-1.5 1.6-1.5H17V4c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.4-4 4V10H8v3h2.6v8h2.9Z" />],
+  ['Instagram', 'https://www.instagram.com/hooknloopshop', <path key="i" d="M16 3H8a5 5 0 0 0-5 5v8a5 5 0 0 0 5 5h8a5 5 0 0 0 5-5V8a5 5 0 0 0-5-5Zm-4 5.5a3.5 3.5 0 1 1 0 7 3.5 3.5 0 0 1 0-7ZM17.5 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2Z" />],
+  ['Pinterest', 'https://www.pinterest.com/hooknloopshop/', <path key="p" d="M12 2C6.5 2 4 5.6 4 8.9c0 2 .7 3.6 2.3 4.3.3.1.5 0 .5-.3l.2-.9c.1-.3 0-.4-.2-.6-.5-.5-.7-1.2-.7-2 0-2.5 1.9-4.7 4.9-4.7 2.7 0 4.1 1.6 4.1 3.8 0 2.8-1.2 5.2-3.1 5.2-1 0-1.8-.9-1.5-1.9.3-1.3.9-2.6.9-3.5 0-.8-.4-1.5-1.3-1.5-1.1 0-1.9 1.1-1.9 2.6 0 .9.3 1.5.3 1.5l-1.2 5.3c-.4 1.5-.1 3.4 0 3.6 0 .1.2.1.3 0 .1-.1 1.6-2 2.1-3.8l.7-2.8c.4.8 1.5 1.4 2.6 1.4 3.5 0 5.9-3.2 5.9-7.5C20 4.9 17 2 12 2Z" />],
+  ['LinkedIn', 'https://www.linkedin.com/company/hooknloop/', <path key="l" d="M6.9 8.5H4.2V20h2.7V8.5ZM5.5 4a1.6 1.6 0 1 0 0 3.2 1.6 1.6 0 0 0 0-3.2ZM20 13.4c0-2.6-1.4-3.8-3.3-3.8-1.5 0-2.2.8-2.6 1.4V8.5h-2.7V20h2.7v-6.4c0-.3 0-.7.1-.9.3-.7.9-1.4 1.9-1.4 1.3 0 1.9.9 1.9 2.3V20H20v-6.6Z" />],
+]
 export function ContactPage() {
   const [sent, setSent] = useState(false)
   return (
     <main id="main" className="page">
-      <PageHero eyebrow="We’re here to help" title="Contact HooknLoop" lead="Talk to a real person in Australia about products, bulk pricing or an existing order." />
+      <PageHero eyebrow="We’re here to help" title="Contact HooknLoop" lead="Talk to a real person in Australia about products, bulk pricing or an existing order." center />
       <div className="wrap page__two">
         <div className="page__prose">
           <div className="contact__cards">
             <a className="contact__card" href="tel:1300183481"><span>Call</span><b>1300 183 481</b><em>Mon–Fri, Australian business hours</em></a>
             <a className="contact__card" href="mailto:info@hooknloop.com.au"><span>Email</span><b>info@hooknloop.com.au</b><em>Replies within 1 business day</em></a>
-            <div className="contact__card"><span>Warehouse</span><b>Australia</b><em>Australia-wide dispatch</em></div>
+            <a className="contact__card" href="https://maps.google.com/?q=Level+5,+111+Cecil+St,+South+Melbourne+VIC+3205" target="_blank" rel="noreferrer"><span>Visit us</span><b>Level 5, 111 Cecil St</b><em>South Melbourne VIC 3205</em></a>
             <div className="contact__card"><span>Business</span><b>ABN 93 878 995 217</b><em>GST tax invoice on every order</em></div>
+          </div>
+          <div className="contact__social">
+            <span className="contact__social-lbl">Follow us</span>
+            <div className="contact__social-row">
+              {SOCIALS.map(([name, url, icon]) => (
+                <a key={name} href={url} target="_blank" rel="noreferrer" className="contact__social-btn" aria-label={name}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">{icon}</svg>
+                </a>
+              ))}
+            </div>
           </div>
         </div>
         <div className="page__card">
@@ -40,11 +57,15 @@ export function ContactPage() {
               <h2>Send us a message</h2>
               <label className="fld"><span>Name</span><input required placeholder="Your name" /></label>
               <label className="fld"><span>Email</span><input type="email" required placeholder="you@email.com" /></label>
+              <label className="fld"><span>Phone</span><input type="tel" required placeholder="Your phone number" /></label>
               <label className="fld"><span>Message</span><textarea rows="4" required placeholder="How can we help?" /></label>
               <button className="btn btn--primary" style={{ width: '100%' }}>Send message</button>
             </form>
           )}
         </div>
+      </div>
+      <div className="wrap contact__map">
+        <iframe title="HooknLoop — Level 5, 111 Cecil St, South Melbourne VIC 3205" src={MAP_SRC} loading="lazy" allowFullScreen referrerPolicy="no-referrer-when-downgrade"></iframe>
       </div>
     </main>
   )
