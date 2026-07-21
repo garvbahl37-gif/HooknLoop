@@ -36,7 +36,7 @@ const SLIDES = [
     sub: 'Bulk pricing, reliable stock, custom widths and tailored fastening solutions for Australian businesses.',
     labels: ['Custom widths', 'Volume pricing', 'Priority dispatch'],
     cta: { label: 'Request a Bulk Quote', to: 'bulk' }, cta2: { label: 'Explore Bulk Orders', to: 'bulk' },
-    fig: { img: '/img/b2b-hero.jpg', tag: 'WHOLESALE', photo: true },
+    fig: { img: '/img/australia-network.jpg', tag: 'AUSTRALIA-WIDE', photo: true },
   },
 ]
 
