@@ -9,6 +9,7 @@ import ProductPage from './pages/ProductPage.jsx'
 import CollectionPage from './pages/CollectionPage.jsx'
 import CartPage from './pages/CartPage.jsx'
 import { ContactPage, BulkPage, AboutPage, PolicyPage, SearchPage, BlogPage, WishlistPage } from './pages/ContentPages.jsx'
+import { IndustryPage, IndustriesPage } from './pages/IndustryPages.jsx'
 import { useRoute } from './lib/cart.js'
 
 import './styles/header.css'
@@ -17,6 +18,7 @@ import './styles/sections.css'
 import './styles/floating.css'
 import './styles/product.css'
 import './styles/pages.css'
+import './styles/industries.css'
 
 function Landing() {
   return (
@@ -42,6 +44,8 @@ export default function App() {
     case 'wishlist': page = <WishlistPage />; break
     case 'search': page = <SearchPage query={param} />; break
     case 'bulk': page = <BulkPage />; break
+    case 'industries': page = <IndustriesPage />; break
+    case 'industry': page = <IndustryPage slug={param} />; break
     case 'contact': page = <ContactPage />; break
     case 'about': page = <AboutPage />; break
     case 'blog': page = <BlogPage />; break

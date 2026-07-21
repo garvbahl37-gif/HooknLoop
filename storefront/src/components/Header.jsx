@@ -2,6 +2,7 @@
     navy nav whose dropdowns are curated to clone the live store · live cart count. */
 import { useState, useEffect, useRef } from 'react'
 import { PRODUCTS } from '../data/catalog.js'
+import { INDUSTRIES } from '../data/industries.js'
 import { useCart, cartCount, navigate } from '../lib/cart.js'
 import { useWishlist, wishCount } from '../lib/wishlist.js'
 
@@ -46,6 +47,12 @@ const MENUS = MENU_SPEC.map((m) => ({
     return [label, `product/${handle}`]
   }),
 }))
+
+/* Industries dropdown — one entry per application guide, plus the index. */
+const INDUSTRY_MENU = {
+  label: 'Industries',
+  items: [['All industries', 'industries'], ...INDUSTRIES.map((i) => [i.short, `industry/${i.slug}`])],
+}
 
 export default function Header() {
   const cart = useCart()
@@ -134,7 +141,7 @@ export default function Header() {
                 to a collection, which dumped you on a listing before you could pick
                 a product). Each dropdown is a curated set of product links, cloned
                 from the live store.                                                */}
-            {MENUS.map((m) => (
+            {[...MENUS, INDUSTRY_MENU].map((m) => (
               <li key={m.label} className={`nav__item nav__item--has ${open === m.label ? 'is-open' : ''}`}
                   onMouseEnter={() => { if (canHover()) setOpen(m.label) }}
                   onMouseLeave={() => { if (canHover()) setOpen(null) }}

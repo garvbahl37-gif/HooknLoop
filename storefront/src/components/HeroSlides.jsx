@@ -54,7 +54,7 @@ const SLIDES = [
   },
 ]
 
-const DUR = 6000
+const DUR = 5000
 
 function Figure({ fig, eager }) {
   return (
@@ -137,17 +137,6 @@ export default function HeroSlides() {
         ))}
       </div>
 
-      <div className="wrap hs__nav">
-        <div className="hs__dots" role="tablist" aria-label="Choose slide">
-          {SLIDES.map((s, n) => (
-            <button key={s.key} className={`hs__dot ${n === i ? 'is-active' : ''}`} onClick={() => go(n)}
-              role="tab" aria-selected={n === i} aria-label={`${s.h1} ${s.accent} (${n + 1} of ${SLIDES.length})`}>
-              {n === i && !paused && <span className="hs__dot-fill" style={{ animationDuration: `${DUR}ms` }} />}
-            </button>
-          ))}
-        </div>
-        <span className="hs__count">{String(i + 1).padStart(2, '0')} / {String(SLIDES.length).padStart(2, '0')}</span>
-      </div>
     </section>
   )
 }
