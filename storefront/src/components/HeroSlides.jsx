@@ -10,7 +10,7 @@ const SLIDES = [
   {
     /* content mirrors the live store's hero banner */
     key: 'brand', pill: 'Premium Australian Supplier',
-    h1: 'Hook and Loop Tape', accent: 'Strips & Fasteners',
+    h1: 'Hook and Loop Tape,', accent: 'Strips & Fasteners',
     bullets: [
       'Trusted Australian distributor of premium products',
       '100,000+ metres in stock for fast delivery',

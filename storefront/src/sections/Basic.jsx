@@ -31,7 +31,7 @@ export function TrustStats() {
 const CATS = [
   { name: 'Self-Adhesive', slug: 'self-adhesive', sub: 'Peel & stick · industrial', from: '32.90', img: '/img/p-hook.jpg' },
   { name: 'Sew-On', slug: 'sew-on', sub: 'Non-adhesive · for fabric', from: '24.46', img: '/img/p-loop.jpg' },
-  { name: 'Dots & Coins', slug: 'dots', sub: 'Pre-cut · 1,000–5,000/reel', from: '66.74', img: '/img/p-dots.jpg' },
+  { name: 'Dots & Coins', slug: 'dots', sub: '1,000–5,000 per reel', from: '66.74', img: '/img/p-dots.jpg' },
   { name: 'Straps & Cable Ties', slug: 'straps', sub: 'Reusable · self-gripping', from: '25.00', img: '/img/p-strap.jpg' },
   { name: 'Fire Retardant', slug: 'fire-retardant', sub: 'Trade & compliance', from: '32.53', img: '/img/p-fr.png' },
   { name: 'VELCRO® Brand', slug: 'velcro-brand', sub: 'Genuine, stocked in AU', from: '84.99', img: '/img/p-loop.jpg' },
@@ -75,8 +75,7 @@ export function OneStop() {
       <div className="wrap">
         <div className="sec-head">
           <span className="sec-eyebrow">Shop by category</span>
-          <h2 id="os-h" className="sec-h2">Australia’s one-stop shop for hook &amp; loop</h2>
-          <p className="sec-sub">Your trusted Australian destination for premium hook &amp; loop — home, commercial, industrial and DIY. We specialise in this one fastening system, so it’s simple to find exactly the right product.</p>
+          <h2 id="os-h" className="sec-h2">Australia’s One-Stop Shop for Hook and Loop Tapes</h2>
         </div>
         <div className="os__grid">
           {ONESTOP.map((t) => (

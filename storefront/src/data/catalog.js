@@ -5,7 +5,7 @@ export const CATEGORIES = [
   { slug: 'self-adhesive', name: 'Self-Adhesive', blurb: 'Peel & stick for smooth surfaces' },
   { slug: 'sew-on', name: 'Sew-On', blurb: 'Non-adhesive, for fabric' },
   { slug: 'velcro-brand', name: 'VELCRO® Brand', blurb: 'Genuine, stocked in AU' },
-  { slug: 'dots', name: 'Dots & Coins', blurb: 'Pre-cut fixings' },
+  { slug: 'dots', name: 'Dots & Coins', blurb: 'Peel & stick fixings' },
   { slug: 'straps', name: 'Straps & Cable Ties', blurb: 'Reusable, self-gripping' },
   { slug: 'double-sided', name: 'Double-Sided', blurb: 'Grips itself, no adhesive' },
   { slug: 'fire-retardant', name: 'Fire Retardant', blurb: 'Trade & compliance' },
@@ -36,7 +36,7 @@ export const PRODUCTS = [
     badge: 'Industrial', spec: 'High-tack acrylic · heat & outdoor', hookLoop: true,
     sizes: [{ label: '25mm × 25m', single: 55.43 }, { label: '50mm × 25m', single: 78.60 }], colours: ['Black', 'White'], gallery: ['/img/p-heavyduty.png'] },
   { handle: 'hook-and-loop-for-fabric', name: 'Hook & Loop for Fabric & Clothes', cat: 'sew-on', from: 24.46, img: '/img/p-loop.jpg',
-    badge: 'Trade grade', spec: 'Soft & flexible · garments', hookLoop: true,
+    badge: 'Industrial grade', spec: 'Soft & flexible · garments', hookLoop: true,
     sizes: [{ label: '25mm × 25m', single: 24.46 }, { label: '50mm × 25m', single: 39.56 }, { label: '100mm × 25m', single: 58.73 }], colours: ['Black', 'White'], gallery: ['/img/p-loop.jpg'] },
   { handle: 'velcro-brand-roll', name: 'VELCRO® Brand Self-Adhesive Roll', cat: 'velcro-brand', from: 84.99, img: '/img/p-loop.jpg',
     badge: 'Genuine VELCRO®', spec: 'Genuine VELCRO® Brand · 25m', hookLoop: true,
@@ -45,10 +45,10 @@ export const PRODUCTS = [
     badge: 'Genuine VELCRO®', spec: 'Genuine VELCRO® coins', hookLoop: true,
     sizes: [{ label: '16mm × 1200 dots', single: 115.00 }, { label: '22mm × 900 dots', single: 139.00 }], colours: ['Black', 'White'], gallery: ['/img/p-dots.jpg'] },
   { handle: 'fire-retardant-adhesive', name: 'Fire Retardant Adhesive Hook & Loop', cat: 'fire-retardant', from: 55.43, img: '/img/p-fr.png',
-    badge: 'Trade grade', spec: 'FR treated · self-adhesive', hookLoop: true,
+    badge: 'Industrial grade', spec: 'FR treated · self-adhesive', hookLoop: true,
     sizes: [{ label: '25mm × 25m', single: 55.43 }, { label: '50mm × 25m', single: 78.60 }], colours: ['Black'], gallery: ['/img/p-fr.png'] },
   { handle: 'fire-retardant-sew-on', name: 'Fire Retardant Sew-On Hook & Loop', cat: 'fire-retardant', from: 32.53, img: '/img/p-fr.png',
-    badge: 'Trade grade', spec: 'FR treated · stitch-on', hookLoop: true,
+    badge: 'Industrial grade', spec: 'FR treated · stitch-on', hookLoop: true,
     sizes: [{ label: '25mm × 25m', single: 32.53 }, { label: '50mm × 25m', single: 51.27 }, { label: '100mm × 25m', single: 65.53 }], colours: ['Black'], gallery: ['/img/p-fr.png'] },
 ]
 
@@ -259,7 +259,7 @@ export const PRODUCT_COPY = {
   "hook-and-loop-dots": {
     heading: "",
     paras: ["Our adhesive hook and loop dots are a simple and reliable fastening solution for lightweight items with quick application and clean removal. These dots provide a strong grip as made from durable hook and loop material, making it easy to open and close. With pressure-sensitive adhesive backing, it guarantees quick installation on clean, smooth surfaces, which allows for the use of no tools or drilling. Perfect for craft projects, these hook and loop fastener dots can be used in school or at home, for signage, displays, office organisation, and light DIY tasks. With a clean, professional finish, these compact, neat, and versatile hook and loop adhesive dots deliver convenience."],
-    features: ["Pre-cut round dots for fast and easy application", "Strong self-adhesive backing – no tools required", "Reusable hook and loop fastening", "Clean and discreet finish", "Easy peel-and-stick installation"],
+    features: ["Round dots for fast and easy application", "Strong self-adhesive backing – no tools required", "Reusable hook and loop fastening", "Clean and discreet finish", "Easy peel-and-stick installation"],
   },
   "velcoin-dots": {
     heading: "",

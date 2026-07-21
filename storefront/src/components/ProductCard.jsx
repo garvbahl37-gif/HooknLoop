@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { addToCart, navigate } from '../lib/cart.js'
 import { useWishlist, toggleWish } from '../lib/wishlist.js'
-import { productRating, BRAND } from '../data/catalog.js'
+import { productRating } from '../data/catalog.js'
 import Stars from './Stars.jsx'
 
 export default function ProductCard({ p }) {
@@ -37,7 +37,6 @@ export default function ProductCard({ p }) {
         <svg width="18" height="18" viewBox="0 0 24 24" fill={wished ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="1.8"><path d="M12 21s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.5-7 10-7 10Z"/></svg>
       </button>
       <div className="pc__body">
-        <span className="pc__brand">{BRAND}</span>
         <h3 className="pc__name"><a href="#" onClick={go}>{p.name}</a></h3>
         {reviews > 0 ? (
           <div className="pc__rating"><Stars v={rating} size={14} /><span>{rating.toFixed(1)} · {reviews} review{reviews > 1 ? 's' : ''}</span></div>

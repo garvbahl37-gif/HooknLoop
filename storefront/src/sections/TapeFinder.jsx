@@ -28,7 +28,7 @@ function recommend(a) {
   const P = {
     backtoback: { name: 'Double-Sided (Back-to-Back)', from: '21.66', why: 'Grips itself — no adhesive, ideal for bundling.', img: '/img/p-doubleside.png', side: false },
     bundle: { name: 'Reusable Cable Straps', from: '25.00', why: 'Reusable self-gripping straps for cables and hoses.', img: '/img/p-strap.jpg', side: false },
-    spots: { name: 'Hook & Loop Dots', from: '66.74', why: 'Pre-cut coins for fast, repeatable fixings.', img: '/img/p-dots.jpg', side: true },
+    spots: { name: 'Hook & Loop Dots', from: '66.74', why: 'Coins for fast, repeatable fixings.', img: '/img/p-dots.jpg', side: true },
     fabric: { name: 'Sew-On (Non-Adhesive)', from: '24.46', why: 'Stitches to fabric — no adhesive to fail in the wash.', img: '/img/p-loop.jpg', side: true },
     hardLight: { name: 'Self-Adhesive Roll', from: '32.90', why: 'Peel-and-stick for smooth indoor surfaces.', img: '/img/p-hook.jpg', side: true },
     hardHeavy: { name: 'Heavy-Duty Adhesive', from: '55.43', why: 'High-tack acrylic for heat, weather and load.', img: '/img/p-heavyduty.png', side: true },

@@ -14,9 +14,8 @@ export default function BestSellers() {
     <section className="bs" aria-labelledby="bs-h">
       <div className="wrap">
         <div className="sec-head">
-          <span className="sec-eyebrow">Shop the range</span>
-          <h2 id="bs-h" className="sec-h2">Best sellers &amp; offers</h2>
-          <p className="sec-sub">Our most-ordered hook &amp; loop — dispatched Australia-wide, with volume discounts on bulk orders.</p>
+          <span className="sec-eyebrow">Featured Collection</span>
+          <h2 id="bs-h" className="sec-h2">Best Sellers &amp; Offers</h2>
           <a href="#" className="bs__all" style={{ display: 'inline-block', marginTop: 8 }} onClick={(e) => { e.preventDefault(); navigate('collection') }}>Shop all products →</a>
         </div>
         <div className="bs__grid">
