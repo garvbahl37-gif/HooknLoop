@@ -70,21 +70,18 @@ function Figure({ fig, eager }) {
 
 export default function HeroSlides() {
   const [i, setI] = useState(0)
-  const [paused, setPaused] = useState(false)
-  /* infinite auto-advance every DUR; pauses on hover/focus. Deliberately NOT
-     gated on reduced-motion — the slide still changes, just with a quick fade
-     (see the reduced-motion rule in slides.css). */
+
+  /* infinite auto-advance every DUR — always sliding, never pauses (no hover/
+     focus pause). Not gated on reduced-motion; the slide still changes, just
+     with a quick fade (see the reduced-motion rule in slides.css). */
   useEffect(() => {
-    if (paused) return
     const t = setInterval(() => setI((n) => (n + 1) % SLIDES.length), DUR)
     return () => clearInterval(t)
-  }, [paused])
+  }, [])
   const nav = (to) => (e) => { e.preventDefault(); navigate(to); window.scrollTo(0, 0) }
 
   return (
-    <section className="hs" aria-roledescription="carousel" aria-label="Featured"
-      onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}
-      onFocusCapture={() => setPaused(true)} onBlurCapture={() => setPaused(false)}>
+    <section className="hs" aria-roledescription="carousel" aria-label="Featured">
       <div className="hs__glow" aria-hidden="true" />
 
       <div className="wrap hs__stage">
