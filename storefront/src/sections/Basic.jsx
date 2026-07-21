@@ -76,6 +76,7 @@ export function OneStop() {
         <div className="sec-head">
           <span className="sec-eyebrow">Shop by category</span>
           <h2 id="os-h" className="sec-h2">Australia’s One-Stop Shop for Hook and Loop Tapes</h2>
+          <p className="sec-sub">Welcome to HooknLoop.com.au, your trusted Australian destination for premium hook and loop tape solutions. We specialise exclusively in this fastening system, making it simple to find the right product for home, commercial, industrial, and DIY use.</p>
         </div>
         <div className="os__grid">
           {ONESTOP.map((t) => (

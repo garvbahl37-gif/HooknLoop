@@ -62,7 +62,7 @@ section { scroll-margin-top: 80px; }
 .os__tile img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s var(--ease); }
 .os__tile:hover img { transform: scale(1.06); }
 .os__scrim { position: absolute; inset: 0; z-index: 1;
-  background: linear-gradient(180deg, rgba(15,29,58,0) 24%, rgba(15,29,58,0.34) 52%, rgba(15,29,58,0.72) 78%, rgba(15,29,58,0.92) 100%); }
+  background: linear-gradient(180deg, rgba(15,29,58,0) 44%, rgba(15,29,58,0.2) 68%, rgba(15,29,58,0.6) 87%, rgba(15,29,58,0.85) 100%); }
 .os__body { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; padding: clamp(16px,1.8vw,24px);
   display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; }
 .os__meta { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
