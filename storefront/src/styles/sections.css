@@ -58,8 +58,7 @@ section { scroll-margin-top: 80px; }
 .os__tile--c { grid-column: 7 / 10; grid-row: 2; }
 .os__tile--d { grid-column: 10 / 13; grid-row: 2; }
 .os__tile { position: relative; overflow: hidden; border-radius: var(--r-card); display: block; background: var(--navy);
-  box-shadow: var(--shadow-soft); transition: transform 0.18s var(--ease), box-shadow 0.24s var(--ease); }
-.os__tile:hover { box-shadow: var(--shadow-card); }
+  transition: transform 0.18s var(--ease); }
 .os__tile img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s var(--ease); }
 .os__tile:hover img { transform: scale(1.06); }
 .os__scrim { position: absolute; inset: 0; z-index: 1;

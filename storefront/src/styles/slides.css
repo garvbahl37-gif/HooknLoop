@@ -34,7 +34,7 @@
 /* copy */
 /* mono technical eyebrow — a measured, industrial voice (not a soft pill) */
 .hs__eyebrow { display: inline-flex; align-items: center; gap: 12px; margin-bottom: 22px;
-  font-family: var(--font-mono); font-size: 0.72rem; font-weight: 500; letter-spacing: 0.2em;
+  font-family: var(--font-mono); font-size: 0.85rem; font-weight: 600; letter-spacing: 0.16em;
   text-transform: uppercase; color: var(--orange-word); }
 .hs__eyebrow-line { width: 26px; height: 2px; background: var(--orange); flex: none; }
 .hs__title { font-family: var(--font-head); font-weight: 800; font-size: var(--t-hero);
