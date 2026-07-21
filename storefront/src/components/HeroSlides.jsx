@@ -32,12 +32,20 @@ const SLIDES = [
     fig: { img: '/img/products/hook-and-loop-dots-1.jpg', tag: 'PREMIUM GRADE', gauge: '22', priceFrom: '66.74' },
   },
   {
+    key: 'shipping', pill: 'Fast Australia-Wide Delivery',
+    h1: 'Delivered Fast,', accent: 'Australia-Wide.',
+    sub: 'Dispatched in 1–2 business days from our Australian warehouse — metro, regional and everywhere in between, with free shipping over $200.',
+    spec: ['1–2 day dispatch', 'Metro & regional', 'Free over $200'],
+    cta: { label: 'Shop the Range', to: 'collection' }, cta2: { label: 'Shipping & Delivery', to: 'shipping' },
+    fig: { img: '/img/australia-network.jpg', tag: 'AUSTRALIA-WIDE', photo: true },
+  },
+  {
     key: 'bulk', pill: 'Trade, Commercial & Wholesale',
     h1: 'Order More.', accent: 'Save More.',
     sub: 'Bulk pricing, reliable stock, custom widths and tailored fastening solutions for Australian businesses.',
     spec: ['Custom widths', 'Volume pricing', 'Priority dispatch'],
     cta: { label: 'Request a Bulk Quote', to: 'bulk' }, cta2: { label: 'Explore Bulk Orders', to: 'bulk' },
-    fig: { img: '/img/australia-network.jpg', tag: 'AUSTRALIA-WIDE', photo: true },
+    fig: { img: '/img/hooknloop-cartons.jpg', tag: 'BULK & WHOLESALE', photo: true },
   },
 ]
 

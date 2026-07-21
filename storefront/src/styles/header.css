@@ -2,7 +2,9 @@
 .skip { position: absolute; left: -9999px; top: 0; z-index: 100; background: var(--orange); color: var(--navy); padding: 10px 16px; font-weight: 700; }
 .skip:focus { left: 0; }
 
-.hdr { position: relative; z-index: 20; }
+/* sticky header — the whole bar (incl. the nav) pins to the top on scroll */
+.hdr { position: sticky; top: 0; z-index: 100; transition: box-shadow 0.2s ease; }
+.hdr.is-stuck { box-shadow: 0 8px 26px rgba(12,30,80,0.16); }
 
 /* blue promo bar */
 .promo { background: var(--blue); color: #fff; }

@@ -53,7 +53,16 @@ export default function Header() {
   const wishes = wishCount(useWishlist())
   const [q, setQ] = useState('')
   const [open, setOpen] = useState(null)   // label of the open dropdown, or null
+  const [stuck, setStuck] = useState(false) // header pinned to the top on scroll
   const wasOpen = useRef(false)            // open state sampled before the press began
+
+  /* pin the header to the top once the page scrolls (adds elevation shadow) */
+  useEffect(() => {
+    const onScroll = () => setStuck(window.scrollY > 8)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   /* dismiss the open menu on Escape or a click outside it */
   useEffect(() => {
@@ -75,7 +84,7 @@ export default function Header() {
   }
 
   return (
-    <header className="hdr">
+    <header className={`hdr ${stuck ? 'is-stuck' : ''}`}>
       <div className="promo">
         <div className="wrap promo__row">
           <span>Fast Australia-wide delivery</span>
