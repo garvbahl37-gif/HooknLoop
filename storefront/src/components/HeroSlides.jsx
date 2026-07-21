@@ -11,30 +11,31 @@ const SLIDES = [
     key: 'brand', pill: 'Premium Australian Supplier',
     h1: 'Hook & Loop', accent: 'That Holds',
     sub: 'Premium tapes, dots, straps and fasteners for home, trade and industry.',
+    spec: ['Peel & stick', '20–50 mm', 'AU stock'],
     cta: { label: 'Shop All Products', to: 'collection' }, cta2: { label: 'Find the Right Product', to: 'collection' },
-    fig: { img: '/img/products/self-adhesive-roll-1.jpg', tag: 'BEST SELLER', priceFrom: '24.46' },
+    fig: { img: '/img/products/self-adhesive-roll-1.jpg', tag: 'BEST SELLER', gauge: '25', priceFrom: '24.46' },
   },
   {
     key: 'heavy', pill: 'Built for Demanding Applications',
     h1: 'Industrial Strength.', accent: 'Reliable Grip.',
     sub: 'High-performance hook & loop for metal, plastic, equipment, vehicles and outdoor applications.',
-    labels: ['Heat Resistant', 'Moisture Resistant', 'Heavy-Duty Adhesive'],
+    spec: ['Heat-resistant', 'Moisture-proof', 'Heavy-duty'],
     cta: { label: 'Shop Heavy Duty', to: 'product/heavy-duty-adhesive' }, cta2: { label: 'View Industrial Solutions', to: 'collection/self-adhesive' },
-    fig: { img: '/img/products/heavy-duty-adhesive-1.png', tag: 'INDUSTRIAL', priceFrom: '55.43' },
+    fig: { img: '/img/products/heavy-duty-adhesive-1.png', tag: 'INDUSTRIAL', gauge: '50', priceFrom: '55.43' },
   },
   {
     key: 'premium', pill: 'Tested for Real-World Use',
     h1: 'Premium Quality', accent: 'Products',
     sub: 'Every product is chosen for material quality, performance testing and long-term reliability — trade-grade hook & loop, held in stock in Australia.',
-    labels: ['Performance tested', 'Long-term reliability', 'Australian stocked'],
+    spec: ['Performance-tested', 'Long-term hold', 'AU-stocked'],
     cta: { label: 'Shop the Range', to: 'collection' }, cta2: { label: 'Why Choose Us', to: 'about' },
-    fig: { img: '/img/products/hook-and-loop-dots-1.jpg', tag: 'PREMIUM GRADE', priceFrom: '66.74' },
+    fig: { img: '/img/products/hook-and-loop-dots-1.jpg', tag: 'PREMIUM GRADE', gauge: '22', priceFrom: '66.74' },
   },
   {
     key: 'bulk', pill: 'Trade, Commercial & Wholesale',
     h1: 'Order More.', accent: 'Save More.',
     sub: 'Bulk pricing, reliable stock, custom widths and tailored fastening solutions for Australian businesses.',
-    labels: ['Custom widths', 'Volume pricing', 'Priority dispatch'],
+    spec: ['Custom widths', 'Volume pricing', 'Priority dispatch'],
     cta: { label: 'Request a Bulk Quote', to: 'bulk' }, cta2: { label: 'Explore Bulk Orders', to: 'bulk' },
     fig: { img: '/img/australia-network.jpg', tag: 'AUSTRALIA-WIDE', photo: true },
   },
@@ -42,9 +43,21 @@ const SLIDES = [
 
 const DUR = 6000
 
+/* the measurement rule — hook & loop is bought by the millimetre, so the
+   product is framed by a precision gauge. Purely decorative (aria-hidden). */
+function Gauge({ mm }) {
+  return (
+    <div className="hs__gauge" aria-hidden="true">
+      <span className="hs__gauge-cap">mm</span>
+      <span className="hs__gauge-val">{mm}</span>
+    </div>
+  )
+}
+
 function Figure({ fig, eager }) {
   return (
     <div className="hs__figure">
+      {!fig.photo && <Gauge mm={fig.gauge} />}
       <div className={`hs__card ${fig.photo ? 'hs__card--photo' : ''}`}>
         <span className="hs__tag">{fig.tag}</span>
         <img src={fig.img} alt="" loading={eager ? 'eager' : 'lazy'} draggable="false" />
@@ -79,19 +92,16 @@ export default function HeroSlides() {
         {SLIDES.map((s, n) => (
           <div key={s.key} className={`hs__slide ${n === i ? 'is-active' : ''}`} aria-hidden={n === i ? undefined : true}>
             <div className="hs__copy">
-              <span className="hs__pill">{s.pill}</span>
+              <span className="hs__eyebrow"><i className="hs__eyebrow-line" aria-hidden="true" />{s.pill}</span>
               <h1 className="hs__title">{s.h1}<br /><span className="hs__accent">{s.accent}</span></h1>
               <p className="hs__sub">{s.sub}</p>
-              {s.labels && (
-                <div className="hs__labels">
-                  {s.labels.map((l) => (
-                    <span key={l} className="hs__label">
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.4" strokeLinecap="round" strokeLinejoin="round"><path d="m5 13 4 4L19 7" /></svg>{l}
-                    </span>
+              {s.spec && (
+                <div className="hs__spec" aria-hidden="true">
+                  {s.spec.map((x, k) => (
+                    <span key={x} className="hs__spec-part">{k > 0 && <span className="hs__spec-div">/</span>}{x}</span>
                   ))}
                 </div>
               )}
-              {s.offer && <div className="hs__offer">{s.offer}</div>}
               <div className="hs__cta">
                 <a href="#" className="btn btn--primary" onClick={nav(s.cta.to)}>{s.cta.label}<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
                 {s.cta2 && <a href="#" className="btn btn--ghost" onClick={nav(s.cta2.to)}>{s.cta2.label}</a>}

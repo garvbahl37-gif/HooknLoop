@@ -1,5 +1,6 @@
 /* ═══ HERO SLIDESHOW — premium navy, dimensional & lit ════════════════ */
 .hs {
+  --font-mono: ui-monospace, 'SF Mono', 'Roboto Mono', Menlo, Consolas, monospace;
   position: relative; overflow: hidden;
   background:
     radial-gradient(78% 120% at 82% 2%, #21457f 0%, rgba(33,69,127,0) 50%),
@@ -31,12 +32,19 @@
 .hs__slide.is-active { opacity: 1; visibility: visible; transform: none; transition: opacity 0.6s var(--ease), transform 0.6s var(--ease); }
 
 /* copy */
-.hs__pill { display: inline-block; padding: 8px 18px; border-radius: var(--r-pill);
-  background: rgba(232,119,34,0.14); border: 1px solid rgba(232,119,34,0.42);
-  color: var(--orange-word); font-size: 0.8125rem; font-weight: 600; margin-bottom: var(--sp-5); }
+/* mono technical eyebrow — a measured, industrial voice (not a soft pill) */
+.hs__eyebrow { display: inline-flex; align-items: center; gap: 12px; margin-bottom: 22px;
+  font-family: var(--font-mono); font-size: 0.72rem; font-weight: 500; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--orange-word); }
+.hs__eyebrow-line { width: 26px; height: 2px; background: var(--orange); flex: none; }
 .hs__title { font-family: var(--font-head); font-weight: 800; font-size: var(--t-hero);
-  line-height: 1.04; letter-spacing: -0.015em; color: #fff; margin-bottom: var(--sp-5); }
+  line-height: 1.01; letter-spacing: -0.025em; color: #fff; margin-bottom: 18px; }
 .hs__accent { color: var(--orange-word); }
+/* spec readout — reads like a product label (mono, slash-separated) */
+.hs__spec { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; margin-top: 24px;
+  font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.05em; text-transform: uppercase; }
+.hs__spec-part { display: inline-flex; align-items: center; gap: 7px; color: rgba(255,255,255,0.84); }
+.hs__spec-div { color: var(--orange-word); font-weight: 600; }
 .hs__bullets { display: grid; gap: 12px; margin-bottom: var(--sp-5); }
 .hs__bullet { display: flex; align-items: center; gap: 12px; color: var(--on-navy-2); font-size: 1.0625rem; }
 .hs__check { flex-shrink: 0; width: 26px; height: 26px; border-radius: var(--r-pill); display: grid; place-items: center;
@@ -58,11 +66,21 @@
   transform: scale(0.97); transition: transform 0.7s var(--ease); }
 .hs__slide.is-active .hs__card { transform: scale(1); }
 .hs__card img { width: 100%; height: 100%; object-fit: contain; padding: 24px; }
+/* precision measurement rule — the signature: hook & loop is bought by the mm */
+.hs__gauge { position: absolute; left: -30px; top: 9%; bottom: 9%; width: 22px; z-index: 2; }
+.hs__gauge::before { content: ''; position: absolute; right: 0; top: 0; bottom: 0; width: 8px;
+  background: repeating-linear-gradient(to bottom, rgba(255,255,255,0.34) 0 1px, transparent 1px 9px); }
+.hs__gauge::after { content: ''; position: absolute; right: 0; top: 0; bottom: 0; width: 14px;
+  background: repeating-linear-gradient(to bottom, var(--orange-word) 0 1.5px, transparent 1.5px 45px); opacity: 0.9; }
+.hs__gauge-cap { position: absolute; right: -1px; top: -17px; font-family: var(--font-mono);
+  font-size: 0.56rem; letter-spacing: 0.12em; color: var(--orange-word); }
+.hs__gauge-val { position: absolute; right: 18px; top: 50%; transform: translateY(-50%);
+  font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.04em; color: rgba(255,255,255,0.62); }
 .hs__tag { position: absolute; top: 14px; left: 14px; z-index: 2; background: var(--navy); color: #fff;
-  font-size: 0.625rem; font-weight: 700; letter-spacing: 0.08em; padding: 6px 11px; border-radius: var(--r-pill); }
-.hs__price { position: absolute; right: -14px; bottom: -14px; background: var(--orange); color: var(--navy);
+  font-family: var(--font-mono); font-size: 0.6rem; font-weight: 500; letter-spacing: 0.12em; padding: 6px 10px; border-radius: 5px; }
+.hs__price { position: absolute; right: -16px; bottom: -16px; z-index: 3; background: var(--orange); color: var(--navy);
   border-radius: var(--r-ctrl); padding: 10px 16px; box-shadow: var(--shadow-cta); text-align: center; }
-.hs__price-from { display: block; font-size: 0.5625rem; font-weight: 800; letter-spacing: 0.1em; }
+.hs__price-from { display: block; font-family: var(--font-mono); font-size: 0.54rem; font-weight: 600; letter-spacing: 0.16em; }
 .hs__price-amt { font-family: var(--font-head); font-weight: 800; font-size: 1.5rem; line-height: 1; }
 /* panel figures — companies / features / facilities */
 .hs__panel { position: relative; z-index: 1; width: 100%; border-radius: var(--r-card);
@@ -101,7 +119,7 @@
 .hs__dot.is-active { width: 46px; background: rgba(255,255,255,0.3); }
 .hs__dot-fill { position: absolute; inset: 0; background: var(--orange); transform-origin: left; animation: hsFill linear forwards; }
 @keyframes hsFill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
-.hs__count { font-family: var(--font-head); font-weight: 700; font-size: 0.8125rem; color: var(--muted-navy); letter-spacing: 0.05em; }
+.hs__count { font-family: var(--font-mono); font-weight: 500; font-size: 0.78rem; color: var(--muted-navy); letter-spacing: 0.1em; }
 
 /* ═══ FACILITIES MARQUEE — premium seamless infinite ticker ═══════════════ */
 .marq { position: relative; }
@@ -137,6 +155,7 @@
   .hs__slide.is-active { position: relative; }
   .hs__figure { order: 2; max-width: 420px; }
   .hs__price { right: 0; }
+  .hs__gauge { display: none; }
 }
 @media (prefers-reduced-motion: reduce){
   /* the ticker stops and becomes a static, horizontally-scrollable row */
