@@ -113,7 +113,6 @@ export default function ProductPage({ handle }) {
               <span className="pdp__price-now">${unit.toFixed(2)}</span>
               <span className="pdp__price-unit">{p.hookLoop && side === 'both' ? 'complete set' : p.hookLoop ? 'per side' : ''} · incl. GST</span>
             </div>
-            <span className="pdp__ppm">${perMetre}/{p.cat === 'dots' ? 'reel' : 'm'}<span>{p.hookLoop ? 'finished fastener' : 'per unit'}</span></span>
           </div>
 
           <div className="pdp__opt">
@@ -227,7 +226,7 @@ export default function ProductPage({ handle }) {
             </section>
             <section className="pdp__block">
               <h2>Specifications</h2>
-              <table className="pdp__spec"><tbody>{SPECS.map(([k, v]) => <tr key={k}><th>{k}</th><td className={/TDS|request/i.test(String(v)) ? 'pdp__tds' : ''}>{v}</td></tr>)}</tbody></table>
+              <table className="pdp__spec"><tbody><tr><th>Brand</th><td>{BRAND}</td></tr>{SPECS.map(([k, v]) => <tr key={k}><th>{k}</th><td className={/TDS|request/i.test(String(v)) ? 'pdp__tds' : ''}>{v}</td></tr>)}</tbody></table>
               <p className="pdp__spec-note">Specifications are from the manufacturer’s data. Fire-retardant standards are on the supplier’s technical data sheet, supplied on request — we don’t publish a rating we can’t certify.</p>
             </section>
             <section className="pdp__block">

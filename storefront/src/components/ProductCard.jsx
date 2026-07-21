@@ -1,27 +1,17 @@
-/*  Reusable product card — links to the product page and adds a functional
-    "complete set" (or single item) to the real cart.                          */
+/*  Reusable product card — links to the product page. "Quick Add" opens a popup
+    to pick size/colour/side and add to cart (mirrors the live store).           */
 import { useState } from 'react'
-import { addToCart, navigate } from '../lib/cart.js'
+import { navigate } from '../lib/cart.js'
 import { useWishlist, toggleWish } from '../lib/wishlist.js'
 import { productRating } from '../data/catalog.js'
 import Stars from './Stars.jsx'
+import QuickAdd from './QuickAdd.jsx'
 
 export default function ProductCard({ p }) {
-  const [added, setAdded] = useState(false)
+  const [qa, setQa] = useState(false)
   const wished = useWishlist().includes(p.handle)
   const go = (e) => { e.preventDefault(); navigate(`product/${p.handle}`) }
   const [rating, reviews] = productRating(p.handle)
-
-  const add = (e) => {
-    e.preventDefault()
-    addToCart({
-      key: `${p.handle}|${p.sizes[0].label}|${p.colours[0]}|${p.hookLoop ? 'hook' : 'single'}`,
-      handle: p.handle, name: p.name, img: p.img,
-      variant: `${p.sizes[0].label} · ${p.colours[0]}${p.hookLoop ? ' · Hook' : ''}`,
-      price: p.from, qty: 1,
-    })
-    setAdded(true); setTimeout(() => setAdded(false), 1600)
-  }
 
   return (
     <article className="pc">
@@ -47,10 +37,12 @@ export default function ProductCard({ p }) {
         <div className="pc__price">
           <span className="pc__set">From <b>${p.from.toFixed(2)}</b> <span className="pc__gst">incl. GST</span></span>
         </div>
-        <button className={`pc__add ${added ? 'is-added' : ''}`} onClick={add}>
-          {added ? '✓ Added' : 'Add to cart'}
+        <button className="pc__add" onClick={(e) => { e.preventDefault(); setQa(true) }}>
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M6 6 5 3H2"/></svg>
+          Quick Add
         </button>
       </div>
+      {qa && <QuickAdd p={p} onClose={() => setQa(false)} />}
     </article>
   )
 }

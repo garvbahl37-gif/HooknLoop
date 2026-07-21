@@ -210,9 +210,47 @@ section { scroll-margin-top: 80px; }
 .pc__gst { font-size: 0.72rem; color: var(--muted-ink); font-weight: 400; }
 .pc__info { position: relative; margin-left: 5px; color: var(--blue); font-size: 0.85rem; }
 .pc__tip { position: absolute; bottom: 130%; left: 50%; transform: translateX(-50%); width: 230px; background: var(--navy); color: #fff; font-size: 0.75rem; font-weight: 400; line-height: 1.45; padding: 10px 12px; border-radius: var(--r-ctrl); box-shadow: var(--shadow-card); z-index: 5; text-align: left; }
-.pc__add { margin-top: auto; padding: 12px; border-radius: var(--r-ctrl); background: var(--navy); color: #fff; font-weight: 700; font-size: 0.9rem; transition: background 0.15s; }
+.pc__add { margin-top: auto; display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; border-radius: var(--r-ctrl); background: var(--navy); color: #fff; font-weight: 700; font-size: 0.9rem; transition: background 0.15s; }
 .pc__add:hover { background: #1d3866; }
-.pc__add.is-added { background: #1f9d55; }
+.pc__add svg { flex: none; }
+
+/* ── Quick Add popup ─────────────────────────────────────────────────── */
+.qa { position: fixed; inset: 0; z-index: 200; display: flex; align-items: center; justify-content: center; padding: 20px;
+  background: rgba(10,18,38,0.55); backdrop-filter: blur(2px); animation: qaFade 0.2s ease; }
+@keyframes qaFade { from { opacity: 0; } to { opacity: 1; } }
+.qa__panel { position: relative; width: 100%; max-width: 880px; max-height: 92vh; overflow: auto; background: #fff;
+  border-radius: var(--r-card); box-shadow: 0 40px 90px rgba(4,10,26,0.5); display: grid; grid-template-columns: 1fr 1fr; animation: qaPop 0.24s var(--ease); }
+@keyframes qaPop { from { transform: translateY(12px) scale(0.98); opacity: 0.4; } to { transform: none; opacity: 1; } }
+.qa__close { position: absolute; top: 14px; right: 14px; z-index: 2; width: 34px; height: 34px; display: grid; place-items: center;
+  background: var(--orange); color: #fff; border-radius: 50%; box-shadow: var(--shadow-soft); }
+.qa__close:hover { background: var(--orange-ink); }
+.qa__media { background: var(--cloud); display: grid; place-items: center; padding: 28px; }
+.qa__media img { width: 100%; height: 100%; max-height: 420px; object-fit: contain; }
+.qa__body { padding: clamp(22px,3vw,34px); }
+.qa__title { font-family: var(--font-head); font-weight: 800; color: var(--navy); font-size: clamp(1.2rem,2vw,1.5rem); line-height: 1.15; padding-right: 34px; }
+.qa__price { margin: 12px 0 20px; color: var(--navy); }
+.qa__price b { font-family: var(--font-head); font-size: 1.5rem; color: var(--orange-ink); }
+.qa__price span { color: var(--muted-ink); font-size: 0.8rem; }
+.qa__opt { margin-bottom: 16px; }
+.qa__label { display: block; font-size: 0.85rem; color: var(--muted-ink); margin-bottom: 8px; } .qa__label b { color: var(--navy); }
+.qa__pills { display: flex; flex-wrap: wrap; gap: 8px; }
+.qa__pill { padding: 9px 15px; border: 1.5px solid var(--line-card); border-radius: var(--r-ctrl); font-weight: 600; font-size: 0.9rem; color: var(--navy); background: #fff; transition: border-color 0.14s, background 0.14s, color 0.14s; }
+.qa__pill:hover { border-color: var(--navy); }
+.qa__pill.is-on { background: var(--navy); color: #fff; border-color: var(--navy); }
+.qa__swatches { display: flex; gap: 10px; }
+.qa__swatch { width: 34px; height: 34px; border-radius: 50%; border: 2px solid var(--line-card); box-shadow: inset 0 0 0 2px #fff; }
+.qa__swatch.is-on { border-color: var(--navy); }
+.qa__buy { display: flex; gap: 12px; margin-top: 22px; }
+.qa__qty { display: inline-flex; align-items: center; border: 1.5px solid var(--line-card); border-radius: var(--r-ctrl); flex: none; }
+.qa__qty button { width: 40px; height: 48px; color: var(--navy); font-size: 1.2rem; } .qa__qty span { width: 40px; text-align: center; font-weight: 700; }
+.qa__add { flex: 1; min-height: 48px; }
+.qa__shoppay { width: 100%; min-height: 48px; margin-top: 10px; background: #5a31f4; color: #fff; border-radius: var(--r-ctrl); font-weight: 600; font-size: 1rem; display: inline-flex; align-items: center; justify-content: center; gap: 7px; transition: background 0.15s; }
+.qa__shoppay:hover { background: #4a27d4; }
+.qa__shoppay-logo { font-weight: 800; font-style: italic; letter-spacing: -0.02em; font-size: 1.15rem; }
+@media (max-width: 680px){
+  .qa__panel { grid-template-columns: 1fr; max-height: 94vh; }
+  .qa__media { padding: 20px; } .qa__media img { max-height: 240px; }
+}
 
 /* ═══ FIRE RETARDANT — the ONE navy feature band ══════════════════════ */
 .fr { position: relative; overflow: hidden;
