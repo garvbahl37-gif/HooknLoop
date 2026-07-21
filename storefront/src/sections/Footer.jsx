@@ -19,7 +19,7 @@ export default function Footer() {
       <div className="wrap ft__main">
         <div className="ft__brand">
           <img className="ft__logo-img" src="/img/logo-footer.svg" alt="HooknLoop" width="389" height="69" />
-          <p className="ft__tag">Industrial hook &amp; loop, cut to length and dispatched Australia-wide.</p>
+          <p className="ft__tag">Industrial hook &amp; loop, dispatched fast across Australia.</p>
           <a className="ft__phone" href="tel:1300183481"><b>1300 183 481</b><span>Call our Australian team</span></a>
           <p className="ft__addr">Australian warehouse · Australia-wide dispatch</p>
           <p className="ft__abn">ABN 93 878 995 217</p>

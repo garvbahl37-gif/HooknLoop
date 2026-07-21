@@ -13,7 +13,7 @@ export default function BestSellers() {
           <div>
             <span className="sec-eyebrow">Shop the range</span>
             <h2 id="bs-h" className="sec-h2">Best sellers &amp; offers</h2>
-            <p className="sec-sub">Our most-ordered hook &amp; loop — every product cut to length, dispatched Australia-wide, with volume discounts on bulk orders.</p>
+            <p className="sec-sub">Our most-ordered hook &amp; loop — dispatched Australia-wide, with volume discounts on bulk orders.</p>
           </div>
           <a href="#" className="bs__all" onClick={(e) => { e.preventDefault(); navigate('collection') }}>Shop all products →</a>
         </div>

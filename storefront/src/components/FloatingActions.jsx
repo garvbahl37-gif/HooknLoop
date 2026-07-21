@@ -53,7 +53,7 @@ export default function FloatingActions() {
               </button>
             </div>
             <div className="chatp__body">
-              <div className="chatp__msg">G’day! Not sure which hook &amp; loop you need, or after bulk pricing? Ask us — we cut to length and ship Australia-wide.</div>
+              <div className="chatp__msg">G’day! Not sure which hook &amp; loop you need, or after bulk pricing? Ask us — we hold stock and ship Australia-wide.</div>
               {sent
                 ? <div className="chatp__msg chatp__msg--ok">Thanks — we’ve got your message. A real person in Australia will reply shortly. In a hurry? Call <a href="tel:1300183481">1300 183 481</a>.</div>
                 : <div className="chatp__quick">{QUICK.map(([label, fn]) => (

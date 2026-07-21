@@ -22,6 +22,19 @@
 /* buy box */
 .pdp__eyebrow { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--orange-ink); }
 .pdp__brand { display: block; font-size: 0.82rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--blue); margin: 8px 0 0; }
+/* Estimated delivery calculator */
+.pdp__eta { display: flex; gap: 13px; align-items: flex-start; background: var(--cloud); border: 1px solid var(--line-card); border-radius: var(--r-card); padding: 15px 16px; margin-top: 16px; }
+.pdp__eta-ic { flex: none; width: 40px; height: 40px; border-radius: 11px; background: rgba(20,108,67,0.1); color: #146c43; display: grid; place-items: center; }
+.pdp__eta-body { flex: 1; min-width: 0; }
+.pdp__eta-body > b { display: block; color: var(--navy); font-size: 0.95rem; margin-bottom: 8px; }
+.eta__row { display: flex; gap: 8px; align-items: center; margin-bottom: 7px; }
+.eta__input { width: 132px; border: 1.5px solid var(--line-card); border-radius: var(--r-ctrl); padding: 8px 12px; font: inherit; font-size: 0.9rem; color: var(--ink); background: #fff; }
+.eta__input:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(25,82,204,0.12); }
+.eta__badge { font-size: 0.66rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted-ink); background: #fff; border: 1px solid var(--line-card); border-radius: var(--r-pill); padding: 4px 11px; }
+.eta__badge.is-metro { color: #146c43; background: rgba(20,108,67,0.12); border-color: transparent; }
+.eta__res { font-size: 0.86rem; color: #33415c; line-height: 1.45; } .eta__res b { color: var(--navy); }
+.eta__hint { font-size: 0.82rem; color: var(--muted-ink); line-height: 1.45; }
+
 /* Shipping / Returns & Exchanges quick links (below the CTA) */
 .pdp__policies { display: flex; gap: 24px; margin-top: 16px; flex-wrap: wrap; }
 .pdp__policies a { display: inline-flex; align-items: center; gap: 8px; color: var(--muted-ink); font-weight: 600; font-size: 0.9rem; text-decoration: none; }

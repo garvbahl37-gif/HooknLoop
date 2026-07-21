@@ -54,7 +54,7 @@ export function ContactPage() {
 export function BulkPage() {
   return (
     <main id="main" className="page">
-      <PageHero eyebrow="For trade & bulk buyers" title="Bulk & trade pricing" lead="Cut-to-length industrial hook & loop, volume pricing, GST tax invoice, and one contact for repeat orders." />
+      <PageHero eyebrow="For trade & bulk buyers" title="Bulk & trade pricing" lead="Industrial hook & loop at volume pricing, with a GST tax invoice and one contact for repeat orders." />
       <BulkTrade />
     </main>
   )
@@ -72,7 +72,7 @@ export function AboutPage() {
           <li><b>Real stock, real dispatch.</b> 100,000m+ on hand, shipped Australia-wide in 1–2 business days — not imported to order.</li>
           <li><b>Both halves, one item.</b> Most suppliers make you order hook and loop separately. We default to a complete set that actually fastens.</li>
           <li><b>Trade-ready.</b> GST tax invoice on every order, ABN 93 878 995 217, volume pricing and account terms for regular buyers.</li>
-          <li><b>Cut to length.</b> Order the exact run you need, at any width.</li>
+          <li><b>Any width, no minimums.</b> Order the exact quantity your job needs.</li>
         </ul>
         <div className="page__cta"><a href="#" className="btn btn--primary" onClick={(e) => { e.preventDefault(); navigate('collection') }}>Shop the range →</a></div>
       </div>

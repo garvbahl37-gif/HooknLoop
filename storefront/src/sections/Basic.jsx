@@ -8,7 +8,7 @@ const goCat = (slug) => (e) => { e.preventDefault(); navigate(`collection/${slug
 const STATS = [
   ['100,000m+', 'metres in stock, ready to ship'],
   ['1–2 day', 'dispatch, Australia-wide'],
-  ['12', 'product ranges, cut to length'],
+  ['12', 'product ranges in stock'],
   ['4.87★', 'from 15 verified reviews'],
   ['Australian', 'warehouse · genuine VELCRO® stocked'],
 ]
@@ -182,7 +182,7 @@ export function WhyUs() {
 const FR_ROWS = [
   ['Treated FR backing', 'Fire-retardant treatment per the supplier’s technical data sheet — [from supplier TDS].'],
   ['Two formats, one range', 'Self-adhesive for fast fit-out; sew-on for upholstery, seating and fabric work.'],
-  ['Cut-to-length, trade-priced', 'Any length from 100,000m+ in stock, with bulk & trade pricing on request.'],
+  ['Trade-priced & in stock', 'From 100,000m+ in stock, with bulk & trade pricing on request.'],
 ]
 export function FireRetardant() {
   return (
@@ -192,7 +192,7 @@ export function FireRetardant() {
         <div className="fr__copy">
           <span className="pill-blue">Fire Retardant Range</span>
           <h2 id="fr-h" className="fr__h2">Fire-retardant hook &amp; loop, stocked in Australia</h2>
-          <p className="fr__lead">One of the few Australian suppliers holding fire-retardant hook &amp; loop in stock — in both self-adhesive and sew-on formats, cut to length and dispatched in 1–2 business days.</p>
+          <p className="fr__lead">One of the few Australian suppliers holding fire-retardant hook &amp; loop in stock — in both self-adhesive and sew-on formats, dispatched in 1–2 business days.</p>
           <ul className="fr__rows">
             {FR_ROWS.map(([l, s]) => (
               <li key={l} className="fr__row">

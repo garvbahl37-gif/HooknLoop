@@ -78,8 +78,13 @@ export default function Header() {
     <header className="hdr">
       <div className="promo">
         <div className="wrap promo__row">
-          <span>Fast Australia-wide delivery</span><span className="promo__sep" aria-hidden="true">•</span>
-          <span className="promo__hl">Premium-Grade Hook &amp; Loop Products</span>
+          <span>Fast Australia-wide delivery</span>
+          <span className="promo__sep" aria-hidden="true">•</span>
+          <span className="promo__hl">Free shipping over $200</span>
+          <span className="promo__sep" aria-hidden="true">•</span>
+          <span className="promo__opt">Best price in Australia</span>
+          <span className="promo__sep promo__sep--opt" aria-hidden="true">•</span>
+          <span className="promo__hl">★ 5-star rated store</span>
         </div>
       </div>
 

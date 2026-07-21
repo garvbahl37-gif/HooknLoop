@@ -4,7 +4,7 @@ import { useState } from 'react'
 
 const VALUE = [
   ['Volume breaks up to 20%', 'The more rolls, the lower the per-roll price.'],
-  ['Cut-to-length, any width', 'No pack minimums — order the exact run you need.'],
+  ['Any width, no minimums', 'Order the exact quantity your job needs.'],
   ['GST tax invoice + PO', 'Compliant invoicing for accounts and procurement.'],
   ['1–2 business day dispatch', '100,000m+ in stock, ready to ship.'],
 ]
@@ -20,7 +20,7 @@ export default function BulkTrade() {
         <div className="bt__copy">
           <span className="pill-blue">For trade &amp; bulk buyers</span>
           <h2 id="bt-h" className="bt__h2">Buy by the box. Priced for trade.</h2>
-          <p className="bt__sub">Cut-to-length industrial hook &amp; loop, dispatched from our Australian warehouse. Volume pricing, a proper GST tax invoice, and one point of contact for repeat orders.</p>
+          <p className="bt__sub">Industrial hook &amp; loop, dispatched from our Australian warehouse. Volume pricing, a proper GST tax invoice, and one point of contact for repeat orders.</p>
           <div className="bt__vals">
             {VALUE.map(([l, d]) => (
               <div key={l} className="bt__val"><span className="bt__val-dot" aria-hidden="true" /><span><b>{l}</b><span className="bt__val-d">{d}</span></span></div>

@@ -64,6 +64,22 @@
   border-radius: var(--r-ctrl); padding: 10px 16px; box-shadow: var(--shadow-cta); text-align: center; }
 .hs__price-from { display: block; font-size: 0.5625rem; font-weight: 800; letter-spacing: 0.1em; }
 .hs__price-amt { font-family: var(--font-head); font-weight: 800; font-size: 1.5rem; line-height: 1; }
+/* panel figures — companies / features / facilities */
+.hs__panel { position: relative; z-index: 1; width: 100%; border-radius: var(--r-card);
+  background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(244,247,251,0.96));
+  border: 1px solid rgba(255,255,255,0.7); box-shadow: 0 30px 60px rgba(4,10,26,0.42);
+  padding: 26px; transform: scale(0.985); }
+.hs__slide.is-active .hs__panel { transform: scale(1); }
+.hs__panel-title { display: block; font-size: 0.7rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--orange-ink); margin-bottom: 14px; }
+.hs__chips { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.hs__chip { display: flex; align-items: center; gap: 10px; background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; font-weight: 600; font-size: 0.9rem; color: var(--navy); }
+.hs__chip i { width: 8px; height: 8px; border-radius: 50%; background: var(--orange); flex: none; }
+.hs__panel--grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 22px; }
+.hs__feat, .hs__statc { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 18px 14px; text-align: center; }
+.hs__feat-ic { display: inline-grid; place-items: center; width: 40px; height: 40px; border-radius: 12px; background: rgba(232,119,34,0.12); color: var(--orange-ink); margin-bottom: 8px; }
+.hs__feat b { display: block; font-family: var(--font-head); font-weight: 800; font-size: 1.05rem; color: var(--navy); letter-spacing: -0.01em; }
+.hs__feat span, .hs__statc span { display: block; font-size: 0.76rem; color: var(--muted-ink); margin-top: 2px; }
+.hs__statc b { display: block; font-family: var(--font-head); font-weight: 800; font-size: 1.6rem; color: var(--navy); letter-spacing: -0.01em; line-height: 1; }
 
 /* nav — dots only; the hero auto-advances every 5s (arrows removed) */
 .hs__nav { position: relative; z-index: 2; display: flex; align-items: center; justify-content: space-between; padding: 0 var(--sp-5) clamp(22px,2.4vw,32px); }

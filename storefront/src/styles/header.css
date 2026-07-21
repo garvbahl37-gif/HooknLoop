@@ -6,9 +6,13 @@
 
 /* blue promo bar */
 .promo { background: var(--blue); color: #fff; }
-.promo__row { display: flex; align-items: center; justify-content: center; gap: 10px; height: 40px; font-size: 0.8125rem; font-weight: 500; }
+.promo__row { display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 40px; font-size: 0.8125rem; font-weight: 500; flex-wrap: wrap; padding: 5px 0; }
 .promo__hl { color: #ffd9b8; font-weight: 600; }
-.promo__sep { opacity: 0.5; }
+.promo__sep { opacity: 0.45; }
+@media (max-width: 760px){
+  .promo__row { font-size: 0.72rem; gap: 8px; }
+  .promo__opt, .promo__sep--opt { display: none; }
+}
 
 /* white logo/search row */
 .bar { background: #fff; border-bottom: 1px solid var(--line-card); }

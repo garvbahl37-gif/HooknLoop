@@ -13,7 +13,7 @@ export const CATEGORIES = [
 
 export const PRODUCTS = [
   { handle: 'self-adhesive-roll', name: 'Self-Adhesive Hook & Loop Roll', cat: 'self-adhesive', from: 32.90, img: '/img/p-hook.jpg',
-    badge: 'Best seller', spec: 'Peel-and-stick · cut to length', hookLoop: true,
+    badge: 'Best seller', spec: 'Peel-and-stick · industrial', hookLoop: true,
     sizes: [{ label: '20mm × 25m', single: 32.90 }, { label: '25mm × 25m', single: 35.28 }, { label: '50mm × 25m', single: 63.59 }],
     colours: ['Black', 'White'], gallery: ['/img/p-hook.jpg', '/img/sa-4.jpg', '/img/sa-2.jpg', '/img/sa-3.jpg', '/img/p-loop.jpg'] },
   { handle: 'heavy-duty-adhesive', name: 'Heavy-Duty Adhesive Hook & Loop', cat: 'self-adhesive', from: 55.43, img: '/img/p-heavyduty.png',
@@ -111,7 +111,7 @@ export const PRODUCT_FAQS = {
     { q: 'What surfaces does the heavy-duty acrylic adhesive bond to?', a: 'It bonds to metal, glass, timber, painted surfaces, PVC/ABS and aluminium — wipe the surface clean and dry first for the strongest hold.' },
     { q: 'Can I use it outdoors or in high heat?', a: 'Yes. The acrylic adhesive is UV, weather and moisture resistant, making it suited to outdoor, automotive and warm industrial environments.' },
     { q: 'What sizes and colours are available?', a: 'It comes in 25 mm and 50 mm widths, 25 metres per roll, in black or white — as hook only, loop only, or both together.' },
-    { q: 'Can I get it cut to length or in bulk?', a: 'Yes — every roll is cut to your required length, and volume discounts of up to 30% apply automatically on bulk orders.' },
+    { q: 'Do you offer bulk discounts?', a: 'Yes — volume discounts of up to 30% apply automatically on bulk orders, and trade accounts get further pricing.' },
   ],
   'velcro-brand-roll': [
     { q: 'Is this a genuine VELCRO Brand product or a generic tape?', a: 'This is 100% genuine VELCRO Brand tape, not a generic knock-off, so it holds securely where cheaper alternatives tend to slip off.' },
@@ -301,7 +301,7 @@ export const PRODUCT_DETAILS = {
   'self-adhesive-roll': {
     sku: 'HL20RAB',
     applications: ['Securing mats, rugs & lightweight panels', 'Office, home & DIY projects', 'Craft, display & signage', 'Temporary mounting & organisation', 'Displays & exhibitions'],
-    specs: [['Material', '100% nylon'], ['Backing', 'Pressure-sensitive rubber adhesive'], ['Width', '20 / 25 / 50 mm'], ['Length', '25 m per roll'], ['Colours', 'Black · White'], ['Temperature', '−10°C to 70°C'], ['Reusability', 'Up to 5,000 open/close cycles'], ['Cut to length', 'Yes — any length']],
+    specs: [['Material', '100% nylon'], ['Backing', 'Pressure-sensitive rubber adhesive'], ['Width', '20 / 25 / 50 mm'], ['Length', '25 m per roll'], ['Colours', 'Black · White'], ['Temperature', '−10°C to 70°C'], ['Reusability', 'Up to 5,000 open/close cycles']],
   },
   'heavy-duty-adhesive': {
     sku: 'HL25AABW',
