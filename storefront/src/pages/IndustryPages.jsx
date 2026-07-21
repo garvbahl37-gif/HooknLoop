@@ -34,6 +34,11 @@ export function IndustryPage({ slug }) {
         <h1 className="ind-art__h1">{ind.name}</h1>
         <p className="ind-art__intro">{ind.intro}</p>
 
+        <figure className="ind-art__hero">
+          <img src={`/img/industries/${ind.slug}-hero.jpg`} alt={ind.name} loading="lazy"
+               onError={(e) => { const f = e.currentTarget.closest('.ind-art__hero'); if (f) f.style.display = 'none' }} />
+        </figure>
+
         <h2 className="ind-art__h2">Common use cases in {ind.short}</h2>
         {ind.useCases.map(([title, body]) => (
           <div key={title} className="ind-art__block">
