@@ -85,7 +85,7 @@
   <h1>HooknLoop — Storefront Redesign</h1>
   <p>What to change, section by section, from the <b>current live store</b> (hooknloop.com.au — “Previous”) to the <b>new premium design</b> (React prototype — “Latest”). Each section shows before → after plus the exact specs to implement. Values reference the prototype’s design tokens in <code>src/styles/tokens.css</code>.</p>
   <div class="meta"><span>Type: Poppins</span><span>Radii: 16 / 10 / 999</span><span>Accent: #e87722</span><span>Stack: React → port to Shopify Liquid</span></div>
-  <div class="live"><span class="live-dot"></span> Live interactive preview:&nbsp;<a href="https://playback-reimburse-outbound.ngrok-free.dev">playback-reimburse-outbound.ngrok-free.dev</a>&nbsp;<em>(ngrok tunnel to the running prototype — click any menu, add to cart, etc.)</em></div>
+  <div class="live"><span class="live-dot"></span> Live site:&nbsp;<a href="https://hookn-loop.vercel.app">hookn-loop.vercel.app</a>&nbsp;<em>(deployed on Vercel — click any menu, add to cart, browse the industry pages)</em></div>
 </div></header>
 
 <nav class="toc"><div class="wrap">
@@ -93,7 +93,7 @@
   <a href="#products">Products</a><a href="#why">Why HooknLoop</a><a href="#reviews">Reviews</a><a href="#footer">Footer</a>
   <a href="#cart">Cart</a><a href="#wishlist">Wishlist</a><a href="#chat">Chatbot</a><a href="#call">Call</a><a href="#motion">Animations</a>
   <a href="#home-structure" style="color:var(--orange-ink);font-weight:800;">Latest&nbsp;▸</a><a href="#onestop2">One-Stop</a><a href="#bestsellers2">Best&nbsp;Sellers</a><a href="#trusted">Trusted&nbsp;Supplier</a><a href="#cards2">Cards</a><a href="#pdp2">Product&nbsp;page</a><a href="#buymore">Buy&nbsp;More</a><a href="#related">Related</a><a href="#faqs">FAQs</a>
-  <a href="#topbar">Top&nbsp;bar</a><a href="#delivery">Shipping&nbsp;calc</a><a href="#pdpreviews">Reviews</a><a href="#descfeat">Description</a><a href="#policies">Policies</a><a href="#browseall">Browse&nbsp;all</a><a href="#bulkpage">Bulk&nbsp;page</a>
+  <a href="#topbar">Top&nbsp;bar</a><a href="#delivery">Shipping&nbsp;calc</a><a href="#pdpreviews">Reviews</a><a href="#descfeat">Description</a><a href="#policies">Policies</a><a href="#browseall">Browse&nbsp;all</a><a href="#bulkpage">Bulk&nbsp;page</a><a href="#industries">Industry&nbsp;pages</a>
 </div></nav>
 
 <!-- COLOUR -->
@@ -146,7 +146,7 @@
 <!-- NAV -->
 <section id="nav"><div class="wrap">
   <h2><span class="n">3</span>Navigation bar</h2>
-  <p class="lead">Three tiers: royal-blue promo bar · white logo+search row · royal-blue nav. Nav links are <b>centred</b>; the dropdowns are curated.</p>
+  <p class="lead">Three tiers: royal-blue promo bar · white logo+search row · royal-blue nav. Nav links are <b>centred</b>; the dropdowns are curated. On scroll the <b>nav pins to the top</b> while the promo strip and logo/search row scroll away — matching the live store. The shot shows the new <b>Industries</b> dropdown open.</p>
   <div class="ba">
     <figure class="prev"><figcaption><span class="dot"></span>Previous (live store)</figcaption><img src="img/prev-nav.jpg" alt="previous nav"></figure>
     <figure class="new"><figcaption><span class="dot"></span>Latest (new design)</figcaption><img src="img/new-nav.jpg" alt="new nav"></figure>
@@ -158,6 +158,8 @@
       <li><b>Nav bar</b>: royal-blue <code>--blue #1952cc</code> unified with the promo bar; white links <code>rgba(255,255,255,.9)</code>, hover pill <code>rgba(255,255,255,.16)</code>; links <b>centred</b>.</li>
       <li><b>Dropdowns are disclosures, not links</b> — the parent only opens the menu (never navigates). Opens on hover/click/tap/focus; closes on Escape, outside-click, or picking. Chevron rotates 180° when open. Products menu = 8 curated flagship products (not the full list).</li>
       <li><b>Header icons</b>: search (mobile → icon that opens search), account, wishlist, cart; badges only show when count &gt; 0. White focus-ring on the blue nav for keyboard users.</li>
+      <li><b>Sticky nav on scroll</b> — the nav is <code>position:sticky; top:0</code>; the promo strip and logo/search row scroll away above it (mirrors the store's <code>header__stick</code>). An elevation shadow fades in once it's pinned.</li>
+      <li><b>New “Industries” dropdown</b> — one entry per application/industry guide (see §31) plus an “All industries” index link.</li>
     </ul>
   </div>
 </div></section>
@@ -183,25 +185,25 @@
 <!-- HERO -->
 <section id="hero"><div class="wrap">
   <h2><span class="n">5</span>Hero section <span class="tag tag--redesign">rebuilt · elevated</span></h2>
-  <p class="lead">A 4-banner product slideshow on a grained navy background — one banner per buyer type, each routing straight to the right products. Redesigned around a <b>technical, engineered</b> concept: a monospace “spec-sheet” voice over the grained navy.</p>
+  <p class="lead">A <b>5-banner</b> product slideshow on a grained navy background — one banner per buyer type, each routing to the right products. The <b>first banner mirrors the live store's hero</b>; the design keeps a monospace “spec-sheet” voice over the navy.</p>
   <div class="ba">
     <figure class="prev"><figcaption><span class="dot"></span>Previous (live store)</figcaption><img src="img/prev-hero.jpg" alt="previous hero"></figure>
-    <figure class="new"><figcaption><span class="dot"></span>Latest (new design)</figcaption><img src="img/new-hero.jpg" alt="new hero"></figure>
+    <figure class="new"><figcaption><span class="dot"></span>Latest — banner 1 (mirrors the store)</figcaption><img src="img/new-hero.jpg" alt="new hero"></figure>
   </div>
   <div class="changes"><h4>Changes to implement</h4>
     <ul>
-      <li><b>Four product banners</b> — Main brand (“Hook &amp; Loop That Holds”) · Heavy-duty industrial · Premium quality · Bulk &amp; wholesale — each sending a different buyer to the right products.</li>
-      <li><b>Monospace technical voice</b> (the signature): the eyebrow is a mono kicker with a short orange rule; benefit labels become a <b>mono spec readout</b> with orange slash separators (e.g. <code>PEEL &amp; STICK / 20–50 MM / AU STOCK</code>); the tag, the “FROM $X” price and the “01 / 04” counter are all mono. Reads like a product/spec label, not a generic pill.</li>
-      <li><b>Per-banner skeleton</b>: mono eyebrow → 5–6-word headline (white + orange accent, tight tracking) → one supporting line → mono spec readout → primary + secondary CTA. Real product photography on the right (white card, mono tag, orange price chip anchored to the corner); the bulk banner uses the custom <b>Australia delivery-network render</b>.</li>
+      <li><b>Five banners</b> — (1) mirrors the live store's hero: “Hook and Loop Tape — Strips &amp; Fasteners” with the store's four check bullets; (2) Heavy-duty industrial; (3) Premium quality; (4) <b>Delivered Fast, Australia-Wide</b> (delivery-network map, shipping message); (5) <b>Order More. Save More.</b> (bulk &amp; wholesale, HooknLoop cartons).</li>
+      <li><b>Monospace technical voice</b> (the signature): mono eyebrow with a short orange rule; on banners 2–5 the benefit labels are a <b>mono spec readout</b> with orange slash separators (e.g. <code>HEAT-RESISTANT / MOISTURE-PROOF / HEAVY-DUTY</code>); the tag and the “FROM $X” price chip are mono. Banner 1 uses the store's bullet list instead of a spec readout.</li>
+      <li><b>Per-banner skeleton</b>: mono eyebrow → 5–6-word headline (white + orange accent, tight tracking) → supporting line / bullet list → mono spec readout → primary + secondary CTA. Product photography on the right (white card, mono tag, corner-anchored orange price chip); the delivery banner uses the Australia render, the bulk banner the HooknLoop cartons render.</li>
       <li><b>Value-prop trust strip on every banner</b> — Fast Australia-wide delivery · Free shipping over $200 · Best price in Australia · ★ 5-star rated.</li>
       <li><b>Every button routes somewhere real</b> — no dead links (the old “Help me choose” finder button is gone).</li>
-      <li><b>Motion</b>: auto-advance every <b>6s</b> (crossfade + product scale-in); progress dots with a fill + “01 / 04” counter; pause on hover/focus; reduced-motion pins slide 1. No prev/next arrows.</li>
+      <li><b>Motion</b>: infinite auto-advance every <b>5s</b> (crossfade + product scale-in); <b>never pauses</b> (no hover/focus pause) and <b>not gated on reduced-motion</b> — the slide still changes, just with a quick fade. The <b>slide indicator bars were removed</b>. No arrows.</li>
       <li><b>Background</b>: layered navy radial gradients + fine SVG grain + a warm orange ambient glow; the product card floats on a soft blue spotlight with a hairline border and layered shadow.</li>
     </ul>
   </div>
-  <div class="ba single" style="grid-template-columns:1fr 340px;margin-top:20px">
-    <figure class="new"><figcaption><span class="dot"></span>Bulk / wholesale banner (Australia-wide)</figcaption><img src="img/new-herobulk.jpg" alt="bulk banner with Australia delivery image"></figure>
-    <div class="changes"><h4>New</h4><ul><li>The bulk banner now uses the supplied <b>Australia delivery-network render</b> (navy + orange glowing routes); overlay tag reads “AUSTRALIA-WIDE”, reinforcing the “Order More. Save More.” message.</li></ul></div>
+  <div class="ba" style="margin-top:20px">
+    <figure class="new"><figcaption><span class="dot"></span>Banner 4 — Delivered Fast, Australia-Wide</figcaption><img src="img/new-heroship.jpg" alt="delivery banner with Australia map"></figure>
+    <figure class="new"><figcaption><span class="dot"></span>Banner 5 — Order More. Save More.</figcaption><img src="img/new-herobulk.jpg" alt="bulk banner with HooknLoop cartons"></figure>
   </div>
 </div></section>
 
@@ -591,7 +593,7 @@
   </ul></div>
 </div></section>
 
-<section id="bulkpage" style="border-bottom:0"><div class="wrap">
+<section id="bulkpage"><div class="wrap">
   <h2><span class="n">30</span>Bulk &amp; trade page <span class="tag tag--redesign">rebuilt</span></h2>
   <p class="lead">One focused trade section — a quote form plus a premium volume-savings ladder (the redundant second band was removed).</p>
   <div class="ba single" style="grid-template-columns:1fr">
@@ -601,6 +603,21 @@
     <li><b>Single section</b> — “Buy by the box. Priced for trade.” value points + a “Request a trade quote” form (company, ABN, quantity, product, email, phone).</li>
     <li><b>“Bundle &amp; Save” savings ladder</b> — mirrors the product page's volume tiers <b>5% / 10% / 20% / 30% off per roll</b> (5+ / 10+ / 20+ / 50+), each with a growing orange savings meter and a navy “Best value” tier.</li>
     <li><b>Cost-effective value strip</b>: free shipping over $200 · GST tax invoice + PO · any width, no minimums · 1–2 day dispatch.</li>
+  </ul></div>
+</div></section>
+
+<section id="industries" style="border-bottom:0"><div class="wrap">
+  <h2><span class="n">31</span>Industry / application pages <span class="tag tag--new">new</span></h2>
+  <p class="lead">Eight SEO application guides — Clothing &amp; Garments, Upholstery &amp; Furniture, Schools &amp; Education, Signage &amp; Displays, Automotive/Caravan/RV, Medical &amp; Aged Care, Warehousing &amp; Logistics, Construction &amp; Industrial — reachable from the new <b>Industries</b> nav dropdown and an index page. Written as clean <b>blog articles</b>, not boxes.</p>
+  <div class="ba">
+    <figure class="new"><figcaption><span class="dot"></span>Industries index (list of guides)</figcaption><img src="img/new-industries.jpg" alt="industries index"></figure>
+    <figure class="new"><figcaption><span class="dot"></span>An application guide (article)</figcaption><img src="img/new-industry.jpg" alt="industry article page"></figure>
+  </div>
+  <div class="changes"><h4>Spec</h4><ul>
+    <li><b>Article layout</b>: single readable column — intro → “Common use cases” (heading + paragraph each) → “Key characteristics” (orange-check list) → “Recommended products” (paragraphs + product links) → “Related pages” → Shop-all CTA. Hairline dividers between sections; no cards or image boxes.</li>
+    <li><b>Content is the store's own copy</b>, verbatim. Data-driven from <code>src/data/industries.js</code>; one shared component renders all eight.</li>
+    <li><b>Per-page SEO</b>: each sets its own <code>&lt;title&gt;</code> and meta description; recommended product names link to their PDPs; related links cross-link the other guides.</li>
+    <li><b>Nav</b>: an “Industries” dropdown lists all eight + an “All industries” index link.</li>
   </ul></div>
 </div></section>
 
