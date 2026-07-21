@@ -148,10 +148,13 @@
 .pdp__breakhint { text-align: right; } .pdp__breakhint > span { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted-ink); }
 .pdp__breakhint div { display: flex; gap: 12px; margin-top: 6px; } .pdp__breakhint em { font-style: normal; font-size: 0.78rem; color: var(--muted-ink); } .pdp__breakhint b { color: var(--orange-ink); }
 
-.pdp__cta { display: flex; gap: 12px; margin: 22px 0 18px; }
-.pdp__add { flex: 1; font-size: 1rem; min-height: 56px; } .pdp__add.is-added { background: #1f9d55; color: #fff; }
-.pdp__buynow { padding: 0 22px; min-height: 56px; border-radius: var(--r-ctrl); background: var(--navy); color: #fff; font-weight: 700; }
-.pdp__buynow:hover { background: #1d3866; }
+/* two full-width, stacked CTAs so the buy action is impossible to miss */
+.pdp__cta { display: flex; flex-direction: column; gap: 12px; margin: 22px 0 18px; }
+.pdp__add { width: 100%; font-size: 1.05rem; font-weight: 800; min-height: 58px; } .pdp__add.is-added { background: #1f9d55; color: #fff; }
+.pdp__buynow { width: 100%; min-height: 58px; border-radius: var(--r-ctrl); background: #5a31f4; color: #fff; font-weight: 600; font-size: 1.05rem;
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px; transition: background 0.15s, transform 0.12s; }
+.pdp__buynow:hover { background: #4a27d4; transform: translateY(-1px); }
+.pdp__buynow-logo { font-weight: 800; font-style: italic; font-size: 1.25rem; letter-spacing: -0.02em; }
 
 .pdp__trust { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding-top: 18px; border-top: 1px solid var(--line-card); }
 .pdp__trust li { display: flex; align-items: center; gap: 10px; font-size: 0.85rem; color: var(--ink); }

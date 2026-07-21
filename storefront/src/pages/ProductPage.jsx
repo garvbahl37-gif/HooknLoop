@@ -165,7 +165,7 @@ export default function ProductPage({ handle }) {
 
           <div className="pdp__cta">
             <button className={`btn btn--primary pdp__add ${added ? 'is-added' : ''}`} onClick={add}>{added ? '✓ Added to cart' : <>Add to cart — ${price.toFixed(2)}</>}</button>
-            <button className="pdp__buynow" onClick={() => { add(); navigate('cart') }}>Buy it now</button>
+            <button className="pdp__buynow" onClick={() => { add(); navigate('cart') }} aria-label="Buy it now with Shop Pay">Buy with <span className="pdp__buynow-logo">shop</span></button>
           </div>
 
           <div className="pdp__policies">
