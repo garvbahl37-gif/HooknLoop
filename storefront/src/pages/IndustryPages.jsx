@@ -47,6 +47,11 @@ export function IndustryPage({ slug }) {
           </div>
         ))}
 
+        <figure className="ind-art__img">
+          <img src={`/img/industries/${ind.slug}-2.jpg`} alt={`Hook and loop in use — ${ind.short}`} loading="lazy"
+               onError={(e) => { const f = e.currentTarget.closest('.ind-art__img'); if (f) f.style.display = 'none' }} />
+        </figure>
+
         <h2 className="ind-art__h2">Key characteristics to look for</h2>
         <ul className="ind-art__list">
           {ind.characteristics.map(([t, d]) => (
