@@ -5,6 +5,10 @@ import { PRODUCTS } from '../data/catalog.js'
 import { navigate } from '../lib/cart.js'
 import ProductCard from '../components/ProductCard.jsx'
 
+/* Exact product order from the live store's "Best Sellers & Offers" section. */
+const ORDER = ['self-adhesive-roll', 'sew-on', 'reusable-cable-straps', 'double-sided', 'heavy-duty-straps', 'hook-and-loop-dots', 'velcro-brand-roll', 'velcoin-dots', 'fire-retardant-adhesive', 'fire-retardant-sew-on', 'heavy-duty-adhesive', 'hook-and-loop-for-fabric']
+const ITEMS = ORDER.map((h) => PRODUCTS.find((p) => p.handle === h)).filter(Boolean)
+
 export default function BestSellers() {
   return (
     <section className="bs" aria-labelledby="bs-h">
@@ -16,7 +20,7 @@ export default function BestSellers() {
           <a href="#" className="bs__all" style={{ display: 'inline-block', marginTop: 8 }} onClick={(e) => { e.preventDefault(); navigate('collection') }}>Shop all products →</a>
         </div>
         <div className="bs__grid">
-          {PRODUCTS.map((p) => <ProductCard key={p.handle} p={p} />)}
+          {ITEMS.map((p) => <ProductCard key={p.handle} p={p} />)}
         </div>
       </div>
     </section>
