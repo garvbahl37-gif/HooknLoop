@@ -3,7 +3,7 @@
     & wholesale. Real product imagery on the right, copy on the left. Benefit
     labels / offer line per banner. Every button routes somewhere real. Auto-
     rotates every 6s; pauses on hover/focus; reduced-motion pins slide 1.         */
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { navigate } from '../lib/cart.js'
 
 const SLIDES = [
@@ -71,16 +71,14 @@ function Figure({ fig, eager }) {
 export default function HeroSlides() {
   const [i, setI] = useState(0)
   const [paused, setPaused] = useState(false)
-  const reduce = useRef(false)
-
-  useEffect(() => { reduce.current = window.matchMedia('(prefers-reduced-motion: reduce)').matches }, [])
+  /* infinite auto-advance every DUR; pauses on hover/focus. Deliberately NOT
+     gated on reduced-motion — the slide still changes, just with a quick fade
+     (see the reduced-motion rule in slides.css). */
   useEffect(() => {
-    if (paused || reduce.current) return
+    if (paused) return
     const t = setInterval(() => setI((n) => (n + 1) % SLIDES.length), DUR)
     return () => clearInterval(t)
-  }, [paused, i])
-
-  const go = (n) => setI((n + SLIDES.length) % SLIDES.length)
+  }, [paused])
   const nav = (to) => (e) => { e.preventDefault(); navigate(to); window.scrollTo(0, 0) }
 
   return (
