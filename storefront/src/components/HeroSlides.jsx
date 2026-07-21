@@ -89,7 +89,11 @@ export default function HeroSlides() {
           <div key={s.key} className={`hs__slide ${n === i ? 'is-active' : ''}`} aria-hidden={n === i ? undefined : true}>
             <div className="hs__copy">
               <span className="hs__eyebrow"><i className="hs__eyebrow-line" aria-hidden="true" />{s.pill}</span>
-              <h1 className="hs__title">{s.h1}<br /><span className="hs__accent">{s.accent}</span></h1>
+              {/* only the first banner is the page's <h1> — the rest are styled
+                  <p> so the homepage has exactly one H1 (SEO). */}
+              {n === 0
+                ? <h1 className="hs__title">{s.h1}<br /><span className="hs__accent">{s.accent}</span></h1>
+                : <p className="hs__title">{s.h1}<br /><span className="hs__accent">{s.accent}</span></p>}
               {s.bullets ? (
                 <ul className="hs__bullets">
                   {s.bullets.map((t) => (
