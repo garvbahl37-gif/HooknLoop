@@ -64,7 +64,7 @@ export function BulkPage() {
 export function AboutPage() {
   return (
     <main id="main" className="page">
-      <PageHero eyebrow="Australian owned" title="A real supplier, not a drop-shipper" lead="HooknLoop is an ABN-registered Australian business holding genuine hook & loop stock in Australia — cut to your length and dispatched fast." />
+      <PageHero eyebrow="Australian owned" title="A real supplier, not a drop-shipper" lead="HooknLoop is an ABN-registered Australian business holding genuine hook & loop stock in Australia — held on the shelf and dispatched fast." center />
       <div className="wrap page__prose page__prose--narrow">
         <p>We stock industrial hook & loop fasteners — self-adhesive, sew-on, dots, straps, double-sided and fire-retardant grades — plus genuine VELCRO® Brand product. Everything is held on the shelf in our Australian warehouse and cut to the exact length your job needs, with no minimums.</p>
         <h2>What sets us apart</h2>
