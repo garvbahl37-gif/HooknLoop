@@ -66,16 +66,6 @@
   transform: scale(0.97); transition: transform 0.7s var(--ease); }
 .hs__slide.is-active .hs__card { transform: scale(1); }
 .hs__card img { width: 100%; height: 100%; object-fit: contain; padding: 24px; }
-/* precision measurement rule — the signature: hook & loop is bought by the mm */
-.hs__gauge { position: absolute; left: -30px; top: 9%; bottom: 9%; width: 22px; z-index: 2; }
-.hs__gauge::before { content: ''; position: absolute; right: 0; top: 0; bottom: 0; width: 8px;
-  background: repeating-linear-gradient(to bottom, rgba(255,255,255,0.34) 0 1px, transparent 1px 9px); }
-.hs__gauge::after { content: ''; position: absolute; right: 0; top: 0; bottom: 0; width: 14px;
-  background: repeating-linear-gradient(to bottom, var(--orange-word) 0 1.5px, transparent 1.5px 45px); opacity: 0.9; }
-.hs__gauge-cap { position: absolute; right: -1px; top: -17px; font-family: var(--font-mono);
-  font-size: 0.56rem; letter-spacing: 0.12em; color: var(--orange-word); }
-.hs__gauge-val { position: absolute; right: 18px; top: 50%; transform: translateY(-50%);
-  font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.04em; color: rgba(255,255,255,0.62); }
 .hs__tag { position: absolute; top: 14px; left: 14px; z-index: 2; background: var(--navy); color: #fff;
   font-family: var(--font-mono); font-size: 0.6rem; font-weight: 500; letter-spacing: 0.12em; padding: 6px 10px; border-radius: 5px; }
 .hs__price { position: absolute; right: -16px; bottom: -16px; z-index: 3; background: var(--orange); color: var(--navy);
@@ -155,7 +145,6 @@
   .hs__slide.is-active { position: relative; }
   .hs__figure { order: 2; max-width: 420px; }
   .hs__price { right: 0; }
-  .hs__gauge { display: none; }
 }
 @media (prefers-reduced-motion: reduce){
   /* the ticker stops and becomes a static, horizontally-scrollable row */

@@ -43,21 +43,9 @@ const SLIDES = [
 
 const DUR = 6000
 
-/* the measurement rule — hook & loop is bought by the millimetre, so the
-   product is framed by a precision gauge. Purely decorative (aria-hidden). */
-function Gauge({ mm }) {
-  return (
-    <div className="hs__gauge" aria-hidden="true">
-      <span className="hs__gauge-cap">mm</span>
-      <span className="hs__gauge-val">{mm}</span>
-    </div>
-  )
-}
-
 function Figure({ fig, eager }) {
   return (
     <div className="hs__figure">
-      {!fig.photo && <Gauge mm={fig.gauge} />}
       <div className={`hs__card ${fig.photo ? 'hs__card--photo' : ''}`}>
         <span className="hs__tag">{fig.tag}</span>
         <img src={fig.img} alt="" loading={eager ? 'eager' : 'lazy'} draggable="false" />
