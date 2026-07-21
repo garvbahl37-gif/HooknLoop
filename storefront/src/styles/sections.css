@@ -248,11 +248,32 @@ section { scroll-margin-top: 80px; }
 .bt__val { display: flex; gap: 11px; }
 .bt__val-dot { flex-shrink: 0; width: 9px; height: 9px; margin-top: 7px; border-radius: 50%; background: var(--orange); }
 .bt__val b { display: block; color: var(--navy); font-size: 0.95rem; } .bt__val-d { display: block; color: var(--muted-ink); font-size: 0.85rem; }
-.bt__breaks-h { display: block; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted-ink); margin-bottom: 12px; }
-.bt__breaks-row { display: flex; gap: 12px; }
-.bt__break { flex: 1; background: #fff; border: 1px solid var(--line-card); border-radius: var(--r-ctrl); padding: 14px; text-align: center; box-shadow: var(--shadow-soft); }
-.bt__break b { display: block; font-family: var(--font-head); font-size: 1.25rem; color: var(--orange-ink); } .bt__break span { font-size: 0.78rem; color: var(--muted-ink); }
-.bt__breaks-note { color: var(--muted-ink); font-size: 0.78rem; margin-top: 12px; }
+/* Bundle & save — premium volume-savings ladder (full-width, below the row) */
+.bt__save { margin-top: clamp(44px,5vw,72px); padding-top: clamp(38px,4vw,56px); border-top: 1px solid var(--sky-edge); }
+.bt__save-head { text-align: center; max-width: 620px; margin: 0 auto clamp(28px,3vw,40px); }
+.bt__save-eyebrow { display: inline-block; color: var(--orange-ink); font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; font-size: 0.74rem; margin-bottom: 10px; }
+.bt__save-h { font-family: var(--font-head); font-weight: 800; color: var(--navy); font-size: clamp(1.5rem,2.6vw,2rem); line-height: 1.12; }
+.bt__save-sub { color: var(--muted-ink); font-size: 1rem; margin-top: 10px; }
+.bt__ladder { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.bt__tier { position: relative; background: #fff; border: 1px solid var(--line-card); border-radius: var(--r-card); padding: 26px 20px 22px; text-align: center; box-shadow: var(--shadow-soft); transition: transform 0.15s, box-shadow 0.15s; }
+.bt__tier:hover { transform: translateY(-3px); box-shadow: var(--shadow-card); }
+.bt__tier-qty { display: block; font-weight: 800; color: var(--navy); font-size: 0.95rem; }
+.bt__tier-pct { display: block; font-family: var(--font-head); font-weight: 800; font-size: clamp(2.3rem,3.6vw,2.9rem); color: var(--orange-ink); line-height: 1; margin: 12px 0 2px; }
+.bt__tier-pct i { font-style: normal; font-size: 0.5em; margin-left: 2px; vertical-align: 0.35em; }
+.bt__tier-lbl { display: block; color: var(--muted-ink); font-size: 0.8rem; }
+.bt__tier-meter { display: block; height: 6px; background: #e7edf6; border-radius: 999px; margin-top: 18px; overflow: hidden; }
+.bt__tier-meter i { display: block; height: 100%; background: var(--orange); border-radius: 999px; }
+.bt__tier.is-best { background: linear-gradient(165deg, var(--navy), var(--navy-deep)); border-color: var(--navy); box-shadow: 0 24px 50px rgba(15,29,58,0.28); }
+.bt__tier.is-best .bt__tier-qty { color: #fff; }
+.bt__tier.is-best .bt__tier-pct { color: var(--orange-word); }
+.bt__tier.is-best .bt__tier-lbl { color: rgba(255,255,255,0.72); }
+.bt__tier.is-best .bt__tier-meter { background: rgba(255,255,255,0.18); }
+.bt__tier.is-best .bt__tier-meter i { background: var(--orange-word); }
+.bt__tier-tag { position: absolute; top: -11px; left: 50%; transform: translateX(-50%); background: var(--orange); color: #fff; font-size: 0.62rem; font-weight: 800; letter-spacing: 0.06em; padding: 4px 12px; border-radius: var(--r-pill); white-space: nowrap; box-shadow: var(--shadow-soft); }
+.bt__save-strip { list-style: none; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 28px; margin: clamp(26px,3vw,36px) 0 0; padding: 0; }
+.bt__save-strip li { position: relative; padding-left: 22px; color: #38455f; font-size: 0.92rem; font-weight: 600; }
+.bt__save-strip li::before { content: "✓"; position: absolute; left: 0; top: 0; color: var(--orange-ink); font-weight: 800; }
+@media (max-width: 760px){ .bt__ladder { grid-template-columns: 1fr 1fr; } }
 .bt__form { background: #fff; border-radius: var(--r-card); padding: clamp(24px,3vw,34px); box-shadow: var(--shadow-card); }
 .bt__form-h { font-family: var(--font-head); font-weight: 800; font-size: 1.4rem; color: var(--navy); }
 .bt__form-sub { color: var(--muted-ink); font-size: 0.9rem; margin: 4px 0 18px; }

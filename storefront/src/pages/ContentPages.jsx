@@ -6,7 +6,6 @@ import { navigate } from '../lib/cart.js'
 import { useWishlist, removeWish } from '../lib/wishlist.js'
 import ProductCard from '../components/ProductCard.jsx'
 import BulkTrade from '../sections/BulkTrade.jsx'
-import BulkOrder from '../sections/BulkOrder.jsx'
 
 function PageHero({ eyebrow, title, lead, center }) {
   return (
@@ -78,7 +77,6 @@ export function BulkPage() {
     <main id="main" className="page">
       <PageHero eyebrow="For trade & bulk buyers" title="Bulk & trade pricing" lead="Industrial hook & loop at volume pricing, with a GST tax invoice and one contact for repeat orders." center />
       <BulkTrade />
-      <BulkOrder />
     </main>
   )
 }
