@@ -10,16 +10,15 @@ export default function ProductCard({ p }) {
   const [added, setAdded] = useState(false)
   const wished = useWishlist().includes(p.handle)
   const go = (e) => { e.preventDefault(); navigate(`product/${p.handle}`) }
-  const setPrice = p.hookLoop ? p.from * 2 : p.from
   const [rating, reviews] = productRating(p.handle)
 
   const add = (e) => {
     e.preventDefault()
     addToCart({
-      key: `${p.handle}|${p.sizes[0].label}|${p.colours[0]}|${p.hookLoop ? 'both' : 'single'}`,
+      key: `${p.handle}|${p.sizes[0].label}|${p.colours[0]}|${p.hookLoop ? 'hook' : 'single'}`,
       handle: p.handle, name: p.name, img: p.img,
-      variant: `${p.sizes[0].label} · ${p.colours[0]}${p.hookLoop ? ' · Both' : ''}`,
-      price: setPrice, qty: 1,
+      variant: `${p.sizes[0].label} · ${p.colours[0]}${p.hookLoop ? ' · Hook' : ''}`,
+      price: p.from, qty: 1,
     })
     setAdded(true); setTimeout(() => setAdded(false), 1600)
   }
@@ -47,11 +46,7 @@ export default function ProductCard({ p }) {
         )}
         <p className="pc__spec">{p.spec}</p>
         <div className="pc__price">
-          {p.hookLoop ? (
-            <span className="pc__set">Complete set from <b>${setPrice.toFixed(2)}</b> <span className="pc__gst">incl. GST</span></span>
-          ) : (
-            <span className="pc__set">From <b>${p.from.toFixed(2)}</b> <span className="pc__gst">incl. GST</span></span>
-          )}
+          <span className="pc__set">From <b>${p.from.toFixed(2)}</b> <span className="pc__gst">incl. GST</span></span>
         </div>
         <button className={`pc__add ${added ? 'is-added' : ''}`} onClick={add}>
           {added ? '✓ Added' : 'Add to cart'}

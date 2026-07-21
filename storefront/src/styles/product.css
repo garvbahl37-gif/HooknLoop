@@ -12,7 +12,9 @@
 /* gallery */
 .pdp__gallery { position: sticky; top: 20px; }
 .pdp__stage { position: relative; background: var(--cloud); border: 1px solid var(--line-card); border-radius: var(--r-card); aspect-ratio: 1; overflow: hidden; }
-.pdp__stage img { width: 100%; height: 100%; object-fit: contain; padding: 30px; }
+.pdp__stage img { width: 100%; height: 100%; object-fit: contain; padding: 30px; animation: pdpFade 0.55s ease; }
+@keyframes pdpFade { from { opacity: 0.3; transform: scale(1.015); } to { opacity: 1; transform: scale(1); } }
+@media (prefers-reduced-motion: reduce) { .pdp__stage img { animation: none; } }
 .pdp__flag { position: absolute; top: 16px; left: 16px; z-index: 2; background: #1f9d55; color: #fff; font-size: 0.7rem; font-weight: 700; padding: 6px 12px; border-radius: var(--r-pill); }
 .pdp__thumbs { display: flex; gap: 10px; margin-top: 12px; }
 .pdp__thumb { width: 76px; height: 76px; border: 1.5px solid var(--line-card); border-radius: var(--r-ctrl); overflow: hidden; background: #fff; flex-shrink: 0; }

@@ -24,14 +24,21 @@ export default function ProductPage({ handle }) {
   const [rating, reviews] = productRating(p.handle)   // real rating · count from the live store
   const [size, setSize] = useState(p.sizes[0])
   const [colour, setColour] = useState(p.colours[0])
-  const [side, setSide] = useState(p.hookLoop ? 'both' : 'single')
+  const [side, setSide] = useState(p.hookLoop ? 'hook' : 'single')
   const [qty, setQty] = useState(1)
   const [img, setImg] = useState(0)
+  const [paused, setPaused] = useState(false)
   const [openFaq, setOpenFaq] = useState(0)
   const [scrolledPast, setScrolledPast] = useState(false)
   const [added, setAdded] = useState(false)
 
-  useEffect(() => { setSize(p.sizes[0]); setColour(p.colours[0]); setSide(p.hookLoop ? 'both' : 'single'); setQty(1); setImg(0) }, [handle])
+  useEffect(() => { setSize(p.sizes[0]); setColour(p.colours[0]); setSide(p.hookLoop ? 'hook' : 'single'); setQty(1); setImg(0) }, [handle])
+  /* auto-advance the gallery (pauses on hover); only when there's more than one image */
+  useEffect(() => {
+    if (p.gallery.length < 2 || paused) return
+    const id = setInterval(() => setImg((n) => (n + 1) % p.gallery.length), 3500)
+    return () => clearInterval(id)
+  }, [handle, paused, p.gallery.length])
   useEffect(() => {
     const s = () => setScrolledPast(window.scrollY > 620)
     s()
@@ -76,9 +83,9 @@ export default function ProductPage({ handle }) {
     <main id="main" className="pdp">
       <div className="wrap pdp__grid">
         <div className="pdp__gallery">
-          <div className="pdp__stage">
+          <div className="pdp__stage" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
             <span className="pdp__flag">In stock · ships in 1–2 days</span>
-            <img src={p.gallery[img]} alt={p.name} />
+            <img key={img} src={p.gallery[img]} alt={p.name} />
           </div>
           <div className="pdp__thumbs">
             {p.gallery.map((g, n) => (
