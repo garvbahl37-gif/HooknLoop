@@ -65,9 +65,9 @@ export function CategoryGrid() {
 /* ── One-Stop Shop — lifestyle category bento (from the live store, elevated) ── */
 const ONESTOP = [
   { slug: 'dots',          title: 'Dots & Coins',        sub: 'Pre-cut · peel & stick',    img: '/img/lifestyle/ls-dots.png',     cls: 'os__tile--a' },
-  { slug: 'straps',        title: 'Straps & Cable Ties', sub: 'Reusable · self-gripping',  img: '/img/lifestyle/ls-straps.png',   cls: 'os__tile--b' },
+  { slug: 'self-adhesive', title: 'Self-Adhesive',       sub: 'Peel & stick · industrial', img: '/img/lifestyle/ls-adhesive.png', cls: 'os__tile--b' },
   { slug: 'sew-on',        title: 'Sew-On',              sub: 'For fabric & garments',     img: '/img/lifestyle/ls-sew-on.png',   cls: 'os__tile--c' },
-  { slug: 'self-adhesive', title: 'Self-Adhesive',       sub: 'Peel & stick · industrial', img: '/img/lifestyle/ls-adhesive.png', cls: 'os__tile--d' },
+  { slug: 'straps',        title: 'Straps & Cable Ties', sub: 'Reusable · self-gripping',  img: '/img/lifestyle/ls-straps.png',   cls: 'os__tile--d' },
 ]
 export function OneStop() {
   return (

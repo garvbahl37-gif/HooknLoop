@@ -87,6 +87,12 @@
 .hs__label svg { color: var(--orange-word); }
 .hs__offer { display: inline-flex; align-items: center; margin-top: 16px; background: rgba(232,119,34,0.16); border: 1px solid rgba(232,119,34,0.4); color: #ffd9b8; font-weight: 700; font-size: 0.9rem; padding: 8px 14px; border-radius: var(--r-pill); }
 .hs__card--photo img { object-fit: cover; padding: 0; }
+/* trust strip — shown on every banner, under the stage */
+.hs__trust { position: relative; z-index: 2; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 26px;
+  padding: 15px var(--sp-5) 4px; border-top: 1px solid rgba(255,255,255,0.1); }
+.hs__trust-item { display: inline-flex; align-items: center; gap: 8px; color: rgba(255,255,255,0.78); font-size: 0.86rem; font-weight: 500; }
+.hs__trust-ic { color: var(--orange-word); flex: none; }
+.hs__trust-star { color: var(--orange-word); font-size: 0.95rem; line-height: 1; }
 
 /* nav — dots only; the hero auto-advances every 5s (arrows removed) */
 .hs__nav { position: relative; z-index: 2; display: flex; align-items: center; justify-content: space-between; padding: 0 var(--sp-5) clamp(22px,2.4vw,32px); }

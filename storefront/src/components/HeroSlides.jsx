@@ -103,6 +103,17 @@ export default function HeroSlides() {
         ))}
       </div>
 
+      <div className="wrap hs__trust" aria-label="Why shop with us">
+        {['Fast Australia-wide delivery', 'Free shipping over $200', 'Best price in Australia', '5-star rated store'].map((t, idx) => (
+          <span key={t} className="hs__trust-item">
+            {idx === 3
+              ? <span className="hs__trust-star" aria-hidden="true">★</span>
+              : <svg className="hs__trust-ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round"><path d="m5 13 4 4L19 7" /></svg>}
+            {t}
+          </span>
+        ))}
+      </div>
+
       <div className="wrap hs__nav">
         <div className="hs__dots" role="tablist" aria-label="Choose slide">
           {SLIDES.map((s, n) => (

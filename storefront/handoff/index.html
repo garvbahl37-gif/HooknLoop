@@ -93,6 +93,7 @@
   <a href="#products">Products</a><a href="#why">Why HooknLoop</a><a href="#reviews">Reviews</a><a href="#footer">Footer</a>
   <a href="#cart">Cart</a><a href="#wishlist">Wishlist</a><a href="#chat">Chatbot</a><a href="#call">Call</a><a href="#motion">Animations</a>
   <a href="#home-structure" style="color:var(--orange-ink);font-weight:800;">Latest&nbsp;▸</a><a href="#onestop2">One-Stop</a><a href="#bestsellers2">Best&nbsp;Sellers</a><a href="#trusted">Trusted&nbsp;Supplier</a><a href="#cards2">Cards</a><a href="#pdp2">Product&nbsp;page</a><a href="#buymore">Buy&nbsp;More</a><a href="#related">Related</a><a href="#faqs">FAQs</a>
+  <a href="#topbar">Top&nbsp;bar</a><a href="#delivery">Delivery&nbsp;calc</a><a href="#pdpreviews">Reviews</a><a href="#descfeat">Description</a><a href="#policies">Policies</a>
 </div></nav>
 
 <!-- COLOUR -->
@@ -498,6 +499,68 @@
     <li><b>Per-product FAQs</b> pulled from each live product page (9 of 12 had them); answers rewritten from the store's rough copy into clean, professional English — facts preserved.</li>
     <li>The 4 products with no FAQ on the live store (heavy-duty adhesive, fabric, both fire-retardant) get FAQs written from their real spec sheets — no invented facts.</li>
     <li>Accordion UI, one open at a time.</li>
+  </ul></div>
+</div></section>
+
+<!-- ================= LATEST ADDITIONS ================= -->
+<section id="topbar"><div class="wrap">
+  <h2><span class="n">24</span>Top value-prop bar <span class="tag tag--new">new</span></h2>
+  <p class="lead">A clean blue bar above the header carrying the store's key value props.</p>
+  <div class="ba single" style="grid-template-columns:1fr">
+    <figure class="new"><figcaption><span class="dot"></span>Latest (new design)</figcaption><img src="img/new-topbar.jpg" alt="top value bar"></figure>
+  </div>
+  <div class="changes"><h4>Spec</h4><ul>
+    <li>Centred inline items on <code>--blue</code>: <em>Fast Australia-wide delivery · Free shipping over $200 · Best price in Australia · ★ 5-star rated store</em>.</li>
+    <li>Orange-tinted highlights on the shipping + rating items; the two optional items hide under 760px. (Replaced an earlier pill treatment.)</li>
+  </ul></div>
+</div></section>
+
+<section id="delivery"><div class="wrap">
+  <h2><span class="n">25</span>Estimated-delivery calculator <span class="tag tag--new">new</span></h2>
+  <p class="lead">On the product page — enter a postcode, get a live arrival estimate.</p>
+  <div class="ba single" style="grid-template-columns:520px 1fr">
+    <figure class="new"><figcaption><span class="dot"></span>Latest (new design)</figcaption><img src="img/new-delivery.jpg" alt="delivery calculator"></figure>
+    <div class="changes"><h4>Spec</h4><ul>
+      <li>Postcode input → detects <b>metro vs regional</b> and shows a computed arrival window.</li>
+      <li>Based on the store's real shipping policy: dispatch 1–2 days + metro 2–5 / regional 3–7 business days. Dates computed live on the client.</li>
+    </ul></div>
+  </div>
+</div></section>
+
+<section id="pdpreviews"><div class="wrap">
+  <h2><span class="n">26</span>Product reviews &amp; write-a-review <span class="tag tag--new">new</span></h2>
+  <p class="lead">Each product page shows its own real reviews plus a working review form.</p>
+  <div class="ba single" style="grid-template-columns:1fr">
+    <figure class="new"><figcaption><span class="dot"></span>Latest (new design)</figcaption><img src="img/new-pdpreviews.jpg" alt="product reviews"></figure>
+  </div>
+  <div class="changes"><h4>Spec</h4><ul>
+    <li><b>Real per-product reviews</b> pulled from the store's Judge.me widget — rating summary + histogram + review cards (name, location, date, verified badge).</li>
+    <li><b>Write a review</b>: star picker + name/title/body; submits locally as “Pending”. Wire to your Judge.me review app on the live store.</li>
+  </ul></div>
+</div></section>
+
+<section id="descfeat"><div class="wrap">
+  <h2><span class="n">27</span>Description &amp; Key Features <span class="tag tag--redesign">real content</span></h2>
+  <p class="lead">Real product copy from the live store, on every product page.</p>
+  <div class="ba single" style="grid-template-columns:1fr">
+    <figure class="new"><figcaption><span class="dot"></span>Latest (new design)</figcaption><img src="img/new-descfeat.jpg" alt="description and key features"></figure>
+  </div>
+  <div class="changes"><h4>Spec</h4><ul>
+    <li><b>Description</b>: the store's real intro copy (heading + paragraphs) per product; <b>Key Features</b> as an orange checklist from each product's own “Important Features”.</li>
+    <li>Followed by Key applications, Specifications and the product FAQs.</li>
+  </ul></div>
+</div></section>
+
+<section id="policies" style="border-bottom:0"><div class="wrap">
+  <h2><span class="n">28</span>Policy pages <span class="tag tag--redesign">premium</span></h2>
+  <p class="lead">Shipping &amp; Returns rebuilt premium, with the store's real policy content.</p>
+  <div class="ba">
+    <figure class="new"><figcaption><span class="dot"></span>Shipping &amp; delivery</figcaption><img src="img/new-shipping.jpg" alt="shipping policy"></figure>
+    <figure class="new"><figcaption><span class="dot"></span>Returns &amp; exchanges</figcaption><img src="img/new-returns.jpg" alt="returns policy"></figure>
+  </div>
+  <div class="changes"><h4>Spec</h4><ul>
+    <li>Centred navy hero + highlight stat cards + icon-led section cards + a “Need a hand?” / other-policies sidebar.</li>
+    <li>Verbatim store content — shipping (1–2 day dispatch, free over $200, metro 2–5 / regional 3–7) and returns (14-day window, 2-step process, refunds). PDP links to both under the CTA.</li>
   </ul></div>
 </div></section>
 
