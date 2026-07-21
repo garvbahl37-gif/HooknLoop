@@ -1,0 +1,66 @@
+/* ============================================================================
+   HOOKnLOOP — matches the ORIGINAL live theme (navy + royal blue + brand orange,
+   rounded & friendly). Only the HERO is being upgraded; these tokens mirror the
+   store so the new hero drops in without redesigning anything else.
+   Colours sampled from the live site; every text pair contrast-checked.
+   ========================================================================== */
+:root {
+  /* — brand surfaces (from live theme) ————————————————————————————————— */
+  --navy:      #142548;   /* hero background (sampled)                   */
+  --navy-2:    #1b2f57;   /* raised navy                                 */
+  --navy-deep: #0f1d3a;   /* deepest                                     */
+  --blue:      #1952cc;   /* royal blue — top bar / links (sampled)      */
+  --blue-hi:   #2e6ae0;
+  --white:     #ffffff;
+  --cloud:     #f4f7fb;   /* light surface (subtle)                      */
+  --sky:       #e9eff8;   /* tinted band A (light)                       */
+  --sky-deep:  #d3deef;   /* tinted band B (clearly deeper)              */
+  --sky-edge:  #b9c9e2;   /* VISIBLE divider line between sections       */
+  --card:      #ffffff;
+
+  /* — brand orange ————————————————————————————————————————————————————— */
+  --orange:     #e87722;  /* brand bright — accents, icons, borders      */
+  --orange-word:#f0842a;  /* headline accent on navy   → 5.79:1  ✓       */
+  --cta-bg:     #e87722;  /* CTA fill                                     */
+  --cta-text:   #142548;  /* navy text on orange CTA   → 5.11:1  ✓       */
+  --orange-ink: #b8460a;  /* orange TEXT on white      → 5.36:1  ✓       */
+
+  /* — text ————————————————————————————————————————————————————————————— */
+  --on-navy:    #ffffff;  /* → 15.1:1                                    */
+  --on-navy-2:  #c9d3e6;  /* body on navy  → 10.0:1                      */
+  --muted-navy: #9fb0cf;  /* muted on navy →  6.9:1                      */
+  --faint-navy: #8194b5;  /* finest on navy →  4.9:1                     */
+  --ink:        #142548;  /* text on white → 15.1:1                      */
+  --muted-ink:  #5a6b8c;  /* muted on white → 5.4:1                      */
+  --line-navy:  rgba(255,255,255,0.10);
+  --line-card:  #e7ecf4;
+
+  /* — type: rounded friendly sans (matches theme feel), local fallbacks — */
+  --font-body: "Poppins", "Avenir Next", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-head: "Poppins", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+
+  --t-hero: clamp(2.5rem, 4.6vw, 4rem);
+  --t-h2:   clamp(1.6rem, 3vw, 2.4rem);
+  --t-h3:   1.3rem;
+  --t-body: 1.0625rem;
+  --t-sm:   0.9375rem;
+  --t-xs:   0.8125rem;
+
+  /* — radii: rounded & friendly (matches theme) ———————————————————————— */
+  --r-card: 16px;
+  --r-ctrl: 10px;
+  --r-chip: 10px;
+  --r-pill: 999px;
+
+  /* — spacing ——————————————————————————————————————————————————————————— */
+  --sp-1: 4px;  --sp-2: 8px;  --sp-3: 12px; --sp-4: 16px;
+  --sp-5: 24px; --sp-6: 32px; --sp-7: 48px; --sp-8: 64px; --sp-9: 96px;
+
+  /* — elevation (soft, premium) ———————————————————————————————————————— */
+  --shadow-card:  0 2px 6px rgba(8,18,40,0.10), 0 22px 48px rgba(8,18,40,0.30);
+  --shadow-soft:  0 1px 3px rgba(8,18,40,0.10), 0 10px 30px rgba(8,18,40,0.14);
+  --shadow-cta:   0 8px 22px rgba(232,119,34,0.34);
+
+  --maxw: 1280px;
+  --ease: cubic-bezier(0.22, 0.61, 0.24, 1);
+}

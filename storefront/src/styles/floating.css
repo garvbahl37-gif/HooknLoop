@@ -1,0 +1,76 @@
+/* ═══ FLOATING ACTIONS — clean circular icons ════════════════════════ */
+.fab {
+  position: fixed; bottom: 24px; z-index: 60;
+  width: 56px; height: 56px; border-radius: 50%;
+  display: grid; place-items: center;
+  box-shadow: 0 6px 20px rgba(8,18,40,0.30);
+  transition: transform 0.15s var(--ease), box-shadow 0.2s var(--ease);
+}
+.fab:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(8,18,40,0.36); }
+
+/* park (fade out) once the footer is on screen — nothing fixed covers the footer */
+.fab.is-parked, .fabchat.is-parked { opacity: 0; visibility: hidden; pointer-events: none;
+  transform: translateY(12px); transition: opacity 0.22s var(--ease), transform 0.22s var(--ease), visibility 0s linear 0.22s; }
+
+/* call — bottom-left, navy icon on white */
+.fab--call { left: 24px; background: #fff; color: var(--navy); }
+.fab--call:hover { color: var(--orange-ink); }
+
+/* chat — bottom-right, brand orange */
+.fabchat { position: fixed; right: 24px; bottom: 24px; z-index: 61; display: flex; flex-direction: column; align-items: flex-end; gap: 14px;
+  transition: opacity 0.22s var(--ease), transform 0.22s var(--ease); }
+.fab--chat { position: static; background: var(--orange); color: var(--navy); }
+.fab--chat:hover { background: #f0842a; }
+.fab__online { position: absolute; top: 4px; right: 4px; width: 12px; height: 12px; border-radius: 50%; background: #22c55e; border: 2.5px solid var(--orange); }
+
+/* hover tooltip */
+.fab__tip { position: absolute; bottom: 50%; transform: translateY(50%); white-space: nowrap;
+  background: var(--navy); color: #fff; font-size: 0.75rem; font-weight: 600; padding: 7px 12px; border-radius: var(--r-ctrl);
+  opacity: 0; visibility: hidden; transition: opacity 0.15s, visibility 0s linear 0.15s; pointer-events: none; box-shadow: var(--shadow-soft); }
+.fab__tip--left { left: calc(100% + 12px); }
+.fab__tip--right { right: calc(100% + 12px); }
+.fab:hover .fab__tip { opacity: 1; visibility: visible; transition: opacity 0.15s; }
+
+/* chat panel */
+.chatp { width: 360px; max-width: calc(100vw - 44px); background: #fff; border-radius: var(--r-card);
+  box-shadow: 0 18px 48px rgba(8,18,40,0.34); overflow: hidden; animation: chatIn 0.22s var(--ease); }
+@keyframes chatIn { from { opacity: 0; transform: translateY(12px) scale(0.98); } to { opacity: 1; transform: none; } }
+.chatp__head { display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  background: linear-gradient(135deg, var(--navy) 0%, #1d3866 100%); color: #fff; padding: 16px; }
+.chatp__id { display: flex; align-items: center; gap: 11px; }
+.chatp__logo { width: 40px; height: 40px; border-radius: var(--r-ctrl); background: var(--orange); color: var(--navy);
+  display: grid; place-items: center; font-family: var(--font-head); font-weight: 800; font-size: 0.9rem; }
+.chatp__name { display: block; font-weight: 700; font-size: 0.95rem; }
+.chatp__status { display: flex; align-items: center; gap: 6px; font-size: 0.75rem; color: #c9d3e6; }
+.chatp__dot { width: 7px; height: 7px; border-radius: 50%; background: #22c55e; }
+.chatp__close { width: 32px; height: 32px; display: grid; place-items: center; color: #c9d3e6; border-radius: var(--r-ctrl); }
+.chatp__close:hover { background: rgba(255,255,255,0.12); color: #fff; }
+.chatp__body { padding: 18px 16px; background: var(--cloud); }
+.chatp__msg { background: #fff; border: 1px solid var(--line-card); border-radius: 4px 14px 14px 14px;
+  padding: 12px 14px; font-size: 0.9rem; color: var(--ink); box-shadow: var(--shadow-soft); }
+.chatp__msg--ok { margin-top: 10px; border-color: rgba(31,157,85,0.4); background: #f2fbf6; }
+.chatp__msg--ok a { color: var(--orange-ink); font-weight: 700; }
+.chatp__quick { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.chatp__chip { padding: 8px 13px; border-radius: var(--r-pill); background: #fff; border: 1.5px solid var(--line-card);
+  color: var(--navy); font-size: 0.8125rem; font-weight: 600; transition: border-color 0.15s, background 0.15s; }
+.chatp__chip:hover { border-color: var(--orange); background: #fff7f0; }
+.chatp__input { display: flex; gap: 8px; padding: 12px; border-top: 1px solid var(--line-card); }
+.chatp__input input { flex: 1; border: 1.5px solid var(--line-card); border-radius: var(--r-pill); padding: 11px 16px; font-size: 0.9rem; }
+.chatp__input input:focus { outline: none; border-color: var(--blue); }
+.chatp__send { width: 44px; height: 44px; flex-shrink: 0; display: grid; place-items: center; background: var(--orange); color: var(--navy); border-radius: var(--r-pill); }
+
+@media (max-width: 560px){
+  .fab { width: 52px; height: 52px; }
+  .fab--call { left: 16px; bottom: 16px; }
+  .fabchat { right: 16px; bottom: 16px; }
+  .fab__tip { display: none; }
+}
+/* while the PDP add-to-cart dock is up, the corner buttons would collide with it
+   on narrow screens — stand them down there (desktop keeps them; the dock is
+   centred with clear side-gutters) */
+@media (max-width: 720px){
+  body.dock-open .fab--call, body.dock-open .fabchat {
+    opacity: 0; visibility: hidden; pointer-events: none;
+    transition: opacity 0.22s var(--ease), visibility 0s linear 0.22s;
+  }
+}

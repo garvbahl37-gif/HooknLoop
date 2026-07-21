@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>HooknLoop — Design Handoff (Previous → Latest)</title>
+<style>
+  :root{
+    --navy:#142548; --navy-deep:#0f1d3a; --blue:#1952cc; --orange:#e87722; --orange-ink:#b8460a;
+    --ink:#1c2b45; --muted:#5a6b8c; --line:#e5eaf2; --cloud:#f4f7fb; --card:#fff;
+  }
+  *{box-sizing:border-box} body{margin:0}
+  body{font-family:"Poppins","Segoe UI",system-ui,-apple-system,sans-serif;color:var(--ink);background:#eef2f8;line-height:1.6;}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px;}
+  header.top{background:linear-gradient(160deg,#16305a,#0f1d3a);color:#fff;padding:48px 0 40px;}
+  header.top .wrap{display:flex;flex-direction:column;gap:8px;}
+  .kicker{font-size:.72rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#f0842a;}
+  header.top h1{font-size:2.2rem;font-weight:800;margin:4px 0 6px;letter-spacing:-.02em;}
+  header.top p{color:#c9d3e6;max-width:70ch;margin:0;}
+  .meta{margin-top:16px;display:flex;flex-wrap:wrap;gap:10px;}
+  .meta span{font-size:.78rem;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:5px 12px;color:#dbe3f0;}
+
+  nav.toc{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid var(--line);}
+  nav.toc .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 24px;}
+  nav.toc a{font-size:.8rem;font-weight:600;color:var(--muted);text-decoration:none;padding:6px 10px;border-radius:8px;}
+  nav.toc a:hover{background:var(--cloud);color:var(--navy);}
+
+  section{padding:44px 0;border-bottom:1px solid var(--line);}
+  section h2{font-size:1.5rem;font-weight:800;color:var(--navy);letter-spacing:-.01em;margin:0 0 4px;display:flex;align-items:center;gap:12px;}
+  section h2 .n{width:30px;height:30px;flex:none;display:grid;place-items:center;background:var(--navy);color:#fff;border-radius:9px;font-size:.85rem;font-weight:800;}
+  section > .wrap > .lead{color:var(--muted);margin:2px 0 22px;max-width:80ch;}
+  .tag{display:inline-block;font-size:.68rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:3px 10px;vertical-align:middle;}
+  .tag--new{background:rgba(31,157,85,.12);color:#146c43;}
+  .tag--redesign{background:rgba(232,119,34,.14);color:var(--orange-ink);}
+
+  .ba{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start;margin:0 0 18px;}
+  .ba figure{margin:0;background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 6px 20px rgba(8,18,40,.06);}
+  .ba figcaption{display:flex;align-items:center;gap:8px;padding:10px 14px;font-size:.78rem;font-weight:700;border-bottom:1px solid var(--line);}
+  .ba .prev figcaption{color:var(--muted);} .ba .prev .dot{background:#9aa7bd;}
+  .ba .new figcaption{color:var(--navy);} .ba .new .dot{background:var(--orange);}
+  .ba .dot{width:9px;height:9px;border-radius:50%;flex:none;}
+  .ba img{width:100%;display:block;background:#fff;}
+  .single figure{max-width:560px;}
+  .changes{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 22px;}
+  .changes h4{margin:0 0 8px;font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--orange-ink);}
+  .changes ul{margin:0;padding-left:18px;} .changes li{margin:5px 0;color:#38455f;}
+  .changes li b{color:var(--navy);}
+  code{background:var(--cloud);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.86em;color:#1b3a7a;}
+
+  /* colour swatches */
+  .swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;}
+  .sw{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff;}
+  .sw .chip{height:64px;} .sw .info{padding:9px 12px;} .sw .info b{display:block;font-size:.85rem;color:var(--navy);}
+  .sw .info span{font-size:.75rem;color:var(--muted);font-family:ui-monospace,monospace;}
+
+  /* type specimen */
+  .type-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .spec{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 22px;}
+  .spec .lbl{font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);}
+  .spec .d1{font-weight:800;font-size:2rem;color:var(--navy);letter-spacing:-.02em;line-height:1.05;margin:6px 0;}
+  .spec .d2{font-weight:600;color:#38455f;}
+  .note{background:#fff7f0;border:1px solid rgba(232,119,34,.3);border-radius:12px;padding:14px 18px;color:#7a4a20;font-size:.9rem;margin-top:14px;}
+  .note b{color:var(--orange-ink);}
+  .live{margin-top:16px;display:inline-flex;align-items:center;gap:10px;background:rgba(232,119,34,.14);border:1px solid rgba(232,119,34,.42);border-radius:999px;padding:9px 18px;font-size:.88rem;color:#fff;}
+  .live a{color:#f0842a;font-weight:700;text-decoration:none;} .live a:hover{text-decoration:underline;}
+  .live em{color:#9fb0cf;font-style:normal;font-size:.78rem;}
+  .live-dot{width:9px;height:9px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 3px rgba(34,197,94,.25);flex:none;}
+  @media (max-width:820px){ .ba,.type-grid{grid-template-columns:1fr;} }
+  /* print / PDF */
+  @media print{
+    body{background:#fff;}
+    nav.toc{display:none;}
+    header.top{padding:34px 0 30px;}
+    section{padding:26px 0;break-inside:avoid;}
+    section h2{break-after:avoid;}
+    .ba,.changes,.spec,.sw,.note,figure{break-inside:avoid;}
+    a{color:inherit;text-decoration:none;}
+  }
+</style>
+</head>
+<body>
+
+<header class="top"><div class="wrap">
+  <span class="kicker">Design Handoff · for developer</span>
+  <h1>HooknLoop — Storefront Redesign</h1>
+  <p>What to change, section by section, from the <b>current live store</b> (hooknloop.com.au — “Previous”) to the <b>new premium design</b> (React prototype — “Latest”). Each section shows before → after plus the exact specs to implement. Values reference the prototype’s design tokens in <code>src/styles/tokens.css</code>.</p>
+  <div class="meta"><span>Type: Poppins</span><span>Radii: 16 / 10 / 999</span><span>Accent: #e87722</span><span>Stack: React → port to Shopify Liquid</span></div>
+  <div class="live"><span class="live-dot"></span> Live interactive preview:&nbsp;<a href="https://playback-reimburse-outbound.ngrok-free.dev">playback-reimburse-outbound.ngrok-free.dev</a>&nbsp;<em>(ngrok tunnel to the running prototype — click any menu, add to cart, etc.)</em></div>
+</div></header>
+
+<nav class="toc"><div class="wrap">
+  <a href="#colour">Colour</a><a href="#type">Typography</a><a href="#nav">Nav bar</a><a href="#search">Search</a><a href="#hero">Hero</a>
+  <a href="#products">Products</a><a href="#why">Why HooknLoop</a><a href="#reviews">Reviews</a><a href="#footer">Footer</a>
+  <a href="#cart">Cart</a><a href="#wishlist">Wishlist</a><a href="#chat">Chatbot</a><a href="#call">Call</a><a href="#motion">Animations</a>
+  <a href="#home-structure" style="color:var(--orange-ink);font-weight:800;">Latest&nbsp;▸</a><a href="#onestop2">One-Stop</a><a href="#bestsellers2">Best&nbsp;Sellers</a><a href="#trusted">Trusted&nbsp;Supplier</a><a href="#cards2">Cards</a><a href="#pdp2">Product&nbsp;page</a><a href="#buymore">Buy&nbsp;More</a><a href="#related">Related</a><a href="#faqs">FAQs</a>
+</div></nav>
+
+<!-- COLOUR -->
+<section id="colour"><div class="wrap">
+  <h2><span class="n">1</span>Colour theme</h2>
+  <p class="lead">Palette is tokenised and every text pair is contrast-checked to WCAG AA. Implement as CSS variables; never hard-code hex in components. Red is reserved for system faults only.</p>
+  <div class="swatches">
+    <div class="sw"><div class="chip" style="background:#142548"></div><div class="info"><b>Navy</b><span>#142548 · --navy</span></div></div>
+    <div class="sw"><div class="chip" style="background:#0f1d3a"></div><div class="info"><b>Navy deep</b><span>#0f1d3a · --navy-deep</span></div></div>
+    <div class="sw"><div class="chip" style="background:#1952cc"></div><div class="info"><b>Royal blue</b><span>#1952cc · --blue (nav, links)</span></div></div>
+    <div class="sw"><div class="chip" style="background:#2e6ae0"></div><div class="info"><b>Blue hi</b><span>#2e6ae0 · --blue-hi</span></div></div>
+    <div class="sw"><div class="chip" style="background:#e87722"></div><div class="info"><b>Orange</b><span>#e87722 · --orange (CTA fill)</span></div></div>
+    <div class="sw"><div class="chip" style="background:#f0842a"></div><div class="info"><b>Orange word</b><span>#f0842a · accent on navy</span></div></div>
+    <div class="sw"><div class="chip" style="background:#b8460a"></div><div class="info"><b>Orange ink</b><span>#b8460a · orange TEXT on white (AA)</span></div></div>
+    <div class="sw"><div class="chip" style="background:#f4f7fb;border-bottom:1px solid #e5eaf2"></div><div class="info"><b>Cloud</b><span>#f4f7fb · light surface</span></div></div>
+    <div class="sw"><div class="chip" style="background:#e9eff8"></div><div class="info"><b>Sky</b><span>#e9eff8 · tint band A</span></div></div>
+    <div class="sw"><div class="chip" style="background:#d3deef"></div><div class="info"><b>Sky deep</b><span>#d3deef · tint band B</span></div></div>
+    <div class="sw"><div class="chip" style="background:#146c43"></div><div class="info"><b>Verified green</b><span>#146c43 · AA-safe (badges)</span></div></div>
+    <div class="sw"><div class="chip" style="background:#5a6b8c"></div><div class="info"><b>Muted ink</b><span>#5a6b8c · secondary text</span></div></div>
+  </div>
+  <div class="changes" style="margin-top:18px">
+    <h4>Key rules</h4>
+    <ul>
+      <li><b>Amber is a FILL, burnt ink is TEXT</b> — orange CTA buttons use <b>navy text</b> (<code>#142548</code> on <code>#e87722</code> ≈ 5.1:1). Orange as text uses <code>#b8460a</code>.</li>
+      <li><b>Section background rhythm</b>: white → sky tint A → sky tint B → navy accent, so no two adjacent sections share a tone.</li>
+      <li>Star ratings + small orange marks use <code>#b8460a</code> (passes the 3:1 graphic minimum); bright <code>#e87722</code> only for large fills.</li>
+    </ul>
+  </div>
+</div></section>
+
+<!-- TYPE -->
+<section id="type"><div class="wrap">
+  <h2><span class="n">2</span>Typography <span class="tag tag--redesign">DM&nbsp;Sans → Poppins</span></h2>
+  <p class="lead">The live store uses <b>DM Sans</b>. The new design uses <b>Poppins</b> for both display and body — rounded, friendly, geometric, matching the brand.</p>
+  <div class="type-grid">
+    <div class="spec"><div class="lbl">Display / headings — Poppins 800</div><div class="d1">Hook &amp; Loop Tape</div><div style="font-size:.85rem;color:#5a6b8c">weight 800 · letter-spacing −0.015em · line-height 1.05</div></div>
+    <div class="spec"><div class="lbl">Body — Poppins 400 / 600</div><div class="d2" style="font-size:1.05rem">Cut-to-length industrial hook &amp; loop, dispatched Australia-wide. <b>Volume pricing</b> and a GST tax invoice on every order.</div><div style="font-size:.85rem;color:#5a6b8c;margin-top:8px">base 17px · line-height 1.6</div></div>
+  </div>
+  <div class="changes" style="margin-top:16px">
+    <h4>Implement</h4>
+    <ul>
+      <li>Font tokens: <code>--font-head</code> / <code>--font-body</code> = <code>"Poppins", "Avenir Next", "Segoe UI", system-ui, sans-serif</code>.</li>
+      <li>Weights used: <b>400, 600, 700, 800</b>. A <code>.mono</code> utility (system monospace) is used for SKU/spec/data text.</li>
+      <li>Type scale (tokens): hero <code>clamp(2.5rem,4.6vw,4rem)</code> · h2 <code>clamp(1.6rem,3vw,2.4rem)</code> · body <code>1.0625rem</code>.</li>
+    </ul>
+  </div>
+  <div class="note"><b>Action item:</b> Poppins is referenced in the tokens but <b>no web font is loaded</b> in the prototype. For production, load Poppins (Google Fonts link or self-hosted <code>@font-face</code>, weights 400/600/700/800) or it silently falls back to system fonts.</div>
+</div></section>
+
+<!-- NAV -->
+<section id="nav"><div class="wrap">
+  <h2><span class="n">3</span>Navigation bar</h2>
+  <p class="lead">Three tiers: royal-blue promo bar · white logo+search row · royal-blue nav. Nav links are <b>centred</b>; the dropdowns are curated.</p>
+  <div class="ba">
+    <figure class="prev"><figcaption><span class="dot"></span>Previous (live store)</figcaption><img src="img/prev-nav.jpg" alt="previous nav"></figure>
+    <figure class="new"><figcaption><span class="dot"></span>Latest (new design)</figcaption><img src="img/new-nav.jpg" alt="new nav"></figure>
+  </div>
+  <div class="changes">
+    <h4>Changes to implement</h4>
+    <ul>
+      <li><b>Vectorised logo</b> — the store’s master is only 389×69 (blurry on retina). Replace with the crisp SVG (<code>logo-header.svg</code> colour, <code>logo-footer.svg</code> light on navy).</li>
+      <li><b>Nav bar</b>: royal-blue <code>--blue #1952cc</code> unified with the promo bar; white links <code>rgba(255,255,255,.9)</code>, hover pill <code>rgba(255,255,255,.16)</code>; links <b>centred</b>.</li>
+      <li><b>Dropdowns are disclosures, not links</b> — the parent only opens the menu (never navigates). Opens on hover/click/tap/focus; closes on Escape, outside-click, or picking. Chevron rotates 180° when open. Products menu = 8 curated flagship products (not the full list).</li>
+      <li><b>Header icons</b>: search (mobile → icon that opens search), account, wishlist, cart; badges only show when count &gt; 0. White focus-ring on the blue nav for keyboard users.</li>
+    </ul>
+  </div>
+</div></section>
+
+<!-- SEARCH -->
+<section id="search"><div class="wrap">
+  <h2><span class="n">4</span>Search bar</h2>
+  <p class="lead">A rounded pill search with a prominent orange button; on mobile it collapses to a search icon that opens the search page.</p>
+  <div class="ba">
+    <figure class="prev"><figcaption><span class="dot"></span>Previous (live store)</figcaption><img src="img/prev-search.jpg" alt="previous search"></figure>
+    <figure class="new"><figcaption><span class="dot"></span>Latest (new design)</figcaption><img src="img/new-search.jpg" alt="new search"></figure>
+  </div>
+  <div class="changes"><h4>Spec</h4>
+    <ul>
+      <li>Pill input (<code>border-radius:999px</code>), background <code>--cloud #f4f7fb</code>, 1.5px <code>--line-card</code> border, height <code>50px</code>, placeholder “Search our store”.</li>
+      <li><b>Orange search button</b> inside the pill (<code>58px</code>, <code>--orange</code> fill, navy magnifier icon).</li>
+      <li><b>Focus</b>: border → <code>--blue #1952cc</code>, background → white.</li>
+      <li>Carries the typed query to <code>#search/&lt;query&gt;</code> (results page pre-fills). On mobile (&lt;560px) the bar becomes a search icon in the header actions.</li>
+    </ul>
+  </div>
+</div></section>
+
+<!-- HERO -->
+<section id="hero"><div class="wrap">
+  <h2><span class="n">5</span>Hero section</h2>
+  <p class="lead">An auto-rotating slideshow on a dimensional, grained navy background with a lit product “pedestal” and in-hero social proof.</p>
+  <div class="ba">
+    <figure class="prev"><figcaption><span class="dot"></span>Previous (live store)</figcaption><img src="img/prev-hero.jpg" alt="previous hero"></figure>
+    <figure class="new"><figcaption><span class="dot"></span>Latest (new design)</figcaption><img src="img/new-hero.jpg" alt="new hero"></figure>
+  </div>
+  <div class="changes"><h4>Changes to implement</h4>
+    <ul>
+      <li><b>Background</b>: layered navy radial gradients + a fine SVG grain overlay (kills banding) + a warm orange ambient glow — premium, not flat.</li>
+      <li><b>Product presentation</b>: a soft blue radial spotlight behind the product card so it floats off the navy; card is a white→light gradient with a hairline border + deep layered shadow.</li>
+      <li><b>Slideshow</b>: 4 slides (one per buyer intent); auto-advance every <b>5s</b> (crossfade + product <b>scale-in 0.97→1</b>); progress dots with a 5s fill + “01 / 04” counter; pause on hover/focus; reduced-motion pins slide 1. No prev/next arrows.</li>
+      <li><b>Per-slide skeleton</b>: pill → headline (white + orange accent) → 3 checked bullets → social-proof line (★ 4.87 · Free shipping over $200) → CTA + “Help me choose” ghost.</li>
+    </ul>
+  </div>
+</div></section>
+
+<!-- PRODUCTS -->
+<section id="products"><div class="wrap">
+  <h2><span class="n">6</span>Product display &amp; card animation</h2>
+  <p class="lead">Clean white cards on a tinted band; each with a save-for-later heart, a “complete set” price, and an add-to-cart that posts to a live cart.</p>
+  <div class="ba">
+    <figure class="prev"><figcaption><span class="dot"></span>Previous (live store)</figcaption><img src="img/prev-products.jpg" alt="previous products"></figure>
+    <figure class="new"><figcaption><span class="dot"></span>Latest (new design)</figcaption><img src="img/new-products.jpg" alt="new products"></figure>
+  </div>
+  <div class="ba single" style="grid-template-columns:560px 1fr">
+    <figure class="new"><figcaption><span class="dot"></span>Card detail (hover state)</figcaption><img src="img/new-productcard.jpg" alt="product card"></figure>
+    <div class="changes">
+      <h4>Card spec + animation</h4>
+      <ul>
+        <li>White card, <code>border-radius:16px</code>, 1px <code>--line-card</code> border, contained product image (<code>object-fit:contain</code>, padding).</li>
+        <li><b>Hover animation</b>: <code>translateY(-4px)</code> + elevated shadow, <code>transition:.16s/.2s</code>. Badge (e.g. “Best seller”) top-left.</li>
+        <li><b>Wishlist heart</b> top-right (localStorage toggle) — fills orange when saved.</li>
+        <li>Price shows <b>“Complete set from $X · incl. GST”</b> for hook+loop products; CTA “Add complete set”.</li>
+      </ul>
+    </div>
+  </div>
+</div></section>
+
+<!-- WHY -->
+<section id="why"><div class="wrap">
+  <h2><span class="n">7</span>“Why HooknLoop” section <span class="tag tag--redesign">redesigned</span></h2>
+  <p class="lead">A 3×2 grid of value tiles on the sky-deep tint band. Premium icon chips, soft always-on elevation, orange edge on hover.</p>
+  <div class="ba single"><figure class="new"><figcaption><span class="dot"></span>Latest (new design)</figcaption><img src="img/new-why.jpg" alt="why section"></figure></div>
+  <div class="changes">
+    <h4>Spec</h4>
+    <ul>
+      <li>Section on <code>--sky-deep</code> band; centered eyebrow (“Why HooknLoop”, <code>#b8460a</code>) + h2.</li>
+      <li>6 tiles: white card, <code>border-radius:16px</code>, icon chip <code>52px</code> radius 12px with a subtle orange gradient + inset ring.</li>
+      <li><b>Hover</b>: <code>translateY(-4px)</code>, shadow up, border → <code>rgba(232,119,34,.35)</code>.</li>
+      <li>Content = trade reorder drivers: Fast Australian shipping · Secure payment · Bulk &amp; trade pricing · Fire-retardant grades · GST tax invoice · Australian owned.</li>
+    </ul>
+  </div>
+</div></section>
+
+<!-- REVIEWS -->
+<section id="reviews"><div class="wrap">
+  <h2><span class="n">8</span>Reviews — “What our customers say” <span class="tag tag--redesign">redesigned</span></h2>
+  <p class="lead">A clean 3×2 grid of equal-height review cards, led by trade voices, with a headline rating pill.</p>
+  <div class="ba">
+    <figure class="prev"><figcaption><span class="dot"></span>Previous (live store)</figcaption><img src="img/prev-reviews.jpg" alt="previous reviews"></figure>
+    <figure class="new"><figcaption><span class="dot"></span>Latest (new design)</figcaption><img src="img/new-reviews.jpg" alt="new reviews"></figure>
+  </div>
+  <div class="changes"><h4>Changes to implement</h4>
+    <ul>
+      <li><b>Header</b>: “Reviews” eyebrow + “What our customers say” + a rating pill (★★★★★ <b>4.87</b> / 5 · <b>15 verified reviews</b> across Australia).</li>
+      <li><b>Layout</b>: fixed 3×2 grid with <b>equal-height cards</b> (quote flex-grows, author row pinned to the bottom) — replaces the ragged/long-card layout. Led by trade voices; keep one durability story, not three.</li>
+      <li><b>Card</b>: 5 orange stars (<code>#b8460a</code> — AA), quote, an <b>initials avatar</b> (navy circle), name + city/state, and an AA-safe green <b>“✓ Verified”</b> badge (<code>#146c43</code>). “Read all 15 reviews →” link below.</li>
+      <li>Star ratings carry an accessible <code>aria-label</code> (“Rated 5 out of 5”).</li>
+    </ul>
+  </div>
+</div></section>
+
+<!-- FOOTER -->
+<section id="footer"><div class="wrap">
+  <h2><span class="n">9</span>Footer</h2>
+  <p class="lead">Four columns (brand · shop · help · stay-in-touch with the newsletter) + a legal bar carrying the payment logos.</p>
+  <div class="ba">
+    <figure class="prev"><figcaption><span class="dot"></span>Previous (live store)</figcaption><img src="img/prev-footer.jpg" alt="previous footer"></figure>
+    <figure class="new"><figcaption><span class="dot"></span>Latest (new design)</figcaption><img src="img/new-footer.jpg" alt="new footer"></figure>
+  </div>
+  <div class="changes">
+    <h4>Changes to implement</h4>
+    <ul>
+      <li><b>Copy</b>: every “Melbourne” store reference → <b>“Australian”</b> (it’s a national store). e.g. “Australian warehouse · Australia-wide dispatch”, “Call our Australian team”.</li>
+      <li><b>Structure</b>: 4 columns — Brand+phone+ABN · Shop tape · Help · <b>Stay in touch</b> (newsletter with email + Notify me). One heading per column, shared baseline hairline.</li>
+      <li><b>Payment logos</b> in the legal bar: Visa · Mastercard · Amex · PayPal · Discover · Shop Pay (real full-colour SVGs on white chips).</li>
+      <li>Legal bar: © line · payment marks · policy links, on one row. Light vectorised logo on navy.</li>
+    </ul>
+  </div>
+</div></section>
+
+<!-- CART -->
+<section id="cart"><div class="wrap">
+  <h2><span class="n">10</span>Cart page</h2>
+  <p class="lead">Two columns: line items (with free-shipping progress bar) + a sticky order summary. Live totals from localStorage.</p>
+  <div class="ba">
+    <figure class="prev"><figcaption><span class="dot"></span>Previous (live store)</figcaption><img src="img/prev-cart.jpg" alt="previous cart"></figure>
+    <figure class="new"><figcaption><span class="dot"></span>Latest (new design)</figcaption><img src="img/new-cart.jpg" alt="new cart"></figure>
+  </div>
+  <div class="changes">
+    <h4>Spec</h4>
+    <ul>
+      <li><b>Free-shipping progress bar</b>: “You’re $X away from free shipping” with an orange fill (threshold $200).</li>
+      <li>Line items: media · info (name link + variant + remove) · qty stepper · line total.</li>
+      <li>Sticky summary card (sky tint): subtotal · shipping · total (incl. GST) · Checkout · trust list (GST invoice · 1–2 day dispatch · wrong-side sorted).</li>
+      <li>Empty state: icon + “Your cart is empty” + Shop-all CTA.</li>
+    </ul>
+  </div>
+</div></section>
+
+<!-- WISHLIST -->
+<section id="wishlist"><div class="wrap">
+  <h2><span class="n">11</span>Wishlist page <span class="tag tag--new">new</span></h2>
+  <p class="lead">Saved products (localStorage), same card grid as the shop, with a “Clear all” action and an empty state.</p>
+  <div class="ba single"><figure class="new"><figcaption><span class="dot"></span>Latest (new design)</figcaption><img src="img/new-wishlist.jpg" alt="wishlist page"></figure></div>
+  <div class="changes">
+    <h4>Spec</h4>
+    <ul>
+      <li>Header: “Saved” eyebrow + “Your wishlist” + count (“kept on this device”) + <b>Clear all</b> button.</li>
+      <li>Grid of product cards (reuses the shop card). Heart on each card toggles membership; header wishlist badge updates live.</li>
+      <li>Empty state: heart icon + “Nothing saved yet” + Shop-all CTA.</li>
+    </ul>
+  </div>
+</div></section>
+
+<!-- CHATBOT -->
+<section id="chat"><div class="wrap">
+  <h2><span class="n">12</span>Chatbot <span class="tag tag--redesign">redesigned</span></h2>
+  <p class="lead">The live store shows a generic avatar bubble. The new design is a branded support panel with working quick-replies.</p>
+  <div class="ba single" style="grid-template-columns:420px 1fr">
+    <figure class="new"><figcaption><span class="dot"></span>Latest (new design)</figcaption><img src="img/new-chatbot.jpg" alt="chatbot panel"></figure>
+    <div class="changes">
+      <h4>Spec</h4>
+      <ul>
+        <li>Launcher = orange circular FAB, bottom-right, with an online dot.</li>
+        <li>Panel: navy gradient header (“HL” chip · “HooknLoop Support” · Online · replies in minutes), a greeting message, and <b>quick-reply chips</b> that navigate (Which tape do I need? → finder; Bulk &amp; trade pricing → bulk; Track my order → contact; Fire-retardant specs → collection).</li>
+        <li>Message input + send; on send shows a “we’ll reply shortly” confirmation.</li>
+        <li>Panel width <code>360px</code>, <code>max-width:calc(100vw-44px)</code>, entrance animation <code>0.22s</code>.</li>
+      </ul>
+    </div>
+  </div>
+</div></section>
+
+<!-- CALL -->
+<section id="call"><div class="wrap">
+  <h2><span class="n">13</span>Call button <span class="tag tag--new">new</span></h2>
+  <p class="lead">A dedicated floating call button, bottom-left — a clean white circular icon that dials 1300 183 481.</p>
+  <div class="ba single" style="grid-template-columns:220px 1fr">
+    <figure class="new"><figcaption><span class="dot"></span>Latest (new design)</figcaption><img src="img/new-callbtn.jpg" alt="call button"></figure>
+    <div class="changes">
+      <h4>Spec</h4>
+      <ul>
+        <li>Circular <code>56px</code> FAB, bottom-left, white background / navy icon, <code>href="tel:1300183481"</code>.</li>
+        <li>Hover tooltip “Call 1300 183 481”; hover lift <code>translateY(-2px)</code>.</li>
+        <li>Both FABs (call + chat) <b>park (fade out) when the footer is on screen</b> so nothing fixed ever covers it; on mobile they also hide while the PDP add-to-cart dock is open.</li>
+      </ul>
+    </div>
+  </div>
+</div></section>
+
+<!-- MOTION -->
+<section id="motion" style="border-bottom:0"><div class="wrap">
+  <h2><span class="n">14</span>Animations to add</h2>
+  <p class="lead">All motion is 150–300ms, GPU-friendly (transform/opacity only), and respects <code>prefers-reduced-motion</code>.</p>
+  <div class="changes">
+    <h4>Motion inventory</h4>
+    <ul>
+      <li><b>Hero auto-slider</b>: 4 slides auto-advance every <b>5s</b> (crossfade opacity 0.6s + slide translateY); the product card <b>scales in 0.97→1</b>; the active progress dot fills over 5s. Pauses on hover/focus; reduced-motion pins slide 1. Grained navy background + a blue spotlight behind the product.</li>
+      <li><b>Facilities marquee</b>: seamless infinite ticker (two identical rows, <code>translateX(-50%)</code>, ~48s linear); pause on hover; reduced-motion → static scrollable row.</li>
+      <li><b>Product / value / category cards</b>: hover <code>translateY(-4px)</code> + elevated shadow.</li>
+      <li><b>Nav dropdowns</b>: fade+slide open (0.15s); chevron rotates; state-driven (hover/click/tap/focus).</li>
+      <li><b>PDP sticky add-to-cart dock</b>: glass panel slides up when scrolled past the CTA, retires before the footer; centred with side-gutters so it clears the corner FABs.</li>
+      <li><b>Floating buttons</b>: fade/park when the footer is in view (IntersectionObserver).</li>
+      <li><b>Buttons</b>: hover <code>translateY(-1px)</code>; add-to-cart success → green “✓ Added”.</li>
+    </ul>
+  </div>
+  <div class="note"><b>Reduced motion:</b> a global <code>@media (prefers-reduced-motion: reduce)</code> rule near-zeroes all animation/transition durations; the marquee and hero fall back to static frames.</div>
+</div></section>
+
+<!-- ================= LATEST REDESIGN — HOMEPAGE & PRODUCT PAGE ================= -->
+<section id="home-structure" style="background:linear-gradient(160deg,#16305a,#0f1d3a);color:#fff;"><div class="wrap">
+  <span class="kicker">Latest update · homepage &amp; product page</span>
+  <h2 style="color:#fff;margin-top:6px;"><span class="n" style="background:var(--orange);">15</span>Homepage &amp; product-page redesign</h2>
+  <p class="lead" style="color:#c9d3e6;">A second pass rebuilt the homepage around the live store's real sections and rebuilt the product page. Sections 16–23 show each change, previous → latest.</p>
+  <div class="changes" style="background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.18);">
+    <h4 style="color:#f0842a;">Homepage — removed</h4>
+    <ul style="color:#dbe3f0;">
+      <li style="color:#dbe3f0;">The guided <b style="color:#fff;">“which tape?” questionnaire</b>, the <b style="color:#fff;">stats strip</b> (100,000m+ / 1–2 day / …), the <b style="color:#fff;">“Find your fastener” category grid</b>, and the <b style="color:#fff;">fire-retardant band</b>.</li>
+    </ul>
+  </div>
+  <div class="changes" style="margin-top:12px;background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.18);">
+    <h4 style="color:#f0842a;">New section order</h4>
+    <ul style="color:#dbe3f0;">
+      <li style="color:#dbe3f0;"><code style="background:rgba(255,255,255,.1);color:#cfe0ff;border-color:rgba(255,255,255,.2);">Hero → One-Stop Shop → Best Sellers &amp; Offers → Trusted Supplier → Why HooknLoop → Reviews</code></li>
+    </ul>
+  </div>
+</div></section>
+
+<!-- ONE-STOP -->
+<section id="onestop2"><div class="wrap">
+  <h2><span class="n">16</span>One-Stop Shop — lifestyle categories <span class="tag tag--new">new</span></h2>
+  <p class="lead">The live store's “Australia's One-Stop Shop” band, rebuilt as a premium lifestyle bento — one large featured tile plus supporting tiles, each linking to its collection.</p>
+  <div class="ba">
+    <figure class="prev"><figcaption><span class="dot"></span>Previous (live store)</figcaption><img src="img/prev-onestop.jpg" alt="previous one-stop"></figure>
+    <figure class="new"><figcaption><span class="dot"></span>Latest (new design)</figcaption><img src="img/new-onestop.jpg" alt="new one-stop"></figure>
+  </div>
+  <div class="changes"><h4>What changed</h4><ul>
+    <li>12-column bento: a large featured tile (Dots &amp; Coins) + three supporting tiles (Straps, Sew-On, Self-Adhesive).</li>
+    <li>Real lifestyle photography with a dark scrim for legibility (WCAG-safe white text), <code>object-fit:cover</code>, hover-zoom <code>scale(1.06)</code>.</li>
+    <li>Each tile links to <code>collection/&lt;slug&gt;</code> with an orange “Shop now →” affordance.</li>
+  </ul></div>
+</div></section>
+
+<!-- BEST SELLERS & OFFERS -->
+<section id="bestsellers2"><div class="wrap">
+  <h2><span class="n">17</span>Best Sellers &amp; Offers <span class="tag tag--new">new</span></h2>
+  <p class="lead">Mirrors the live store's “Best Sellers &amp; Offers” collection — shown as premium product cards. Replaces both the old category grid and the “workhorse” grid.</p>
+  <div class="ba">
+    <figure class="prev"><figcaption><span class="dot"></span>Previous (live store)</figcaption><img src="img/prev-bestsellers.jpg" alt="previous best sellers"></figure>
+    <figure class="new"><figcaption><span class="dot"></span>Latest (new design)</figcaption><img src="img/new-bestsellers.jpg" alt="new best sellers"></figure>
+  </div>
+  <div class="changes"><h4>What changed</h4><ul>
+    <li>All <b>12 products</b> in a responsive 4-column grid, each a full product card.</li>
+    <li><b>Real star ratings + review counts</b> per product (from the live listings); “No reviews yet” where the store shows none.</li>
+    <li><b>Brand label</b> (HooknLoop) above each name; <b>corrected per-product images</b> (VELCRO, sew-on, velcoin and FR sew-on were previously wrong).</li>
+    <li>Heading “Best sellers &amp; offers”; the “offers” leads on the real <b>bulk/volume discounts</b> (no faked sale prices).</li>
+  </ul></div>
+</div></section>
+
+<!-- TRUSTED SUPPLIER -->
+<section id="trusted"><div class="wrap">
+  <h2><span class="n">18</span>Trusted Supplier — B2C &amp; B2B <span class="tag tag--new">new</span></h2>
+  <p class="lead">The live store's “Trusted Hook and Loop Supplier” copy, rebuilt as a two-column editorial section with the original Australia-wide delivery image.</p>
+  <div class="ba">
+    <figure class="prev"><figcaption><span class="dot"></span>Previous (live store)</figcaption><img src="img/prev-trusted.jpg" alt="previous trusted supplier"></figure>
+    <figure class="new"><figcaption><span class="dot"></span>Latest (new design)</figcaption><img src="img/new-trusted.jpg" alt="new trusted supplier"></figure>
+  </div>
+  <div class="changes"><h4>What changed</h4><ul>
+    <li>Icon-led value blocks for the two original headings (B2C/B2B quality + wholesale/bulk); verbatim store copy, lightly tightened.</li>
+    <li>The <b>original composite image</b> (hand + glowing Australia delivery map + HooknLoop boxes), optimised 2.2 MB → 256 KB, framed with a 4.87/5 proof card.</li>
+    <li>Orange “Read more” CTA.</li>
+  </ul></div>
+</div></section>
+
+<!-- PRODUCT CARDS -->
+<section id="cards2"><div class="wrap">
+  <h2><span class="n">19</span>Product cards — brand, rating, correct image <span class="tag tag--redesign">updated</span></h2>
+  <p class="lead">Every product card now carries the brand, its real rating, and the correct photo.</p>
+  <div class="ba">
+    <figure class="prev"><figcaption><span class="dot"></span>Previous (live store)</figcaption><img src="img/prev-productcard.jpg" alt="previous product card"></figure>
+    <figure class="new"><figcaption><span class="dot"></span>Latest (new design)</figcaption><img src="img/new-productcard.jpg" alt="new product card"></figure>
+  </div>
+  <div class="changes"><h4>What changed</h4><ul>
+    <li><b>Brand label</b> “HOOKNLOOP” (blue, uppercase) above the product name.</li>
+    <li><b>Real star rating + review count</b> under the name (burnt-ink stars, AA-safe); “No reviews yet” when the live listing has none.</li>
+    <li><b>Correct product photo</b> per item — the earlier build reused generic shots for VELCRO, sew-on, velcoin and FR sew-on.</li>
+    <li>CTA reads <b>“Add to cart”</b> (was “Add complete set”).</li>
+  </ul></div>
+</div></section>
+
+<!-- PRODUCT PAGE -->
+<section id="pdp2"><div class="wrap">
+  <h2><span class="n">20</span>Product page <span class="tag tag--redesign">rebuilt</span></h2>
+  <p class="lead">The buy box gains the brand, a real rating and SKU; the confusing hook/loop dropdown is gone.</p>
+  <div class="ba">
+    <figure class="prev"><figcaption><span class="dot"></span>Previous (live store)</figcaption><img src="img/prev-pdp.jpg" alt="previous product page"></figure>
+    <figure class="new"><figcaption><span class="dot"></span>Latest (new design)</figcaption><img src="img/new-pdp.jpg" alt="new product page"></figure>
+  </div>
+  <div class="changes"><h4>What changed</h4><ul>
+    <li><b>Brand + real rating + SKU</b> in the title block; <b>price-per-metre</b> beside the price.</li>
+    <li><b>Hook / Loop / Both selector</b> — the old plain dropdown is replaced with a premium 3-card segmented control; “Both — complete set” is pre-selected and badged “Recommended”, so no one accidentally buys a single half.</li>
+    <li><b>Removed the buy-box trust list</b> — reassurance moved to the Buy More &amp; Save trust strip (§21).</li>
+    <li>Correct gallery images + thumbnails per product.</li>
+  </ul></div>
+</div></section>
+
+<!-- BUY MORE & SAVE -->
+<section id="buymore"><div class="wrap">
+  <h2><span class="n">21</span>Buy More &amp; Save <span class="tag tag--redesign">redesigned</span></h2>
+  <p class="lead">The live store's volume-discount block, rebuilt premium and placed on the product page.</p>
+  <div class="ba">
+    <figure class="prev"><figcaption><span class="dot"></span>Previous (live store)</figcaption><img src="img/prev-buymore.jpg" alt="previous buy more and save"></figure>
+    <figure class="new"><figcaption><span class="dot"></span>Latest (new design)</figcaption><img src="img/new-buymore.jpg" alt="new buy more and save"></figure>
+  </div>
+  <div class="changes"><h4>What changed</h4><ul>
+    <li>Navy-gradient band with an orange glow; 4 tiers (Buy 5+/10+/20+/50+ → 5/10/20/30% off) with a <b>“Best value”</b> ribbon on the top tier.</li>
+    <li>Slim <b>trust strip</b> beneath: Fast Australian shipping · Secured payment · Easy returns.</li>
+    <li><b>Implementation note:</b> the tiers are a visual promise in the prototype — wire them to real Shopify automatic cart discounts so checkout actually applies them.</li>
+  </ul></div>
+</div></section>
+
+<!-- RELATED PRODUCTS -->
+<section id="related"><div class="wrap">
+  <h2><span class="n">22</span>Related products <span class="tag tag--new">new</span></h2>
+  <div class="ba single" style="grid-template-columns:1fr 340px">
+    <figure class="new"><figcaption><span class="dot"></span>Latest (new design)</figcaption><img src="img/new-related.jpg" alt="related products"></figure>
+    <div class="changes"><h4>Spec</h4><ul>
+      <li>Four full product cards (same category first, then the rest), each with rating, wishlist and add-to-cart.</li>
+      <li>Replaces the old lightweight “Complete the job” cross-sell; includes a “Shop all products →” link.</li>
+    </ul></div>
+  </div>
+</div></section>
+
+<!-- PRODUCT FAQs -->
+<section id="faqs"><div class="wrap">
+  <h2><span class="n">23</span>Product FAQs <span class="tag tag--redesign">real content</span></h2>
+  <p class="lead">Each product page now shows its own real, product-specific FAQs.</p>
+  <div class="ba">
+    <figure class="prev"><figcaption><span class="dot"></span>Previous (live store)</figcaption><img src="img/prev-faq.jpg" alt="previous faqs"></figure>
+    <figure class="new"><figcaption><span class="dot"></span>Latest (new design)</figcaption><img src="img/new-faq.jpg" alt="new faqs"></figure>
+  </div>
+  <div class="changes"><h4>What changed</h4><ul>
+    <li><b>Per-product FAQs</b> pulled from each live product page (9 of 12 had them); answers rewritten from the store's rough copy into clean, professional English — facts preserved.</li>
+    <li>The 4 products with no FAQ on the live store (heavy-duty adhesive, fabric, both fire-retardant) get FAQs written from their real spec sheets — no invented facts.</li>
+    <li>Accordion UI, one open at a time.</li>
+  </ul></div>
+</div></section>
+
+<footer style="padding:28px 0;text-align:center;color:#5a6b8c;font-size:.82rem;">
+  <div class="wrap">HooknLoop design handoff · generated from the React prototype · all values in <code>src/styles/tokens.css</code></div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,578 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>HooknLoop — How to Add Subscriptions (Plain-English Guide)</title>
+<style>
+  :root{
+    --navy:#142548; --navy-deep:#0f1d3a; --blue:#1952cc; --blue-hi:#2e6ae0;
+    --orange:#e87722; --orange-word:#f0842a; --orange-ink:#b8460a;
+    --ink:#1c2b45; --muted:#5a6b8c; --line:#e5eaf2; --cloud:#f4f7fb; --card:#fff;
+    --green:#146c43; --sky:#eef3fb;
+  }
+  *{box-sizing:border-box} html,body{margin:0}
+  body{font-family:"Poppins","Avenir Next","Segoe UI",system-ui,-apple-system,sans-serif;color:var(--ink);background:#e9eef6;line-height:1.62;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1000px;margin:0 auto;padding:0 40px;}
+  h1,h2,h3,h4{letter-spacing:-.015em;}
+
+  /* ── Cover ── */
+  .cover{background:radial-gradient(120% 120% at 82% -10%,#1d3d72 0%,#142548 46%,#0d1830 100%);color:#fff;padding:64px 0 56px;position:relative;overflow:hidden;}
+  .cover::after{content:"";position:absolute;right:-140px;top:-120px;width:460px;height:460px;border-radius:50%;background:radial-gradient(circle,rgba(232,119,34,.30),transparent 66%);filter:blur(6px);}
+  .cover .wrap{position:relative;z-index:1;}
+  .cover img.logo{height:52px;width:auto;display:block;margin-bottom:34px;}
+  .cover .eyebrow{font-size:.74rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--orange-word);}
+  .cover h1{font-size:2.85rem;font-weight:800;line-height:1.06;margin:12px 0 14px;max-width:20ch;}
+  .cover h1 em{font-style:normal;color:var(--orange-word);}
+  .cover .sub{color:#c9d5ea;font-size:1.12rem;max-width:60ch;margin:0;}
+  .cover .chips{margin-top:26px;display:flex;flex-wrap:wrap;gap:9px;}
+  .cover .chips span{font-size:.78rem;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:6px 14px;color:#dbe4f2;}
+
+  /* ── Sections ── */
+  section{background:#fff;padding:40px 0;border-bottom:1px solid var(--line);}
+  section.alt{background:var(--cloud);}
+  .eyebrow{font-size:.72rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--orange-ink);}
+  h2{font-size:1.72rem;font-weight:800;color:var(--navy);margin:8px 0 6px;display:flex;align-items:baseline;gap:14px;}
+  h2 .n{font-family:ui-monospace,Menlo,monospace;font-size:1.05rem;font-weight:700;color:var(--blue);letter-spacing:0;flex:none;}
+  .lead{color:#3a4864;font-size:1.06rem;max-width:78ch;margin:0 0 26px;}
+  .lead b{color:var(--navy);}
+
+  /* ── The two-customer split (signature) ── */
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  .who{border-radius:16px;padding:24px 26px;border:1px solid var(--line);background:#fff;}
+  .who.yes{border-color:rgba(20,108,67,.32);background:linear-gradient(180deg,#f2faf5,#fff 60%);}
+  .who.no{border-color:var(--line);background:linear-gradient(180deg,#f7f9fc,#fff 60%);}
+  .who .badge{display:inline-flex;align-items:center;gap:8px;font-size:.72rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:5px 12px;border-radius:999px;}
+  .who.yes .badge{background:rgba(20,108,67,.12);color:var(--green);}
+  .who.no .badge{background:rgba(90,107,140,.14);color:var(--muted);}
+  .who h3{font-size:1.24rem;color:var(--navy);margin:14px 0 4px;}
+  .who .who-sub{color:var(--muted);font-size:.94rem;margin:0 0 14px;}
+  .who ul{list-style:none;margin:0 0 14px;padding:0;}
+  .who li{position:relative;padding-left:26px;margin:8px 0;color:#33415c;font-weight:500;}
+  .who.yes li::before{content:"✓";position:absolute;left:0;top:-1px;color:var(--green);font-weight:800;}
+  .who.no li::before{content:"–";position:absolute;left:2px;top:-1px;color:var(--muted);font-weight:800;}
+  .who .kicker{font-size:.95rem;color:#33415c;border-top:1px dashed var(--line);padding-top:14px;margin:0;}
+  .who .kicker b{color:var(--navy);}
+
+  /* ── Value cards ── */
+  .val{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+  .valc{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 18px;box-shadow:0 6px 18px rgba(8,18,40,.05);}
+  .valc .ic{width:42px;height:42px;border-radius:11px;background:rgba(25,82,204,.09);display:grid;place-items:center;color:var(--blue);margin-bottom:12px;}
+  .valc h4{font-size:1.02rem;color:var(--navy);margin:0 0 5px;}
+  .valc p{font-size:.9rem;color:#43516d;margin:0;line-height:1.5;}
+
+  /* ── Tier cards ── */
+  .tiers{display:flex;flex-direction:column;gap:14px;}
+  .tier{display:grid;grid-template-columns:210px 1fr;gap:22px;align-items:start;border:1px solid var(--line);border-radius:15px;padding:20px 24px;background:#fff;}
+  .tier.star{border-color:rgba(232,119,34,.4);background:linear-gradient(180deg,#fffaf4,#fff 55%);box-shadow:0 8px 22px rgba(232,119,34,.08);}
+  .tier .tl{}
+  .tier .rung{font-family:ui-monospace,Menlo,monospace;font-size:.76rem;color:var(--blue);font-weight:700;}
+  .tier h3{font-size:1.18rem;color:var(--navy);margin:6px 0 8px;line-height:1.2;}
+  .tier .star-tag{display:inline-block;font-size:.66rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:var(--orange);border-radius:999px;padding:3px 10px;margin-bottom:8px;}
+  .tier .for{font-size:.86rem;color:var(--muted);}
+  .tier .for b{color:var(--navy);font-weight:700;}
+  .tier p{margin:0;color:#3a4864;font-size:.98rem;}
+  .tier p b{color:var(--navy);}
+
+  /* ── On/off products ── */
+  .onoff{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .col{border:1px solid var(--line);border-radius:15px;overflow:hidden;background:#fff;}
+  .col .head{padding:13px 20px;font-weight:800;font-size:.95rem;display:flex;align-items:center;gap:9px;}
+  .col.on .head{background:rgba(20,108,67,.09);color:var(--green);}
+  .col.off .head{background:rgba(90,107,140,.1);color:#4a5877;}
+  .col ul{margin:0;padding:16px 20px 18px 20px;list-style:none;}
+  .col li{position:relative;padding-left:24px;margin:9px 0;color:#33415c;font-size:.95rem;}
+  .col.on li::before{content:"✓";position:absolute;left:0;color:var(--green);font-weight:800;}
+  .col.off li::before{content:"✕";position:absolute;left:1px;color:#9aa7bd;font-weight:800;}
+
+  /* ── Feature groups ── */
+  .fgroup{margin-bottom:22px;}
+  .fgroup > .gh{display:flex;align-items:center;gap:12px;margin:0 0 12px;}
+  .fgroup .gh .tab{font-size:.7rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:5px 13px;border-radius:8px;}
+  .fgroup.a .tab{background:rgba(25,82,204,.1);color:var(--blue);}
+  .fgroup.b .tab{background:rgba(232,119,34,.14);color:var(--orange-ink);}
+  .fgroup.c .tab{background:rgba(20,108,67,.12);color:var(--green);}
+  .fgroup .gh .gt{font-size:.92rem;color:var(--muted);}
+  .flist{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .feat{display:flex;gap:12px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:13px 16px;}
+  .feat .fi{flex:none;width:30px;height:30px;border-radius:8px;background:var(--cloud);display:grid;place-items:center;color:var(--blue);}
+  .feat b{display:block;color:var(--navy);font-size:.95rem;line-height:1.3;}
+  .feat span{display:block;color:#4a5877;font-size:.85rem;line-height:1.45;margin-top:2px;}
+
+  /* ── Roadmap ── */
+  .road{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;counter-reset:ph;}
+  .phase{background:#fff;border:1px solid var(--line);border-radius:15px;padding:22px 22px;position:relative;}
+  .phase .pn{width:34px;height:34px;border-radius:50%;background:var(--navy);color:#fff;font-weight:800;display:grid;place-items:center;font-size:.95rem;margin-bottom:12px;}
+  .phase.p1 .pn{background:var(--blue);} .phase.p2 .pn{background:var(--orange);} .phase.p3 .pn{background:var(--navy);}
+  .phase h4{margin:0 0 3px;color:var(--navy);font-size:1.06rem;}
+  .phase .when{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:10px;}
+  .phase p{margin:0 0 10px;font-size:.9rem;color:#3a4864;}
+  .phase .stack{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);padding-top:10px;}
+  .phase .stack b{color:var(--navy);}
+
+  /* ── Money ── */
+  .money{display:grid;grid-template-columns:1.3fr 1fr;gap:20px;align-items:stretch;}
+  .mpoints{display:flex;flex-direction:column;gap:12px;}
+  .mp{background:#fff;border:1px solid var(--line);border-radius:13px;padding:15px 18px;}
+  .mp b{color:var(--navy);} .mp p{margin:4px 0 0;font-size:.92rem;color:#3a4864;}
+  .mtable{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 20px;}
+  .mtable .cap{font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:10px;}
+  table{width:100%;border-collapse:collapse;font-size:.92rem;}
+  th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line);}
+  th{font-size:.74rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:700;}
+  td b{color:var(--navy);} tr.good td{background:rgba(20,108,67,.06);} tr.bad td{background:rgba(232,119,34,.05);}
+  .mtable .foot{font-size:.82rem;color:#4a5877;margin-top:11px;}
+
+  /* ── Checklist / measure ── */
+  .check{background:#fff;border:1px solid var(--line);border-radius:15px;padding:8px 24px;}
+  .check li{list-style:none;position:relative;padding:13px 0 13px 34px;border-bottom:1px solid var(--line);color:#33415c;font-size:.97rem;}
+  .check li:last-child{border-bottom:none;}
+  .check li::before{content:"";position:absolute;left:2px;top:15px;width:17px;height:17px;border:2px solid var(--blue);border-radius:5px;}
+  .check li b{color:var(--navy);}
+  ul.reset{margin:0;padding:0;}
+
+  .measure{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .meas{background:#fff;border:1px solid var(--line);border-radius:13px;padding:16px 18px;border-left:3px solid var(--blue);}
+  .meas b{color:var(--navy);display:block;margin-bottom:3px;} .meas span{font-size:.9rem;color:#43516d;}
+
+  /* ── Callouts ── */
+  .warn{background:#fff7f0;border:1px solid rgba(232,119,34,.36);border-radius:13px;padding:16px 20px;color:#7a4a20;font-size:.96rem;margin-top:18px;}
+  .warn b{color:var(--orange-ink);}
+  .starthere{background:linear-gradient(160deg,#16305a,#0f1d3a);color:#fff;border-radius:18px;padding:30px 34px;margin-top:6px;}
+  .starthere .eyebrow{color:var(--orange-word);}
+  .starthere h3{font-size:1.4rem;margin:8px 0 16px;color:#fff;}
+  .starthere ol{margin:0;padding-left:22px;}
+  .starthere li{margin:10px 0;color:#e7edf7;font-size:1.02rem;}
+  .starthere li b{color:#fff;}
+  .starthere .close{margin:18px 0 0;color:#a9b7d3;font-size:.94rem;border-top:1px solid rgba(255,255,255,.14);padding-top:16px;}
+
+  .footer{background:var(--navy-deep);color:#8fa0c0;padding:24px 0;font-size:.82rem;}
+  .footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+  .footer img{height:26px;opacity:.9;}
+
+  /* ── Conversion section ── */
+  .bigwin{display:flex;gap:16px;align-items:flex-start;background:linear-gradient(120deg,#16305a,#0f1d3a);color:#fff;border-radius:15px;padding:20px 24px;margin:0 0 22px;}
+  .bigwin .st{flex:none;width:42px;height:42px;border-radius:12px;background:var(--orange);color:#fff;display:grid;place-items:center;font-size:1.25rem;font-weight:800;}
+  .bigwin .bt{font-size:.7rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--orange-word);}
+  .bigwin p{margin:4px 0 0;color:#e7edf7;font-size:.99rem;line-height:1.5;}
+  .bigwin p b{color:#fff;}
+  .winr{background:#fff;border:1px solid var(--line);border-radius:14px;padding:4px 20px 8px;margin-bottom:8px;}
+  .winr table td{vertical-align:top;}
+  .winr .rkb{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:8px;background:var(--blue);color:#fff;font-weight:800;font-size:.82rem;}
+  .winr .fac{color:var(--navy);font-weight:700;display:block;}
+  .winr .see{color:#5a6b8c;font-size:.86rem;display:block;margin-top:2px;}
+  .winr td .easy{font-size:.72rem;font-weight:800;color:var(--green);background:rgba(20,108,67,.1);border-radius:7px;padding:3px 9px;white-space:nowrap;}
+  .winnote{font-size:.84rem;color:#4a5877;margin:0 0 24px;padding-left:2px;}
+  .winnote b{color:var(--navy);}
+  .grp{margin-bottom:16px;}
+  .grp .gt{display:inline-block;font-size:.72rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--orange-ink);margin:0 0 7px;}
+  .mini{margin:0;padding:0;list-style:none;}
+  .mini li{position:relative;padding-left:20px;margin:6px 0;color:#33415c;font-size:.93rem;line-height:1.45;}
+  .mini li::before{content:"→";position:absolute;left:0;top:0;color:var(--orange-ink);font-weight:700;}
+  .mini li b{color:var(--navy);}
+  .grp2{display:grid;grid-template-columns:1fr 1fr;gap:6px 30px;}
+  .skip{width:100%;border-collapse:collapse;font-size:.9rem;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+  .skip td{padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top;}
+  .skip tr:last-child td{border-bottom:none;}
+  .skip td:first-child{font-weight:700;color:#4a5877;width:230px;}
+  .skip td:first-child::before{content:"✕ ";color:#c2440a;}
+  @media (max-width:820px){
+    .split,.val,.onoff,.money,.road,.flist,.measure,.grp2{grid-template-columns:1fr;}
+    .tier{grid-template-columns:1fr;gap:10px;}
+    .val{grid-template-columns:1fr 1fr;}
+  }
+  @media print{
+    body{background:#fff;}
+    section{padding:30px 0;break-inside:avoid;}
+    h2{break-after:avoid;}
+    .who,.valc,.tier,.col,.phase,.mp,.mtable,.feat,.check,.meas,.starthere,.warn,.split,.onoff,.road{break-inside:avoid;}
+    a{color:inherit;text-decoration:none;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ COVER ══ -->
+<header class="cover"><div class="wrap">
+  <img class="logo" src="logo-white.svg" alt="HooknLoop" />
+  <div class="eyebrow">Business guide · plain English</div>
+  <h1>How to add <em>subscriptions</em> to HooknLoop</h1>
+  <p class="sub">What to offer, which customers it suits, and the exact facilities to give them — written to be understood by anyone, not just developers.</p>
+  <div class="chips"><span>Auto-reorder &amp; standing orders</span><span>What to build first</span><span>Australian rules included</span><span>No jargon</span></div>
+</div></header>
+
+<!-- ══ 1 · THE BIG IDEA ══ -->
+<section id="idea"><div class="wrap">
+  <div class="eyebrow">Start here</div>
+  <h2><span class="n">01</span>The one big idea</h2>
+  <p class="lead">For a tape business, a “subscription” is <b>not</b> a discount club like Netflix. It’s a way to help the customers who buy the same tape again and again <b>never run out — automatically</b>. The whole strategy depends on one thing: knowing <b>who that is</b>. Your customers split cleanly into two groups.</p>
+  <div class="split">
+    <div class="who yes">
+      <span class="badge">✓ Great fit — offer it</span>
+      <h3>Repeat buyers</h3>
+      <p class="who-sub">Businesses that get through hook &amp; loop as a constant supply:</p>
+      <ul>
+        <li>Factories &amp; manufacturers (OEMs)</li>
+        <li>Upholsterers, sign-makers, marine &amp; auto trimmers</li>
+        <li>Events, AV &amp; IT teams (cable management)</li>
+      </ul>
+      <p class="kicker">They reorder the same rolls month after month. What they want isn’t a discount — it’s to <b>never run out</b>, have stock <b>reserved</b>, and <b>skip the repeat paperwork</b>.</p>
+    </div>
+    <div class="who no">
+      <span class="badge">– Not a fit — don’t push</span>
+      <h3>One-off buyers</h3>
+      <p class="who-sub">People buying for a single job:</p>
+      <ul>
+        <li>DIY &amp; hobby customers</li>
+        <li>Schools &amp; makerspaces (buy once a term)</li>
+        <li>Anyone buying for one project</li>
+      </ul>
+      <p class="kicker">Forcing them into an auto-delivery just leads to <b>cancellations and refunds</b>. Give them a fast <b>“Reorder” button</b> instead — not a subscription.</p>
+    </div>
+  </div>
+</div></section>
+
+<!-- ══ 2 · WHAT YOU'RE SELLING ══ -->
+<section class="alt" id="selling"><div class="wrap">
+  <div class="eyebrow">Why anyone subscribes</div>
+  <h2><span class="n">02</span>What you’re really selling</h2>
+  <p class="lead">Customers don’t sign up to save 5%. They sign up for <b>peace of mind</b>. These are the four things genuinely worth paying for — lead your offer with these, not with a discount.</p>
+  <div class="val">
+    <div class="valc">
+      <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l9-4 9 4-9 4-9-4Z"/><path d="M3 7v10l9 4 9-4V7"/></svg></div>
+      <h4>Never run out</h4>
+      <p>Stock arrives on schedule, before they hit empty. No emergency orders.</p>
+    </div>
+    <div class="valc">
+      <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6h11v11H2zM13 9h4l3 3v5h-7"/><circle cx="6.5" cy="18" r="1.7"/><circle cx="17" cy="18" r="1.7"/></svg></div>
+      <h4>Ships first</h4>
+      <p>Subscriber orders are picked and dispatched ahead of the queue, with stock set aside.</p>
+    </div>
+    <div class="valc">
+      <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10.5" width="15" height="10" rx="2"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/></svg></div>
+      <h4>Price locked</h4>
+      <p>The price stays fixed for the term. No surprises when materials move.</p>
+    </div>
+    <div class="valc">
+      <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h9l3 3v17l-3-2-3 2-3-2-3 2V2Z"/><path d="M9 8h6M9 12h6"/></svg></div>
+      <h4>Less admin</h4>
+      <p>One regular delivery and one GST invoice — instead of re-typing the same order every month.</p>
+    </div>
+  </div>
+</div></section>
+
+<!-- ══ 3 · THE PLANS ══ -->
+<section id="plans"><div class="wrap">
+  <div class="eyebrow">The menu of options</div>
+  <h2><span class="n">03</span>The plans to offer</h2>
+  <p class="lead">Offer a small ladder — from a no-commitment reorder button up to fully managed stock. Most customers will live on the first three rungs. You don’t need to build all five at once (see the rollout in §7).</p>
+  <div class="tiers">
+    <div class="tier">
+      <div class="tl"><div class="rung">Rung 1 · Free</div><h3>Easy Reorder</h3><div class="for">For <b>everyone</b></div></div>
+      <p>A <b>“Buy again”</b> button on every past order, saved shopping lists, and a friendly email when they’re probably running low. No commitment, no card saved. This alone wins back a lot of repeat business — and it’s the cheapest thing to build.</p>
+    </div>
+    <div class="tier">
+      <div class="tl"><div class="rung">Rung 2 · 5% off</div><h3>Auto-Restock</h3><div class="for">For <b>repeat buyers</b> &amp; small shops</div></div>
+      <p>On standard rolls, dots and straps, the customer picks a schedule — say <b>every 4, 8 or 12 weeks</b> — and it ships automatically for a small 5% thank-you. They can <b>skip, pause, change the quantity or cancel anytime</b>. (Sometimes called “Subscribe &amp; Save”.)</p>
+    </div>
+    <div class="tier star">
+      <div class="tl"><span class="star-tag">★ Your biggest opportunity</span><div class="rung">Rung 3 · No discount needed</div><h3>Standing Order</h3><div class="for">For <b>trade &amp; business accounts</b></div></div>
+      <p>Agree a regular basket of their staple items on a set schedule. You <b>reserve their stock</b>, <b>ship it first</b>, and send <b>one invoice on account</b> (pay later). No discount required — they’re paying for certainty and less hassle. This is where most of the money is.</p>
+    </div>
+    <div class="tier">
+      <div class="tl"><div class="rung">Rung 4 · Yearly fee</div><h3>Trade+ Membership</h3><div class="for"><b>Optional</b>, for regular trade</div></div>
+      <p>A yearly fee (say <b>$99–199</b>) that unlocks free freight, priority cut-to-length, locked prices and reserved stock. The fee is almost pure profit — <b>but only offer it if the perks are genuinely extra</b>. Don’t charge for a discount you already give away free, or it reads as a price rise.</p>
+    </div>
+    <div class="tier">
+      <div class="tl"><div class="rung">Rung 5 · Later</div><h3>Managed Stock</h3><div class="for">Your <b>top few accounts</b></div></div>
+      <p>For your biggest accounts: you track how fast they use tape and <b>top them up automatically</b> to agreed levels, so their production line never stops. Start by doing this <b>by hand for 3–5 accounts</b> before building any software.</p>
+    </div>
+  </div>
+</div></section>
+
+<!-- ══ 4 · WHICH PRODUCTS ══ -->
+<section class="alt" id="products"><div class="wrap">
+  <div class="eyebrow">Put the right products on it</div>
+  <h2><span class="n">04</span>Which products to offer it on</h2>
+  <p class="lead">Subscriptions only work on products people buy <b>over and over in a standard size</b>. Put your steady sellers on it; leave one-off and custom items off — they’ll just cause cancellations and refunds.</p>
+  <div class="onoff">
+    <div class="col on">
+      <div class="head">✓ Offer subscriptions on these</div>
+      <ul>
+        <li>Self-adhesive rolls in standard sizes (e.g. 25 / 50&nbsp;mm × 25&nbsp;m)</li>
+        <li>Sew-on tape by the standard roll</li>
+        <li>Reusable cable straps &amp; self-gripping ties (bulk packs)</li>
+        <li>Pre-cut dots &amp; coins (bulk packs)</li>
+        <li>Double-sided mounting tape</li>
+      </ul>
+    </div>
+    <div class="col off">
+      <div class="head">✕ Keep these off subscriptions</div>
+      <ul>
+        <li>Heavy-duty ratchet / single-install straps (bought once)</li>
+        <li>Large fire-retardant rolls (expensive, project-driven)</li>
+        <li>Premium genuine VELCRO® one-offs</li>
+        <li>Cut-to-length / custom widths (see warning)</li>
+        <li>Anything bought for a single DIY project</li>
+      </ul>
+    </div>
+  </div>
+  <div class="warn"><b>⚠ The one rule that really matters:</b> don’t offer subscriptions on <b>cut-to-length</b>. A custom cut isn’t a fixed product, so it can’t repeat cleanly — the system will mis-pick and mis-price it. Only offer auto-delivery on <b>standard, off-the-shelf sizes</b>. (Also worth doing: tag your adhesive rolls with their batch so you never auto-ship aged stock or a changed grade to a factory that qualified the old one.)</div>
+</div></section>
+
+<!-- ══ 5 · FACILITIES ══ -->
+<section id="facilities"><div class="wrap">
+  <div class="eyebrow">The features to build</div>
+  <h2><span class="n">05</span>The facilities to give customers</h2>
+  <p class="lead">Here’s the actual feature list, in plain terms, grouped by <b>who uses it</b>. Each line is written as “what the customer can do”. The first group alone is worth shipping on its own.</p>
+
+  <div class="fgroup a">
+    <div class="gh"><span class="tab">Group A</span><span class="gt">For everyone — the foundation</span></div>
+    <div class="flist">
+      <div class="feat"><span class="fi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8m0-5v5h5"/></svg></span><div><b>Reorder button</b><span>One tap to buy a past order again, at the exact same spec.</span></div></div>
+      <div class="feat"><span class="fi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg></span><div><b>Saved lists</b><span>Save “my usual order” and reorder the whole lot in one go.</span></div></div>
+      <div class="feat"><span class="fi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></span><div><b>“Running low?” reminders</b><span>An email around when they usually reorder, with a pre-filled cart.</span></div></div>
+      <div class="feat"><span class="fi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h9l3 3v17l-3-2-3 2-3-2-3 2V2Z"/><path d="M9 8h6M9 12h6"/></svg></span><div><b>Automatic GST tax invoice</b><span>A compliant invoice on every order and every renewal — no manual work.</span></div></div>
+      <div class="feat"><span class="fi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg></span><div><b>Easy pause &amp; cancel</b><span>Stop or hold anytime in one click — required by law (see §9).</span></div></div>
+    </div>
+  </div>
+
+  <div class="fgroup b">
+    <div class="gh"><span class="tab">Group B</span><span class="gt">For repeat buyers — Auto-Restock</span></div>
+    <div class="flist">
+      <div class="feat"><span class="fi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="9"/></svg></span><div><b>Subscribe &amp; Save toggle</b><span>On the product page: choose how often it ships (standard sizes only).</span></div></div>
+      <div class="feat"><span class="fi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span><div><b>Self-serve delivery manager</b><span>Change the date, quantity or address, or skip the next delivery — no emails.</span></div></div>
+      <div class="feat"><span class="fi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></span><div><b>Card auto-retry</b><span>If a card expires or fails, it retries and prompts an update — plans don’t silently die.</span></div></div>
+      <div class="feat"><span class="fi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"/></svg></span><div><b>Priority dispatch &amp; reserved stock</b><span>Subscriber orders ship first and their stock is set aside.</span></div></div>
+    </div>
+  </div>
+
+  <div class="fgroup c">
+    <div class="gh"><span class="tab">Group C</span><span class="gt">For business accounts — trade</span></div>
+    <div class="flist">
+      <div class="feat"><span class="fi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h18v4H3zM5 7v14h14V7M9 11h6"/></svg></span><div><b>Order on account (pay later)</b><span>Approved trade customers get an invoice on net-30 terms instead of paying by card.</span></div></div>
+      <div class="feat"><span class="fi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v6H4zM4 14h10v6H4z"/></svg></span><div><b>Purchase-order number field</b><span>So their accounts team can match the order to their own PO.</span></div></div>
+      <div class="feat"><span class="fi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="10" r="2.4"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5M15 20c0-2 1.6-3.5 4-3.5"/></svg></span><div><b>Company pricing &amp; multiple buyers</b><span>Agreed prices, with several people ordering under one account.</span></div></div>
+      <div class="feat"><span class="fi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8"/><path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9"/></svg></span><div><b>Standing-order builder + price lock</b><span>Set a recurring basket &amp; schedule, and hold a fixed price for 6–12 months.</span></div></div>
+    </div>
+  </div>
+</div></section>
+
+<!-- ══ 6 · MAKE THEM SAY YES ══ -->
+<section id="convert"><div class="wrap">
+  <div class="eyebrow">Get them to say yes</div>
+  <h2><span class="n">06</span>Make subscribing the easy choice</h2>
+  <p class="lead">You don’t need to <b>convince</b> people — most rebuy anyway. The job is to make <b>“keep it coming”</b> the easy, obvious, safe choice at the exact moment they’re already buying. Do it with <b>convenience and certainty, not deep discounts</b>. These extra facilities do exactly that.</p>
+
+  <div class="bigwin">
+    <span class="st">★</span>
+    <div>
+      <div class="bt">The single best thing to add first</div>
+      <p>One line of grey text right under the <b>Subscribe</b> button: <b>“Skip, pause or cancel anytime — no lock-in, no minimum.”</b> It’s free (just words), takes minutes, and removes the number-one reason a tradie clicks “buy once” — the fear of being stuck with deliveries they can’t stop.</p>
+    </div>
+  </div>
+
+  <h3 style="color:var(--navy);font-size:1.12rem;margin:0 0 12px;">The 5 easiest wins</h3>
+  <div class="winr">
+    <table>
+      <tr><th style="width:34px"></th><th>Facility · what the customer sees</th><th>Why it makes them subscribe</th><th style="width:66px">Build</th></tr>
+      <tr>
+        <td><span class="rkb">1</span></td>
+        <td><span class="fac">“No lock-in” line on the button</span><span class="see">A small line under Subscribe: “Skip, pause or cancel anytime.”</span></td>
+        <td>Kills the “am I trapped?” fear at the exact click that stops them. Costs nothing.</td>
+        <td><span class="easy">Easy</span></td>
+      </tr>
+      <tr>
+        <td><span class="rkb">2</span></td>
+        <td><span class="fac">Subscribe pre-selected, timing pre-filled</span><span class="see">Subscribe is already chosen and “how often” is pre-set to a sensible guess. One-time sits right beside it.</span></td>
+        <td>Removes the two decisions that stall people — <em>should I?</em> and <em>how often?</em> Biggest proven lift of any change here.</td>
+        <td><span class="easy">Easy</span></td>
+      </tr>
+      <tr>
+        <td><span class="rkb">3</span></td>
+        <td><span class="fac">“Make it automatic” on the thank-you page</span><span class="see">After they pay: “Turn this order into auto-restock and save 5% — one tap, nothing to re-enter.”</span></td>
+        <td>They’ve already bought; card &amp; address are saved. Catches the buyer who ignored the button on the product page.</td>
+        <td><span class="easy">Easy</span></td>
+      </tr>
+      <tr>
+        <td><span class="rkb">4</span></td>
+        <td><span class="fac">Show real dollars + time saved</span><span class="see">“Save about $47/year on this roll — and skip re-ordering every month.”</span></td>
+        <td>“$47 and no admin” beats “5%”. Just computed text — no extra discount. (Only show it when the saving is real.)</td>
+        <td><span class="easy">Easy</span></td>
+      </tr>
+      <tr>
+        <td><span class="rkb">5</span></td>
+        <td><span class="fac">“Set to auto” in their order history</span><span class="see">Beside “Reorder,” a second button: “Reorder + keep it coming.” Pushed on the 3rd repeat.</span></td>
+        <td>Aimed at people who’ve <b>proven</b> they rebuy — right as they do it by hand again. The strongest possible signal.</td>
+        <td><span class="easy">Easy</span></td>
+      </tr>
+    </table>
+  </div>
+  <p class="winnote"><b>Why these work (real numbers):</b> pre-selecting subscribe lifted sign-ups 11–176% in tests · a post-purchase offer converts 3–5× the on-page button · “about to run out” emails convert ~8–15% vs 1–3% for normal promos. <em>(Most were measured at 10–15% off; at your 5% expect the lower end — which is fine, because your real lever is convenience, not price.)</em></p>
+
+  <h3 style="color:var(--navy);font-size:1.12rem;margin:6px 0 14px;">A few more, grouped</h3>
+  <div class="grp2">
+    <div class="grp">
+      <span class="gt">Make it one tap</span>
+      <ul class="mini">
+        <li>A whole-cart <b>“make this order recurring”</b> toggle at checkout.</li>
+        <li><b>No account needed</b> — manage skip/pause/cancel through a secure emailed link, no password.</li>
+        <li>A <b>QR code on the delivery box</b>: “Running low? Reorder in one tap.”</li>
+      </ul>
+    </div>
+    <div class="grp">
+      <span class="gt">Give a reason to start <span style="color:#9aa7bd;font-weight:600;text-transform:none;letter-spacing:0">· margin-safe</span></span>
+      <ul class="mini">
+        <li>A deeper discount on the <b>first delivery only</b> (e.g. 15% once) — require a 2-delivery minimum.</li>
+        <li>A small <b>free extra in the first box</b> — a VELCRO dot pack or strap sampler.</li>
+        <li><b>Free AU shipping</b> for subscribers above a set order value (threshold-gate it).</li>
+      </ul>
+    </div>
+    <div class="grp">
+      <span class="gt">Remove the fear <span style="color:#9aa7bd;font-weight:600;text-transform:none;letter-spacing:0">· your real engine</span></span>
+      <ul class="mini">
+        <li>A <b>“what happens next” panel</b> before they confirm (first ship date, GST invoice each time, reminder before every charge).</li>
+        <li>Show the <b>exact next-charge date</b> + a one-tap skip in every email.</li>
+        <li>A <b>“it’ll hold or we’ll fix it” first-roll guarantee</b> — answers the real worry (“will it stick?”), not price.</li>
+        <li>A <b>true</b> social-proof line: “1,200+ AU workshops restock on auto.”</li>
+      </ul>
+    </div>
+    <div class="grp">
+      <span class="gt">Catch the right moment</span>
+      <ul class="mini">
+        <li>A <b>predicted run-out email</b>: “Reorder in one tap — or set it to auto.” (Steady buyers only.)</li>
+        <li>A <b>post-delivery nudge</b>: “Happy with it? Set it to auto.”</li>
+        <li>Add a <b>“switch to auto”</b> button to the “running low” reminder you already send.</li>
+      </ul>
+    </div>
+    <div class="grp" style="grid-column:1 / -1;">
+      <span class="gt">For trade accounts <span style="color:#9aa7bd;font-weight:600;text-transform:none;letter-spacing:0">· the core of the business — sell “less admin + more certainty,” never “cheaper”</span></span>
+      <ul class="mini grp2" style="display:grid;">
+        <li><b>“Turn my last order into a standing order”</b> — one tap that keeps their exact cut length &amp; colour. Your most defensible idea: Amazon can’t copy cut-to-length.</li>
+        <li><b>Blanket PO on file</b> — one purchase-order number covers every delivery.</li>
+        <li><b>One combined month-end invoice</b> instead of one per delivery — less work for their accounts team.</li>
+        <li><b>Guaranteed stock</b> so an OEM’s line never stops — beats any discount.</li>
+        <li>A <b>friendly rep note after 3 repeat orders</b>, offering to set it up — framed as removing admin, not selling.</li>
+        <li>A self-serve <b>“Request a standing order”</b> form with one-page sign-off.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 style="color:var(--navy);font-size:1.12rem;margin:20px 0 12px;">Skip these — not worth it for a tape store</h3>
+  <table class="skip">
+    <tr><td>SMS keyword “text to subscribe”</td><td>Most complex to build for the shakiest payoff — the box QR code does the same job far cheaper.</td></tr>
+    <tr><td>Loyalty points multiplier (3× points)</td><td>Abstract points mean nothing to trade buyers. If you want a giveback, use plain store credit shown in dollars.</td></tr>
+    <tr><td>Prepaid “buy 5 get 1 free”</td><td>That’s a ~16% discount — it breaks your shallow-discount rule. Use price-lock + standing orders to hold volume buyers.</td></tr>
+    <tr><td>Gamified “status ladder” progress bar</td><td>Trade buyers ignore it. Just attach the perks that matter (priority queue, price-lock) to your Trade+ tier.</td></tr>
+  </table>
+
+  <div class="bigwin" style="margin:22px 0 0;">
+    <span class="st">✓</span>
+    <div>
+      <div class="bt">The golden rule</div>
+      <p><b>Sell certainty and simplicity — not cheapness.</b> Every reason to subscribe should be “less hassle,” “never run out,” or “a price you can count on”; the 5% is a bonus, never the headline. Keep the one-time option just as visible, spell out the terms before they confirm, and make cancelling genuinely one or two taps — in Australia that easy-out is both the law <em>and</em> the very thing that makes people comfortable saying yes.</p>
+    </div>
+  </div>
+</div></section>
+
+<!-- ══ 7 · ROLLOUT ══ -->
+<section class="alt" id="rollout"><div class="wrap">
+  <div class="eyebrow">Don’t build it all at once</div>
+  <h2><span class="n">07</span>How to roll it out</h2>
+  <p class="lead">Three steps. Start cheap, prove people want it, then layer on the business features. On Shopify you can begin with the <b>built-in subscriptions</b> for free before paying for a specialist app.</p>
+  <div class="road">
+    <div class="phase p1">
+      <div class="pn">1</div>
+      <h4>Start small</h4>
+      <div class="when">A few weeks</div>
+      <p>Turn on the reorder button, saved lists, running-low reminders and GST invoices. Add Subscribe &amp; Save to <b>6–10 best-selling standard items</b>. Phone your top accounts and set up standing orders by hand.</p>
+      <div class="stack"><b>Tools:</b> Shopify Subscriptions (built-in, free) · Klaviyo for reminders · a GST-invoice app</div>
+    </div>
+    <div class="phase p2">
+      <div class="pn">2</div>
+      <h4>Add business accounts</h4>
+      <div class="when">Once subs are working</div>
+      <p>Add trade accounts (pay-later, PO numbers, company pricing), the standing-order builder and price locks. Move to a dedicated subscriptions app for more control.</p>
+      <div class="stack"><b>Tools:</b> Loop Subscriptions · Shopify B2B / a B2B app for trade accounts</div>
+    </div>
+    <div class="phase p3">
+      <div class="pn">3</div>
+      <h4>Managed stock</h4>
+      <div class="when">Later, top accounts only</div>
+      <p>Hand-manage automatic top-ups for your <b>3–5 biggest accounts</b> against agreed stock levels. Only build software for it once it’s clearly working and they’re sticking.</p>
+      <div class="stack"><b>Tools:</b> a spreadsheet first — custom portal only if an account demands it</div>
+    </div>
+  </div>
+</div></section>
+
+<!-- ══ 7 · MONEY ══ -->
+<section id="money"><div class="wrap">
+  <div class="eyebrow">Keep the profit</div>
+  <h2><span class="n">08</span>The money side, kept simple</h2>
+  <p class="lead">Three things protect your profit. The headline: <b>lead with certainty, not with discounts</b> — big discounts just give away margin you don’t need to.</p>
+  <div class="money">
+    <div class="mpoints">
+      <div class="mp"><b>Keep discounts small (5% cap).</b><p>Businesses subscribe to avoid running out, not to save a few dollars. Every extra % off comes straight out of profit.</p></div>
+      <div class="mp"><b>The membership fee is almost pure profit.</b><p>A $149/year fee is money in the door before you ship a single roll — if the perks are genuinely extra.</p></div>
+      <div class="mp"><b>Planned deliveries save you money.</b><p>Turning 4 scattered parcels into 1 scheduled shipment cuts packing &amp; freight a lot — often <b>more than the small discount costs you</b>.</p></div>
+    </div>
+    <div class="mtable">
+      <div class="cap">What a discount really costs — a $100 roll that costs you $40</div>
+      <table>
+        <tr><th>Discount</th><th>You keep</th><th>Profit lost</th></tr>
+        <tr class="good"><td><b>0%</b></td><td>$60</td><td>—</td></tr>
+        <tr class="good"><td><b>5% (our cap)</b></td><td>$55</td><td>~8%</td></tr>
+        <tr><td>15%</td><td>$45</td><td>~25%</td></tr>
+        <tr class="bad"><td>25% (typical “sub &amp; save”)</td><td>$35</td><td>~42%</td></tr>
+      </table>
+      <p class="foot">A deep discount can wipe out nearly half your profit on your <em>best</em>, most loyal customers — the exact people who’d reorder anyway.</p>
+    </div>
+  </div>
+</div></section>
+
+<!-- ══ 8 · RULES ══ -->
+<section class="alt" id="rules"><div class="wrap">
+  <div class="eyebrow">Australia — do this right</div>
+  <h2><span class="n">09</span>The rules to follow</h2>
+  <p class="lead">Australia is tightening the rules on subscriptions, with <b>big fines</b> and new “easy-cancel” laws landing in 2027. None of it is hard — build it in from day one and you’re safe.</p>
+  <ul class="reset check">
+    <li><b>Make cancelling as easy as signing up.</b> One click, self-serve, no phone calls, no maze.</li>
+    <li><b>Remind before every charge.</b> Email 3–5 days ahead showing the date, the amount (inc. GST) and what’s shipping.</li>
+    <li><b>Send a GST tax invoice every time.</b> Each delivery is its own taxable sale — test one full renewal end-to-end.</li>
+    <li><b>No tricks.</b> No pre-ticked auto-renewal boxes, no hidden renewals, no “are you sure?” funnel to escape.</li>
+    <li><b>No lock-in.</b> Month-to-month, cancel anytime, no exit fee; only change a price with notice and a chance to cancel.</li>
+    <li><b>Keep normal refund rights.</b> A subscription never removes a customer’s consumer guarantees.</li>
+  </ul>
+</div></section>
+
+<!-- ══ 9 · MEASURE ══ -->
+<section id="measure"><div class="wrap">
+  <div class="eyebrow">Know if it’s working</div>
+  <h2><span class="n">10</span>What to watch</h2>
+  <p class="lead">A handful of simple numbers tell you whether the program is healthy. Judge it on <b>profit and repeat behaviour</b>, not on a vanity “subscriber count”.</p>
+  <div class="measure">
+    <div class="meas"><b>Take-up</b><span>How many customers use it — aim for a good share of your <em>repeat</em> buyers, close to zero of your one-off buyers.</span></div>
+    <div class="meas"><b>Cancellations — and why</b><span>Track the reason. “Too much stock” means fix the schedule, not hand out a coupon.</span></div>
+    <div class="meas"><b>Too much or too little?</b><span>The #1 reason people quit is getting more than they can use. Match the schedule to how fast they actually go through it.</span></div>
+    <div class="meas"><b>Spend over time</b><span>A subscribed repeat buyer should be worth roughly <b>3–4×</b> a one-off buyer over a few years.</span></div>
+  </div>
+
+  <div class="starthere">
+    <div class="eyebrow">Do these three first</div>
+    <h3>If you only do one thing</h3>
+    <ol>
+      <li><b>Ship the reorder rails</b> — a “Buy again” button, saved lists and running-low reminders. No discount, big return.</li>
+      <li><b>Add Subscribe &amp; Save</b> to your 6–10 top standard sellers, at 5%.</li>
+      <li><b>Phone your top 15–20 trade accounts</b> and set up standing orders by hand.</li>
+    </ol>
+    <p class="close">These three need almost no discounting, break none of the rules, and capture most of the prize — the repeat business hiding in your biggest accounts.</p>
+  </div>
+</div></section>
+
+<footer class="footer"><div class="wrap">
+  <img src="logo-white.svg" alt="HooknLoop" />
+  <span>Subscription &amp; recurring-revenue guide · plain-English edition · prepared for HooknLoop</span>
+</div></footer>
+
+</body>
+</html>

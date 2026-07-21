@@ -1,0 +1,119 @@
+/* ═══ HERO SLIDESHOW — premium navy, dimensional & lit ════════════════ */
+.hs {
+  position: relative; overflow: hidden;
+  background:
+    radial-gradient(78% 120% at 82% 2%, #21457f 0%, rgba(33,69,127,0) 50%),
+    radial-gradient(72% 110% at 0% 100%, #142a52 0%, rgba(20,42,82,0) 55%),
+    linear-gradient(180deg, #16305a 0%, var(--navy) 54%, var(--navy-deep) 100%);
+  color: var(--on-navy);
+}
+/* fine grain — kills gradient banding, reads rich not flat (the premium tell) */
+.hs::before { content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.05; mix-blend-mode: overlay; }
+/* the one warm flare */
+.hs__glow { position: absolute; top: -20%; right: -4%; width: 620px; height: 620px; z-index: 0; pointer-events: none;
+  background: radial-gradient(circle, rgba(232,119,34,0.17) 0%, rgba(232,119,34,0) 60%); }
+
+.hs__stage {
+  position: relative; z-index: 2;
+  min-height: 560px;
+  padding: clamp(44px, 4.5vw, 64px) var(--sp-5) clamp(28px, 3vw, 40px);
+}
+/* slides stacked & crossfaded */
+.hs__slide {
+  position: absolute; inset: 0;
+  padding: inherit; padding-left: var(--sp-5); padding-right: var(--sp-5);
+  display: grid; grid-template-columns: 1.02fr 1fr; gap: var(--sp-8); align-items: center;
+  opacity: 0; visibility: hidden; transform: translateY(8px);
+  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease), visibility 0s linear 0.6s;
+}
+.hs__slide.is-active { opacity: 1; visibility: visible; transform: none; transition: opacity 0.6s var(--ease), transform 0.6s var(--ease); }
+
+/* copy */
+.hs__pill { display: inline-block; padding: 8px 18px; border-radius: var(--r-pill);
+  background: rgba(232,119,34,0.14); border: 1px solid rgba(232,119,34,0.42);
+  color: var(--orange-word); font-size: 0.8125rem; font-weight: 600; margin-bottom: var(--sp-5); }
+.hs__title { font-family: var(--font-head); font-weight: 800; font-size: var(--t-hero);
+  line-height: 1.04; letter-spacing: -0.015em; color: #fff; margin-bottom: var(--sp-5); }
+.hs__accent { color: var(--orange-word); }
+.hs__bullets { display: grid; gap: 12px; margin-bottom: var(--sp-5); }
+.hs__bullet { display: flex; align-items: center; gap: 12px; color: var(--on-navy-2); font-size: 1.0625rem; }
+.hs__check { flex-shrink: 0; width: 26px; height: 26px; border-radius: var(--r-pill); display: grid; place-items: center;
+  background: rgba(232,119,34,0.16); color: var(--orange); }
+/* above-the-fold social proof — the conversion element a high-volume store keeps in-hero */
+.hs__proof { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 12px; margin-bottom: var(--sp-6); font-size: 0.9rem; color: var(--muted-navy); }
+.hs__proof b { color: #fff; font-weight: 700; }
+.hs__stars2 { color: var(--orange); letter-spacing: 1px; font-size: 0.95rem; }
+.hs__proof-sep { color: var(--faint-navy); }
+.hs__cta { display: flex; flex-wrap: wrap; gap: var(--sp-3); }
+
+/* figure — product on a lit pedestal that floats off the navy */
+.hs__figure { position: relative; justify-self: center; width: 100%; max-width: 480px; }
+.hs__figure::before { content: ''; position: absolute; inset: -14% -10% -6%; z-index: 0; pointer-events: none;
+  background: radial-gradient(58% 54% at 50% 42%, rgba(150,186,255,0.32), rgba(150,186,255,0) 68%); }
+.hs__card { position: relative; z-index: 1; overflow: hidden; aspect-ratio: 1/1; border-radius: var(--r-card);
+  background: linear-gradient(155deg, #ffffff 0%, #eef2f8 100%); border: 1px solid rgba(255,255,255,0.65);
+  box-shadow: 0 30px 60px -22px rgba(4,10,26,0.6), 0 10px 26px rgba(4,10,26,0.28);
+  transform: scale(0.97); transition: transform 0.7s var(--ease); }
+.hs__slide.is-active .hs__card { transform: scale(1); }
+.hs__card img { width: 100%; height: 100%; object-fit: contain; padding: 24px; }
+.hs__tag { position: absolute; top: 14px; left: 14px; z-index: 2; background: var(--navy); color: #fff;
+  font-size: 0.625rem; font-weight: 700; letter-spacing: 0.08em; padding: 6px 11px; border-radius: var(--r-pill); }
+.hs__price { position: absolute; right: -14px; bottom: -14px; background: var(--orange); color: var(--navy);
+  border-radius: var(--r-ctrl); padding: 10px 16px; box-shadow: var(--shadow-cta); text-align: center; }
+.hs__price-from { display: block; font-size: 0.5625rem; font-weight: 800; letter-spacing: 0.1em; }
+.hs__price-amt { font-family: var(--font-head); font-weight: 800; font-size: 1.5rem; line-height: 1; }
+
+/* nav — dots only; the hero auto-advances every 5s (arrows removed) */
+.hs__nav { position: relative; z-index: 2; display: flex; align-items: center; justify-content: space-between; padding: 0 var(--sp-5) clamp(22px,2.4vw,32px); }
+.hs__dots { display: flex; gap: 8px; }
+.hs__dot { position: relative; width: 30px; height: 5px; border-radius: var(--r-pill); background: rgba(255,255,255,0.22); overflow: hidden; }
+.hs__dot.is-active { width: 46px; background: rgba(255,255,255,0.3); }
+.hs__dot-fill { position: absolute; inset: 0; background: var(--orange); transform-origin: left; animation: hsFill linear forwards; }
+@keyframes hsFill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.hs__count { font-family: var(--font-head); font-weight: 700; font-size: 0.8125rem; color: var(--muted-navy); letter-spacing: 0.05em; }
+
+/* ═══ FACILITIES MARQUEE — premium seamless infinite ticker ═══════════════ */
+.marq { position: relative; }
+/* thin industrial hazard accent along the top edge — the strip's signature */
+.marq__hazard { height: 4px; background: repeating-linear-gradient(-45deg, var(--navy-deep) 0 12px, var(--orange) 12px 24px); opacity: 0.9; }
+.marq__viewport { overflow: hidden; padding: 15px 0;
+  background: linear-gradient(180deg, var(--navy-deep), #0c1830);
+  border-top: 1px solid var(--line-navy); border-bottom: 1px solid var(--line-navy); }
+/* two identical rows; translating exactly one row width (-50%) loops gaplessly */
+.marq__track { display: flex; width: max-content; will-change: transform; animation: marqScroll 48s linear infinite; }
+.marq:hover .marq__track, .marq:focus-within .marq__track { animation-play-state: paused; }
+@keyframes marqScroll { from { transform: translate3d(0,0,0); } to { transform: translate3d(-50%,0,0); } }
+
+.marq__row { display: flex; align-items: center; }
+/* each item is a quiet machined pill */
+.marq__item { display: inline-flex; align-items: center; gap: 10px; margin: 0 7px; padding: 9px 17px; white-space: nowrap;
+  background: rgba(255,255,255,0.045); border: 1px solid var(--line-navy); border-radius: var(--r-pill);
+  transition: background 0.16s, border-color 0.16s, transform 0.16s; }
+.marq__icn { display: grid; place-items: center; width: 26px; height: 26px; border-radius: var(--r-pill);
+  background: rgba(232,119,34,0.15); color: var(--orange); flex-shrink: 0; }
+.marq__label { color: var(--on-navy-2); font-size: 0.875rem; font-weight: 600; letter-spacing: 0.005em; }
+/* range chips are a mouse shortcut into their collection, with a warm hover */
+.marq__item--link { cursor: pointer; }
+.marq__item--link:hover { background: rgba(232,119,34,0.10); border-color: rgba(232,119,34,0.42); transform: translateY(-1px); }
+.marq__item--link:hover .marq__label { color: #fff; }
+.marq__item--link:hover .marq__icn { background: var(--orange); color: var(--navy); }
+
+/* ── responsive ──────────────────────────────────────────────────────── */
+@media (max-width: 920px){
+  .hs__stage { min-height: 0; }
+  .hs__slide { position: absolute; grid-template-columns: 1fr; gap: var(--sp-6); }
+  .hs__slide:not(.is-active) { display: none; }        /* avoid stacked-height on mobile */
+  .hs__slide.is-active { position: relative; }
+  .hs__figure { order: 2; max-width: 420px; }
+  .hs__price { right: 0; }
+}
+@media (prefers-reduced-motion: reduce){
+  /* the ticker stops and becomes a static, horizontally-scrollable row */
+  .marq__track { animation: none; }
+  .marq__viewport { overflow-x: auto; }
+  .marq__row + .marq__row { display: none; }
+  .hs__dot-fill { display: none; }
+  .hs__slide { transition: opacity 0.2s; transform: none; }
+}
