@@ -53,12 +53,15 @@ export default function Header() {
   const wishes = wishCount(useWishlist())
   const [q, setQ] = useState('')
   const [open, setOpen] = useState(null)   // label of the open dropdown, or null
-  const [stuck, setStuck] = useState(false) // header pinned to the top on scroll
+  const [stuck, setStuck] = useState(false) // nav pinned to the top on scroll
   const wasOpen = useRef(false)            // open state sampled before the press began
+  const navRef = useRef(null)
 
-  /* pin the header to the top once the page scrolls (adds elevation shadow) */
+  /* Like the live store: the nav sticks to the top while the promo strip and the
+     logo/search row scroll away above it. Flag when it's actually pinned (top ≤ 0)
+     so we can add an elevation shadow. */
   useEffect(() => {
-    const onScroll = () => setStuck(window.scrollY > 8)
+    const onScroll = () => { const t = navRef.current?.getBoundingClientRect().top; setStuck(t != null && t <= 0) }
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
@@ -84,7 +87,8 @@ export default function Header() {
   }
 
   return (
-    <header className={`hdr ${stuck ? 'is-stuck' : ''}`}>
+    <>
+      <header className="hdr">
       <div className="promo">
         <div className="wrap promo__row">
           <span>Fast Australia-wide delivery</span>
@@ -120,8 +124,9 @@ export default function Header() {
           </div>
         </div>
       </div>
+      </header>
 
-      <nav className="nav" aria-label="Primary">
+      <nav ref={navRef} className={`nav ${stuck ? 'is-stuck' : ''}`} aria-label="Primary">
         <div className="wrap nav__row">
           <ul className="nav__list">
             <li className="nav__item"><a href="#" className="nav__link" onClick={go('')}>Home</a></li>
@@ -154,6 +159,6 @@ export default function Header() {
           </ul>
         </div>
       </nav>
-    </header>
+    </>
   )
 }
