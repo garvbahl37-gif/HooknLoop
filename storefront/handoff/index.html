@@ -93,7 +93,7 @@
   <a href="#products">Products</a><a href="#why">Why HooknLoop</a><a href="#reviews">Reviews</a><a href="#footer">Footer</a>
   <a href="#cart">Cart</a><a href="#wishlist">Wishlist</a><a href="#chat">Chatbot</a><a href="#call">Call</a><a href="#motion">Animations</a>
   <a href="#home-structure" style="color:var(--orange-ink);font-weight:800;">Latest&nbsp;▸</a><a href="#onestop2">One-Stop</a><a href="#bestsellers2">Best&nbsp;Sellers</a><a href="#trusted">Trusted&nbsp;Supplier</a><a href="#cards2">Cards</a><a href="#pdp2">Product&nbsp;page</a><a href="#buymore">Buy&nbsp;More</a><a href="#related">Related</a><a href="#faqs">FAQs</a>
-  <a href="#topbar">Top&nbsp;bar</a><a href="#delivery">Delivery&nbsp;calc</a><a href="#pdpreviews">Reviews</a><a href="#descfeat">Description</a><a href="#policies">Policies</a>
+  <a href="#topbar">Top&nbsp;bar</a><a href="#delivery">Shipping&nbsp;calc</a><a href="#pdpreviews">Reviews</a><a href="#descfeat">Description</a><a href="#policies">Policies</a><a href="#browseall">Browse&nbsp;all</a><a href="#bulkpage">Bulk&nbsp;page</a>
 </div></nav>
 
 <!-- COLOUR -->
@@ -191,18 +191,23 @@
   <div class="changes"><h4>Changes to implement</h4>
     <ul>
       <li><b>Four product banners</b> — Main brand (“Hook &amp; Loop That Holds”) · Heavy-duty industrial · Premium quality · Bulk &amp; wholesale — each sending a different buyer to the right products.</li>
-      <li><b>Per-banner skeleton</b>: small pill → 5–6-word headline (white + orange accent) → one supporting line → benefit labels (on heavy-duty &amp; bulk) → primary + secondary CTA. Real product photography on the right; the bulk banner uses a warehouse / Australia-wide delivery photo.</li>
+      <li><b>Per-banner skeleton</b>: small pill → 5–6-word headline (white + orange accent) → one supporting line → benefit labels (on heavy-duty &amp; bulk) → primary + secondary CTA. Real product photography on the right; the bulk banner uses a custom <b>Australia-wide delivery-network render</b> (navy + orange, matches the palette).</li>
+      <li><b>Value-prop trust strip on every banner</b> — Fast Australia-wide delivery · Free shipping over $200 · Best price in Australia · ★ 5-star rated.</li>
       <li><b>Every button routes somewhere real</b> — no dead links (the old “Help me choose” finder button is gone).</li>
       <li><b>Motion</b>: auto-advance every <b>6s</b> (crossfade + product scale-in); progress dots with a fill + “01 / 04” counter; pause on hover/focus; reduced-motion pins slide 1. No prev/next arrows.</li>
       <li><b>Background</b>: layered navy radial gradients + fine SVG grain + a warm orange ambient glow; the product card floats on a soft blue spotlight with a hairline border and layered shadow.</li>
     </ul>
+  </div>
+  <div class="ba single" style="grid-template-columns:1fr 340px;margin-top:20px">
+    <figure class="new"><figcaption><span class="dot"></span>Bulk / wholesale banner (Australia-wide)</figcaption><img src="img/new-herobulk.jpg" alt="bulk banner with Australia delivery image"></figure>
+    <div class="changes"><h4>New</h4><ul><li>The bulk banner now uses the supplied <b>Australia delivery-network render</b> (navy + orange glowing routes); overlay tag reads “AUSTRALIA-WIDE”, reinforcing the “Order More. Save More.” message.</li></ul></div>
   </div>
 </div></section>
 
 <!-- PRODUCTS -->
 <section id="products"><div class="wrap">
   <h2><span class="n">6</span>Product display &amp; card animation</h2>
-  <p class="lead">Clean white cards on a tinted band; each with a save-for-later heart, a “complete set” price, and an add-to-cart that posts to a live cart.</p>
+  <p class="lead">Clean white cards on a tinted band; each with a save-for-later heart, the live store's real from-price, and an add-to-cart that posts to a live cart. Grid lists in the exact <b>/collections/all</b> order.</p>
   <div class="ba">
     <figure class="prev"><figcaption><span class="dot"></span>Previous (live store)</figcaption><img src="img/prev-products.jpg" alt="previous products"></figure>
     <figure class="new"><figcaption><span class="dot"></span>Latest (new design)</figcaption><img src="img/new-products.jpg" alt="new products"></figure>
@@ -213,9 +218,10 @@
       <h4>Card spec + animation</h4>
       <ul>
         <li>White card, <code>border-radius:16px</code>, 1px <code>--line-card</code> border, contained product image (<code>object-fit:contain</code>, padding).</li>
-        <li><b>Hover animation</b>: <code>translateY(-4px)</code> + elevated shadow, <code>transition:.16s/.2s</code>. Badge (e.g. “Best seller”) top-left.</li>
+        <li><b>Hover animation</b>: <code>translateY(-4px)</code> + elevated shadow, <code>transition:.16s/.2s</code>. Badge (e.g. “Best seller”) top-left (stays above the image, <code>z-index</code>).</li>
+        <li><b>Dynamic hover image-switch</b>: the 2nd product photo cross-fades in on hover (like the live store), with a subtle image zoom.</li>
         <li><b>Wishlist heart</b> top-right (localStorage toggle) — fills orange when saved.</li>
-        <li>Price shows <b>“Complete set from $X · incl. GST”</b> for hook+loop products; CTA “Add complete set”.</li>
+        <li>Price shows <b>“From $X · incl. GST”</b> — the live store's real starting price; CTA “Add to cart”.</li>
       </ul>
     </div>
   </div>
@@ -277,7 +283,7 @@
 <!-- CART -->
 <section id="cart"><div class="wrap">
   <h2><span class="n">10</span>Cart page</h2>
-  <p class="lead">Two columns: line items (with free-shipping progress bar) + a sticky order summary. Live totals from localStorage.</p>
+  <p class="lead">Two columns: line items + tools (discount code + shipping calculator) on the left, a sticky summary on the right — matching the live store's cart.</p>
   <div class="ba">
     <figure class="prev"><figcaption><span class="dot"></span>Previous (live store)</figcaption><img src="img/prev-cart.jpg" alt="previous cart"></figure>
     <figure class="new"><figcaption><span class="dot"></span>Latest (new design)</figcaption><img src="img/new-cart.jpg" alt="new cart"></figure>
@@ -285,10 +291,11 @@
   <div class="changes">
     <h4>Spec</h4>
     <ul>
-      <li><b>Free-shipping progress bar</b>: “You’re $X away from free shipping” with an orange fill (threshold $200).</li>
-      <li>Line items: media · info (name link + variant + remove) · qty stepper · line total.</li>
-      <li>Sticky summary card (sky tint): subtotal · shipping · total (incl. GST) · Checkout · trust list (GST invoice · 1–2 day dispatch · wrong-side sorted).</li>
-      <li>Empty state: icon + “Your cart is empty” + Shop-all CTA.</li>
+      <li><b>“Apply a discount code” bar</b> (input + Apply) — confirms the code will be applied at checkout.</li>
+      <li><b>“Estimate Shipping” calculator</b> (matches the live store): state dropdown + Postal/ZIP + orange “Shipping calculator” button → returns the store's real rates <b>Standard $12.00 / Express $18.00</b>, or Free Standard once the subtotal passes $200.</li>
+      <li><b>Free-shipping progress bar</b> in the summary: “$X AUD away from Free Standard Shipping” with an orange fill + a <b>truck knob</b> that rides the bar.</li>
+      <li>Summary: Subtotal (AUD) · “Tax included. Shipping calculated at checkout.” · Checkout · <b>Shop&nbsp;Pay / PayPal / G&nbsp;Pay</b> badges · trust list.</li>
+      <li>Line items: media · info (name link + variant + remove) · qty stepper · line total. Empty state: icon + “Your cart is empty” + Shop-all CTA.</li>
     </ul>
   </div>
 </div></section>
@@ -440,7 +447,8 @@
     <li><b>Brand label</b> “HOOKNLOOP” (blue, uppercase) above the product name.</li>
     <li><b>Real star rating + review count</b> under the name (burnt-ink stars, AA-safe); “No reviews yet” when the live listing has none.</li>
     <li><b>Correct product photo</b> per item — the earlier build reused generic shots for VELCRO, sew-on, velcoin and FR sew-on.</li>
-    <li>CTA reads <b>“Add to cart”</b> (was “Add complete set”).</li>
+    <li><b>Dynamic hover image-switch</b> — the 2nd product photo cross-fades in on hover (badge stays on top).</li>
+    <li><b>Accurate price</b> — shows the live store's real <b>“From $X”</b> starting price (no more doubled “complete set”); CTA reads <b>“Add to cart”</b>.</li>
   </ul></div>
 </div></section>
 
@@ -454,7 +462,8 @@
   </div>
   <div class="changes"><h4>What changed</h4><ul>
     <li><b>Brand + real rating + SKU</b> in the title block; <b>price-per-metre</b> beside the price.</li>
-    <li><b>Hook / Loop / Both selector</b> — the old plain dropdown is replaced with a premium 3-card segmented control; “Both — complete set” is pre-selected and badged “Recommended”, so no one accidentally buys a single half.</li>
+    <li><b>Opens at the store's from-price</b> — a single side (Hook) is pre-selected so the price matches the live store ($32.90 etc.), with “Both” kept as a badged “Recommended” upsell in the 3-card segmented control (replacing the old plain dropdown).</li>
+    <li><b>Auto-advancing gallery</b> — the product images auto-slide every 3.5s with a soft fade (pauses on hover, respects reduced-motion); thumbnails + click still work.</li>
     <li><b>Removed the buy-box trust list</b> — reassurance moved to the Buy More &amp; Save trust strip (§21).</li>
     <li>Correct gallery images + thumbnails per product.</li>
   </ul></div>
@@ -516,13 +525,14 @@
 </div></section>
 
 <section id="delivery"><div class="wrap">
-  <h2><span class="n">25</span>Estimated-delivery calculator <span class="tag tag--new">new</span></h2>
-  <p class="lead">On the product page — enter a postcode, get a live arrival estimate.</p>
+  <h2><span class="n">25</span>Shipping calculator — on the cart <span class="tag tag--redesign">matches store</span></h2>
+  <p class="lead">The live store's shipping estimate lives in the <b>cart</b> (“Shipping cost is based on weight… use the Shipping Calculator”), so it was moved there — off the product page — to mirror the original exactly.</p>
   <div class="ba single" style="grid-template-columns:520px 1fr">
-    <figure class="new"><figcaption><span class="dot"></span>Latest (new design)</figcaption><img src="img/new-delivery.jpg" alt="delivery calculator"></figure>
+    <figure class="new"><figcaption><span class="dot"></span>Cart “Estimate Shipping”</figcaption><img src="img/new-cart.jpg" alt="cart shipping calculator"></figure>
     <div class="changes"><h4>Spec</h4><ul>
-      <li>Postcode input → detects <b>metro vs regional</b> and shows a computed arrival window.</li>
-      <li>Based on the store's real shipping policy: dispatch 1–2 days + metro 2–5 / regional 3–7 business days. Dates computed live on the client.</li>
+      <li><b>“Estimate Shipping”</b>: state dropdown + <b>Postal/ZIP code</b> + orange <b>“Shipping calculator”</b> button — the same fields as the live store's cart estimator.</li>
+      <li>Returns the store's real rates: <b>Standard $12.00 / Express $18.00</b>, or <b>Free Standard</b> once the subtotal passes $200.</li>
+      <li>The earlier product-page postcode/date estimator was removed so the flow matches the original store.</li>
     </ul></div>
   </div>
 </div></section>
@@ -551,16 +561,45 @@
   </ul></div>
 </div></section>
 
-<section id="policies" style="border-bottom:0"><div class="wrap">
+<section id="policies"><div class="wrap">
   <h2><span class="n">28</span>Policy pages <span class="tag tag--redesign">premium</span></h2>
-  <p class="lead">Shipping &amp; Returns rebuilt premium, with the store's real policy content.</p>
+  <p class="lead">Shipping, Returns, Privacy &amp; <b>Terms</b> rebuilt premium, with the store's <b>verbatim</b> policy content.</p>
   <div class="ba">
     <figure class="new"><figcaption><span class="dot"></span>Shipping &amp; delivery</figcaption><img src="img/new-shipping.jpg" alt="shipping policy"></figure>
     <figure class="new"><figcaption><span class="dot"></span>Returns &amp; exchanges</figcaption><img src="img/new-returns.jpg" alt="returns policy"></figure>
   </div>
-  <div class="changes"><h4>Spec</h4><ul>
-    <li>Centred navy hero + highlight stat cards + icon-led section cards + a “Need a hand?” / other-policies sidebar.</li>
-    <li>Verbatim store content — shipping (1–2 day dispatch, free over $200, metro 2–5 / regional 3–7) and returns (14-day window, 2-step process, refunds). PDP links to both under the CTA.</li>
+  <div class="ba single" style="grid-template-columns:1fr 340px;margin-top:18px">
+    <figure class="new"><figcaption><span class="dot"></span>Terms &amp; conditions (exact store content)</figcaption><img src="img/new-terms.jpg" alt="terms and conditions"></figure>
+    <div class="changes"><h4>Spec</h4><ul>
+      <li>Centred navy hero + highlight stat cards + icon-led section cards + a “Need a hand?” / other-policies sidebar.</li>
+      <li><b>Verbatim store content</b> — shipping (1–2 day dispatch, free over $200, metro 2–5 / regional 3–7), returns (14-day window, 2-step, refunds), and <b>Terms</b> (General, Product information, Orders &amp; payments, Shipping &amp; delivery, Limitation of liability, Governing law — Victoria, AU).</li>
+    </ul></div>
+  </div>
+</div></section>
+
+<section id="browseall"><div class="wrap">
+  <h2><span class="n">29</span>Browse all products <span class="tag tag--redesign">matches store</span></h2>
+  <p class="lead">The shop/collection grid the live store lacks — now listing in the <b>exact same order</b> and with the <b>exact prices</b> as the original site.</p>
+  <div class="ba single" style="grid-template-columns:1fr">
+    <figure class="new"><figcaption><span class="dot"></span>Latest (new design)</figcaption><img src="img/new-products.jpg" alt="browse all products"></figure>
+  </div>
+  <div class="changes"><h4>What changed</h4><ul>
+    <li><b>Order matches <code>/collections/all</code></b>: Self-Adhesive Roll → Sew-On → Dots → Cable Straps → Double-Sided → Heavy-Duty Straps → Heavy-Duty Adhesive → Fabric → VELCRO® Roll → Velcoin → FR Adhesive → FR Sew-On.</li>
+    <li><b>Every price verified against the live store</b> — the real from-price per product ($32.90, $24.46, $66.74, $25.00, $21.66, $63.00, $55.43, $24.46, $84.99, $115.00, $55.43, $32.53).</li>
+    <li>Category + colour filters and Featured / price / A–Z sort; Featured follows the store order above.</li>
+  </ul></div>
+</div></section>
+
+<section id="bulkpage" style="border-bottom:0"><div class="wrap">
+  <h2><span class="n">30</span>Bulk &amp; trade page <span class="tag tag--redesign">rebuilt</span></h2>
+  <p class="lead">One focused trade section — a quote form plus a premium volume-savings ladder (the redundant second band was removed).</p>
+  <div class="ba single" style="grid-template-columns:1fr">
+    <figure class="new"><figcaption><span class="dot"></span>Latest (new design)</figcaption><img src="img/new-bulk.jpg" alt="bulk and trade page"></figure>
+  </div>
+  <div class="changes"><h4>What changed</h4><ul>
+    <li><b>Single section</b> — “Buy by the box. Priced for trade.” value points + a “Request a trade quote” form (company, ABN, quantity, product, email, phone).</li>
+    <li><b>“Bundle &amp; Save” savings ladder</b> — mirrors the product page's volume tiers <b>5% / 10% / 20% / 30% off per roll</b> (5+ / 10+ / 20+ / 50+), each with a growing orange savings meter and a navy “Best value” tier.</li>
+    <li><b>Cost-effective value strip</b>: free shipping over $200 · GST tax invoice + PO · any width, no minimums · 1–2 day dispatch.</li>
   </ul></div>
 </div></section>
 
