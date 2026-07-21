@@ -80,6 +80,13 @@
 .hs__feat b { display: block; font-family: var(--font-head); font-weight: 800; font-size: 1.05rem; color: var(--navy); letter-spacing: -0.01em; }
 .hs__feat span, .hs__statc span { display: block; font-size: 0.76rem; color: var(--muted-ink); margin-top: 2px; }
 .hs__statc b { display: block; font-family: var(--font-head); font-weight: 800; font-size: 1.6rem; color: var(--navy); letter-spacing: -0.01em; line-height: 1; }
+/* banner copy — supporting text, benefit labels, offer, photo card */
+.hs__sub { color: rgba(255,255,255,0.82); font-size: 1.05rem; line-height: 1.5; max-width: 46ch; margin: 6px 0 0; }
+.hs__labels { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.hs__label { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-size: 0.8rem; font-weight: 600; padding: 6px 12px; border-radius: var(--r-pill); }
+.hs__label svg { color: var(--orange-word); }
+.hs__offer { display: inline-flex; align-items: center; margin-top: 16px; background: rgba(232,119,34,0.16); border: 1px solid rgba(232,119,34,0.4); color: #ffd9b8; font-weight: 700; font-size: 0.9rem; padding: 8px 14px; border-radius: var(--r-pill); }
+.hs__card--photo img { object-fit: cover; padding: 0; }
 
 /* nav — dots only; the hero auto-advances every 5s (arrows removed) */
 .hs__nav { position: relative; z-index: 2; display: flex; align-items: center; justify-content: space-between; padding: 0 var(--sp-5) clamp(22px,2.4vw,32px); }

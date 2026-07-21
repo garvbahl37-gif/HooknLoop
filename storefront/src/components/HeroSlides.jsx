@@ -1,82 +1,57 @@
-/*  HeroSlides — a premium hero SLIDESHOW. Consistent copy skeleton (pill →
-    headline → bullets → proof → CTAs) but each slide swaps the right-hand
-    figure for a different story: the flagship range (product), the industries
-    we serve (companies), what the tape does (features), and our facility
-    (facilities). Auto-rotates every 6s; pauses on hover/focus; reduced-motion
-    pins slide 1; keyboard operable.                                             */
+/*  HeroSlides — a 4-banner hero slideshow, each sending a different buyer to the
+    right products: main brand, heavy-duty industrial, cable management, and bulk
+    & wholesale. Real product imagery on the right, copy on the left. Benefit
+    labels / offer line per banner. Every button routes somewhere real. Auto-
+    rotates every 6s; pauses on hover/focus; reduced-motion pins slide 1.         */
 import { useEffect, useRef, useState } from 'react'
 import { navigate } from '../lib/cart.js'
 
 const SLIDES = [
   {
-    key: 'range', pill: 'Australia’s Hook & Loop Specialist',
-    h1: 'Hook & Loop Tape', accent: 'Strips & Fasteners',
-    bullets: ['100,000+ metres in stock', 'Free shipping over $200', '1–2 day Australia-wide dispatch'],
-    cta: { label: 'Shop all products', to: 'collection' }, cta2: { label: 'Bulk & trade pricing', to: 'bulk' },
-    fig: { type: 'product', img: '/img/products/self-adhesive-roll-1.jpg', tag: 'BEST SELLER', priceFrom: '24.46' },
+    key: 'brand', pill: 'Premium Australian Supplier',
+    h1: 'Hook & Loop', accent: 'That Holds',
+    sub: 'Premium tapes, dots, straps and fasteners for home, trade and industry.',
+    cta: { label: 'Shop All Products', to: 'collection' }, cta2: { label: 'Find the Right Product', to: 'collection' },
+    fig: { img: '/img/products/self-adhesive-roll-1.jpg', tag: 'BEST SELLER', priceFrom: '24.46' },
   },
   {
-    key: 'companies', pill: 'Trusted by Australian Industry',
-    h1: 'From Workshops to', accent: 'Production Lines',
-    bullets: ['B2C & B2B accounts, Australia-wide', 'Volume pricing & net terms for trade', 'One supplier for every fastener'],
-    cta: { label: 'Open a trade account', to: 'bulk' }, cta2: { label: 'About HooknLoop', to: 'about' },
-    fig: { type: 'chips', title: 'Trusted across Australian industry', items: ['Manufacturing', 'Marine & auto', 'Signage & display', 'Events & AV', 'Upholstery', 'Trade & OEM'] },
+    key: 'heavy', pill: 'Built for Demanding Applications',
+    h1: 'Industrial Strength.', accent: 'Reliable Grip.',
+    sub: 'High-performance hook & loop for metal, plastic, equipment, vehicles and outdoor applications.',
+    labels: ['Heat Resistant', 'Moisture Resistant', 'Heavy-Duty Adhesive'],
+    cta: { label: 'Shop Heavy Duty', to: 'product/heavy-duty-adhesive' }, cta2: { label: 'View Industrial Solutions', to: 'collection/self-adhesive' },
+    fig: { img: '/img/products/heavy-duty-adhesive-1.png', tag: 'INDUSTRIAL', priceFrom: '55.43' },
   },
   {
-    key: 'features', pill: 'Built for Real-World Conditions',
-    h1: 'Grip That', accent: 'Holds Its Own',
-    bullets: ['Heat, weather & moisture resistant', 'Reusable up to 5,000 cycles', 'Genuine VELCRO® Brand stocked'],
-    cta: { label: 'Shop the range', to: 'collection' }, cta2: { label: 'Fire-retardant grades', to: 'collection/fire-retardant' },
-    fig: { type: 'feats', items: [['heat', '−10 to 70°C', 'Indoor & outdoor'], ['reuse', '5,000×', 'Reusable cycles'], ['shield', 'Genuine', 'VELCRO® Brand'], ['fire', 'FR grades', 'Trade & compliance']] },
+    key: 'premium', pill: 'Tested for Real-World Use',
+    h1: 'Premium Quality', accent: 'Products',
+    sub: 'Every product is chosen for material quality, performance testing and long-term reliability — genuine VELCRO® Brand and our own trade grades.',
+    labels: ['Performance tested', 'Genuine VELCRO®', 'Australian stocked'],
+    cta: { label: 'Shop the Range', to: 'collection' }, cta2: { label: 'Why Choose Us', to: 'about' },
+    fig: { img: '/img/products/velcro-brand-roll-1.webp', tag: 'GENUINE VELCRO®', priceFrom: '84.99' },
   },
   {
-    key: 'facilities', pill: 'Our Australian Facility',
-    h1: 'Everything Under', accent: 'One Roof',
-    bullets: ['100,000+ metres held in stock', 'Custom manufacturing on request', 'GST tax invoice on every order'],
-    cta: { label: 'Get trade pricing', to: 'bulk' }, cta2: { label: 'Browse all products', to: 'collection' },
-    fig: { type: 'stats', items: [['100,000m+', 'metres in stock'], ['1–2 day', 'AU-wide dispatch'], ['12', 'product ranges'], ['4.87★', 'from 15 reviews']] },
+    key: 'bulk', pill: 'Trade, Commercial & Wholesale',
+    h1: 'Order More.', accent: 'Save More.',
+    sub: 'Bulk pricing, reliable stock, custom widths and tailored fastening solutions for Australian businesses.',
+    labels: ['Custom widths', 'Volume pricing', 'Priority dispatch'],
+    cta: { label: 'Request a Bulk Quote', to: 'bulk' }, cta2: { label: 'Explore Bulk Orders', to: 'bulk' },
+    fig: { img: '/img/b2b-hero.jpg', tag: 'WHOLESALE', photo: true },
   },
 ]
 
 const DUR = 6000
 
-function HIcon({ n }) {
-  const c = { width: 20, height: 20, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.9, strokeLinecap: 'round', strokeLinejoin: 'round' }
-  const m = {
-    heat: <svg {...c}><path d="M14 14V5a2 2 0 0 0-4 0v9a4 4 0 1 0 4 0Z" /></svg>,
-    reuse: <svg {...c}><path d="M3 12a9 9 0 0 1 15-6.7L21 8M21 3v5h-5M21 12a9 9 0 0 1-15 6.7L3 16M3 21v-5h5" /></svg>,
-    shield: <svg {...c}><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3Z" /><path d="m9 12 2 2 4-4" /></svg>,
-    fire: <svg {...c}><path d="M12 3s5 4 5 9a5 5 0 0 1-10 0c0-2 1-3 1-3s3 1 4-6Z" /></svg>,
-  }
-  return m[n]
-}
-
 function Figure({ fig, eager }) {
-  if (fig.type === 'product') return (
+  return (
     <div className="hs__figure">
-      <div className="hs__card"><span className="hs__tag">{fig.tag}</span><img src={fig.img} alt="" loading={eager ? 'eager' : 'lazy'} draggable="false" /></div>
+      <div className={`hs__card ${fig.photo ? 'hs__card--photo' : ''}`}>
+        <span className="hs__tag">{fig.tag}</span>
+        <img src={fig.img} alt="" loading={eager ? 'eager' : 'lazy'} draggable="false" />
+      </div>
       {fig.priceFrom && <div className="hs__price"><span className="hs__price-from">FROM</span><span className="hs__price-amt">${fig.priceFrom}</span></div>}
     </div>
   )
-  if (fig.type === 'chips') return (
-    <div className="hs__figure"><div className="hs__panel">
-      <span className="hs__panel-title">{fig.title}</span>
-      <div className="hs__chips">{fig.items.map((t) => <span key={t} className="hs__chip"><i aria-hidden="true" />{t}</span>)}</div>
-    </div></div>
-  )
-  if (fig.type === 'feats') return (
-    <div className="hs__figure"><div className="hs__panel hs__panel--grid">
-      {fig.items.map(([icn, big, small]) => (
-        <div key={big} className="hs__feat"><span className="hs__feat-ic"><HIcon n={icn} /></span><b>{big}</b><span>{small}</span></div>
-      ))}
-    </div></div>
-  )
-  if (fig.type === 'stats') return (
-    <div className="hs__figure"><div className="hs__panel hs__panel--grid">
-      {fig.items.map(([big, small]) => <div key={small} className="hs__statc"><b>{big}</b><span>{small}</span></div>)}
-    </div></div>
-  )
-  return null
 }
 
 export default function HeroSlides() {
@@ -106,23 +81,20 @@ export default function HeroSlides() {
             <div className="hs__copy">
               <span className="hs__pill">{s.pill}</span>
               <h1 className="hs__title">{s.h1}<br /><span className="hs__accent">{s.accent}</span></h1>
-              <ul className="hs__bullets">
-                {s.bullets.map((b) => (
-                  <li key={b} className="hs__bullet">
-                    <span className="hs__check" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.4" strokeLinecap="round" strokeLinejoin="round"><path d="m5 13 4 4L19 7" /></svg></span>
-                    {b}
-                  </li>
-                ))}
-              </ul>
-              <div className="hs__proof">
-                <span className="hs__stars2" aria-hidden="true">★★★★★</span>
-                <span><b>4.87</b> from 15 reviews</span>
-                <span className="hs__proof-sep" aria-hidden="true">·</span>
-                <span>Free shipping over $200</span>
-              </div>
+              <p className="hs__sub">{s.sub}</p>
+              {s.labels && (
+                <div className="hs__labels">
+                  {s.labels.map((l) => (
+                    <span key={l} className="hs__label">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.4" strokeLinecap="round" strokeLinejoin="round"><path d="m5 13 4 4L19 7" /></svg>{l}
+                    </span>
+                  ))}
+                </div>
+              )}
+              {s.offer && <div className="hs__offer">{s.offer}</div>}
               <div className="hs__cta">
                 <a href="#" className="btn btn--primary" onClick={nav(s.cta.to)}>{s.cta.label}<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
-                <a href="#" className="btn btn--ghost" onClick={nav(s.cta2.to)}>{s.cta2.label}</a>
+                {s.cta2 && <a href="#" className="btn btn--ghost" onClick={nav(s.cta2.to)}>{s.cta2.label}</a>}
               </div>
             </div>
 

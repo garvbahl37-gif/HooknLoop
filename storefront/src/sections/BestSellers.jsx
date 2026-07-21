@@ -9,13 +9,11 @@ export default function BestSellers() {
   return (
     <section className="bs" aria-labelledby="bs-h">
       <div className="wrap">
-        <div className="sec-head sec-head--row">
-          <div>
-            <span className="sec-eyebrow">Shop the range</span>
-            <h2 id="bs-h" className="sec-h2">Best sellers &amp; offers</h2>
-            <p className="sec-sub">Our most-ordered hook &amp; loop — dispatched Australia-wide, with volume discounts on bulk orders.</p>
-          </div>
-          <a href="#" className="bs__all" onClick={(e) => { e.preventDefault(); navigate('collection') }}>Shop all products →</a>
+        <div className="sec-head">
+          <span className="sec-eyebrow">Shop the range</span>
+          <h2 id="bs-h" className="sec-h2">Best sellers &amp; offers</h2>
+          <p className="sec-sub">Our most-ordered hook &amp; loop — dispatched Australia-wide, with volume discounts on bulk orders.</p>
+          <a href="#" className="bs__all" style={{ display: 'inline-block', marginTop: 8 }} onClick={(e) => { e.preventDefault(); navigate('collection') }}>Shop all products →</a>
         </div>
         <div className="bs__grid">
           {PRODUCTS.map((p) => <ProductCard key={p.handle} p={p} />)}
