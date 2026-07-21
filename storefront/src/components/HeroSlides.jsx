@@ -8,7 +8,7 @@ const SLIDES = [
   {
     key: 'range', pill: 'Australia’s Hook & Loop Specialist',
     h1: 'Hook & Loop Tape', accent: 'Strips & Fasteners',
-    bullets: ['100,000+ metres in stock', 'Cut to any length', '1–2 day Australia-wide dispatch'],
+    bullets: ['100,000+ metres in stock', 'Free shipping over $200', '1–2 day Australia-wide dispatch'],
     cta: 'Shop all products', img: '/img/p-hook.jpg', tag: 'BEST SELLER', priceFrom: '24.46',
   },
   {

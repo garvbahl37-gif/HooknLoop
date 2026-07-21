@@ -152,7 +152,7 @@ const WHY = [
   ['truck', 'Fast Australian shipping', 'Speedy delivery Australia-wide, dispatched in 1–2 business days.'],
   ['lock', 'Secure payment', 'Safe checkout with SSL encryption — Shop Pay, PayPal, Visa & Amex.'],
   ['trade', 'Bulk & trade pricing', 'Volume breaks and account terms for tradies and OEMs.'],
-  ['cut', 'Cut to any length', 'Buy hook &amp; loop tape cut to the exact length you need — any width, no minimums, trimmed before dispatch.'],
+  ['stock', 'Huge range in stock', 'Twelve product ranges held in our Australian warehouse — self-adhesive, sew-on, dots, straps, double-sided and genuine VELCRO® Brand.'],
   ['invoice', 'GST tax invoice', 'A compliant Australian tax invoice on every order. ABN 93 878 995 217.'],
   ['pin', 'Australian owned', 'Australian warehouse, dispatched Australia-wide in 1–2 business days.'],
 ]

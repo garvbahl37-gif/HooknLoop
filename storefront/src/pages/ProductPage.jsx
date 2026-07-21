@@ -206,7 +206,7 @@ export default function ProductPage({ handle }) {
               {copy.heading && <p className="pdp__desc-lead">{copy.heading}</p>}
               {copy.paras.length
                 ? copy.paras.map((t, i) => <p key={i}>{t}</p>)
-                : <p>A versatile {p.name.toLowerCase()} from the HooknLoop range. {p.spec}. Cut it to any length — one roll covers dozens of jobs.{p.hookLoop ? ' Choose Both to get a working fastener, or a single side to match tape you already own.' : ''}</p>}
+                : <p>A versatile {p.name.toLowerCase()} from the HooknLoop range. {p.spec}. One roll covers dozens of jobs.{p.hookLoop ? ' Choose Both to get a working fastener, or a single side to match tape you already own.' : ''}</p>}
             </section>
             {copy.features.length > 0 && (
               <section className="pdp__block">

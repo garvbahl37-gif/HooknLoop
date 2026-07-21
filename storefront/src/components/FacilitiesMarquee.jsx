@@ -6,7 +6,6 @@
 import { navigate } from '../lib/cart.js'
 
 const CAP = [
-  { icon: 'cut',     label: 'Cut to any length' },
   { icon: 'stock',   label: '100,000 m+ in stock' },
   { icon: 'trade',   label: 'Bulk & trade pricing' },
   { icon: 'fire',    label: 'Fire-retardant grades' },

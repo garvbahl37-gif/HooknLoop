@@ -27,7 +27,7 @@ export default function CollectionPage({ slug }) {
         <div>
           <span className="sec-eyebrow">Shop</span>
           <h1 className="page__h1">{cat === 'all' ? 'All hook & loop' : catName(cat)}</h1>
-          <p className="page__lead">{items.length} product{items.length !== 1 ? 's' : ''} · cut to any length · dispatched 1–2 days Australia-wide</p>
+          <p className="page__lead">{items.length} product{items.length !== 1 ? 's' : ''} · dispatched 1–2 days Australia-wide</p>
         </div>
         <label className="coll__sort">
           <span>Sort</span>
