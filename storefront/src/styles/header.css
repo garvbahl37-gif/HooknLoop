@@ -49,8 +49,8 @@
 .nav.is-stuck { box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 10px 28px rgba(12,30,80,0.24); }
 .nav__row { display: flex; align-items: center; justify-content: center; height: 54px; }
 .nav__list { display: flex; align-items: center; justify-content: center; gap: 4px; }
-.nav__link { display: inline-flex; align-items: center; gap: 6px; height: 38px; padding: 0 20px; border-radius: var(--r-pill);
-  color: rgba(255,255,255,0.9); font-size: 0.9rem; font-weight: 600; transition: background 0.15s, color 0.15s; }
+.nav__link { display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 22px; border-radius: var(--r-pill);
+  color: rgba(255,255,255,0.9); font-size: 1rem; font-weight: 600; transition: background 0.15s, color 0.15s; }
 .nav__link:hover { color: #fff; background: rgba(255,255,255,0.16); }
 .nav__link.is-active { background: rgba(255,255,255,0.2); color: #fff; }
 /* focus ring must be visible on royal blue — white, not the default blue */
