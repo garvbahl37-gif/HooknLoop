@@ -57,26 +57,24 @@ section { scroll-margin-top: 80px; }
 .os__tile--b { grid-column: 7 / 13; grid-row: 1; }        /* wide */
 .os__tile--c { grid-column: 7 / 10; grid-row: 2; }
 .os__tile--d { grid-column: 10 / 13; grid-row: 2; }
-.os__tile { position: relative; overflow: hidden; border-radius: var(--r-card); display: block; background: var(--navy);
-  transition: transform 0.18s var(--ease); }
-.os__tile img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s var(--ease); }
-.os__tile:hover img { transform: scale(1.06); }
-.os__scrim { display: none; }
-/* clean solid caption bar — no gradient/fade over the photo, so the image stays untouched */
-.os__body { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; padding: 14px clamp(16px,1.6vw,22px);
-  display: flex; align-items: center; justify-content: space-between; gap: 12px;
-  background: var(--navy); border-top: 1px solid rgba(255,255,255,0.08); }
-.os__meta { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-.os__title { color: #fff; font-family: var(--font-head); font-weight: 800; letter-spacing: -0.01em; line-height: 1.15;
-  font-size: clamp(1.02rem,1.5vw,1.42rem); }
-.os__sub { color: rgba(255,255,255,0.72); font-size: 0.84rem; }
-/* narrow tiles: stack meta above the button so 2-line titles never crowd it */
-.os__tile--c .os__body, .os__tile--d .os__body { flex-direction: column; align-items: flex-start; gap: 10px; }
-.os__tile--c .os__title, .os__tile--d .os__title { font-size: clamp(1rem,1.15vw,1.16rem); }
-.os__shop { flex: none; display: inline-flex; align-items: center; gap: 7px; background: var(--orange); color: var(--cta-text);
-  font-weight: 700; font-size: 0.82rem; padding: 9px 15px; border-radius: var(--r-ctrl); box-shadow: var(--shadow-cta);
-  white-space: nowrap; transition: background 0.15s, transform 0.15s; }
-.os__tile:hover .os__shop { background: var(--orange-word); transform: translateY(-2px); }
+.os__tile { position: relative; overflow: hidden; border-radius: var(--r-card); display: flex; flex-direction: column;
+  background: #fff; border: 1px solid var(--line-card); transition: transform 0.18s var(--ease), border-color 0.18s var(--ease); }
+.os__tile:hover { transform: translateY(-3px); border-color: #d3dcec; }
+.os__media { position: relative; flex: 1 1 auto; min-height: 0; overflow: hidden; background: #f2f5fa; }
+.os__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s var(--ease); }
+.os__tile:hover .os__media img { transform: scale(1.05); }
+/* label sits on a plain white footer under the photo — the image is never covered */
+.os__body { flex: none; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 13px clamp(14px,1.4vw,18px); }
+.os__meta { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.os__title { color: var(--ink); font-family: var(--font-head); font-weight: 800; letter-spacing: -0.01em; line-height: 1.2;
+  font-size: clamp(0.98rem,1.2vw,1.16rem); }
+.os__sub { color: var(--muted-ink); font-size: 0.8rem; }
+/* narrow tiles: stack the link under the label so long titles never crowd it */
+.os__tile--c .os__body, .os__tile--d .os__body { flex-direction: column; align-items: flex-start; gap: 7px; }
+.os__shop { flex: none; display: inline-flex; align-items: center; gap: 5px; color: var(--orange-ink);
+  font-weight: 700; font-size: 0.84rem; white-space: nowrap; transition: gap 0.15s var(--ease); }
+.os__tile:hover .os__shop { gap: 9px; }
 @media (max-width:900px){
   .os__grid { grid-template-columns: 1fr 1fr; grid-template-rows: none; gap: 14px; }
   .os__tile { grid-column: auto; grid-row: auto; aspect-ratio: 4/3; }
