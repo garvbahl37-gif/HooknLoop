@@ -8,12 +8,17 @@ import { navigate } from '../lib/cart.js'
 
 const SLIDES = [
   {
+    /* content mirrors the live store's hero banner */
     key: 'brand', pill: 'Premium Australian Supplier',
-    h1: 'Hook & Loop', accent: 'That Holds',
-    sub: 'Premium tapes, dots, straps and fasteners for home, trade and industry.',
-    spec: ['Peel & stick', '20–50 mm', 'AU stock'],
+    h1: 'Hook and Loop Tape', accent: 'Strips & Fasteners',
+    bullets: [
+      'Trusted Australian distributor of premium products',
+      '100,000+ metres in stock for fast delivery',
+      'Custom cutting & manufacturing available',
+      'Fast Australia-wide shipping',
+    ],
     cta: { label: 'Shop All Products', to: 'collection' }, cta2: { label: 'Find the Right Product', to: 'collection' },
-    fig: { img: '/img/products/self-adhesive-roll-1.jpg', tag: 'BEST SELLER', gauge: '25', priceFrom: '24.46' },
+    fig: { img: '/img/products/self-adhesive-roll-1.jpg', tag: 'BEST SELLER', priceFrom: '24.46' },
   },
   {
     key: 'heavy', pill: 'Built for Demanding Applications',
@@ -90,13 +95,25 @@ export default function HeroSlides() {
             <div className="hs__copy">
               <span className="hs__eyebrow"><i className="hs__eyebrow-line" aria-hidden="true" />{s.pill}</span>
               <h1 className="hs__title">{s.h1}<br /><span className="hs__accent">{s.accent}</span></h1>
-              <p className="hs__sub">{s.sub}</p>
-              {s.spec && (
-                <div className="hs__spec" aria-hidden="true">
-                  {s.spec.map((x, k) => (
-                    <span key={x} className="hs__spec-part">{k > 0 && <span className="hs__spec-div">/</span>}{x}</span>
+              {s.bullets ? (
+                <ul className="hs__bullets">
+                  {s.bullets.map((t) => (
+                    <li key={t} className="hs__bullet">
+                      <span className="hs__check" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round"><path d="m5 13 4 4L19 7" /></svg></span>{t}
+                    </li>
                   ))}
-                </div>
+                </ul>
+              ) : (
+                <>
+                  <p className="hs__sub">{s.sub}</p>
+                  {s.spec && (
+                    <div className="hs__spec" aria-hidden="true">
+                      {s.spec.map((x, k) => (
+                        <span key={x} className="hs__spec-part">{k > 0 && <span className="hs__spec-div">/</span>}{x}</span>
+                      ))}
+                    </div>
+                  )}
+                </>
               )}
               <div className="hs__cta">
                 <a href="#" className="btn btn--primary" onClick={nav(s.cta.to)}>{s.cta.label}<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>

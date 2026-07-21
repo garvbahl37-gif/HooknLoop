@@ -45,8 +45,8 @@
   font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.05em; text-transform: uppercase; }
 .hs__spec-part { display: inline-flex; align-items: center; gap: 7px; color: rgba(255,255,255,0.84); }
 .hs__spec-div { color: var(--orange-word); font-weight: 600; }
-.hs__bullets { display: grid; gap: 12px; margin-bottom: var(--sp-5); }
-.hs__bullet { display: flex; align-items: center; gap: 12px; color: var(--on-navy-2); font-size: 1.0625rem; }
+.hs__bullets { list-style: none; padding: 0; display: grid; gap: 13px; margin: 24px 0 0; }
+.hs__bullet { display: flex; align-items: center; gap: 12px; color: rgba(255,255,255,0.9); font-size: 1.02rem; }
 .hs__check { flex-shrink: 0; width: 26px; height: 26px; border-radius: var(--r-pill); display: grid; place-items: center;
   background: rgba(232,119,34,0.16); color: var(--orange); }
 /* above-the-fold social proof — the conversion element a high-volume store keeps in-hero */
