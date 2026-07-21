@@ -1,9 +1,11 @@
-/*  BulkOrder — a premium "create a bulk order" section for the Bulk page:
-    how-it-works steps + why-bulk perks on the left, a working bulk-quote request
-    form on the right, and an industries-served strip. Content mirrors the live
-    store's bulk-orders page. Form submits locally (wire to your backend / email). */
+/*  BulkOrder — a premium dark "create a bulk order" band for the Bulk page.
+    Distinct from the light page around it (echoes the hero): eyebrow + headline
+    + trust stats + how-it-works + why-bulk on the left, an elevated white
+    quote-request form card on the right, and an industries-served strip.
+    Content mirrors the live store's bulk-orders page. Form submits locally.     */
 import { useState } from 'react'
 
+const STATS = [['24 hr', 'Quote turnaround'], ['Up to 30%', 'Volume savings'], ['Australia-wide', 'Priority dispatch']]
 const STEPS = [
   ['Share your specs', 'Product type, width and quantity you need.'],
   ['One-time or recurring', 'A single run, or an ongoing monthly supply agreement.'],
@@ -18,21 +20,26 @@ export default function BulkOrder() {
   const [sent, setSent] = useState(false)
   return (
     <section className="bo" aria-labelledby="bo-h">
-      <div className="wrap">
-        <div className="sec-head">
-          <span className="sec-eyebrow">Bulk order support</span>
-          <h2 id="bo-h" className="sec-h2">Create a bulk order</h2>
-          <p className="sec-sub">Tell us what you need and we’ll send a customised quote — multi-roll discounts, carton pricing, or an ongoing monthly supply agreement.</p>
-        </div>
-
+      <div className="wrap bo__inner">
         <div className="bo__grid">
           <div className="bo__info">
+            <span className="bo__eyebrow">Bulk &amp; wholesale</span>
+            <h2 id="bo-h" className="bo__title">Create a bulk order</h2>
+            <p className="bo__lead">Tell us what you need and we’ll send a customised quote — multi-roll discounts, carton pricing, or an ongoing monthly supply agreement.</p>
+
+            <div className="bo__stats">
+              {STATS.map(([v, l]) => (
+                <div key={l} className="bo__stat"><b>{v}</b><span>{l}</span></div>
+              ))}
+            </div>
+
             <h3 className="bo__h3">How it works</h3>
             <ol className="bo__steps">
               {STEPS.map(([t, d], i) => (
                 <li key={t} className="bo__step"><span className="bo__step-n">{i + 1}</span><div><b>{t}</b><span>{d}</span></div></li>
               ))}
             </ol>
+
             <h3 className="bo__h3 bo__h3--gap">Why buy in bulk</h3>
             <ul className="bo__perks">{PERKS.map((p) => <li key={p}>{p}</li>)}</ul>
           </div>
@@ -42,7 +49,8 @@ export default function BulkOrder() {
               <div className="form__ok"><b>Bulk quote requested</b><span>Thanks — our team will send your customised quote within 1 business day.</span></div>
             ) : (
               <form onSubmit={(e) => { e.preventDefault(); setSent(true) }}>
-                <h3 className="bo__h3">Request a bulk quote</h3>
+                <h3 className="bo__form-h">Request a bulk quote</h3>
+                <p className="bo__form-sub">No obligation · we reply within 24 hours</p>
                 <label className="fld"><span>Product</span>
                   <select required defaultValue=""><option value="" disabled>Select a product…</option>{PROD.map((p) => <option key={p}>{p}</option>)}</select>
                 </label>

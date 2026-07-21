@@ -28,7 +28,10 @@ export default function ProductCard({ p }) {
     <article className="pc">
       <a href="#" className="pc__media" onClick={go} aria-label={`View ${p.name}`}>
         {p.badge && <span className="pc__badge">{p.badge}</span>}
-        <img src={p.img} alt={p.name} loading="lazy" />
+        <img className="pc__img" src={p.img} alt={p.name} loading="lazy" />
+        {p.gallery?.[1] && p.gallery[1] !== p.img && (
+          <img className="pc__img pc__img--alt" src={p.gallery[1]} alt="" aria-hidden="true" loading="lazy" />
+        )}
       </a>
       <button className={`pc__wish ${wished ? 'is-on' : ''}`} onClick={() => toggleWish(p.handle)}
               aria-pressed={wished} aria-label={wished ? `Remove ${p.name} from wishlist` : `Save ${p.name} to wishlist`}>

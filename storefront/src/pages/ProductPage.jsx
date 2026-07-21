@@ -9,7 +9,6 @@ import { useInView } from '../lib/useInView.js'
 import Stars from '../components/Stars.jsx'
 import ProductCard from '../components/ProductCard.jsx'
 import ProductReviews from '../components/ProductReviews.jsx'
-import DeliveryEstimator from '../components/DeliveryEstimator.jsx'
 
 /*  Volume pricing mirrors the live store's "Buy More & Save" ladder. */
 const QTY_BREAKS = [['Buy 5+', 'Save 5%'], ['Buy 10+', 'Save 10%'], ['Buy 20+', 'Save 20%'], ['Buy 50+', 'Save 30%']]
@@ -162,8 +161,6 @@ export default function ProductPage({ handle }) {
             <button className={`btn btn--primary pdp__add ${added ? 'is-added' : ''}`} onClick={add}>{added ? '✓ Added to cart' : <>Add to cart — ${price.toFixed(2)}</>}</button>
             <button className="pdp__buynow" onClick={() => { add(); navigate('cart') }}>Buy it now</button>
           </div>
-
-          <DeliveryEstimator />
 
           <div className="pdp__policies">
             <a href="#" onClick={(e) => { e.preventDefault(); navigate('shipping') }}><Ico n="truck" />Shipping</a>

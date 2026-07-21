@@ -161,11 +161,15 @@ const POLICIES = {
   },
   terms: {
     eyebrow: 'The fine print', title: 'Terms & conditions',
-    lead: 'The basics that apply when you order from HooknLoop.',
+    lead: 'By ordering on our site and placing an order, you accept the following terms and conditions.',
+    highlights: [['AUD', 'All prices quoted'], ['Secure', 'Payments processed'], ['Victoria', 'Governing law']],
     sections: [
-      ['doc', 'Ordering', 'Prices are in AUD and include GST. A compliant GST tax invoice is supplied with every order (ABN 93 878 995 217).'],
-      ['shield', 'Trademarks', 'VELCRO® is a registered trademark of Velcro IP Holdings LLC. HooknLoop stocks genuine VELCRO® Brand product; all other products are our own brand.'],
-      ['alert', 'Product information', 'Specifications are provided from the manufacturer’s technical data sheet where available; fire-retardant ratings are supplied on request.'],
+      ['doc', 'General', null, ['Every price is quoted in Australian Dollars (AUD).', 'Prices and the availability of products might vary without prior notice.', 'We may deny service to anyone at our own discretion.']],
+      ['box', 'Product information', 'We attempt to be precise in product descriptions and images. There might, however, be slight differences because of manufacturing or display differences.'],
+      ['card', 'Orders & payments', null, ['When payment is made successfully, the orders are confirmed.', 'The payments are safely processed through reliable payment services.']],
+      ['truck', 'Shipping & delivery', 'Delivery times are approximations. HooknLoop.com.au does not deal with courier delays or external delays.'],
+      ['shield', 'Limitation of liability', 'HooknLoop.com.au does not have to incur indirect or consequential losses caused by the usage of our products or website.'],
+      ['pin', 'Governing law', 'Such terms are governed by the laws of Victoria, Australia.'],
     ],
   },
 }
