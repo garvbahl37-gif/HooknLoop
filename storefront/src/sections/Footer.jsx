@@ -11,6 +11,19 @@ const HELP = [['Browse all products', 'collection'], ['Bulk & trade quotes', 'bu
 
 export default function Footer() {
   const [sent, setSent] = useState(false)
+  const [error, setError] = useState('')
+  async function handleSubscribe(e) {
+    e.preventDefault()
+    setError('')
+    const email = e.target.querySelector('input[type=email]').value
+    try {
+      const base = import.meta.env.VITE_NEWSLETTER_API || ''
+      const r = await fetch(`${base}/api/subscribe`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }),
+      })
+      if (r.ok) setSent(true); else setError('Please check your email and try again.')
+    } catch { setError('Something went wrong — please try again.') }
+  }
   return (
     <footer className="ft">
       {/*  Four columns, one heading each. The newsletter lives inside the footer as
@@ -37,15 +50,18 @@ export default function Footer() {
 
         <div className="ft__col ft__col--connect">
           <h4>Stay in touch</h4>
-          <form className="ft__signup" onSubmit={(e) => { e.preventDefault(); setSent(true) }}>
+          <form className="ft__signup" onSubmit={handleSubscribe}>
             <p className="ft__signup-blurb">Trade tips &amp; bulk price drops. No spam — unsubscribe any time.</p>
             {sent ? (
               <p className="ft__signup-ok">✓ You’re on the list — check your inbox.</p>
             ) : (
-              <div className="ft__signup-row">
-                <input type="email" required placeholder="you@company.com.au" aria-label="Email address" />
-                <button type="submit">Notify me</button>
-              </div>
+              <>
+                <div className="ft__signup-row">
+                  <input type="email" required placeholder="you@company.com.au" aria-label="Email address" />
+                  <button type="submit">Notify me</button>
+                </div>
+                {error && <p className="ft__signup-err" role="alert">{error}</p>}
+              </>
             )}
           </form>
           <div className="ft__social" aria-label="Social links">

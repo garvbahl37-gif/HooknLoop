@@ -1,0 +1,22 @@
+{
+  "name": "hooknloop-newsletter",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev -p 3100",
+    "build": "next build",
+    "start": "next start -p 3100",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "next": "^15.1.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "resend": "^4.0.0",
+    "@vercel/kv": "^3.0.0",
+    "papaparse": "^5.4.1"
+  },
+  "devDependencies": {
+    "vitest": "^2.1.0"
+  }
+}

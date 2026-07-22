@@ -406,6 +406,7 @@ section { scroll-margin-top: 80px; }
 .ft__signup-row button { background: var(--orange); color: var(--cta-text); font-weight: 700; font-size: 0.85rem; padding: 0 20px; min-height: 46px; border-radius: var(--r-ctrl); white-space: nowrap; transition: background 0.15s; }
 .ft__signup-row button:hover { background: var(--orange-word); }
 .ft__signup-ok { color: #7fd6a0; font-size: 0.9rem; font-weight: 600; }
+.ft__signup-err { color: #f3b0a0; font-size: 0.82rem; margin-top: 8px; }
 
 /* ═══ RESPONSIVE ══════════════════════════════════════════════════════ */
 @media (max-width: 1000px){
