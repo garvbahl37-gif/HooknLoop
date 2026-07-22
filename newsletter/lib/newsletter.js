@@ -189,7 +189,7 @@ export function render(fields, products) {
         <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0"><tr>
           <td align="center" style="border-top:1px solid #e9e4db;padding-top:26px;">
             <div style="font-family:${AR};font-size:14px;color:#6a7180;margin-bottom:15px;">Need bulk quantities or a trade account?</div>
-            ${button('Get a bulk quote', `${SHOP_BASE}/pages/bulk`, { solid: false })}
+            ${button('Get a bulk quote', `${SHOP_BASE}/pages/bulk-orders`, { solid: false })}
           </td>
         </tr></table>
       </td></tr>
@@ -204,7 +204,7 @@ export function render(fields, products) {
         <table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td style="font-family:${AR};font-size:12px;font-weight:700;padding-top:15px;border-top:1px solid #1c3358;">
           <a href="${SHOP_BASE}/collections/all" style="color:#e8590c;text-decoration:none;">Shop all</a>
           <span style="color:#3a4d6b;">&nbsp;&nbsp;&middot;&nbsp;&nbsp;</span>
-          <a href="${SHOP_BASE}/pages/bulk" style="color:#c7d3e6;text-decoration:none;">Bulk quotes</a>
+          <a href="${SHOP_BASE}/pages/bulk-orders" style="color:#c7d3e6;text-decoration:none;">Bulk quotes</a>
           <span style="color:#3a4d6b;">&nbsp;&nbsp;&middot;&nbsp;&nbsp;</span>
           <a href="${SHOP_BASE}/pages/contact" style="color:#c7d3e6;text-decoration:none;">Contact</a>
         </td></tr></table>
@@ -230,7 +230,7 @@ export function render(fields, products) {
     `SHOP THE RANGE\n${range.map(p => `${p.title} — from $${p.price} — ${p.url}`).join('\n')}\n\n` +
     `BUILT FOR YOUR TRADE\n${applications}\n\n` +
     `TRADE TIP\n${tip}\n\n` +
-    `Bulk quotes & trade accounts: ${SHOP_BASE}/pages/bulk\n\n` +
+    `Bulk quotes & trade accounts: ${SHOP_BASE}/pages/bulk-orders\n\n` +
     `HooknLoop · 1300 183 481 · Australia-wide dispatch · ABN 93 878 995 217\n` +
     `Unsubscribe: {{unsubscribe}}`
 
