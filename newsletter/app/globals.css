@@ -1,0 +1,5 @@
+:root{--navy:#0b2447;--navy-2:#12356b;--orange:#e8590c;--ink:#1b1f24;--muted:#5b6472;--ground:#f6f7f9;--line:#e3e7ee;--card:14px;--control:10px}
+*{box-sizing:border-box}
+body{margin:0;font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--ink);background:var(--ground)}
+button{font:inherit;cursor:pointer;border-radius:var(--control)}
+input,textarea,select{font:inherit;border:1px solid var(--line);border-radius:var(--control);padding:8px 10px;width:100%}
