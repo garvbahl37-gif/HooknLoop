@@ -34,6 +34,23 @@ export default function Dashboard() {
   const [armed, setArmed] = useState(false)
   const [busy, setBusy] = useState(false)
   const disarmTimer = useRef(null)
+  const iframeRef = useRef(null)
+
+  // Grow the preview iframe to the email's real height so the whole thing is visible
+  // (re-measures as product images finish loading, which changes the height).
+  function fitPreview() {
+    const f = iframeRef.current
+    const doc = f && f.contentDocument
+    if (!doc || !doc.documentElement) return
+    const measure = () => { f.style.height = doc.documentElement.scrollHeight + 'px' }
+    measure()
+    Array.from(doc.images || []).forEach(img => { if (!img.complete) img.addEventListener('load', measure, { once: true }) })
+  }
+  function openFullPreview() {
+    const url = URL.createObjectURL(new Blob([previewHtml], { type: 'text/html' }))
+    window.open(url, '_blank')
+    setTimeout(() => URL.revokeObjectURL(url), 10000)
+  }
 
   const loadSubs = () => fetch('/api/subscribers').then(r => r.json()).then(setSubs).catch(() => {})
   useEffect(() => {
@@ -157,8 +174,11 @@ export default function Dashboard() {
               <span className="preview__dots"><i /><i /><i /></span>
               <span className="preview__addr">{draft.subject || 'HooknLoop weekly'}</span>
             </div>
-            <iframe title="Email preview" srcDoc={previewHtml} />
-            <div className="preview__meta"><span className="eyebrow">Live preview</span><span>Exactly what subscribers receive</span></div>
+            <iframe ref={iframeRef} title="Email preview" srcDoc={previewHtml} onLoad={fitPreview} style={{ height: 640 }} />
+            <div className="preview__meta">
+              <span className="eyebrow">Live preview — exactly what subscribers receive</span>
+              <button type="button" className="preview__open" onClick={openFullPreview}>Open full ↗</button>
+            </div>
           </div>
         </section>
       </div>
