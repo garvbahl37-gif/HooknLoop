@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useState, useCallback, useRef } from 'react'
-import { render } from '../lib/newsletter.js'
+import { render, TEMPLATES } from '../lib/newsletter.js'
+import { INDUSTRIES } from '../data/catalog.js'
 import './dashboard.css'
 
 function Mark({ size = 28 }) {
@@ -151,21 +152,59 @@ export default function Dashboard() {
             </button>
           </div>
           <div className="panel__body">
+            <div className="tpl-picker">
+              {TEMPLATES.map(t => (
+                <button type="button" key={t.id} className={`tpl${draft.template === t.id ? ' tpl--on' : ''}`} onClick={() => save({ template: t.id })}>
+                  <b>{t.name}</b><span>{t.desc}</span>
+                </button>
+              ))}
+            </div>
+
             <div className="field">
               <label className="eyebrow" htmlFor="subject">Subject line</label>
               <input id="subject" className="subject-input" value={draft.subject || ''} onChange={e => save({ subject: e.target.value })} placeholder="A subject that earns the open" />
             </div>
-            <div className="field">
-              <label className="eyebrow" htmlFor="news">This week’s note</label>
-              <textarea id="news" value={draft.news || ''} onChange={e => save({ news: e.target.value })} placeholder="A line or two of real news — a price drop, a restock, a trade tip…" />
-              <p className="field__hint">Sits at the top of the email, above the product picks.</p>
-            </div>
-            <div className="field">
-              <label className="eyebrow" htmlFor="spot">Spotlight product</label>
-              <select id="spot" value={draft.spotlightId || ''} onChange={e => save({ spotlightId: e.target.value })}>
-                {products.map(p => <option key={p.id} value={p.id}>{p.title}</option>)}
-              </select>
-            </div>
+
+            {draft.template === 'offers' ? (
+              <>
+                <div className="field">
+                  <label className="eyebrow" htmlFor="ot">Offer headline</label>
+                  <input id="ot" value={draft.offerTitle || ''} onChange={e => save({ offerTitle: e.target.value })} placeholder="Trade Week — 15% off selected rolls" />
+                </div>
+                <div className="field">
+                  <label className="eyebrow" htmlFor="ob">Offer details</label>
+                  <textarea id="ob" rows={3} value={draft.offerBody || ''} onChange={e => save({ offerBody: e.target.value })} placeholder="What’s on special and why it’s worth it." />
+                </div>
+                <div className="row2">
+                  <div className="field"><label className="eyebrow" htmlFor="oc">Promo code</label><input id="oc" value={draft.offerCode || ''} onChange={e => save({ offerCode: e.target.value })} placeholder="TRADE15" /></div>
+                  <div className="field"><label className="eyebrow" htmlFor="oe">Ends</label><input id="oe" value={draft.offerEnds || ''} onChange={e => save({ offerEnds: e.target.value })} placeholder="Ends Sunday" /></div>
+                </div>
+              </>
+            ) : (
+              <div className="field">
+                <label className="eyebrow" htmlFor="news">Intro note</label>
+                <textarea id="news" value={draft.news || ''} onChange={e => save({ news: e.target.value })} placeholder="A line or two of real news — a price drop, a restock, a trade tip…" />
+                <p className="field__hint">Sits near the top of the email.</p>
+              </div>
+            )}
+
+            {(draft.template === 'weekly' || draft.template === 'specs') && (
+              <div className="field">
+                <label className="eyebrow" htmlFor="spot">{draft.template === 'specs' ? 'Product in focus' : 'Spotlight product'}</label>
+                <select id="spot" value={draft.spotlightId || ''} onChange={e => save({ spotlightId: e.target.value })}>
+                  {products.map(p => <option key={p.id} value={p.id}>{p.title}</option>)}
+                </select>
+              </div>
+            )}
+
+            {draft.template === 'industries' && (
+              <div className="field">
+                <label className="eyebrow" htmlFor="ind">Industry in focus</label>
+                <select id="ind" value={draft.industrySlug || ''} onChange={e => save({ industrySlug: e.target.value })}>
+                  {INDUSTRIES.map(i => <option key={i.slug} value={i.slug}>{i.name}</option>)}
+                </select>
+              </div>
+            )}
 
             <div className="deck">
               <div className="deck__row">

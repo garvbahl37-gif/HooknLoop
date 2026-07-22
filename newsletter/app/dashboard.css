@@ -76,6 +76,15 @@
 
 .subject-input { font-family: var(--font-display); font-weight: 600; font-size: 17px; letter-spacing: -0.01em; }
 
+/* Template picker */
+.tpl-picker { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px; }
+.tpl { text-align: left; background: var(--surface); border: 1px solid var(--line-strong); border-radius: var(--r-ctrl); padding: 10px 12px; cursor: pointer; transition: border-color .14s ease, box-shadow .14s ease, background .14s ease; }
+.tpl:hover { border-color: var(--muted-2); }
+.tpl b { display: block; font: 600 13px var(--font-body); color: var(--navy); }
+.tpl span { display: block; font-family: var(--font-mono); font-size: 10.5px; font-weight: 500; color: var(--muted-2); margin-top: 2px; letter-spacing: .02em; }
+.tpl--on { border-color: var(--flare); box-shadow: 0 0 0 3px rgba(232, 89, 12, .12); background: #fff8f3; }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
 /* ── Send deck (the signature) ─────────────────────────────── */
 .deck {
   margin-top: 20px; border-top: 1px dashed var(--line-strong);

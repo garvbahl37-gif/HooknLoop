@@ -15,10 +15,8 @@ export async function PUT(request) {
   const denied = requireSession(request); if (denied) return denied
   const body = await request.json().catch(() => ({}))
   const current = (await getDraft()) || {}
-  const next = { ...current,
-    subject: body.subject ?? current.subject, news: body.news ?? current.news,
-    spotlightId: body.spotlightId ?? current.spotlightId, newArrivalId: body.newArrivalId ?? current.newArrivalId,
-    tipId: body.tipId ?? current.tipId, status: 'draft', updatedAt: Date.now() }
+  // The dashboard posts its full draft (template, product, offer fields, etc.).
+  const next = { ...current, ...(body || {}), status: 'draft', updatedAt: Date.now() }
   await saveDraft(next)
   return Response.json({ ok: true, draft: next })
 }
