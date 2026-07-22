@@ -1,5 +1,71 @@
-:root{--navy:#0b2447;--navy-2:#12356b;--orange:#e8590c;--ink:#1b1f24;--muted:#5b6472;--ground:#f6f7f9;--line:#e3e7ee;--card:14px;--control:10px}
-*{box-sizing:border-box}
-body{margin:0;font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--ink);background:var(--ground)}
-button{font:inherit;cursor:pointer;border-radius:var(--control)}
-input,textarea,select{font:inherit;border:1px solid var(--line);border-radius:var(--control);padding:8px 10px;width:100%}
+:root {
+  /* Brand — HooknLoop industrial navy/orange */
+  --ink: #101a2b;
+  --navy: #0b2447;
+  --navy-2: #16305c;
+  --flare: #e8590c;         /* the one blaze: send-to-subscribers + focus */
+  --flare-deep: #c2440a;
+  --sage: #3d6456;          /* confirmed / success */
+
+  /* Surfaces */
+  --paper: #fbfaf8;         /* warm workshop white */
+  --surface: #ffffff;
+  --surface-2: #f5f2ec;
+  --line: #e9e4db;
+  --line-strong: #ddd6c9;
+  --muted: #6a7180;
+  --muted-2: #8b9099;
+
+  /* Radii — tight & machined */
+  --r-card: 14px;
+  --r-ctrl: 10px;
+  --r-pill: 999px;
+
+  /* Elevation */
+  --sh-sm: 0 1px 2px rgba(16, 26, 43, .05), 0 1px 1px rgba(16, 26, 43, .04);
+  --sh-md: 0 8px 24px -8px rgba(16, 26, 43, .14), 0 2px 6px -2px rgba(16, 26, 43, .07);
+  --sh-lg: 0 24px 56px -20px rgba(11, 36, 71, .30), 0 8px 20px -12px rgba(11, 36, 71, .18);
+
+  /* --font-display / --font-body / --font-mono are provided by next/font on <html>. */
+}
+
+* { box-sizing: border-box; }
+
+html, body { padding: 0; margin: 0; }
+
+body {
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--ink);
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4 { font-family: var(--font-display), system-ui, sans-serif; margin: 0; letter-spacing: -0.01em; }
+
+button { font: inherit; cursor: pointer; }
+
+input, textarea, select {
+  font: inherit;
+  color: var(--ink);
+  width: 100%;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-ctrl);
+  background: var(--surface);
+  padding: 10px 12px;
+  transition: border-color .14s ease, box-shadow .14s ease;
+}
+input::placeholder, textarea::placeholder { color: var(--muted-2); }
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--flare);
+  box-shadow: 0 0 0 3px rgba(232, 89, 12, .14);
+}
+
+:focus-visible { outline: 2px solid var(--flare); outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: .001ms !important; transition-duration: .001ms !important; }
+}

@@ -1,75 +1,207 @@
 'use client'
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
+import { render } from '../lib/newsletter.js'
 import './dashboard.css'
+
+function Mark({ size = 28 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 28 28" fill="none" aria-hidden="true">
+      <rect x="3" y="3.4" width="22" height="3" rx="1.5" fill="#0b2447" />
+      <rect x="6" y="6.2" width="3" height="8" rx="1.2" fill="#0b2447" />
+      <rect x="12.5" y="6.2" width="3" height="8" rx="1.2" fill="#0b2447" />
+      <rect x="19" y="6.2" width="3" height="8" rx="1.2" fill="#0b2447" />
+      <rect x="3" y="21.6" width="22" height="3" rx="1.5" fill="#e8590c" />
+      <rect x="2.7" y="13.8" width="3" height="8" rx="1.2" fill="#e8590c" />
+      <rect x="9.2" y="13.8" width="3" height="8" rx="1.2" fill="#e8590c" />
+      <rect x="15.8" y="13.8" width="3" height="8" rx="1.2" fill="#e8590c" />
+      <rect x="22.3" y="13.8" width="3" height="8" rx="1.2" fill="#e8590c" />
+    </svg>
+  )
+}
+
+function fmtWeek(iso) {
+  if (!iso) return 'This week'
+  const [y, m, d] = iso.split('-').map(Number)
+  const mon = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][m - 1]
+  return `Week of ${mon} ${d}`
+}
+
 export default function Dashboard() {
-  const [draft, setDraft] = useState(null); const [products, setProducts] = useState([])
-  const [subs, setSubs] = useState({ count: 0, contacts: [] }); const [msg, setMsg] = useState('')
+  const [draft, setDraft] = useState(null)
+  const [products, setProducts] = useState([])
+  const [subs, setSubs] = useState({ count: 0, contacts: [] })
+  const [msg, setMsg] = useState(null)       // { kind: 'ok'|'err', text }
+  const [armed, setArmed] = useState(false)
+  const [busy, setBusy] = useState(false)
+  const disarmTimer = useRef(null)
+
   const loadSubs = () => fetch('/api/subscribers').then(r => r.json()).then(setSubs).catch(() => {})
   useEffect(() => {
-    fetch('/api/draft').then(r => r.json()).then(d => { setDraft(d.draft); setProducts(d.products || []) }).catch(() => {})
+    fetch('/api/draft').then(r => r.json()).then(d => { setDraft(d.draft); setProducts(d.products || []) }).catch(() => setMsg({ kind: 'err', text: 'Could not load the draft.' }))
     loadSubs()
   }, [])
-  const save = useCallback(async (patch) => {
+
+  const save = useCallback((patch) => {
+    setArmed(false)
     setDraft(prev => {
       const next = { ...prev, ...patch }
       fetch('/api/draft', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(next) })
       return next
     })
   }, [])
-  async function send(mode) {
-    if (mode === 'live' && !confirm('Send to ALL subscribers now?')) return
-    const r = await fetch('/api/send', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ mode }) })
-    const j = await r.json().catch(() => ({}))
-    setMsg(r.ok ? (mode === 'live' ? 'Sent to subscribers ✓' : 'Test sent to you ✓') : (j.error || 'Failed'))
-    if (r.ok && mode === 'live') setDraft(d => ({ ...d, status: 'sent' }))
+
+  function flash(kind, text) { setMsg({ kind, text }) }
+
+  async function sendTest() {
+    setBusy(true)
+    const r = await fetch('/api/send', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ mode: 'test' }) })
+    setBusy(false)
+    flash(r.ok ? 'ok' : 'err', r.ok ? 'Test sent to your inbox.' : 'Test failed — check the Resend setup.')
   }
+
+  async function sendLive() {
+    if (!armed) {
+      setArmed(true)
+      clearTimeout(disarmTimer.current)
+      disarmTimer.current = setTimeout(() => setArmed(false), 4000)
+      return
+    }
+    setArmed(false); setBusy(true)
+    const r = await fetch('/api/send', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ mode: 'live' }) })
+    const j = await r.json().catch(() => ({}))
+    setBusy(false)
+    if (r.ok) { setDraft(d => ({ ...d, status: 'sent' })); flash('ok', `Sent to ${subs.count} subscriber${subs.count === 1 ? '' : 's'}.`) }
+    else flash('err', j.error === 'already sent' ? 'This draft was already sent.' : 'Send failed — try again.')
+  }
+
   async function importCsv(e) {
     const file = e.target.files[0]; if (!file) return
+    setBusy(true)
     const fd = new FormData(); fd.append('file', file)
     const r = await fetch('/api/import', { method: 'POST', body: fd }); const j = await r.json().catch(() => ({}))
-    setMsg(r.ok ? `Imported: ${j.added} added, ${j.skipped} skipped, ${j.failed} failed` : 'Import failed')
+    setBusy(false); e.target.value = ''
+    flash(r.ok ? 'ok' : 'err', r.ok ? `Imported ${j.added} · skipped ${j.skipped} · failed ${j.failed}` : 'Import failed.')
     loadSubs()
   }
+
   async function syncShopify() {
+    setBusy(true)
     const r = await fetch('/api/shopify/sync-customers', { method: 'POST' }); const j = await r.json().catch(() => ({}))
-    setMsg(r.ok ? `Shopify sync: ${j.synced} added` : 'Shopify not connected yet')
+    setBusy(false)
+    flash(r.ok ? 'ok' : 'err', r.ok ? `Synced ${j.synced} from Shopify.` : 'Shopify isn’t connected yet.')
     loadSubs()
   }
-  if (!draft) return <main className="wrap">Loading…</main>
-  const preview = renderPreview(draft, products)
-  return (<main className="wrap">
-    <header className="top"><b>HooknLoop Newsletter</b><span>{subs.count} subscribers</span></header>
-    {msg && <div className="msg">{msg}</div>}
-    <div className="cols">
-      <section className="editor">
-        <label>Subject<input value={draft.subject || ''} onChange={e => save({ subject: e.target.value })} /></label>
-        <label>This week&rsquo;s news<textarea rows={4} value={draft.news || ''} onChange={e => save({ news: e.target.value })} /></label>
-        <label>Spotlight product
-          <select value={draft.spotlightId || ''} onChange={e => save({ spotlightId: e.target.value })}>
-            {products.map(p => <option key={p.id} value={p.id}>{p.title}</option>)}</select></label>
-        <div className="row">
-          <button className="ghost" onClick={() => send('test')}>Send test to me</button>
-          <button className="primary" onClick={() => send('live')} disabled={draft.status === 'sent'}>
-            {draft.status === 'sent' ? 'Already sent' : 'Send to subscribers'}</button>
+
+  if (!draft) return <LoadingState />
+
+  const sent = draft.status === 'sent'
+  let previewHtml = ''
+  try { previewHtml = render(draft, products).html.replaceAll('{{unsubscribe}}', '#') } catch { previewHtml = '' }
+
+  return (
+    <div className="app">
+      <header className="topbar">
+        <div className="brand"><Mark /><span className="brand__name">Hook<b>n</b>Loop</span></div>
+        <div className="topbar__ctx">
+          <span className="chip">{fmtWeek(draft.weekOf)}</span>
+          <span className={`chip${sent ? ' chip--sent' : ''}`}>{sent ? 'Sent' : 'Draft'}</span>
         </div>
-        <div className="tools">
-          <label className="upload">Import CSV<input type="file" accept=".csv" onChange={importCsv} hidden /></label>
-          <button className="ghost" onClick={syncShopify}>Sync from Shopify</button>
+        <div className="topbar__spacer" />
+        <div className="readout">
+          <span className="readout__num">{subs.count}</span>
+          <span className="readout__label">subscriber{subs.count === 1 ? '' : 's'}</span>
+        </div>
+      </header>
+
+      {msg && <div className={`toast toast--${msg.kind === 'ok' ? 'ok' : 'err'}`}>{msg.text}</div>}
+
+      <div className="grid">
+        {/* Editor */}
+        <section className="panel" aria-label="Newsletter editor">
+          <div className="panel__hd"><span className="eyebrow">This week’s issue</span></div>
+          <div className="panel__body">
+            <div className="field">
+              <label className="eyebrow" htmlFor="subject">Subject line</label>
+              <input id="subject" className="subject-input" value={draft.subject || ''} onChange={e => save({ subject: e.target.value })} placeholder="A subject that earns the open" />
+            </div>
+            <div className="field">
+              <label className="eyebrow" htmlFor="news">This week’s note</label>
+              <textarea id="news" value={draft.news || ''} onChange={e => save({ news: e.target.value })} placeholder="A line or two of real news — a price drop, a restock, a trade tip…" />
+              <p className="field__hint">Sits at the top of the email, above the product picks.</p>
+            </div>
+            <div className="field">
+              <label className="eyebrow" htmlFor="spot">Spotlight product</label>
+              <select id="spot" value={draft.spotlightId || ''} onChange={e => save({ spotlightId: e.target.value })}>
+                {products.map(p => <option key={p.id} value={p.id}>{p.title}</option>)}
+              </select>
+            </div>
+
+            <div className="deck">
+              <div className="deck__row">
+                <button className="btn btn--ghost" onClick={sendTest} disabled={busy}>Send test to me</button>
+                {sent
+                  ? <button className="btn btn--sent" disabled>Sent ✓</button>
+                  : <button className={`btn btn--primary${armed ? ' btn--armed' : ''}`} onClick={sendLive} disabled={busy}>
+                      {armed ? `Confirm — send to ${subs.count}` : 'Send to subscribers'}
+                    </button>}
+              </div>
+              <div className="deck__status"><span className="dot" />Test sends reach <b>your inbox only</b> — never the list.</div>
+            </div>
+          </div>
+        </section>
+
+        {/* Preview */}
+        <section className="preview" aria-label="Email preview">
+          <div className="preview__frame">
+            <div className="preview__bar">
+              <span className="preview__dots"><i /><i /><i /></span>
+              <span className="preview__addr">{draft.subject || 'HooknLoop weekly'}</span>
+            </div>
+            <iframe title="Email preview" srcDoc={previewHtml} />
+            <div className="preview__meta"><span className="eyebrow">Live preview</span><span>Exactly what subscribers receive</span></div>
+          </div>
+        </section>
+      </div>
+
+      {/* Audience */}
+      <section className="panel audience" aria-label="Audience">
+        <div className="panel__hd">
+          <span className="panel__title">Subscribers</span>
+          <div className="tools">
+            <label className="upload">Import CSV<input type="file" accept=".csv" onChange={importCsv} hidden /></label>
+            <button className="btn btn--ghost" onClick={syncShopify} disabled={busy}>Sync from Shopify</button>
+          </div>
+        </div>
+        <div className="panel__body">
+          {subs.contacts.length === 0
+            ? <div className="empty"><div className="empty__mark"><Mark size={34} /></div><h4>No subscribers yet</h4><p>Import a CSV or add the signup form to your storefront to start the list.</p></div>
+            : <ul className="subs-list">{subs.contacts.map(c => (
+                <li key={c.email}><span className="email">{c.email}</span><span className={`status ${c.status}`}>{c.status}</span></li>
+              ))}</ul>}
         </div>
       </section>
-      <section className="preview"><iframe title="preview" srcDoc={preview} /></section>
     </div>
-    <section className="subs">
-      <h3>Subscribers</h3>
-      {subs.contacts.length === 0 ? <p className="muted">No subscribers yet. Import a CSV or share the signup form.</p> :
-        <ul>{subs.contacts.map(c => <li key={c.email}>{c.email} <span className={c.status}>{c.status}</span></li>)}</ul>}
-    </section>
-  </main>)
+  )
 }
-function renderPreview(draft, products) {
-  const p = products.find(x => x.id === draft.spotlightId)
-  return `<div style="font-family:sans-serif;padding:16px">
-    <div style="background:#0b2447;color:#fff;padding:12px;border-radius:10px">HooknLoop</div>
-    <p>${draft.news || '<em>Add this week&rsquo;s news…</em>'}</p>
-    ${p ? `<div style="border:1px solid #e3e7ee;border-radius:12px;padding:10px"><b>${p.title}</b><br>From $${p.price}</div>` : ''}</div>`
+
+function LoadingState() {
+  return (
+    <div className="app">
+      <header className="topbar">
+        <div className="brand"><Mark /><span className="brand__name">Hook<b>n</b>Loop</span></div>
+        <div className="topbar__spacer" />
+        <div className="sk" style={{ width: 90, height: 22 }} />
+      </header>
+      <div className="grid">
+        <section className="panel"><div className="panel__body">
+          <div className="sk" style={{ height: 16, width: 120, marginBottom: 18 }} />
+          <div className="sk" style={{ height: 44, marginBottom: 16 }} />
+          <div className="sk" style={{ height: 96, marginBottom: 16 }} />
+          <div className="sk" style={{ height: 44, marginBottom: 22 }} />
+          <div className="sk" style={{ height: 44 }} />
+        </div></section>
+        <section className="panel"><div className="sk" style={{ height: 560, borderRadius: 0 }} /></section>
+      </div>
+    </div>
+  )
 }
