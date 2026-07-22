@@ -1,19 +1,23 @@
-import { getDraft, saveDraft } from '../../../lib/kv.js'
+import { saveDraft } from '../../../lib/kv.js'
 import { getProducts } from '../../../lib/shopify.js'
 import { render } from '../../../lib/newsletter.js'
 import { sendBroadcast } from '../../../lib/resend.js'
 import { requireSession } from '../../../lib/session.js'
 export const runtime = 'nodejs'
+
+// The dashboard posts the exact draft it's showing, so sending doesn't depend on
+// server-side KV state (which is best-effort until a KV store is attached).
 export async function POST(request) {
   const denied = requireSession(request); if (denied) return denied
-  const { mode } = await request.json().catch(() => ({}))
-  const draft = await getDraft()
-  if (!draft) return Response.json({ error: 'no draft' }, { status: 404 })
-  if (mode === 'live' && draft.status === 'sent') return Response.json({ error: 'already sent' }, { status: 409 })
+  const { mode, draft } = await request.json().catch(() => ({}))
+  if (!draft || !draft.subject) return Response.json({ error: 'no draft' }, { status: 400 })
   const rendered = render(draft, await getProducts())
   try {
     const { id } = await sendBroadcast(rendered, { toTestOnly: mode !== 'live' })
-    if (mode === 'live') await saveDraft({ ...draft, status: 'sent', updatedAt: Date.now() })
+    if (mode === 'live') { try { await saveDraft({ ...draft, status: 'sent', updatedAt: Date.now() }) } catch { /* best-effort */ } }
     return Response.json({ ok: true, id })
-  } catch (e) { console.error('send', e); return Response.json({ error: 'send failed' }, { status: 502 }) }
+  } catch (e) {
+    console.error('send', e.message)
+    return Response.json({ error: 'send failed' }, { status: 502 })
+  }
 }

@@ -71,7 +71,7 @@ export default function Dashboard() {
 
   async function sendTest() {
     setBusy(true)
-    const r = await fetch('/api/send', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ mode: 'test' }) })
+    const r = await fetch('/api/send', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ mode: 'test', draft }) })
     setBusy(false)
     flash(r.ok ? 'ok' : 'err', r.ok ? 'Test sent to your inbox.' : 'Test failed — check the Resend setup.')
   }
@@ -84,7 +84,7 @@ export default function Dashboard() {
       return
     }
     setArmed(false); setBusy(true)
-    const r = await fetch('/api/send', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ mode: 'live' }) })
+    const r = await fetch('/api/send', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ mode: 'live', draft }) })
     const j = await r.json().catch(() => ({}))
     setBusy(false)
     if (r.ok) { setDraft(d => ({ ...d, status: 'sent' })); flash('ok', `Sent to ${subs.count} subscriber${subs.count === 1 ? '' : 's'}.`) }
@@ -107,6 +107,15 @@ export default function Dashboard() {
     setBusy(false)
     flash(r.ok ? 'ok' : 'err', r.ok ? `Synced ${j.synced} from Shopify.` : 'Shopify isn’t connected yet.')
     loadSubs()
+  }
+
+  async function generateAI() {
+    setBusy(true)
+    const r = await fetch('/api/generate-ai', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ spotlightId: draft.spotlightId, weekOf: draft.weekOf }) })
+    const j = await r.json().catch(() => ({}))
+    setBusy(false)
+    if (r.ok) { setDraft(d => ({ ...d, subject: j.subject, news: j.news })); flash('ok', 'Fresh copy written by AI — review and tweak.') }
+    else flash('err', 'AI couldn’t generate copy — try again.')
   }
 
   if (!draft) return <LoadingState />
@@ -135,7 +144,12 @@ export default function Dashboard() {
       <div className="grid">
         {/* Editor */}
         <section className="panel" aria-label="Newsletter editor">
-          <div className="panel__hd"><span className="eyebrow">This week’s issue</span></div>
+          <div className="panel__hd">
+            <span className="eyebrow">This week’s issue</span>
+            <button type="button" className="btn--ai" onClick={generateAI} disabled={busy} title="Draft the subject & intro with Gemini">
+              <span aria-hidden="true">✦</span> Generate with AI
+            </button>
+          </div>
           <div className="panel__body">
             <div className="field">
               <label className="eyebrow" htmlFor="subject">Subject line</label>

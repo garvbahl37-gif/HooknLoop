@@ -112,6 +112,12 @@
 
 .btn--sent { flex: 1; color: var(--sage); background: rgba(61, 100, 86, .08); border-color: rgba(61, 100, 86, .3); cursor: default; }
 
+.btn--ai { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-body); font-weight: 600; font-size: 12.5px; color: #fff; background: linear-gradient(180deg, #16305c, #0b2447); border: 1px solid #0b2447; border-radius: var(--r-ctrl); padding: 8px 13px; box-shadow: var(--sh-sm); transition: transform .08s ease, box-shadow .14s ease; }
+.btn--ai span { color: #f0a06a; font-size: 13px; line-height: 1; }
+.btn--ai:hover:not(:disabled) { box-shadow: var(--sh-md); }
+.btn--ai:active { transform: translateY(1px); }
+.btn--ai:disabled { opacity: .55; cursor: default; }
+
 /* ── Email preview (client-chrome frame) ───────────────────── */
 .preview { min-width: 0; }
 .preview__frame { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-card); box-shadow: var(--sh-md); overflow: hidden; }
