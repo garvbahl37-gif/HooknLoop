@@ -115,6 +115,7 @@ export function render(fields, products) {
   const spotlight = find(products, fields.spotlightId)
   const tip = TIPS[fields.tipId] ?? TIPS[0]
   const label = weekLabel(fields.weekOf)
+  const viewUrl = `${ASSET_BASE}/view`
   const range = products.filter(p => p.id !== fields.spotlightId).slice(0, 4)
   const preheader = (fields.news && fields.news.trim())
     || 'Your weekly pick, the full range, and where hook & loop earns its keep.'
@@ -143,13 +144,20 @@ export function render(fields, products) {
 <body style="margin:0;padding:0;background:#efece6;-webkit-text-size-adjust:100%;">
 <div style="display:none;max-height:0;overflow:hidden;opacity:0;color:#efece6;font-size:1px;line-height:1px;">${preheader}</div>
 <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="background:#efece6;">
-  <tr><td align="center" style="padding:30px 12px;">
+  <tr><td align="center" style="padding:26px 12px 0;">
+    <!-- Utility bar -->
+    <table role="presentation" width="600" border="0" cellpadding="0" cellspacing="0" style="width:600px;max-width:600px;">
+      <tr>
+        <td style="padding:0 8px 11px;font-family:${AR};font-size:11px;color:#9aa0aa;letter-spacing:.3px;">HooknLoop &middot; ${label}</td>
+        <td align="right" style="padding:0 8px 11px;"><a href="${viewUrl}" style="font-family:${AR};font-size:11px;color:#6a7180;text-decoration:underline;">View in browser</a></td>
+      </tr>
+    </table>
     <table role="presentation" width="600" border="0" cellpadding="0" cellspacing="0" style="width:600px;max-width:600px;background:#ffffff;border-radius:18px;overflow:hidden;box-shadow:0 20px 48px -24px rgba(11,36,71,.35);">
 
       <!-- Header -->
       <tr><td style="background:#0b2447;padding:22px 32px;">
         <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0"><tr>
-          <td style="vertical-align:middle;"><img src="${LOGO_WHITE}" alt="HooknLoop" width="172" height="30" style="display:block;border:0;height:auto;"></td>
+          <td style="vertical-align:middle;"><a href="${SHOP_BASE}" style="text-decoration:none;"><img src="${LOGO_WHITE}" alt="HooknLoop" width="172" height="30" style="display:block;border:0;height:auto;"></a></td>
           <td align="right" style="vertical-align:middle;font-family:${AR};font-size:10.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#8ea3c2;">Weekly&nbsp;dispatch</td>
         </tr></table>
       </td></tr>
@@ -187,12 +195,19 @@ export function render(fields, products) {
       </td></tr>
 
       <!-- Footer -->
-      <tr><td style="background:#0b2447;padding:26px 32px;">
-        <img src="${LOGO_WHITE}" alt="HooknLoop" width="150" height="27" style="display:block;border:0;height:auto;margin-bottom:14px;">
-        <p style="font-family:${AR};font-size:13px;line-height:1.7;color:#9fb0c9;margin:0;">
+      <tr><td style="background:#0b2447;padding:28px 32px;">
+        <a href="${SHOP_BASE}" style="text-decoration:none;"><img src="${LOGO_WHITE}" alt="HooknLoop" width="150" height="27" style="display:block;border:0;height:auto;margin-bottom:14px;"></a>
+        <p style="font-family:${AR};font-size:13px;line-height:1.7;color:#9fb0c9;margin:0 0 16px;">
           Industrial hook &amp; loop, dispatched fast across Australia.<br>
           <a href="tel:1300183481" style="color:#c7d3e6;text-decoration:none;">1300&nbsp;183&nbsp;481</a> &middot; Australian warehouse &middot; ABN 93 878 995 217
         </p>
+        <table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td style="font-family:${AR};font-size:12px;font-weight:700;padding-top:15px;border-top:1px solid #1c3358;">
+          <a href="${SHOP_BASE}/collections/all" style="color:#e8590c;text-decoration:none;">Shop all</a>
+          <span style="color:#3a4d6b;">&nbsp;&nbsp;&middot;&nbsp;&nbsp;</span>
+          <a href="${SHOP_BASE}/pages/bulk" style="color:#c7d3e6;text-decoration:none;">Bulk quotes</a>
+          <span style="color:#3a4d6b;">&nbsp;&nbsp;&middot;&nbsp;&nbsp;</span>
+          <a href="${SHOP_BASE}/pages/contact" style="color:#c7d3e6;text-decoration:none;">Contact</a>
+        </td></tr></table>
       </td></tr>
     </table>
 
