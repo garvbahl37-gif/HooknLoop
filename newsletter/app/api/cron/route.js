@@ -5,7 +5,8 @@ import { getDraft, saveDraft } from '../../../lib/kv.js'
 import { isoWeek } from '../../../lib/week.js'
 export const runtime = 'nodejs'
 export async function GET(request) {
-  if (request.headers.get('authorization') !== `Bearer ${process.env.CRON_SECRET}`)
+  // Fail closed: with no CRON_SECRET, `Bearer undefined` would otherwise be accepted.
+  if (!process.env.CRON_SECRET || request.headers.get('authorization') !== `Bearer ${process.env.CRON_SECRET}`)
     return Response.json({ error: 'unauthorized' }, { status: 401 })
   const weekOf = new Date().toISOString().slice(0, 10)
   const existing = await getDraft()
