@@ -80,15 +80,15 @@
 @media (max-width: 900px){
   /* the floating call/chat bubbles are replaced by the tab bar down here */
   .fab--call, .fabchat { display: none; }
-  /* leave room so the fixed bar never covers the last content or the footer */
-  body { padding-bottom: calc(58px + env(safe-area-inset-bottom)); }
+  /* leave room so the fixed bar never covers the last content or the footer
+     (the 0px fallback keeps this valid where env() isn't supported) */
+  body { padding-bottom: calc(58px + env(safe-area-inset-bottom, 0px)); }
 
   .btabs { display: grid; grid-template-columns: repeat(5, 1fr);
     position: fixed; left: 0; right: 0; bottom: 0; z-index: 90;
-    background: rgba(255,255,255,0.9); border-top: 1px solid var(--line-card);
-    backdrop-filter: saturate(1.6) blur(14px); -webkit-backdrop-filter: saturate(1.6) blur(14px);
+    background: #fff; border-top: 1px solid var(--line-card);
     padding-bottom: env(safe-area-inset-bottom);
-    box-shadow: 0 -6px 22px rgba(8,18,40,0.08);
+    box-shadow: 0 -4px 18px rgba(8,18,40,0.07);
     transition: transform 0.22s var(--ease); }
   .btab { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
     height: 58px; color: var(--muted-ink); background: none; -webkit-tap-highlight-color: transparent; }

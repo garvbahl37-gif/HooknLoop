@@ -47,9 +47,10 @@ ul { list-style: none; padding: 0; }
 }
 .btn--ghost:hover { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.4); }
 
-/* app-like view transition — each route eases in on navigation */
-.route-view { animation: routeIn 0.34s var(--ease); }
-@keyframes routeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+/* app-like view transition — gentle fade in on navigation (opacity only, so it
+   never becomes a containing block for the fixed add-to-cart dock) */
+.route-view { animation: routeIn 0.26s var(--ease); }
+@keyframes routeIn { from { opacity: 0; } to { opacity: 1; } }
 
 /* tactile press feedback on touch devices — buttons dip like a native control */
 @media (hover: none) {

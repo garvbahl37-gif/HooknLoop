@@ -88,9 +88,8 @@
      the slide-in drawer and the bottom tab bar, so the header stays one clean
      line that pins to the top while you scroll. */
   .hdr { position: sticky; top: 0; z-index: 100; }
-  /* frosted app bar — content blurs under it as you scroll (iOS-like) */
-  .bar { border-bottom: 1px solid var(--line-card); background: rgba(255,255,255,0.9);
-    backdrop-filter: saturate(1.6) blur(14px); -webkit-backdrop-filter: saturate(1.6) blur(14px); }
+  /* solid app bar — bulletproof on every device (no backdrop-filter) */
+  .bar { border-bottom: 1px solid var(--line-card); background: #fff; box-shadow: 0 1px 10px rgba(8,18,40,0.05); }
   .bar__row { display: grid; grid-template-columns: 42px 1fr auto; align-items: center; gap: 8px; height: 58px; }
   .bar__burger { display: inline-flex; }
   .logo { justify-self: center; }
