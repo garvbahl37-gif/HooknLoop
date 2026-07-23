@@ -355,9 +355,10 @@ export function Wholesale() {
 /* ---------- VALUE PROPS ---------- */
 export function ValueProps() {
   const props = [
-    ['shieldCheck', 'Lowest-price guarantee', 'Find a stocked line cheaper elsewhere and we’ll match it — value without compromising on quality.'],
-    ['warehouse', 'Every tape, one supplier', 'From double-sided and foam to safety, packaging and specialty grades — the full range, held in stock.'],
-    ['pin', 'Australian owned & operated', 'Local stock, local support and honest advice from people who know adhesive tape.'],
+    ['truck', 'Fast delivery Australia-wide', 'Dispatched in 1–2 business days to 3,600+ postcodes.'],
+    ['medal', 'Lowest-price guarantee', 'Find a stocked line cheaper and we’ll match it.'],
+    ['warehouse', 'Every tape, one supplier', 'The full range — held in stock and ready to ship.'],
+    ['pin', 'Australian owned & operated', 'Local stock, local support and honest advice.'],
   ]
   return (
     <section className="section vprops-sec">
@@ -367,9 +368,9 @@ export function ValueProps() {
           <h2>Buy with confidence</h2>
         </div>
         <div className="vprops">
-          {props.map(([icon, title, body], i) => (
+          {props.map(([icon, title, body]) => (
             <div key={title} className="vprop">
-              <span className="vprop__icon"><Icon name={icon} size={26} /></span>
+              <span className="vprop__icon"><Icon name={icon} size={40} /></span>
               <h3>{title}</h3>
               <p>{body}</p>
             </div>

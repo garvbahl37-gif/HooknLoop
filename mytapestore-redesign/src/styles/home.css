@@ -247,13 +247,14 @@
 .faq__a p { color: var(--muted); line-height: 1.7; }
 
 /* ---- value props ---- */
-.vprops { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-.vprop { position: relative; overflow: hidden; background: linear-gradient(180deg, #fff 0%, var(--paper) 170%); border: 1px solid var(--line); border-radius: 16px; padding: 30px 28px 28px; box-shadow: 0 1px 2px rgba(20,15,10,.05); transition: transform .22s var(--ease), box-shadow .22s var(--ease), border-color .22s var(--ease); }
-.vprop::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--brand); transform: scaleX(0); transform-origin: left; transition: transform .3s var(--ease); }
-.vprop:hover { transform: translateY(-6px); box-shadow: var(--sh-lg); border-color: var(--line-2); }
-.vprop:hover::before { transform: scaleX(1); }
-.vprop__icon { position: relative; display: inline-grid; place-items: center; width: 56px; height: 56px; background: var(--brand-wash); color: var(--brand-ink); border-radius: 15px; margin-bottom: 20px; box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--brand) 13%, transparent); transition: background .22s var(--ease), color .22s var(--ease), transform .22s var(--ease), box-shadow .22s var(--ease); }
-.vprop:hover .vprop__icon { background: var(--brand-cta); color: #fff; transform: translateY(-2px) rotate(-4deg); box-shadow: 0 10px 22px -8px var(--brand-cta); }
-.vprop h3 { font-family: var(--f-display); font-size: 1.2rem; letter-spacing: -0.01em; margin-bottom: 9px; }
-.vprop p { color: var(--muted); font-size: 0.96rem; line-height: 1.62; }
-@media (max-width: 760px){ .vprops { grid-template-columns: 1fr; } }
+.vprops { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
+.vprop { position: relative; text-align: center; background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: 38px 24px 32px; box-shadow: 0 1px 2px rgba(20,15,10,.05); transition: transform .22s var(--ease), box-shadow .22s var(--ease), border-color .22s var(--ease); }
+.vprop:hover { transform: translateY(-6px); box-shadow: var(--sh-lg); border-color: var(--brand); }
+/* big, confident icon */
+.vprop__icon { display: grid; place-items: center; width: 92px; height: 92px; margin: 0 auto 22px; border-radius: 50%; background: radial-gradient(circle at 50% 35%, #fff 0%, var(--brand-wash) 75%); color: var(--brand-ink); box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--brand) 18%, transparent), 0 6px 18px -10px var(--brand-cta); transition: background .22s var(--ease), color .22s var(--ease), transform .22s var(--ease), box-shadow .22s var(--ease); }
+.vprop__icon svg { width: 40px; height: 40px; stroke-width: 1.6; }
+.vprop:hover .vprop__icon { background: var(--brand-cta); color: #fff; transform: scale(1.06); box-shadow: 0 14px 30px -10px var(--brand-cta); }
+.vprop h3 { font-family: var(--f-display); font-size: 1.14rem; letter-spacing: -0.01em; line-height: 1.2; margin-bottom: 9px; }
+.vprop p { color: var(--muted); font-size: 0.92rem; line-height: 1.58; max-width: 26ch; margin-inline: auto; }
+@media (max-width: 900px){ .vprops { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 480px){ .vprops { grid-template-columns: 1fr; } }
