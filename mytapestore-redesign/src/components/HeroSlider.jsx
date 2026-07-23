@@ -22,7 +22,7 @@ const SLIDES = [
     cta: ['Shop premium tapes', '/shop'], alt: ['Our brands', '/about'],
   },
   {
-    img: '/img/site/banners/banner-3.jpg',
+    img: '/img/site/banners/banner-3.jpg?v=2',
     eyebrow: 'The widest range',
     title: 'Every tape, one supplier',
     text: '130+ lines across 35 categories — double-sided, foam, foil, safety and more.',
