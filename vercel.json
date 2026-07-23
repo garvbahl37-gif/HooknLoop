@@ -4,5 +4,9 @@
   "buildCommand": "cd storefront && npm run build",
   "outputDirectory": "storefront/dist",
   "framework": null,
+  "headers": [
+    { "source": "/(.*)", "headers": [{ "key": "Cache-Control", "value": "no-cache, must-revalidate" }] },
+    { "source": "/assets/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }] }
+  ],
   "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }

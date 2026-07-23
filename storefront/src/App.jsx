@@ -58,7 +58,7 @@ export default function App() {
     <>
       <a className="skip" href="#main">Skip to content</a>
       <Header />
-      {page}
+      <div className="route-view" key={route + '/' + param}>{page}</div>
       <Footer />
       <FloatingActions />
       <BottomNav />

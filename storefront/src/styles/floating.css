@@ -85,17 +85,21 @@
 
   .btabs { display: grid; grid-template-columns: repeat(5, 1fr);
     position: fixed; left: 0; right: 0; bottom: 0; z-index: 90;
-    background: #fff; border-top: 1px solid var(--line-card);
+    background: rgba(255,255,255,0.9); border-top: 1px solid var(--line-card);
+    backdrop-filter: saturate(1.6) blur(14px); -webkit-backdrop-filter: saturate(1.6) blur(14px);
     padding-bottom: env(safe-area-inset-bottom);
     box-shadow: 0 -6px 22px rgba(8,18,40,0.08);
     transition: transform 0.22s var(--ease); }
-  .btab { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+  .btab { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
     height: 58px; color: var(--muted-ink); background: none; -webkit-tap-highlight-color: transparent; }
-  .btab__ic { position: relative; display: grid; place-items: center; }
+  /* active tab: brand indicator bar across the top, icon+label in orange */
+  .btab.is-on::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 30px; height: 3px; border-radius: 0 0 3px 3px; background: var(--orange); }
+  .btab__ic { position: relative; display: grid; place-items: center; transition: transform 0.12s var(--ease); }
   .btab__label { font-size: 0.66rem; font-weight: 600; letter-spacing: 0.01em; }
   .btab.is-on { color: var(--orange-ink); }
   .btab.is-on .btab__label { font-weight: 700; }
-  .btab:active { color: var(--navy); }
+  .btab:active .btab__ic { transform: scale(0.86); }
   .btab__badge { position: absolute; top: -6px; right: -10px; min-width: 16px; height: 16px; padding: 0 4px;
     display: grid; place-items: center; background: var(--orange); color: var(--navy);
     font-size: 0.6rem; font-weight: 800; line-height: 1; border-radius: 999px; border: 1.5px solid #fff; }
