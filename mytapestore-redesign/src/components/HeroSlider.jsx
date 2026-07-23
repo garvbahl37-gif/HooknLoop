@@ -8,7 +8,7 @@ const go = (e, h) => { e.preventDefault(); navigate(h) }
    crisp HTML overlaid on top. Crossfade auto-advance, pause on hover, dots + arrows. */
 const SLIDES = [
   {
-    img: '/img/site/banner-australia.jpg?v=7',
+    img: '/img/site/banner-australia.jpg?v=8',
     eyebrow: 'Express delivery',
     title: 'Fast delivery, right across Australia',
     text: 'Dispatch to 3,600+ postcodes — most orders arrive in 2–3 business days.',
@@ -22,14 +22,14 @@ const SLIDES = [
     cta: ['Shop premium tapes', '/shop'], alt: ['Our brands', '/about'],
   },
   {
-    img: '/img/site/banners/banner-3.jpg?v=2',
+    img: '/img/site/banners/banner-3.jpg?v=3',
     eyebrow: 'The widest range',
     title: 'Every tape, one supplier',
     text: '130+ lines across 35 categories — double-sided, foam, foil, safety and more.',
     cta: ['Browse all tapes', '/shop'], alt: ['Shop by industry', '/industries'],
   },
   {
-    img: '/img/site/banners/banner-4.jpg?v=6',
+    img: '/img/site/banners/banner-4.jpg?v=7',
     eyebrow: 'Bulk & trade',
     title: 'Save more when you buy more',
     text: 'Volume discounts up to 30% — with trade accounts for business buyers.',
