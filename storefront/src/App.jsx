@@ -1,6 +1,7 @@
 import Header from './components/Header.jsx'
 import HeroSlides from './components/HeroSlides.jsx'
 import FloatingActions from './components/FloatingActions.jsx'
+import BottomNav from './components/BottomNav.jsx'
 import { WhyUs, OneStop, TrustedSupplier } from './sections/Basic.jsx'
 import BestSellers from './sections/BestSellers.jsx'
 import TrustReviews from './sections/TrustReviews.jsx'
@@ -60,6 +61,7 @@ export default function App() {
       {page}
       <Footer />
       <FloatingActions />
+      <BottomNav />
     </>
   )
 }

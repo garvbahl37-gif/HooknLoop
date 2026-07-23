@@ -113,8 +113,8 @@ export default function Header() {
       <header className="hdr">
       <div className="promo">
         <div className="wrap promo__row">
-          <span>Fast Australia-wide delivery</span>
-          <span className="promo__sep" aria-hidden="true">•</span>
+          <span className="promo__lead">Fast Australia-wide delivery</span>
+          <span className="promo__sep promo__sep--lead" aria-hidden="true">•</span>
           <span className="promo__hl">Free shipping over $200</span>
           <span className="promo__sep" aria-hidden="true">•</span>
           <span className="promo__opt">Best price in Australia</span>
@@ -125,6 +125,9 @@ export default function Header() {
 
       <div className="bar">
         <div className="wrap bar__row">
+          <button className="bar__burger" aria-label="Open menu" aria-expanded={drawer} onClick={() => setDrawer(true)}>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+          </button>
           <a href="#" className="logo" aria-label="HooknLoop home" onClick={go('')}>
             <img className="logo__img" src="/img/logo-header.svg" alt="HooknLoop" width="389" height="69" />
           </a>
@@ -134,7 +137,7 @@ export default function Header() {
           </form>
           <div className="bar__actions">
             <button className="icn icn--searchlink" aria-label="Search" onClick={go('search')}><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></button>
-            <button className="icn" aria-label="Account and orders" onClick={go('contact')}><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></button>
+            <button className="icn icn--account" aria-label="Account and orders" onClick={go('contact')}><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></button>
             <button className="icn icn--wish" aria-label={`Wishlist, ${wishes} saved`} onClick={go('wishlist')}>
               <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7"><path d="M12 21s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.5-7 10-7 10Z"/></svg>
               <span className={`icn__count ${wishes > 0 ? 'is-on' : ''}`}>{wishes}</span>
@@ -150,10 +153,6 @@ export default function Header() {
 
       <nav ref={navRef} className={`nav ${stuck ? 'is-stuck' : ''}`} aria-label="Primary">
         <div className="wrap nav__row">
-          <button className="nav__burger" aria-label="Open menu" aria-expanded={drawer} onClick={() => setDrawer(true)}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
-            Menu
-          </button>
           <ul className="nav__list">
             <li className="nav__item"><a href="#" className="nav__link" onClick={go('')}>Home</a></li>
             {/*  The parent only opens the menu — it never navigates (it used to link

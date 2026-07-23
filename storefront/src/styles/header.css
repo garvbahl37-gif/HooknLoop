@@ -78,19 +78,25 @@
 
 .icn--searchlink { display: none; }
 
-/* mobile menu button (lives in the sticky blue nav bar) — hidden on desktop */
-.nav__burger { display: none; align-items: center; gap: 9px; height: 40px; padding: 0 16px; border-radius: var(--r-pill);
-  color: #fff; font-size: 1rem; font-weight: 700; background: rgba(255,255,255,0.16); transition: background 0.15s; }
-.nav__burger:hover { background: rgba(255,255,255,0.24); }
-.nav__burger:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+/* menu button in the compact mobile app bar — hidden on desktop */
+.bar__burger { display: none; width: 42px; height: 42px; align-items: center; justify-content: center; border-radius: var(--r-pill); color: var(--navy); }
+.bar__burger:hover { background: var(--cloud); }
+.bar__burger:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
 
 @media (max-width: 900px){
-  .bar__row { gap: var(--sp-4); height: 70px; }
-  .search { max-width: none; }
-  /* full horizontal nav → hamburger + slide-in drawer */
-  .nav__list { display: none; }
-  .nav__burger { display: inline-flex; }
-  .nav__row { justify-content: flex-start; height: 50px; }
+  /* compact, sticky app bar — ☰ · logo · cart. The blue mega-nav gives way to
+     the slide-in drawer and the bottom tab bar, so the header stays one clean
+     line that pins to the top while you scroll. */
+  .hdr { position: sticky; top: 0; z-index: 100; }
+  .bar { border-bottom: 1px solid var(--line-card); }
+  .bar__row { display: grid; grid-template-columns: 42px 1fr auto; align-items: center; gap: 8px; height: 58px; }
+  .bar__burger { display: inline-flex; }
+  .logo { justify-self: center; }
+  .logo__img { height: 30px; }
+  .search { display: none; }
+  .bar__actions { gap: 2px; justify-self: end; }
+  .icn--searchlink, .icn--account, .icn--wish { display: none; }  /* cart is the only top action; rest live in the tab bar/drawer */
+  .nav { display: none; }
 }
 
 /* ── mobile drawer ─────────────────────────────────────────────────── */
@@ -127,13 +133,9 @@
   .mdrawer__foot a:hover { color: var(--orange-ink); }
 }
 @media (max-width: 560px){
-  /* the inline search bar can't fit, so it becomes an icon that opens the
-     search page — the logo + 4 icons must still fit inside 390px */
-  .search { display: none; }
-  .icn--searchlink { display: grid; }
-  .promo__row { font-size: 0.72rem; }
-  .bar__row { gap: var(--sp-3); justify-content: space-between; }
-  .logo__img { height: 32px; }
-  .icn { width: 40px; height: 40px; }
+  /* slim the promo to a single line: just the two strongest messages */
+  .promo__row { font-size: 0.72rem; flex-wrap: nowrap; }
+  .promo__lead, .promo__sep--lead { display: none; }
+  .icn { width: 42px; height: 42px; }
   .bar__actions { gap: 0; }
 }
