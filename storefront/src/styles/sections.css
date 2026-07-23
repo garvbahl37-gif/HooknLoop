@@ -64,20 +64,10 @@ section { scroll-margin-top: 80px; }
 .os__media { position: absolute; inset: 0; overflow: hidden; }
 .os__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s var(--ease); }
 .os__tile:hover .os__media img { transform: scale(1.05); }
-/* frosted-glass strip on the photo — the image shows through, so it's neither a solid box nor a haze */
-.os__body { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; padding: 13px clamp(14px,1.5vw,18px);
-  display: flex; align-items: center; justify-content: space-between; gap: 12px;
-  background: rgba(14,20,34,0.4); backdrop-filter: blur(14px) saturate(1.15); -webkit-backdrop-filter: blur(14px) saturate(1.15);
-  border-top: 1px solid rgba(255,255,255,0.14); }
-.os__meta { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-.os__title { color: #fff; font-family: var(--font-head); font-weight: 800; letter-spacing: -0.01em; line-height: 1.18;
-  font-size: clamp(1rem,1.25vw,1.2rem); text-shadow: 0 1px 3px rgba(0,0,0,0.3); }
-.os__sub { color: rgba(255,255,255,0.82); font-size: 0.82rem; }
-.os__tile--a .os__title { font-size: clamp(1.14rem,1.5vw,1.42rem); }
-/* narrow tiles: stack the pill under the label so long titles never crowd it */
-.os__tile--c .os__body, .os__tile--d .os__body { flex-direction: column; align-items: flex-start; gap: 10px; }
-.os__shop { flex: none; display: inline-flex; align-items: center; gap: 7px; background: var(--orange); color: var(--cta-text);
-  font-weight: 700; font-size: 0.82rem; padding: 9px 15px; border-radius: var(--r-ctrl); box-shadow: var(--shadow-cta);
+/* only the Shop now button sits on the photo — bottom-left, no strip or overlay */
+.os__shop { position: absolute; left: clamp(14px,1.6vw,20px); bottom: clamp(14px,1.6vw,20px); z-index: 2;
+  display: inline-flex; align-items: center; gap: 7px; background: var(--orange); color: var(--cta-text);
+  font-weight: 700; font-size: 0.86rem; padding: 10px 17px; border-radius: var(--r-ctrl); box-shadow: var(--shadow-cta);
   white-space: nowrap; transition: background 0.15s var(--ease), transform 0.15s var(--ease); }
 .os__tile:hover .os__shop { background: var(--orange-word); transform: translateY(-2px); }
 @media (max-width:900px){

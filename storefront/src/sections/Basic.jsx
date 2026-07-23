@@ -82,10 +82,7 @@ export function OneStop() {
           {ONESTOP.map((t) => (
             <a key={t.slug} href="#" className={`os__tile ${t.cls}`} onClick={goCat(t.slug)} aria-label={`Shop ${t.title}`}>
               <span className="os__media"><img src={t.img} alt={t.title} loading="lazy" /></span>
-              <span className="os__body">
-                <span className="os__meta"><b className="os__title">{t.title}</b><span className="os__sub">{t.sub}</span></span>
-                <span className="os__shop">Shop now<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.8"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-              </span>
+              <span className="os__shop">Shop now<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.8"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
             </a>
           ))}
         </div>
