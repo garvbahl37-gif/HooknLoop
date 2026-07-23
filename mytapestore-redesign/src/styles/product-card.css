@@ -1,0 +1,63 @@
+/* ===== Product card + rating stars ===== */
+.stars { display: inline-flex; align-items: center; gap: 7px; }
+.stars__row { display: inline-flex; }
+.stars__on { color: var(--star); }
+.stars__off { color: var(--line-2); }
+.stars__count { font-size: var(--t-xs); color: var(--faint); }
+
+.pc {
+  display: flex; flex-direction: column; background: #fff; position: relative;
+  border: 1px solid var(--line); border-radius: 14px; overflow: hidden;
+  cursor: pointer; box-shadow: 0 1px 2px rgba(20,15,10,.05);
+  transition: border-color .18s var(--ease), box-shadow .18s var(--ease), transform .18s var(--ease);
+}
+/* signature: brand top-accent reveals on hover */
+.pc::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--brand); transform: scaleX(0); transform-origin: left; transition: transform .24s var(--ease); z-index: 3; }
+.pc:hover { border-color: var(--line-2); box-shadow: var(--sh-lg); transform: translateY(-5px); }
+.pc:hover::before { transform: scaleX(1); }
+.pc:hover .pc__name a { color: var(--brand-ink); }
+
+.pc__media { position: relative; aspect-ratio: 1 / 1; background: #fff; border-bottom: 1px solid var(--line); overflow: hidden; }
+.pc__media img { width: 100%; height: 100%; object-fit: contain; padding: 20px; transition: transform .35s var(--ease); }
+.pc:hover .pc__media img { transform: scale(1.045); }
+.pc__badges { position: absolute; top: 10px; left: 10px; display: flex; flex-direction: column; gap: 6px; z-index: 2; }
+.pc__wish {
+  position: absolute; top: 9px; right: 9px; width: 36px; height: 36px; display: grid; place-items: center; z-index: 2;
+  background: rgba(255,255,255,.94); border: 1px solid var(--line); border-radius: 50%; color: var(--faint);
+  opacity: 0; transition: opacity .16s var(--ease), color .16s var(--ease);
+}
+.pc:hover .pc__wish { opacity: 1; }
+.pc__wish:hover { color: var(--brand-ink); border-color: var(--line-2); }
+.pc__wish.is-on { opacity: 1; color: var(--brand); }
+.pc__wish.is-on svg { fill: var(--brand); }
+
+.pc__body { display: flex; flex-direction: column; gap: 8px; padding: 15px 16px 16px; flex: 1; }
+.pc__cat { display: inline-flex; align-items: center; gap: 8px; font-family: var(--f-head); font-size: var(--t-xs); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--brand-ink); }
+.pc__cat::before { content: ""; width: 15px; height: 2px; background: var(--brand); flex-shrink: 0; }
+.pc__name { font-size: 1.02rem; line-height: 1.25; font-weight: 600; font-family: var(--f-head); }
+.pc__name a { color: var(--ink); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 2.5em; transition: color .16s var(--ease); }
+.pc__rating { display: flex; align-items: center; gap: 8px; min-height: 18px; }
+.pc__sizes { font-size: var(--t-xs); color: var(--faint); }
+
+.pc__foot { margin-top: auto; padding-top: 8px; }
+.pc__price { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; line-height: 1; margin-bottom: 12px; }
+.pc__from { font-size: var(--t-xs); color: var(--faint); text-transform: uppercase; letter-spacing: 0.04em; font-weight: 600; }
+.pc__price b { font-family: var(--f-display); font-weight: 700; font-size: 1.65rem; color: var(--ink); }
+.pc__gst { font-size: 0.62rem; color: var(--faint); text-transform: uppercase; letter-spacing: 0.04em; }
+.pc__cta {
+  display: flex; align-items: center; justify-content: center; gap: 7px; width: 100%; padding: 11px 12px;
+  border: 1.5px solid var(--ink); border-radius: 10px; background: #fff; color: var(--ink);
+  font-family: var(--f-head); font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; font-size: var(--t-xs);
+  transition: background .16s var(--ease), color .16s var(--ease), border-color .16s var(--ease);
+}
+.pc__cta svg { transition: transform .16s var(--ease); }
+.pc__cta:hover { background: var(--brand-cta); border-color: var(--brand-cta); color: #fff; }
+.pc__cta:hover svg { transform: translateX(3px); }
+.pc__cta--out { border-color: var(--line-2); color: var(--faint); cursor: not-allowed; }
+.pc__cta--out:hover { background: #fff; color: var(--faint); border-color: var(--line-2); }
+
+@media (max-width: 520px){
+  .pc__body { padding: 12px 12px 13px; gap: 7px; }
+  .pc__price b { font-size: 1.4rem; }
+  .pc__cta { padding: 9px 10px; }
+}

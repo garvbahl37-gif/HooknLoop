@@ -1,0 +1,44 @@
+/* ===== Content pages: search · contact · bulk · misc ===== */
+
+/* search */
+.search__head { padding-block: 8px 4px; text-align: center; }
+.search__head h1 { font-family: var(--f-head); font-weight: 700; font-size: clamp(1.7rem, 3.2vw, 2.4rem); letter-spacing: -0.015em; margin-bottom: 18px; }
+.search__q { color: var(--brand-ink); }
+.search__box { display: flex; gap: 10px; max-width: 620px; margin: 0 auto; }
+.search__box input { flex: 1; height: 48px; border: 1.5px solid var(--line-2); border-radius: var(--r); padding: 0 16px; font-size: var(--t-body); }
+.search__box input:focus { outline: none; border-color: var(--ink); }
+.search__count { margin-top: 14px; font-family: var(--f-head); font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; font-size: var(--t-sm); color: var(--muted); }
+
+/* contact */
+.contact { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 40px; padding-block: 44px 70px; align-items: start; }
+.contact__info > ul { display: flex; flex-direction: column; gap: 4px; }
+.contact__info li { display: flex; align-items: center; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+.contact__ic { width: 44px; height: 44px; flex-shrink: 0; display: grid; place-items: center; background: var(--brand-wash); color: var(--brand-ink); border-radius: var(--r); }
+.contact__info b { display: block; font-family: var(--f-head); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--faint); }
+.contact__info li a, .contact__info li span { font-size: 1.05rem; color: var(--ink); font-weight: 500; }
+.contact__info li a:hover { color: var(--brand-ink); }
+.contact__ship { display: flex; gap: 12px; margin-top: 22px; padding: 16px; background: var(--paper); border-radius: var(--r-lg); border: 1px solid var(--line); }
+.contact__ship svg { color: var(--brand); flex-shrink: 0; }
+.contact__ship p { font-size: var(--t-sm); color: var(--muted); }
+
+.contact__form { background: #fff; border: 1px solid var(--line); border-top: 3px solid var(--brand); border-radius: var(--r-lg); padding: 28px; }
+.contact__form h2 { font-family: var(--f-head); text-transform: uppercase; letter-spacing: 0.03em; font-size: 1.3rem; margin-bottom: 20px; }
+.contact__row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.contact__form label { display: block; font-family: var(--f-head); font-weight: 600; font-size: var(--t-sm); color: var(--ink-2); margin-bottom: 14px; }
+.contact__form input, .contact__form textarea { width: 100%; margin-top: 6px; border: 1.5px solid var(--line-2); border-radius: var(--r); padding: 11px 13px; font-family: var(--f-body); font-size: var(--t-body); font-weight: 400; }
+.contact__form input:focus, .contact__form textarea:focus { outline: none; border-color: var(--ink); }
+.contact__form textarea { resize: vertical; }
+.contact__sent { display: flex; gap: 12px; align-items: flex-start; padding: 18px; background: color-mix(in srgb, var(--stock) 8%, #fff); border: 1px solid color-mix(in srgb, var(--stock) 32%, #fff); border-radius: var(--r); }
+.contact__sent svg { color: var(--stock); flex-shrink: 0; margin-top: 2px; }
+.contact__sent b { display: block; color: var(--ink); }
+.contact__sent span { font-size: var(--t-sm); color: var(--muted); }
+@media (max-width: 780px){ .contact { grid-template-columns: 1fr; } .contact__row { grid-template-columns: 1fr; } }
+
+/* bulk */
+.bulk-tiers { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.bulk-tier { border: 1px solid var(--line); border-radius: var(--r-lg); padding: 26px 18px; text-align: center; background: #fff; position: relative; overflow: hidden; }
+.bulk-tier::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 4px; background: var(--brand); }
+.bulk-tier b { display: block; font-family: var(--f-display); font-size: 2.4rem; color: var(--brand-ink); line-height: 1; margin-top: 6px; }
+.bulk-tier span { font-family: var(--f-head); font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; font-size: var(--t-sm); color: var(--muted); }
+.bulk-note { margin-top: 24px; font-size: var(--t-sm); color: var(--faint); max-width: 74ch; }
+@media (max-width: 640px){ .bulk-tiers { grid-template-columns: 1fr 1fr; } }

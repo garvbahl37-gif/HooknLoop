@@ -1,0 +1,148 @@
+/* ===== Header: utility bar · masthead · dark mega-nav · mobile drawer ===== */
+/* display:contents so the sticky block's containing block is the full page
+   (not the short header wrapper) — otherwise the sticky header unsticks early. */
+.hd { display: contents; }
+
+/* branding strip (original red bar) — centred facilities */
+.hd-util { background: var(--brand); color: #fff; font-family: var(--f-head); }
+.hd-util__row { display: flex; align-items: center; justify-content: center; min-height: 38px; }
+.hd-util__feats { display: flex; gap: 26px; align-items: center; flex-wrap: wrap; justify-content: center; }
+.hd-util li { display: inline-flex; align-items: center; gap: 7px; font-size: var(--t-xs); font-weight: 500; letter-spacing: 0.02em; color: #fff; }
+.hd-util li svg { color: #fff; }
+.hd-util__lead { font-weight: 700 !important; font-size: var(--t-sm); letter-spacing: 0.01em; }
+@media (max-width: 900px){ .hd-util__sep:nth-child(n+3) { display: none; } }
+@media (max-width: 560px){ .hd-util__sep { display: none; } .hd-util__feats { gap: 0; } }
+
+/* sticky block */
+.hd-stick { position: sticky; top: 0; z-index: 100; background: #fff; box-shadow: var(--sh-sm); }
+
+/* masthead */
+.hd-mast { background: #fff; border-bottom: 1px solid var(--line); }
+.hd-mast__row { display: flex; align-items: center; gap: 28px; min-height: 78px; }
+.hd-logo { display: inline-flex; align-items: center; gap: 14px; flex-shrink: 0; }
+.hd-logo__img { width: auto; height: 34px; display: block; }
+.hd-logo__tag {
+  display: none; padding-left: 14px; border-left: 1px solid var(--line-2);
+  font-family: var(--f-head); font-weight: 600; font-size: 0.7rem; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--faint); max-width: 8ch; line-height: 1.25;
+}
+@media (min-width: 1120px){ .hd-logo__tag { display: block; } }
+
+.hd-search { flex: 1; display: flex; align-items: center; max-width: 640px; margin-inline: auto; height: 50px; padding: 0 6px 0 18px; background: var(--panel); border: 1.5px solid var(--line-2); border-radius: var(--r-pill); transition: border-color .16s var(--ease), box-shadow .16s var(--ease), background .16s var(--ease); }
+.hd-search:focus-within { border-color: var(--brand); background: #fff; box-shadow: 0 0 0 3px var(--brand-wash); }
+.hd-search__pre { color: var(--faint); flex-shrink: 0; }
+.hd-search input { flex: 1; min-width: 0; height: 100%; border: none; background: transparent; padding: 0 12px; font-size: var(--t-body); }
+.hd-search input:focus { outline: none; }
+.hd-search__btn { height: 38px; padding: 0 22px; background: var(--brand-cta); color: #fff; border-radius: var(--r-pill); font-family: var(--f-head); font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; font-size: var(--t-xs); flex-shrink: 0; transition: background .16s var(--ease); }
+.hd-search__btn:hover { background: var(--brand-cta-hov); }
+
+.hd-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+.hd-act { display: inline-flex; flex-direction: column; align-items: center; gap: 3px; padding: 6px 10px; color: var(--ink-2); border-radius: var(--r); }
+.hd-act span { font-family: var(--f-head); font-size: var(--t-xs); font-weight: 600; letter-spacing: 0.03em; }
+.hd-act:hover { color: var(--brand-ink); }
+.hd-act__cart-icon { position: relative; display: inline-block; }
+.hd-cart-badge {
+  position: absolute; top: -7px; right: -9px; min-width: 18px; height: 18px; padding: 0 4px;
+  background: var(--brand-cta); color: #fff; border-radius: var(--r-pill);
+  font-size: 0.68rem; font-weight: 700; display: grid; place-items: center; line-height: 1;
+}
+.hd-burger { display: none; padding: 8px; color: var(--ink); }
+
+/* mega-nav */
+.hd-nav { background: var(--ink); }
+.hd-nav__row { display: flex; align-items: center; justify-content: center; position: relative; }
+.hd-nav__list { display: flex; align-items: stretch; }
+.hd-nav__item { position: relative; }
+.hd-nav__link {
+  display: inline-flex; align-items: center; gap: 5px; height: 48px; padding: 0 18px;
+  font-family: var(--f-head); font-weight: 600; font-size: 0.94rem; letter-spacing: 0.03em;
+  text-transform: uppercase; color: #fff; position: relative;
+  transition: background .16s var(--ease), color .16s var(--ease);
+}
+.hd-nav__link svg { opacity: .7; transition: transform .16s var(--ease); }
+.hd-nav__item:hover .hd-nav__link, .hd-nav__item.is-open .hd-nav__link,
+.hd-nav__link:focus-visible { background: rgba(255,255,255,.09); }
+.hd-nav__item.is-open .hd-nav__link svg { transform: rotate(180deg); }
+
+/* mega dropdown */
+.hd-mega {
+  position: absolute; top: 100%; left: 0; z-index: 60;
+  background: #fff; border: 1px solid var(--line); border-top: none;
+  box-shadow: var(--sh-lg); border-radius: 0 0 var(--r-lg) var(--r-lg);
+  padding: 20px 24px; min-width: 320px;
+  opacity: 0; visibility: hidden; transform: translateY(6px); transition: opacity .16s var(--ease), transform .16s var(--ease), visibility .16s;
+}
+/* Reveal is driven ONLY by the single-valued React state (.is-open) + keyboard focus,
+   never bare :hover — otherwise a second panel can flash in during the hand-off between
+   two buttons and the wide panels overlap. Exactly one mega can ever be visible. */
+.hd-nav__item.is-open .hd-mega, .hd-nav__item:focus-within .hd-mega {
+  opacity: 1; visibility: visible; transform: translateY(0);
+}
+.hd-mega__cols { display: flex; gap: 34px; }
+.hd-mega__cols ul { min-width: 190px; }
+.hd-mega__cols a {
+  display: block; padding: 6px 0; font-size: 0.95rem; color: var(--ink-2); border-bottom: 1px solid transparent;
+}
+.hd-mega__cols a:hover { color: var(--brand-ink); }
+.hd-mega__all {
+  display: inline-flex; align-items: center; gap: 6px; margin-top: 16px; padding-top: 14px;
+  border-top: 1px solid var(--line); font-family: var(--f-head); font-weight: 700; text-transform: uppercase;
+  font-size: var(--t-xs); letter-spacing: 0.05em; color: var(--brand-ink);
+}
+.hd-mega__all:hover { gap: 10px; }
+/* right-side nav items open their dropdown leftward so it never overflows the viewport */
+.hd-nav__item--right .hd-mega { left: auto; right: 0; }
+/* never let a panel exceed the viewport */
+.hd-mega { max-width: calc(100vw - 24px); }
+/* the wide multi-column menu is centred on its button so its right edge can't run off
+   the screen at narrow desktop widths (it overflowed ~66px at 920px before) */
+.hd-nav__item--wide .hd-mega { left: 50%; right: auto; transform: translateX(-50%) translateY(6px); }
+.hd-nav__item--wide.is-open .hd-mega, .hd-nav__item--wide:focus-within .hd-mega { transform: translateX(-50%) translateY(0); }
+
+.hd-nav__trade {
+  position: absolute; right: 0; top: 50%; transform: translateY(-50%);
+  display: inline-flex; align-items: center; gap: 7px; height: 34px; padding: 0 14px;
+  border: 1.5px solid rgba(255,255,255,.28); border-radius: var(--r);
+  font-family: var(--f-head); font-weight: 700; font-size: var(--t-xs); letter-spacing: 0.05em;
+  text-transform: uppercase; color: #fff;
+}
+.hd-nav__trade svg { color: var(--brand); }
+.hd-nav__trade:hover { background: var(--brand-cta); border-color: var(--brand-cta); }
+.hd-nav__trade:hover svg { color: #fff; }
+
+/* mobile drawer */
+.hd-drawer { position: fixed; inset: 0; z-index: 200; }
+.hd-drawer__scrim { position: absolute; inset: 0; background: rgba(15,12,10,.55); }
+.hd-drawer__panel {
+  position: absolute; top: 0; right: 0; height: 100%; width: min(390px, 88vw);
+  background: #fff; display: flex; flex-direction: column; box-shadow: var(--sh-lg);
+  animation: drawerIn .22s var(--ease);
+}
+@keyframes drawerIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+.hd-drawer__top { display: flex; align-items: center; justify-content: space-between; padding: 16px 18px; background: var(--ink); color: #fff; }
+.hd-drawer__top b { font-family: var(--f-head); text-transform: uppercase; letter-spacing: 0.08em; }
+.hd-drawer__search { display: flex; padding: 14px 16px; gap: 0; border-bottom: 1px solid var(--line); }
+.hd-drawer__search input { flex: 1; height: 44px; border: 1.5px solid var(--line-2); border-right: none; border-radius: var(--r) 0 0 var(--r); padding: 0 14px; }
+.hd-drawer__search button { width: 50px; background: var(--brand-cta); color: #fff; border-radius: 0 var(--r) var(--r) 0; display: grid; place-items: center; }
+.hd-drawer__nav { overflow-y: auto; padding: 6px 0 40px; }
+.hd-drawer__acc, .hd-drawer__link {
+  display: flex; align-items: center; justify-content: space-between; width: 100%; text-align: left;
+  padding: 14px 18px; font-family: var(--f-head); font-weight: 600; font-size: 1rem; text-transform: uppercase;
+  letter-spacing: 0.03em; color: var(--ink); border-bottom: 1px solid var(--line);
+}
+.hd-drawer__sub { background: var(--paper); border-bottom: 1px solid var(--line); }
+.hd-drawer__sub a { display: block; padding: 11px 18px 11px 30px; font-size: 0.94rem; color: var(--ink-2); border-bottom: 1px solid var(--line); }
+.hd-drawer__sub a:last-child { border-bottom: none; }
+
+/* responsive: collapse nav into burger */
+@media (max-width: 900px){
+  .hd-nav, .hazard-rule--thin { display: none; }
+  .hd-burger { display: inline-flex; }
+  .hd-act:not(.hd-act--cart) { display: none; }
+  .hd-mast__row { gap: 14px; min-height: 64px; }
+  .hd-logo__img { height: 28px; }
+}
+@media (max-width: 620px){
+  .hd-search { order: 3; flex-basis: 100%; max-width: none; margin: 0 0 12px; }
+  .hd-mast__row { flex-wrap: wrap; padding-top: 12px; }
+}

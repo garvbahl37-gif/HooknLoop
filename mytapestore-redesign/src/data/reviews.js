@@ -1,0 +1,1050 @@
+/*  Real customer reviews, pulled verbatim from the live mytapestore.com.au
+    WooCommerce Store API. Keyed by product handle.  */
+
+export const REVIEWS = {
+"hook-loop-roll-adhesive-backed": [
+{
+"name": "Rick",
+"rating": 5,
+"text": "Recently, I have picked up the Self Adhesive Hook and Loop Roll from My Tape Store and it’s been a lifesaver for keeping things tidy around the house. Sticks strong, easy to cut to size, and no mess at all. Honestly, it’s one of those “why didn’t I buy this sooner” products.",
+"date": "Oct 2025",
+"verified": false
+},
+{
+"name": "Zachary",
+"rating": 5,
+"text": "I've used it for so many projects around the house, from organizing cables to securing items in the garage. It's incredibly strong and holds up perfectly, even with a lot of weight. The adhesive is super sticky, so I don't have to worry about it peeling off. This is a must-have for anyone who needs a quick and reliable fastening solution.",
+"date": "Sep 2025",
+"verified": false
+}
+],
+"sew-on-hook-loop-non-adhesive": [
+{
+"name": "John Williams",
+"rating": 5,
+"text": "I grabbed the Sew On Hook and Loop from My Tape Store for a few fabric projects and it worked a treat. Strong, durable, and sews on without fuss. Perfect for giving my old jackets and bags a second life.",
+"date": "Oct 2025",
+"verified": false
+}
+],
+"double-sided-pe-foam-tape": [
+{
+"name": "Ethan",
+"rating": 5,
+"text": "“I used double-sided PE foam tape from My Tape Store to stick my bathroom mirror, and it worked like magic. Now that it has been a few months, it is holding the mirror. It was super easy to apply, and I did not even need any tools. Great product with good quality!”",
+"date": "Aug 2025",
+"verified": false
+},
+{
+"name": "Michelle",
+"rating": 5,
+"text": "We needed something strong but gentle to hang some lightweight items, and this foam tape did the job perfectly. It holds everything in place without damaging our surfaces. We are really happy with how well it works!",
+"date": "Sep 2024",
+"verified": false
+},
+{
+"name": "Australia",
+"rating": 5,
+"text": "Myself Oliver. Our team used this foam tape for some craft projects, and it was just perfect! It’s thick and soft, but it sticks firmly. We love how easy it is to cut and apply, making our jobs quicker and cleaner.",
+"date": "Sep 2024",
+"verified": false
+},
+{
+"name": "John Wade",
+"rating": 5,
+"text": "We used the white double sided foam tape from MyTapeStore, and it works so well! It sticks strong on both sides, and it was super easy to use. We love how it helps keep things in place, and we didn’t have any trouble removing it when needed.",
+"date": "Sep 2024",
+"verified": false
+},
+{
+"name": "admin",
+"rating": 5,
+"text": "Good products",
+"date": "Jul 2024",
+"verified": false
+}
+],
+"high-bond-acrylic-tape-clear": [
+{
+"name": "Will Kramer",
+"rating": 5,
+"text": "\"I used this tape to mount metal signs, and it worked perfectly. Super strong and holds up even in hot weather. Highly recommend!\"",
+"date": "Jun 2025",
+"verified": false
+},
+{
+"name": "Jess",
+"rating": 5,
+"text": "I’ve used this tape for a lot of different things around the house. From fixing small cracks to sticking up decorations, it works perfectly every time. It's clear, so it blends in well, and you don’t have to worry about it being too noticeable.",
+"date": "Oct 2024",
+"verified": false
+}
+],
+"double-sided-carpet-tape": [
+{
+"name": "Zachary",
+"rating": 5,
+"text": "\"I used this double-sided carpet tape from My Tape Store to secure a carpet in my living room, and it has not come out for months. I also used carpet seam tape for joining rugs. It was strong, easy to use, and left no sticky mess, highly recommended!\"",
+"date": "Aug 2025",
+"verified": false
+}
+],
+"double-sided-black-butyl-tape": [
+{
+"name": "Marcus",
+"rating": 5,
+"text": "\"I used this double-sided butyl tape to seal the edges of my RV roof. It worked really well! There were no leaks, even in heavy rain. So impressed with its easy-to-install feature. A must-have for any serious DIYer, for sure!\"",
+"date": "Jul 2025",
+"verified": false
+}
+],
+"spacer-glazing-tape": [
+{
+"name": "Jack Williams",
+"rating": 5,
+"text": "I used this open-cell glazing tape during window installations, and I am stunned by the results; it was flawless. The adhesive held strong, spacing was perfect, and it handled temperature changes without a hitch. A must-buy professional-grade product from My Tape Store!\"",
+"date": "Aug 2025",
+"verified": false
+}
+],
+"pvc-nitrile-foam-tape": [
+{
+"name": "Nayeli",
+"rating": 5,
+"text": "\"I have been using this PVC nitrile foam tape for a few months in my factory, and I am happy with the quality received at this price. Perfect thermal and acoustic insulation stick easily and are handy to tear. Good product, I must say. Thank You, My Tape Store! \"",
+"date": "Apr 2025",
+"verified": false
+},
+{
+"name": "admin",
+"rating": 4,
+"text": "best",
+"date": "Aug 2023",
+"verified": false
+}
+],
+"silicone-kraft-paper-tapes": [
+{
+"name": "Evelyn",
+"rating": 5,
+"text": "\"I found this silicone kraft paper excellent to use. It's super strong and gave a good performance. Easy to remove and performed flawlessly every time. Highly recommended for any industrial set-up. Thanks, My Tape Store, for an incredible deal!\"",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"rendering-cloth-masking-tape": [
+{
+"name": "Abel",
+"rating": 5,
+"text": "\"I used this renderers cloth masking tape for a plastering job, and I liked the results. It worked perfectly! Stuck well, without peeling, and even came off clean. really a reliable product, I will definitely buy it again and recommend it too!”",
+"date": "Apr 2025",
+"verified": false
+},
+{
+"name": "admin",
+"rating": 5,
+"text": "Best Services",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"flatback-kraft-paper-tape": [
+{
+"name": "Daniel",
+"rating": 5,
+"text": "\"I am happy to use this flatback kraft paper. Bought this at a convincing price from My Tape Store. Its superb adhesion, curling resistance and easy handling with dispensers make it a preferred choice. Going to buy it again. Highly recommend it!\"",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"eco-friendly-kraft-paper-tapes": [
+{
+"name": "Michael",
+"rating": 5,
+"text": "“I was looking for a sustainable packaging solution. Then I got this Biodegradable Kraft tape online and I am happy to get this. High-performance, strong adhesion and flexibly longer roller. Found it highly convenient. I would like to recommend this to eco- conscious businessmen, a must-buy product to all”.",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"eco-friendly-kraft-paper-tape-printed": [
+{
+"name": "Ethan",
+"rating": 5,
+"text": "“Really pleased with the quality of kraft paper tape I bought a few days. Have come to order it again. I liked the strong adhesion and flexibility to use. Would recommend it to others as well. Just go for it”.",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"utility-grade-masking-tapes": [
+{
+"name": "Aabroo",
+"rating": 5,
+"text": "“I work in a factory and have been using this utility grade masking tape for a while and I didn't expect such great quality. With its strong adhesion and no-sticky residue feature, it is impressive. I would like to buy it again, highly recommended”",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"general-purpose-masking-tape": [
+{
+"name": "Merredin",
+"rating": 5,
+"text": "“We are using this general-purpose masking tape in our workshop daily, and it never disappoints. With strong adhesion, clean removal, and no residue, it gives perfect results. We love its quality at a reasonable price, a recommended product, definitely!”",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"white-automotive-masking-tapes": [
+{
+"name": "Alinta",
+"rating": 5,
+"text": "“I have been white automotive painters masking tape for car detailing for a while and I am quite happy with the quality My Tape Store supplied. It sticks well, gives sharp lines, no paint bleeding and no-sticky residue. Great product at best price. ”",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"high-performance-masking": [
+{
+"name": "Rosella",
+"rating": 5,
+"text": "\"As a contractor, I was looking for premium quality masking tapes, then I got it from My Tape Store. I liked its premium adhesion, clean lines and no residue feature. Highly recommending product\"",
+"date": "Apr 2025",
+"verified": false
+},
+{
+"name": "admin",
+"rating": 5,
+"text": "Best",
+"date": "Jul 2024",
+"verified": false
+}
+],
+"14-day-premium-masking-tape": [
+{
+"name": "Araluen",
+"rating": 5,
+"text": "\"As a professional painter, I would like to recommend this coloured painter's masking tape I got from My Tape Store. I liked its easy-to-use and peeling qualities. Also, the multiple colour availability is the reliable feature. A must-buy product.\"",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"7-day-premium-masking-tape": [
+{
+"name": "Lennox",
+"rating": 5,
+"text": "\"I used this yellow painter's tape for my home painting project, and I loved the features. It adhered well and prevented paint bleed like pro, and removed easily without residue. I got a professional look for my walls, with this tape, thanks My Tape Store.\"",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"28-day-premium-masking": [
+{
+"name": "Daniella",
+"rating": 5,
+"text": "\"My office painters used these blue painters’ tapes, and the results were incredible. While adhering easily, it prevented paint bleed, removed easily after 28 days, and offered a mess-free flawless finish. Good product, a must-buy tape.\"",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"all-weather-repair-tape": [
+{
+"name": "Drackie",
+"rating": 5,
+"text": "\"I found this all-weather repair tape highly useful. I took it on a trek. Super strong, seamless, easy to apply and whatnot. It’s a must-buy product for outdoor trips. Thanks, My Tape Store, for such incredible quality! \"",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"protection-tape": [
+{
+"name": "Chicka",
+"rating": 5,
+"text": "\"This PE protection tape is fantastic! I used it at my factory and this black protection tape kept my stainless-steel panels flawless during a big project. Really wonderful as it is easy to apply and remove. No residue at all. Highly recommend it to all. Strong yet gentle protection at a reasonable price!\"",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"flashing-tape": [
+{
+"name": "Harper",
+"rating": 5,
+"text": "I have been using butyl waterproof flashing tape for over a year now. It is going fine in winter as well as on summer days. Thanks, My Tape Store, for this extra peace of mind!",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"reinforced-flashing-tape": [
+{
+"name": "Frankie",
+"rating": 5,
+"text": "I strongly recommend using reinforced flashing tape from My Tape Store. It efficiently protects your house from bad weather and water leakage.",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"cloth-tapes": [
+{
+"name": "Chase",
+"rating": 5,
+"text": "\"I ordered all the colours of cloth tapes from My Tape Store, and I am happy with the deal and the quality they offer. It sticks well without peeling off. It had a great impact on my colour-coding needs. Would like to recommend this to all. Thank you, MTS!\"",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"clear-stationery-tape": [
+{
+"name": "Stellan",
+"rating": 5,
+"text": "“I like the quality of clear stationery tape I got from My Tape Store. What’s the best thing about it is clear BOPP material that does not get faded over time. Easy to tear and good performance. Overall, a must buy-product and highly recommended”!",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"glass-reinforced-mylar": [
+{
+"name": "Allambee",
+"rating": 5,
+"text": "“I bought mylar tape and am really impressed with the quality. It is strong, smooth and works great, sticks well without peeling off. It is a recommended product as available at a great price, Thanks My Tape Store\"",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"fineline-masking-tape": [
+{
+"name": "Hudson",
+"rating": 5,
+"text": "“I used this thin blue masking tape for making car stripes and the result came out as stunning. The quality is admirable at this price. No bleeding and no residue. A highly recommending product. Thank you, My Tape Store!”",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"double-sided-premium-tissue-tape": [
+{
+"name": "Gabriel Kellett",
+"rating": 5,
+"text": "I recently bought double-sided Kikusui tissue tape from My Tape Store, and I am impressed with the quality and performance. Easy to handle, cut and stick with no mess around after removal. It is a reliable product and a must-buy.",
+"date": "Aug 2025",
+"verified": false
+}
+],
+"double-sided-acid-free-tissue-tape": [
+{
+"name": "Zachary",
+"rating": 5,
+"text": "I bought acid-free tape from My Tape Store for my scrapbook project. The glue is durable, to preserve my photographs and papers in the long term. I adore the fact that it is acid-free, so I need not worry about yellowing or destruction. Sticks fast and easily cuts. Great quality and totally worth it.",
+"date": "Aug 2025",
+"verified": false
+}
+],
+"double-sided-differential-adhesive-tape": [
+{
+"name": "Cardinia",
+"rating": 5,
+"text": "I used the removable double-sided tape for an event display, and it worked perfectly. It held everything securely in place yet came off cleanly without damaging surfaces. Super easy to use and very versatile—highly recommend it!",
+"date": "Aug 2025",
+"verified": false
+}
+],
+"polyimide-film-kapton-tape": [
+{
+"name": "Lucas",
+"rating": 5,
+"text": "“I bought this polyimide Kapton tape for my 3D printer and it actually worked perfectly! Handled high heat without peeling and left no sticky mess. Great quality, at a good price. Would like to recommend it as I am definitely keeping this in my toolbox!”",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"biodegradable-packaging-tape": [
+{
+"name": "Yael",
+"rating": 5,
+"text": "“We have been using the Biodegradable Packaging Tape 48mm x 50m for all our packaging needs, and it has exceeded our expectations. Good stickiness and strength with premium quality kraft paper and natural rubber adhesive. Serves as an eco-friendly packaging. Highly recommended for businesses that want to reduce their environmental impact. No compromise on quality at all.”",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"silicone-splicing-tape": [
+{
+"name": "Grayham",
+"rating": 5,
+"text": "\"I used this silicone adhesive tape, and it worked really fantastically. It helped me with my project, and it was easy to peel and stick. This is what I have been searching for months. Thank you, My Tape Store, for providing me with such excellent tapes at my doorstep. Must-buy to all!\"",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"polyethylene-foam-tape": [
+{
+"name": "Shiloh",
+"rating": 5,
+"text": "“I am just loving the quality of this PE foam tape. I used it for mounting some signs and sealing gaps and it worked perfectly. Super easy to use and sticks strong. I am buying it again for my next project. Definitely a recommendable product.”",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"economy-packaging-tape-brown": [
+{
+"name": "Cyrus",
+"rating": 5,
+"text": "“I bought this amazing yet affordable adhesive solution and it worked wonders. I like the strength and residue-free features of this tape. I used it in bundling and sealing and am quite happy with the results. Also, the price was stunning. A highly recommended product.”",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"gaffer-tape": [
+{
+"name": "Finn",
+"rating": 5,
+"text": "“This Gaffa tape I bought from My Tape Store is honestly the best I have ever used. It sticks strong, comes off clean, and does not reflect light- perfect for my video shoots. Handy to use. A must-have for me, and I think for others too.”",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"polyurethane-foam-tape": [
+{
+"name": "Effie",
+"rating": 5,
+"text": "“Bought polyurethane for insulating ducts, and was really impressed. It gave excellent results without much hassle. Good adhesion and insulation. Highly appreciative quality at a pocket-friendly price. A must-buy product.”",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"clear-packaging-tape": [
+{
+"name": "George Bernard Shaw",
+"rating": 5,
+"text": "“I have been using this for quite a few months, and it's fantastic and recommendable. With its long 1000 m rolls, it is handy to use. Will definitely buy it again. Thank you, MTS for a great deal”",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"anti-slip-tread-tape": [
+{
+"name": "Daymion",
+"rating": 5,
+"text": "I used this anti-slip tape on my stairs, and it worked great. It sticks instantly and stays in place for long. The grip is commendable. Great quality, totally worth the price. Highly recommend.",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"polyester-insulation-tape": [
+{
+"name": "Adam",
+"rating": 5,
+"text": "“Absolutely liked this polyester insulation tape by My Tape Store! Its super durable, sticks well. I got perfect results in electrical work. No peeling or mess, just reliable performance. A recommended product at a good price. Will definitely buy it again!”",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"class-2-reflective-tape": [
+{
+"name": "Will Kramer",
+"rating": 5,
+"text": "\"I recently bought this Class 2 Reflective Tape for marking purposes at my warehouse, and I am very impressed with its quality and performance. It is easy to stick and clearly lit up under low light. It also cuts cleanly with no peeling at the edges. A reasonable product, also will definitely buy it again. \"",
+"date": "May 2025",
+"verified": false
+}
+],
+"class-1-reflective-tape": [
+{
+"name": "Tristan Lackey",
+"rating": 5,
+"text": "\"After using this Class 1 Reflective Tape, I realised that this is what I had been looking for in my construction vehicles. As it gives incredible visibility in low light, it helped me manage safety without a mess. It sticks well without peeling. Definitely, it's a premium product worth the price. Thanks, My Tape Store.\"",
+"date": "May 2025",
+"verified": false
+}
+],
+"class-1-reflective-tape-prismatic-grade": [
+{
+"name": "Zachary",
+"rating": 5,
+"text": "\"I have been using this prismatic-grade reflective tape for a few months, and it is an excellent product. As durable and easy to use with strong adhesive backing, it is incredible to use outdoors. It glows in dark areas. So, I recommend it for safety needs.\"",
+"date": "May 2025",
+"verified": false
+}
+],
+"fibreglass-cloth-insulation-tape": [
+{
+"name": "Benjamin",
+"rating": 5,
+"text": "“I liked the results I got using fibreglass cloth insulation tapes for wiring and heat protection. Really amazing quality. It worked great. super strong and heat resistant and it sticks well without peeling and fraying. Highly recommended at this price.”",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"pvc-packaging-tape": [
+{
+"name": "Rita Wilson",
+"rating": 5,
+"text": "“I have been using blue PVC packaging tape for my warehouse packaging needs for a long. I am happy it exceeded my expectations. Its strong and sticks well on our boxes. Also, it does not peel off. Actually, a worth-buying product.”",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"fragile-packing-tape": [
+{
+"name": "Halbert",
+"rating": 5,
+"text": "“I used fragile packing tape for the first time on my delicate items shipping and I liked its performance. Excellently strong, it stuck well on boxes. The red print is clearly visible. Very nice product and highly recommended.”",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"floor-marking-tape": [
+{
+"name": "Isaiah",
+"rating": 5,
+"text": "“Using this floor marking tape for a few days in my garage. It is super sticky and easy to apply. I like its flexibility to use anywhere. No residues on removal. Got amazed to see, it stood up with all foot traffic. Really a true ally. Definitely recommending it.”",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"reinforced-foil-tape": [
+{
+"name": "Timothy",
+"rating": 5,
+"text": "\"I recently used this reinforced aluminium foil tape to seal up some HVAC ducts, and honestly, I’m impressed! It sticks well, handles heat, and is super reliable. I found it perfect for sealing ducts and would like to recommend it to others as well. Thank You, My Tape Store.\"",
+"date": "May 2025",
+"verified": false
+}
+],
+"acribond-accessories-solvent": [
+{
+"name": "Gabriel Kellett",
+"rating": 5,
+"text": "\"I was fussed about dealing with leftover glue tape, residues, and sticker marks. Then I found this acribond adhesive remover, and it's amazing to use. It worked wonders on my car window, with no smears and no scratching. Just spray and wipe, and it makes any surface ready for adhesive tape application again. A must-buy product in your toolbox.\"",
+"date": "May 2025",
+"verified": false
+}
+],
+"acribond-accessories-hand-pads": [
+{
+"name": "Nicholas Hodgson",
+"rating": 5,
+"text": "I bought a pack of hand sanding pads for furniture refinishing. I am truly impressed with its comfortable grip and cleaning efficiency. It's a must-have from My Tape Store.",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"desk-tapes-dispenser": [
+{
+"name": "Samuel Vanzetti",
+"rating": 5,
+"text": "\"I have been using this desk tape dispenser for a few months. It's made my daily work much easier. The heavy base stays set and does not move, and the blade cuts perfectly each time. It's tougher than I thought and fits well on my full desk. Any professional setup must have this. Highly recommending\"",
+"date": "May 2025",
+"verified": false
+}
+],
+"clamp-on-bench-dispenser": [
+{
+"name": "John C. Spiker",
+"rating": 5,
+"text": "\"Our storage facility staff counts on this clamp on bench a tape dispenser. It stands set and even when we are packaging things up, works with various tape widths without problems. The blade is the sharpest and last helped us work faster and get more done. Must recommend.\"",
+"date": "May 2025",
+"verified": false
+}
+],
+"tear-drop-dispenser-metal": [
+{
+"name": "Ruth Jones",
+"rating": 5,
+"text": "“This dispenser is solid and works great. It helped me with making my work easy. I love that the enclosed design that keeps the tape safe and unblemished. It is a must-buy product.\"",
+"date": "May 2025",
+"verified": false
+}
+],
+"metal-desk-dispenser": [
+{
+"name": "Ryder Fiveash",
+"rating": 5,
+"text": "\"This metal tape dispenser changed the way I work! It feels sturdy, stays in place while I use it, and makes packing or labelling so simple. Totally worth it!\"",
+"date": "May 2025",
+"verified": false
+}
+],
+"metal-bag-sealer-with-cutter": [
+{
+"name": "Hudson",
+"rating": 5,
+"text": "Metal Bag Sealer with Cutter is a super handy tool. I have been using it for a few months and found its performance as a bonus. Quickly sealing bags made packaging at my warehouse a hassle-free task. Really a must-buy product.",
+"date": "May 2025",
+"verified": false
+}
+],
+"glue-dots-permanent-adhesive": [
+{
+"name": "Dashiella",
+"rating": 5,
+"text": "\"These glue dot permanent adhesives that I bought from My Tape Store made my craft project work effortlessly. they stick instantly and hold strong without a mess. No heating or curing. I liked its fast action. Good to go for any creative project and quick fixes. Really a must-buy product!\"",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"h11-cp-pistol-grip-dispenser-50mm": [
+{
+"name": "Ethan",
+"rating": 5,
+"text": "“I am in love with the performance of the H11/CP Pistol Grip Dispenser. It made my packing tasks so much easier. It cuts tape smoothly. It feels reliable when I am using it daily. If you pack boxes regularly, it is a recommended product.”",
+"date": "May 2025",
+"verified": false
+}
+],
+"high-bond-acrylic-tape-dark-grey": [
+{
+"name": "Hudson",
+"rating": 5,
+"text": "\"Wasn’t sure at first, but this tape is seriously strong. Used it for a DIY project and it hasn’t moved at all.\"",
+"date": "Jun 2025",
+"verified": false
+},
+{
+"name": "bailey",
+"rating": 5,
+"text": "This tape is great! It holds everything in place, and the dark grey colour looks nice. I used it for sealing and it did an amazing job. Easy to cut and use, too. I’ll be buying more from My Tape Store!",
+"date": "Oct 2024",
+"verified": false
+},
+{
+"name": "Jack",
+"rating": 5,
+"text": "I bought the High Bond Acrylic Tape in dark grey from My Tape Store, and I'm really happy with it. It's strong and sticks well to surfaces. I used it for a home project, and it worked perfectly. I would definitely recommend it",
+"date": "Sep 2024",
+"verified": false
+}
+],
+"high-bond-acrylic-tape-white": [
+{
+"name": "Zachary",
+"rating": 5,
+"text": "“I used this tape to mount metal signs, and it worked perfectly. Super strong and holds up even in hot weather. Highly recommend!”",
+"date": "Jun 2025",
+"verified": false
+}
+],
+"high-bond-acrylic-tape-grey": [
+{
+"name": "Drackie",
+"rating": 5,
+"text": "\"Great product! Easy to use and sticks really well to glass and plastic. Way better than using screws.\"",
+"date": "Jun 2025",
+"verified": false
+}
+],
+"barrier-warning-tape": [
+{
+"name": "Cruz",
+"rating": 5,
+"text": "I liked the performance of the Warning Tape, especially for temporary hazard marking. I bought it for my construction site. It is handy to use and manage as well. I would like to recommend visual cues to keep people safe. I think any professional site in search of caution tapes should just go for it.",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"plain-foil-tape": [
+{
+"name": "Marcus",
+"rating": 5,
+"text": "\" I used this Plain Aluminium Foil Tape to seal around my attic ductwork, and it worked perfectly. It stuck on securely, even in the heat. I liked the nice clean finish. Definitely keeping this in my toolkit!\"",
+"date": "May 2025",
+"verified": false
+}
+],
+"premium-polypropylene-packaging-tape": [
+{
+"name": "Jocelyn",
+"rating": 5,
+"text": "“I absolutely love the quality of this polypropylene tape. It is super easy to use and sticks well to any surface. I have been using it in packaging food items and its totally worth the price. Highly recommended.”",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"heavy-duty-gaffer-tape": [
+{
+"name": "Miles",
+"rating": 5,
+"text": "“Absolutely liked the performance of this heavy-duty gaffer tape. It strongly holds everything in place. Peels off cleanly without residue. What’s the best part is the easy to tear feature. A must have for every production kit. Highly recommended.”",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"felt-tapes-permanent-adhesive": [
+{
+"name": "Samuel Vanzetti",
+"rating": 5,
+"text": "I used this tape on my display cabinet shelves and under the legs of the chair – it sticks firmly, cuts nicely, and after six months, hasn’t shrunk or peeled. Strong and reliable, a must-buy product from My Tape Store.",
+"date": "Jul 2025",
+"verified": false
+},
+{
+"name": "Michelle",
+"rating": 5,
+"text": "I recently purchased felt tapes from My Tape Store, and I am more impressed with the quality and performance of their products! The felt tape is durable yet soft, offering perfect protection for my furniture and flooring. The adhesive is strong and reliable, making application hassle-free, and it stays firmly in place without leaving any residue when removed. The customer service was top-notch, too; my order arrived promptly, well-packaged, and exactly as described on the website. I highly recommend My Tape Store for anyone in need of high-quality felt tapes. This product is a game-changer for anyone looking to add a touch of functionality and protection to their projects!",
+"date": "Nov 2024",
+"verified": false
+}
+],
+"black-strapping-tape": [
+{
+"name": "Ben Vale",
+"rating": 5,
+"text": "What I really liked about this black strapping tape is that it does not stretch like the other packaging tapes. It keeps things secure and tight. No problem at all. Thank you, My Tape Store.",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"utility-grade-filament-tapes": [
+{
+"name": "Cardinia",
+"rating": 5,
+"text": "\"I have used these utility-grade filament tapes in packaging applications at my store. It really worked amazingly. I am definitely going to buy it again. Good product quality and high performance. Must recommend.\"",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"structural-glazing-tape": [
+{
+"name": "Jack Williams",
+"rating": 5,
+"text": "\" This structural glazing tape exceeded expectations when we used it for a large glass facade project. Liked its strong grip, easy to use feature with clean, professional finish. Highly recommended”.",
+"date": "Aug 2025",
+"verified": false
+}
+],
+"premium-strapping-tapes": [
+{
+"name": "Walken",
+"rating": 5,
+"text": "I am quite happy with the use of this premium strapping tape. It is easy to use and keeps my things securely tied up together. It helped me a lot during the move to my home with the packing things. All my goods were transported safely. Thanks, My Tape Store!",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"cross-weave-filament-tapes": [
+{
+"name": "Cayne",
+"rating": 5,
+"text": "\"Honestly, this cross-weave filament tape is a game changer at my warehouse. It made the tough packaging task simpler. I am happy with its quality and strong bond. Also, the price is very reasonable. Must recommend this product to others. Thank you, my tape store!\"",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"kit-dispenser-and-tapes": [
+{
+"name": "Araluen",
+"rating": 5,
+"text": "\"I picked the kit with tape and tape dispenser for my small online business, and it is a beneficial deal! The dispenser feels sturdy and speeds up packaging a lot. The tape that came along is of good quality. It sticks well and does not peel off like the cheap product. Thanks, My Tape Store for such a deal!\"",
+"date": "May 2025",
+"verified": false
+}
+],
+"frog-tapes-delicate-surface": [
+{
+"name": "Anna",
+"rating": 5,
+"text": "\"I liked the quality of yellow frog tape I used for my painting project. It gave me the cleanest lines ever on my walls. Also, the removal was effortless. No damage or sticky mess around. Really happy with the results. Would definitely like to recommend it.\"",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"frog-tapes-multi-surface": [
+{
+"name": "Alfred",
+"rating": 5,
+"text": "“Green Frog Tape is my go-to product for all painting projects, after I have experienced its quality features! It sticks perfectly, prevents bleeding. Peels off without damage to the surface. Happy to get such good quality at the best price. Highly recommended”",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"coloured-polypropylene-packaging-tapes": [
+{
+"name": "Caspar",
+"rating": 5,
+"text": "\"I bought this coloured polypropylene tape for my home-based business, and I am happy with its quality. It is super handy for organising and colour-coding my packages. I love how it really makes my parcels stand out. A must-buy product at such a good price!\"",
+"date": "Apr 2025",
+"verified": false
+},
+{
+"name": "admin",
+"rating": 5,
+"text": "Best.....",
+"date": "Aug 2024",
+"verified": false
+}
+],
+"glue-dots-removable-adhesive": [
+{
+"name": "Divan",
+"rating": 5,
+"text": "\"These removable dots are incredible to use. I used it at my daughter's birthday party! It gave incredible flexibility in party decoration. Easy to use and remove as well. Highly recommended; just go for it!\"",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"hh400r-hang-tab": [
+{
+"name": "Oscar Nuttall",
+"rating": 5,
+"text": "We have been using HH400R Hang Tabs for few months. It has been doing wonders with strong adhesion and clean design. Lightweight, easy to use and flexible. Love to recommend this product. Thank you, My Tape Store.",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"ht200s-hang-tab": [
+{
+"name": "Jannali",
+"rating": 5,
+"text": "We have been using HT200S Hang Tabs as a great addition to our display setup. Easy to apply, hold, and secure. Really impressed with its strong adhesions. Found a great deal on price with a bulk full carton of 2400 tabs. Thank you, My Tape Store!",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"ht450-hang-tab": [
+{
+"name": "Jeremy Gosman",
+"rating": 5,
+"text": "Love these HT450 hang tabs! Bought in bulk, the whole carton from MTS. Super strong and easy to stick on. I hung our heavier products with no problem. It made our displays look clean and organised. Great value, definitely recommended!",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"htr1-hang-tab": [
+{
+"name": "Marcus Adcock",
+"rating": 5,
+"text": "I have been using HTR1 hang tabs for my retail products for a while and it works great. Its pressure-sensitive adhesion provides a clean packaging solution. Highly impressed with the stock I bought from My Tape Store. Really a recommending product!",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"ht120r-hang-tab": [
+{
+"name": "Lowan",
+"rating": 5,
+"text": "“I found the HT120R Hang Tab highly useful for my retail shop. Easy to apply, stick well and that’s an amazing feature. Good to get a professional retail-ready look for my products. Also, I got an amazing deal at My Tape Store. Highly recommend!”",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"loop-fastener-adhesive-backed": [
+{
+"name": "Menzies",
+"rating": 5,
+"text": "For a month now, I have been using a self adhesive loop fastener tape for each of my sewing projects, as I am in love with it. This is truly a game changer! The soft touch and comfort it offers to my clothing is unexplainable. I bought a couple of tapes from My Tape Store, and these are a must-have.",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"hook-fastener-non-adhesive": [
+{
+"name": "Beau Sugden",
+"rating": 5,
+"text": "I have been using hook fastener non adhesive tapes for a month now. They have performed fantastically for sewing bags and DIY storage covers. All thanks to My Tape Store.",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"loop-fastener-non-adhesive": [
+{
+"name": "Hudson",
+"rating": 5,
+"text": "I used this loop fastener non adhesive for making some customised bags and dresses for DIY projects, and the outcome was awesome! Easy to cut into pieces and user-friendly. You must have some from My Tape Store, they are truly useful.",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"plumbers-thread-seal-tape": [
+{
+"name": "Patrick McInnes",
+"rating": 5,
+"text": "\"This PTFE tape from MTS is of excellent quality that got at an amazing price! Super easy to use and works great on all my plumbing jobs. No leaks at all. Highly recommended for all types of plumbing applications that need a durable sealing agent. \"",
+"date": "May 2025",
+"verified": false
+}
+],
+"back-to-back-black-hook-and-loop": [
+{
+"name": "Harrison",
+"rating": 5,
+"text": "The Double Side Back to Back Hook Loop from My Tape Store is so handy for bundling cables and keeping the garage sorted. Super reusable and tough as nails. Makes everything look neat without needing extra clips.",
+"date": "Oct 2025",
+"verified": false
+},
+{
+"name": "Cody Bathurst",
+"rating": 5,
+"text": "I purchased a back to back hook and loop from My Tape Store, and honestly, I am mesmerised by its versatility. No mess, as no adhesives. I can use it many times, and it is very easy to use. I bundled my yoga mat, garden plants, laptop chargers and many things with it. It's a good buy for sure.",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"stretch-film-dispenser": [
+{
+"name": "Hurtle",
+"rating": 5,
+"text": "\"The stretch film dispenser I used at our shipping department brought amazing change. Easy to use, and adjustable tension. I like to recommend it due this feature really helps us control the wrap tightness. Anyone dealing with high-volume packaging, must buy it.\"",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"stretch-film": [
+{
+"name": "Jarryn",
+"rating": 5,
+"text": "\"Great quality and has incredible performance. I found stretch film perfect for wrapping pallets. Highly recommended product. Such good quality at a reasonable price. My Tape Store is a must visit.\"",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"lane-marking": [
+{
+"name": "Brydee",
+"rating": 5,
+"text": "“I used this Floor Marking Tape Applicator for marking on floors at my warehouse. It is super easy to use and effortless to manage. It saved me a ton of time and the lines came out straight. I am happy with its performance and the quality I got from My Tape Store. Truly a recommended product.”",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"heat-sealer-teflon-coated-tape": [
+{
+"name": "Nicholas",
+"rating": 5,
+"text": "\"This Teflon tape is really good on my vacuum sealer! I have been using it for a few months and am completely happy with its performance. It is super durable and does not tear like thinner versions. Easy to apply and lasts much longer – a must-have for our production floor.”",
+"date": "May 2025",
+"verified": false
+}
+],
+"transfer-tapes-dispenser": [
+{
+"name": "Jack Williams",
+"rating": 5,
+"text": "Best Product",
+"date": "Jul 2025",
+"verified": false
+}
+],
+"hook-loop-adhesive-dots": [
+{
+"name": "Grace",
+"rating": 5,
+"text": "I got the Hook & Loop Sticky Dots pack from My Tape Store and they’re brilliant for crafts and quick fixes. The dots stick well and save heaps of time compared to fiddling with tape. My kids love using them for school projects too.",
+"date": "Oct 2025",
+"verified": false
+}
+],
+"danger-tape": [
+{
+"name": "Aabroo",
+"rating": 5,
+"text": "I have been using this danger-printed barricade tape for a few months at my construction site. It is really good in terms of quality and performance. No fading, flexibility to use, and convenience available in roll impresses me more. Will definitely buy it again. I highly recommend it!",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"caution-tape": [
+{
+"name": "Alexander Chamberlin",
+"rating": 5,
+"text": "I bought the whole roll from My Tape Store, and I am impressed with the quality. It is flexible and easy to use. Best quality at this price. Thanks for a great deal. Definitely going to buy it again.",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"double-sided-exhibition-cloth-tape": [
+{
+"name": "Jarryn",
+"rating": 5,
+"text": "“Excellent exhibition cloth tape, which I got at My Tape Store. It is easy to hold and tear, moisture-resistant, and removed cleanly after the event. Made my event setup and cleanup effortless. Admiring quality!",
+"date": "Aug 2025",
+"verified": false
+}
+],
+"hook-loop-straps-50mm-x-5m": [
+{
+"name": "Charlotte",
+"rating": 5,
+"text": "Bought the Hook & Loop Straps from My Tape Store and they’ve been perfect for wrapping cables, hoses, and camping gear. Strong, reusable, and the 5-pack is great value. Makes packing up so much easier after a long weekend away.",
+"date": "Oct 2025",
+"verified": false
+}
+],
+"velcro-adhesive-backed-hook-loop": [
+{
+"name": "James",
+"rating": 5,
+"text": "I am happy with the self-adhesive hook and Loop roll I got from My Tape Store. The Quality of the product is good and the product packaging is also properly done by My Tape Store team. This product works perfectly for my projects. I am also happy with the Payment process, which is much smoother, and delivery is on time from the Team. Great service all around!",
+"date": "Oct 2025",
+"verified": false
+}
+],
+"joist-protection-tape": [
+{
+"name": "Kronrod",
+"rating": 5,
+"text": "\"Looking for a reliable decking tape, I got joist protection tape at My Tape Store. It is excellent in quality, sticks easily, and conforms to any surface. It is really a great investment for longer-term protection. Would like to recommend it for sure! \"",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"velcro-hook-loop-sticky-dots": [
+{
+"name": "Sophie",
+"rating": 5,
+"text": "I have picked up the VELCRO Sticky Dots Hook & Loop from My Tape Store, and they’ve been super handy for quick fixes around the office and home. They stick well, hold strong, and save heaps of time. Thanks to My Tape Store Team! Highly Recommended!!",
+"date": "Oct 2025",
+"verified": false
+}
+],
+"pvc-duct-tape-silver": [
+{
+"name": "Elise",
+"rating": 5,
+"text": "\"This tape is fantastic! I used it for sealing air ducts, and it held up perfectly. I liked its strong adhesive and weather-resistance feature is a great bonus. Highly recommended. Thank You My Tape Store for a great deal!\"",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"pvc-duct-tape-black": [
+{
+"name": "Archie",
+"rating": 5,
+"text": "\"Great quality duct tape I got from My Tape Store! It sticks well, holds up in outdoor conditions. I used it in multiple repair jobs and the result was perfect. Good to go with\"",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"do-not-enter-tape": [
+{
+"name": "Lucas Blandowski",
+"rating": 5,
+"text": "“Highly visible and durable. I am happy with the quality. I used it confidently at my construction site. Easy to set up and hold. Really incredible and recommending. A must buy product!”",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"house-wrap-tape": [
+{
+"name": "Prinnie",
+"rating": 5,
+"text": "“I am happy to use building wrap tape, which I bought at a convincing price from My Tape Store. It helped sealing building wraps perfectly. With its strong adhesion, ease to use, and weather resistance, it’s a must for outdoor application. Highly recommended. Go for it.”",
+"date": "Apr 2025",
+"verified": false
+}
+],
+"uhmw-tape-slick-surface-tape": [
+{
+"name": "Rick",
+"rating": 5,
+"text": "I used this UHMW tape to reduce friction on my drawers and woodworking tools — and it worked great",
+"date": "Jul 2025",
+"verified": false
+}
+],
+"fly-screen-repair-tape": [
+{
+"name": "Jack Williams",
+"rating": 5,
+"text": "I used this Fly Screen Repair Tape to fix a tear in my window screen. It took less than 5 minutes. No more flies in the house! It sticks well and looks neat. Great product and a must buy from My Tape Store.",
+"date": "Jul 2025",
+"verified": false
+}
+]
+}
+
+export const productReviews = (h) => REVIEWS[h] || []

@@ -1,0 +1,73 @@
+/* ============================================================================
+   MY TAPE STORE — design tokens.
+   "Established trade-supplier": the palette is the store's own, sampled from the
+   live theme (brand red-orange #df3c22 + charcoal + neutral greys). Every text
+   pair is measured for WCAG AA. Type is the Barlow family in three widths
+   (industrial signage lineage), self-hosted. Radii are tight & machined.
+   ========================================================================== */
+:root {
+  /* — brand: MyTapeStore red-orange (live theme-color #df3c22) ————————————— */
+  --brand:        #df3c22;   /* bright brand — the store's exact theme colour */
+  --brand-cta:    #df3c22;   /* CTA fill w/ white text — exact brand (≈4.4:1)  */
+  --brand-cta-hov:#c1301a;   /* CTA hover (darken)                             */
+  --brand-ink:    #b62f18;   /* brand-coloured TEXT on white  → 6.16:1  ✓ AA  */
+  --brand-on-dark:#ee5f3a;   /* brand-coloured TEXT on charcoal → 4.97:1 ✓ AA */
+  --brand-wash:   #fdefeb;   /* faint tint surface                            */
+  --brand-wash-2: #fbe1da;   /* deeper tint                                   */
+
+  /* — ink & neutrals ——————————————————————————————————————————————————————— */
+  --ink:      #1f1f1f;   /* header/footer ground, headings; white on it 16.7:1 */
+  --ink-2:    #333333;   /* strong body                       → 12.6:1        */
+  --muted:    #555555;   /* secondary text                    → 7.46:1  ✓     */
+  --faint:    #6b6b6b;   /* finest text on white              → 5.33:1  ✓     */
+  --white:    #ffffff;
+  --paper:    #f5f4f2;   /* warm-neutral section band                          */
+  --paper-2:  #efedea;   /* deeper band                                        */
+  --panel:    #faf9f7;   /* raised panel                                       */
+  --line:     #e3e1dd;   /* hairline                                           */
+  --line-2:   #d3cfc9;   /* stronger divider                                   */
+
+  /* — on dark (charcoal) ——————————————————————————————————————————————————— */
+  --on-ink:      #ffffff;         /* → 16.7:1                                  */
+  --on-ink-soft: #c9c6c1;         /* body on charcoal → 9.1:1                  */
+  --on-ink-mute: #9c9893;         /* muted on charcoal → 5.0:1                 */
+  --line-ink:    rgba(255,255,255,0.13);
+
+  /* — status ——————————————————————————————————————————————————————————————— */
+  --stock:  #1f7a2e;   /* in stock          → 5.41:1  ✓                        */
+  --sale:   #c1301a;   /* sale price                                          */
+  --star:   #d98a15;   /* rating gold on white → 3.6:1 (icon, not text)       */
+
+  /* — type: Sora (display) + Inter (body/UI), self-hosted ————————————————— */
+  --f-display: "Sora", "Space Grotesk", "Inter", system-ui, sans-serif;   /* headings, prices */
+  --f-head:    "Sora", "Space Grotesk", "Inter", system-ui, sans-serif;   /* subheads, labels, nav */
+  --f-body:    "Inter", system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  --f-num:     "Sora", "Space Grotesk", "Inter", system-ui, sans-serif;   /* tabular via tnum   */
+
+  --t-hero:  clamp(2.6rem, 5.4vw, 4.6rem);
+  --t-h1:    clamp(2rem, 3.6vw, 3rem);
+  --t-h2:    clamp(1.5rem, 2.6vw, 2.1rem);
+  --t-h3:    1.25rem;
+  --t-lead:  1.125rem;
+  --t-body:  1rem;
+  --t-sm:    0.875rem;
+  --t-xs:    0.75rem;
+  --t-eyebrow: 0.72rem;
+
+  /* — radii: softened for a premium, refined feel ————————————————————————— */
+  --r:      7px;
+  --r-lg:   12px;
+  --r-pill: 999px;
+
+  /* — spacing ——————————————————————————————————————————————————————————————— */
+  --sp-1: 4px;  --sp-2: 8px;  --sp-3: 12px; --sp-4: 16px;
+  --sp-5: 24px; --sp-6: 32px; --sp-7: 48px; --sp-8: 64px; --sp-9: 88px;
+
+  /* — elevation (restrained — this system leans on borders, not shadow) ———— */
+  --sh-sm:  0 1px 2px rgba(20,15,10,0.06);
+  --sh-md:  0 2px 4px rgba(20,15,10,0.07), 0 8px 22px rgba(20,15,10,0.06);
+  --sh-lg:  0 4px 10px rgba(20,15,10,0.10), 0 18px 40px rgba(20,15,10,0.12);
+
+  --maxw: 1280px;
+  --ease: cubic-bezier(0.22, 0.61, 0.24, 1);
+}
