@@ -241,7 +241,7 @@
 .pdp__related-all:hover { color: var(--navy); }
 .pdp__related-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: clamp(14px,1.6vw,20px); }
 @media (max-width: 1000px){ .pdp__related-grid { grid-template-columns: repeat(2,1fr); } }
-@media (max-width: 560px){ .pdp__related-grid { grid-template-columns: 1fr; } }
+@media (max-width: 560px){ .pdp__related-grid { grid-template-columns: repeat(2,1fr); gap: 12px; } }
 .pdp__cross-card { display: flex; gap: 14px; align-items: center; background: #fff; border: 1px solid var(--line-card); border-radius: var(--r-card); padding: 14px; transition: transform 0.16s, box-shadow 0.2s; }
 .pdp__cross-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-card); }
 .pdp__cross-media { width: 76px; height: 76px; flex-shrink: 0; background: var(--cloud); border-radius: var(--r-ctrl); }

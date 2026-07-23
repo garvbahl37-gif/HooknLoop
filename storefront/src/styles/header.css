@@ -78,13 +78,53 @@
 
 .icn--searchlink { display: none; }
 
+/* mobile menu button (lives in the sticky blue nav bar) — hidden on desktop */
+.nav__burger { display: none; align-items: center; gap: 9px; height: 40px; padding: 0 16px; border-radius: var(--r-pill);
+  color: #fff; font-size: 1rem; font-weight: 700; background: rgba(255,255,255,0.16); transition: background 0.15s; }
+.nav__burger:hover { background: rgba(255,255,255,0.24); }
+.nav__burger:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+
 @media (max-width: 900px){
   .bar__row { gap: var(--sp-4); height: 70px; }
   .search { max-width: none; }
-  /* the nav scrolls horizontally when it can't fit; keep it left-aligned there
-     so the first items aren't stranded off-screen */
-  .nav__list { overflow-x: auto; justify-content: flex-start; }
-  .nav__row { justify-content: flex-start; }
+  /* full horizontal nav → hamburger + slide-in drawer */
+  .nav__list { display: none; }
+  .nav__burger { display: inline-flex; }
+  .nav__row { justify-content: flex-start; height: 50px; }
+}
+
+/* ── mobile drawer ─────────────────────────────────────────────────── */
+.mdrawer { position: fixed; inset: 0; z-index: 200; }
+.mdrawer__scrim { position: absolute; inset: 0; background: rgba(10,18,38,0.5); animation: mdFade 0.2s ease; }
+.mdrawer__panel { position: absolute; top: 0; left: 0; bottom: 0; width: min(87vw, 370px); background: #fff;
+  display: flex; flex-direction: column; box-shadow: 0 0 48px rgba(8,18,40,0.34); animation: mdSlide 0.24s var(--ease); overflow-y: auto; }
+@keyframes mdFade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes mdSlide { from { transform: translateX(-100%); } to { transform: none; } }
+.mdrawer__head { display: flex; align-items: center; justify-content: space-between; padding: 15px 16px; border-bottom: 1px solid var(--line-card); }
+.mdrawer__logo { height: 34px; width: auto; display: block; }
+.mdrawer__close { width: 42px; height: 42px; flex: none; display: grid; place-items: center; border-radius: var(--r-pill); color: var(--navy); background: var(--cloud); }
+.mdrawer__close:hover { background: #e7ecf4; }
+.mdrawer__search { display: flex; gap: 8px; padding: 14px 16px; border-bottom: 1px solid var(--line-card); }
+.mdrawer__search input { flex: 1; height: 46px; min-width: 0; background: var(--cloud); border: 1.5px solid var(--line-card); border-radius: var(--r-pill); padding: 0 18px; font-size: 0.95rem; color: var(--ink); }
+.mdrawer__search input:focus { outline: none; border-color: var(--blue); background: #fff; }
+.mdrawer__search button { width: 46px; height: 46px; flex: none; display: grid; place-items: center; background: var(--orange); color: var(--navy); border-radius: var(--r-pill); }
+.mdrawer__nav { padding: 8px 10px; display: flex; flex-direction: column; }
+.mdrawer__link, .mdrawer__acc { display: flex; align-items: center; justify-content: space-between; width: 100%; text-align: left;
+  padding: 14px 12px; font-size: 1.04rem; font-weight: 700; color: var(--navy); border-radius: var(--r-ctrl); }
+.mdrawer__link:active, .mdrawer__acc:active { background: var(--cloud); }
+.mdrawer__chev { opacity: 0.55; transition: transform 0.2s var(--ease); }
+.mdrawer__group.is-open .mdrawer__chev { transform: rotate(180deg); }
+.mdrawer__sub { max-height: 0; overflow: hidden; transition: max-height 0.28s var(--ease); }
+.mdrawer__group.is-open .mdrawer__sub { max-height: 560px; }
+.mdrawer__sub a { display: block; padding: 12px 12px 12px 22px; font-size: 0.94rem; font-weight: 600; color: var(--muted-ink); border-radius: 8px; }
+.mdrawer__sub a:active { background: var(--cloud); color: var(--orange-ink); }
+.mdrawer__foot { margin-top: auto; display: flex; flex-wrap: wrap; gap: 10px 22px; padding: 18px; border-top: 1px solid var(--line-card); }
+.mdrawer__foot a { font-size: 0.92rem; font-weight: 600; color: var(--muted-ink); }
+.mdrawer__foot a:active { color: var(--orange-ink); }
+@media (hover: hover){
+  .mdrawer__link:hover, .mdrawer__acc:hover { background: var(--cloud); }
+  .mdrawer__sub a:hover { background: var(--cloud); color: var(--orange-ink); }
+  .mdrawer__foot a:hover { color: var(--orange-ink); }
 }
 @media (max-width: 560px){
   /* the inline search bar can't fit, so it becomes an icon that opens the

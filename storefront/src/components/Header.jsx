@@ -1,6 +1,7 @@
 /*  Header — live-store layout, real routing. Blue promo bar · white logo/search ·
     navy nav whose dropdowns are curated to clone the live store · live cart count. */
 import { useState, useEffect, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import { PRODUCTS } from '../data/catalog.js'
 import { INDUSTRIES } from '../data/industries.js'
 import { useCart, cartCount, navigate } from '../lib/cart.js'
@@ -61,6 +62,8 @@ export default function Header() {
   const [q, setQ] = useState('')
   const [open, setOpen] = useState(null)   // label of the open dropdown, or null
   const [stuck, setStuck] = useState(false) // nav pinned to the top on scroll
+  const [drawer, setDrawer] = useState(false) // mobile menu drawer open
+  const [acc, setAcc] = useState(null)     // which drawer accordion is expanded
   const wasOpen = useRef(false)            // open state sampled before the press began
   const navRef = useRef(null)
 
@@ -84,8 +87,20 @@ export default function Header() {
     return () => { document.removeEventListener('keydown', onKey); document.removeEventListener('pointerdown', onDown) }
   }, [open])
 
+  /* the mobile drawer: lock body scroll + close on Escape while it's open */
+  useEffect(() => {
+    if (!drawer) return
+    const onKey = (e) => { if (e.key === 'Escape') setDrawer(false) }
+    document.addEventListener('keydown', onKey)
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => { document.removeEventListener('keydown', onKey); document.body.style.overflow = prev }
+  }, [drawer])
+
   /* blur too, so the just-clicked link's focus can't re-open the menu */
   const pick = (to) => (e) => { e.preventDefault(); e.currentTarget.blur(); setOpen(null); navigate(to) }
+  /* drawer links: navigate and dismiss the whole drawer */
+  const pickDrawer = (to) => (e) => { e.preventDefault(); setDrawer(false); setAcc(null); navigate(to) }
 
   /* carry the typed query through to the search page instead of dropping it */
   const search = (e) => {
@@ -135,6 +150,10 @@ export default function Header() {
 
       <nav ref={navRef} className={`nav ${stuck ? 'is-stuck' : ''}`} aria-label="Primary">
         <div className="wrap nav__row">
+          <button className="nav__burger" aria-label="Open menu" aria-expanded={drawer} onClick={() => setDrawer(true)}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+            Menu
+          </button>
           <ul className="nav__list">
             <li className="nav__item"><a href="#" className="nav__link" onClick={go('')}>Home</a></li>
             {/*  The parent only opens the menu — it never navigates (it used to link
@@ -166,6 +185,45 @@ export default function Header() {
           </ul>
         </div>
       </nav>
+
+      {drawer && createPortal(
+        <div className="mdrawer" role="dialog" aria-modal="true" aria-label="Menu">
+          <div className="mdrawer__scrim" onClick={() => setDrawer(false)} />
+          <aside className="mdrawer__panel">
+            <div className="mdrawer__head">
+              <img className="mdrawer__logo" src="/img/logo-header.svg" alt="HooknLoop" width="389" height="69" />
+              <button className="mdrawer__close" aria-label="Close menu" onClick={() => setDrawer(false)}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+              </button>
+            </div>
+            <form className="mdrawer__search" role="search" onSubmit={(e) => { search(e); setDrawer(false) }}>
+              <input type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search our store" aria-label="Search products" />
+              <button aria-label="Search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></button>
+            </form>
+            <nav className="mdrawer__nav" aria-label="Mobile">
+              <a href="#" className="mdrawer__link" onClick={pickDrawer('')}>Home</a>
+              {[...MENUS, INDUSTRY_MENU].map((m) => (
+                <div key={m.label} className={`mdrawer__group ${acc === m.label ? 'is-open' : ''}`}>
+                  <button className="mdrawer__acc" aria-expanded={acc === m.label} onClick={() => setAcc(acc === m.label ? null : m.label)}>
+                    {m.label}<svg className="mdrawer__chev" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6"><path d="m6 9 6 6 6-6"/></svg>
+                  </button>
+                  <div className="mdrawer__sub">
+                    {m.items.map(([label, to]) => <a key={to} href="#" onClick={pickDrawer(to)}>{label}</a>)}
+                  </div>
+                </div>
+              ))}
+              <a href="#" className="mdrawer__link" onClick={pickDrawer('bulk')}>Bulk Order</a>
+            </nav>
+            <div className="mdrawer__foot">
+              <a href="#" onClick={pickDrawer('wishlist')}>Wishlist</a>
+              <a href="#" onClick={pickDrawer('contact')}>Contact</a>
+              <a href="#" onClick={pickDrawer('about')}>About us</a>
+              <a href="#" onClick={pickDrawer('shipping')}>Shipping</a>
+            </div>
+          </aside>
+        </div>,
+        document.body,
+      )}
     </>
   )
 }
