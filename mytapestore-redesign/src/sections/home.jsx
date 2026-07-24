@@ -7,7 +7,13 @@ import { navigate, money } from '../lib/cart.js'
 
 const go = (e, h) => { e.preventDefault(); navigate(h) }
 
-export const FEATURED = [...PRODUCTS].sort((a, b) => (b.reviews - a.reviews) || (b.rating - a.rating) || (a.from - b.from)).slice(0, 10)
+/* real bestsellers from the live store, ranked by WooCommerce popularity (total sales) */
+const BESTSELLERS = [
+  'utility-grade-masking-tapes', 'general-purpose-masking-tape', 'hook-loop-roll-adhesive-backed',
+  'joist-protection-tape', 'hook-loop-adhesive-dots', 'cloth-tapes',
+  'high-bond-acrylic-tape-clear', 'structural-glazing-tape',
+]
+export const FEATURED = BESTSELLERS.map((h) => PRODUCTS.find((p) => p.handle === h)).filter(Boolean)
 
 const TILE_CATS = PRODUCT_CATEGORIES
   .filter((c) => c.img && c.count > 0 && c.slug !== 'double-sided-tape' && c.slug !== 'strapping-and-filament')
@@ -133,11 +139,11 @@ export function FeaturedGrid() {
     <section className="section">
       <div className="wrap">
         <div className="section-head">
-          <span className="eyebrow">Trusted by trade &amp; DIY</span>
+          <span className="eyebrow">Our bestsellers</span>
           <h2>Popular right now</h2>
         </div>
         <div className="grid-products grid-products--5">
-          {FEATURED.slice(0, 8).map((p) => <ProductCard key={p.handle} p={p} />)}
+          {FEATURED.slice(0, 4).map((p) => <ProductCard key={p.handle} p={p} />)}
         </div>
         <div className="section-cta"><a href="#/shop" className="btn btn--ghost btn--lg" onClick={(e) => go(e, '/shop')}>Shop all products <Icon name="arrowRight" size={18} /></a></div>
       </div>
@@ -177,7 +183,6 @@ export function RangeSection() {
     ['Specialty adhesive tapes', 'Engineered for specific applications: high-bond, glazing, thermal, fire-retardant and more, where a standard tape won\'t do.'],
     ['Construction & industrial tapes', 'Rugged tapes built for the site — flashing, cloth, foil and duct grades that stand up to demanding conditions.'],
   ]
-  const img = FEATURED.find((p) => p.gallery.length) || FEATURED[0]
   return (
     <section className="section range">
       <div className="wrap range__grid">
@@ -195,8 +200,7 @@ export function RangeSection() {
           <a href="#/shop" className="btn btn--brand btn--lg range__cta" onClick={(e) => go(e, '/shop')}>Explore the full range <Icon name="arrowRight" size={18} /></a>
         </div>
         <div className="range__media">
-          <img src={img.img} alt={img.name} loading="lazy" />
-          <a href={'#/product/' + img.handle} className="range__chip num" onClick={(e) => go(e, '/product/' + img.handle)}>From {money(img.from)} <em>Inc GST</em></a>
+          <img src="/img/site/range.jpg?v=1" alt="A range of adhesive tapes — packaging, duct, masking, foil, cloth and electrical" loading="lazy" />
         </div>
       </div>
     </section>
@@ -261,9 +265,12 @@ export function Testimonials() {
           <h2 className="tmx__title">Trusted by thousands of happy customers</h2>
           <p className="tmx__lead">Real reviews from Australian trade &amp; DIY buyers.</p>
         </div>
-        <div className="tmx__grid">
-          {TESTIMONIALS.map((t, i) => (
-            <figure key={i} className="tmx__card">
+      </div>
+      {/* single-row infinite review strip */}
+      <div className="tmx__marquee">
+        <div className="tmx__track">
+          {[...TESTIMONIALS, ...TESTIMONIALS].map((t, i) => (
+            <figure key={i} className="tmx__card" aria-hidden={i >= TESTIMONIALS.length}>
               <div className="tmx__stars"><Stars rating={t.rating} /></div>
               <blockquote>{t.text}</blockquote>
               <figcaption>
@@ -356,9 +363,9 @@ export function Wholesale() {
 export function ValueProps() {
   const props = [
     ['truck', 'Fast delivery Australia-wide', 'Dispatched in 1–2 business days to 3,600+ postcodes.'],
-    ['medal', 'Lowest-price guarantee', 'Find a stocked line cheaper and we’ll match it.'],
+    ['badgeCheck', 'Lowest-price guarantee', 'Find a stocked line cheaper and we’ll match it.'],
     ['warehouse', 'Every tape, one supplier', 'The full range — held in stock and ready to ship.'],
-    ['pin', 'Australian owned & operated', 'Local stock, local support and honest advice.'],
+    ['mapPin', 'Australian owned & operated', 'Local stock, local support and honest advice.'],
   ]
   return (
     <section className="section vprops-sec">

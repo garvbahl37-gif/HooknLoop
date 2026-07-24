@@ -179,7 +179,7 @@ export default function ProductPage({ handle }) {
             )
           })}
         </div>
-      ) : axis.terms.length > 6 ? (
+      ) : axis.terms.length > 4 ? (
         <div className="pdp-opt__select">
           <select value={sel[axis.name] || ''} onChange={(e) => setAxis(axis.name, e.target.value)} aria-label={axis.name}>
             {axis.terms.map((t) => <option key={t} value={t}>{t}</option>)}
@@ -238,7 +238,6 @@ export default function ProductPage({ handle }) {
             {saved > 0.005 && <span className="pdp-buy__saved-tag num">You save {money(saved)}</span>}
           </div>
           <p className="pdp-buy__tax">Tax included · Shipping calculated at checkout{hasRange(p) && price == null ? ` · Range ${money(p.min)} – ${money(p.max)}` : ''}</p>
-          {blurb && <p className="pdp-buy__blurb">{blurb}</p>}
 
           {(p.axes || []).length > 0 && (
             <div className="pdp-buy__section">
@@ -288,7 +287,7 @@ export default function ProductPage({ handle }) {
             {canBuy && (
               <p className="pdp-buy__linetotal">Total <b className="num">{money(lineTotal)}</b>{saved > 0.005 && <span className="pdp-buy__linetotal-save num"> — you save {money(saved)}</span>}</p>
             )}
-            <button className="btn btn--ghost btn--lg btn--block pdp-buy__buynow" onClick={buyNow} disabled={!canBuy}>Buy it now</button>
+            <button className="btn btn--dark btn--lg btn--block pdp-buy__buynow" onClick={buyNow} disabled={!canBuy}><Icon name="lock" size={17} /> Buy it now</button>
             {added && (
               <div className="pdp-buy__added" role="status">
                 <Icon name="check" size={18} /> Added {qty} to your cart.
