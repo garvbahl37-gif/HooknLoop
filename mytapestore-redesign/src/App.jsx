@@ -1,6 +1,7 @@
 import Header from './components/Header.jsx'
 import Footer from './components/Footer.jsx'
 import CallButton from './components/CallButton.jsx'
+import ChatWidget from './components/ChatWidget.jsx'
 import Home from './pages/Home.jsx'
 import CollectionPage from './pages/CollectionPage.jsx'
 import ProductPage from './pages/ProductPage.jsx'
@@ -20,6 +21,7 @@ import './styles/product.css'
 import './styles/cart.css'
 import './styles/industries.css'
 import './styles/pages.css'
+import './styles/chat.css'
 
 export default function App() {
   const { route, param } = useRoute()
@@ -49,6 +51,7 @@ export default function App() {
       {page}
       <Footer />
       <CallButton />
+      <ChatWidget />
     </>
   )
 }

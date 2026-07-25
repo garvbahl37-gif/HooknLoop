@@ -2,24 +2,12 @@ import { useState } from 'react'
 import Icon from '../components/Icon.jsx'
 import ProductCard from '../components/ProductCard.jsx'
 import Breadcrumbs from '../components/Breadcrumbs.jsx'
-import { PRODUCTS } from '../data/catalog.js'
+import { searchProducts } from '../lib/search.js'
 import { navigate } from '../lib/cart.js'
-
-function search(query) {
-  const terms = query.toLowerCase().split(/\s+/).filter(Boolean)
-  if (!terms.length) return []
-  return PRODUCTS.map((p) => {
-    const hay = [p.name, p.sku, ...p.cats.map((c) => c.name), ...p.industries.map((c) => c.name),
-      ...(p.axes || []).flatMap((a) => a.terms)].join(' ').toLowerCase()
-    let score = 0
-    for (const t of terms) { if (hay.includes(t)) score += p.name.toLowerCase().includes(t) ? 3 : 1 }
-    return { p, score }
-  }).filter((x) => x.score > 0).sort((a, b) => b.score - a.score || b.p.reviews - a.p.reviews).map((x) => x.p)
-}
 
 export default function SearchPage({ query }) {
   const [q, setQ] = useState(query || '')
-  const results = search(query || '')
+  const results = searchProducts(query || '')
   const submit = (e) => { e.preventDefault(); const t = q.trim(); if (t) navigate('search/' + encodeURIComponent(t)) }
 
   return (

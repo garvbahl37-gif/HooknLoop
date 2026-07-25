@@ -1,7 +1,8 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useMemo } from 'react'
 import Icon from './Icon.jsx'
 import { NAV_GROUPS, PRODUCT_CATEGORIES, INDUSTRIES } from '../data/catalog.js'
-import { useCart, cartCount, navigate, useWish } from '../lib/cart.js'
+import { useCart, cartCount, navigate, useWish, money } from '../lib/cart.js'
+import { searchProducts, searchCategories } from '../lib/search.js'
 
 const catName = Object.fromEntries(PRODUCT_CATEGORIES.map((c) => [c.slug, c.name]))
 
@@ -22,6 +23,91 @@ const MENUS = {
 
 function go(e, hash) { e.preventDefault(); navigate(hash) }
 
+/* Live search-as-you-type dropdown — matching categories first, then products,
+   with a "view all" footer link. Full keyboard nav (arrows / enter / escape). */
+function SearchBox({ q, setQ, onSearch, autoFocus, placeholder }) {
+  const [open, setOpen] = useState(false)
+  const [active, setActive] = useState(-1)
+  const boxRef = useRef(null)
+  const term = q.trim()
+  const catMatches = useMemo(() => (term.length > 1 ? searchCategories(term, 4) : []), [term])
+  const productMatches = useMemo(() => (term.length > 1 ? searchProducts(term, 6) : []), [term])
+  const flat = useMemo(() => [
+    ...catMatches.map((c) => ({ type: 'cat', item: c })),
+    ...productMatches.map((p) => ({ type: 'product', item: p })),
+  ], [catMatches, productMatches])
+  const showPanel = open && term.length > 1 && flat.length > 0
+
+  useEffect(() => {
+    const onDoc = (e) => { if (boxRef.current && !boxRef.current.contains(e.target)) setOpen(false) }
+    document.addEventListener('mousedown', onDoc)
+    return () => document.removeEventListener('mousedown', onDoc)
+  }, [])
+  useEffect(() => { setActive(-1) }, [term])
+
+  const pick = (entry) => {
+    setOpen(false)
+    if (entry.type === 'cat') navigate('/collection/' + entry.item.slug)
+    else navigate('/product/' + entry.item.handle)
+  }
+  const doSearch = () => { setOpen(false); if (term) onSearch(term) }
+
+  const onKeyDown = (e) => {
+    if (e.key === 'ArrowDown' && flat.length) { e.preventDefault(); setOpen(true); setActive((a) => Math.min(flat.length - 1, a + 1)) }
+    else if (e.key === 'ArrowUp' && flat.length) { e.preventDefault(); setActive((a) => Math.max(-1, a - 1)) }
+    else if (e.key === 'Enter' && active >= 0 && flat[active]) { e.preventDefault(); pick(flat[active]) }
+    else if (e.key === 'Escape') setOpen(false)
+  }
+
+  return (
+    <div className="search-ac" ref={boxRef}>
+      <form className="hd-search" role="search" onSubmit={(e) => { e.preventDefault(); doSearch() }}>
+        <Icon name="search" size={19} className="hd-search__pre" />
+        <input aria-label="Search products" value={q} autoFocus={autoFocus}
+          onChange={(e) => { setQ(e.target.value); setOpen(true) }}
+          onFocus={() => setOpen(true)} onKeyDown={onKeyDown}
+          placeholder={placeholder || 'Search 130+ tapes, brands or sizes…'}
+          role="combobox" aria-expanded={showPanel} aria-autocomplete="list" autoComplete="off" />
+        <button className="hd-search__btn" type="submit">Search</button>
+      </form>
+
+      {showPanel && (
+        <div className="search-ac__panel" role="listbox">
+          {catMatches.length > 0 && (
+            <div className="search-ac__group">
+              <span className="search-ac__label">Categories</span>
+              {catMatches.map((c, i) => (
+                <button key={c.slug} type="button" className={'search-ac__cat' + (active === i ? ' is-active' : '')}
+                  onMouseDown={() => pick({ type: 'cat', item: c })} onMouseEnter={() => setActive(i)}>
+                  <Icon name="layers" size={15} /><span>{c.name}</span><em className="num">{c.count}</em>
+                </button>
+              ))}
+            </div>
+          )}
+          {productMatches.length > 0 && (
+            <div className="search-ac__group">
+              <span className="search-ac__label">Products</span>
+              {productMatches.map((p, i) => {
+                const idx = catMatches.length + i
+                return (
+                  <button key={p.handle} type="button" className={'search-ac__prod' + (active === idx ? ' is-active' : '')}
+                    onMouseDown={() => pick({ type: 'product', item: p })} onMouseEnter={() => setActive(idx)}>
+                    <img src={p.img} alt="" width="36" height="36" />
+                    <span className="search-ac__prod-info"><b>{p.name}</b><em className="num">{money(p.from ?? p.price)}</em></span>
+                  </button>
+                )
+              })}
+            </div>
+          )}
+          <button type="button" className="search-ac__all" onMouseDown={doSearch}>
+            View all results for &ldquo;{term}&rdquo; <Icon name="arrowRight" size={14} />
+          </button>
+        </div>
+      )}
+    </div>
+  )
+}
+
 export default function Header() {
   const cart = useCart()
   const count = cartCount(cart)
@@ -39,7 +125,7 @@ export default function Header() {
   }, [])
   useEffect(() => { document.body.style.overflow = drawer ? 'hidden' : ''; return () => { document.body.style.overflow = '' } }, [drawer])
 
-  const submitSearch = (e) => { e.preventDefault(); const t = q.trim(); if (t) { navigate('search/' + encodeURIComponent(t)); setDrawer(false) } }
+  const doSearch = (term) => { navigate('search/' + encodeURIComponent(term)); setDrawer(false) }
 
   return (
     <header className="hd">
@@ -63,12 +149,7 @@ export default function Header() {
               <img src="/img/site/logo.png" alt="My Tape Store" className="hd-logo__img" width="196" height="34" />
             </a>
 
-            <form className="hd-search" role="search" onSubmit={submitSearch}>
-              <Icon name="search" size={19} className="hd-search__pre" />
-              <input aria-label="Search products" value={q} onChange={(e) => setQ(e.target.value)}
-                placeholder="Search 130+ tapes, brands or sizes…" />
-              <button className="hd-search__btn" type="submit">Search</button>
-            </form>
+            <SearchBox q={q} setQ={setQ} onSearch={doSearch} />
 
             <div className="hd-actions">
               <a href="#/account" onClick={(e) => go(e, '/account')} className="hd-act hd-act--account" aria-label="Sign in">
@@ -146,12 +227,12 @@ export default function Header() {
       </div>
 
       {/* mobile drawer */}
-      {drawer && <MobileDrawer onClose={() => setDrawer(false)} q={q} setQ={setQ} submit={submitSearch} />}
+      {drawer && <MobileDrawer onClose={() => setDrawer(false)} q={q} setQ={setQ} onSearch={doSearch} />}
     </header>
   )
 }
 
-function MobileDrawer({ onClose, q, setQ, submit }) {
+function MobileDrawer({ onClose, q, setQ, onSearch }) {
   const [open, setOpen] = useState(null)
   const groups = [
     ['Double-Sided Tape', NAV_GROUPS['Double-Sided Tape'].map((s) => ({ slug: 'collection/' + s, name: catName[s] || s }))],
@@ -166,10 +247,9 @@ function MobileDrawer({ onClose, q, setQ, submit }) {
           <b>Browse</b>
           <button onClick={onClose} aria-label="Close menu"><Icon name="close" size={22} /></button>
         </div>
-        <form className="hd-drawer__search" role="search" onSubmit={submit}>
-          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search tapes…" aria-label="Search products" />
-          <button type="submit" aria-label="Search"><Icon name="search" size={20} /></button>
-        </form>
+        <div className="hd-drawer__search">
+          <SearchBox q={q} setQ={setQ} onSearch={(t) => { onSearch(t); onClose() }} placeholder="Search tapes…" />
+        </div>
         <nav className="hd-drawer__nav">
           {groups.map(([label, items]) => (
             <div key={label} className="hd-drawer__group">

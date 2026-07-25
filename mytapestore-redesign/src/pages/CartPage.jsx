@@ -1,13 +1,67 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import Icon from '../components/Icon.jsx'
 import Breadcrumbs from '../components/Breadcrumbs.jsx'
+import ProductCard from '../components/ProductCard.jsx'
 import { useCart, cartTotal, cartCount, setQty, removeItem, clearCart, money, navigate } from '../lib/cart.js'
+import { PRODUCTS, BESTSELLER_HANDLES, FREE_SHIP } from '../data/catalog.js'
+
+function pickUpsell(excludeHandles, n = 4) {
+  const exclude = new Set(excludeHandles)
+  return BESTSELLER_HANDLES.map((h) => PRODUCTS.find((p) => p.handle === h)).filter((p) => p && p.inStock && !exclude.has(p.handle)).slice(0, n)
+}
+
+function FreeShipBar({ subtotal }) {
+  const remaining = Math.max(0, FREE_SHIP - subtotal)
+  const pct = Math.min(100, (subtotal / FREE_SHIP) * 100)
+  const done = remaining <= 0
+  return (
+    <div className={'cart-ship' + (done ? ' is-done' : '')}>
+      <p className="cart-ship__msg">
+        <Icon name={done ? 'check' : 'truck'} size={16} />
+        {done
+          ? <>You've unlocked <b>free shipping!</b></>
+          : <>You're <b className="num">{money(remaining)}</b> away from <b>free shipping</b></>}
+      </p>
+      <div className="cart-ship__track"><div className="cart-ship__fill" style={{ width: pct + '%' }} /></div>
+    </div>
+  )
+}
+
+function DispatchCutoff() {
+  const now = new Date()
+  const cutoff = new Date(now); cutoff.setHours(14, 0, 0, 0)
+  const before = now < cutoff
+  const mins = Math.max(0, Math.round((cutoff - now) / 60000))
+  const h = Math.floor(mins / 60), m = mins % 60
+  return (
+    <p className="cart__cutoff">
+      <Icon name="clock" size={14} />
+      {before
+        ? <>Order in the next <b>{h > 0 ? `${h}h ` : ''}{m}m</b> for same-day dispatch</>
+        : <>Order now — ships next business day</>}
+    </p>
+  )
+}
+
+function UpsellRail({ title, picks }) {
+  if (!picks.length) return null
+  return (
+    <section className="cart-upsell">
+      <h2>{title}</h2>
+      <div className="grid-products grid-products--4">
+        {picks.map((p) => <ProductCard key={p.handle} p={p} />)}
+      </div>
+    </section>
+  )
+}
 
 export default function CartPage() {
   const cart = useCart()
   const [placed, setPlaced] = useState(null)
   const subtotal = cartTotal(cart)
   const count = cartCount(cart)
+  const cartHandles = useMemo(() => cart.map((c) => c.handle), [cart])
+  const upsell = useMemo(() => pickUpsell(cartHandles), [cartHandles])
 
   if (placed) {
     return (
@@ -15,6 +69,11 @@ export default function CartPage() {
         <span className="cart-done__tick"><Icon name="check" size={40} /></span>
         <h1>Thank you — your order is confirmed</h1>
         <p>Order <b className="num">{placed.id}</b> for <b className="num">{money(placed.total)}</b> has been received. We've emailed your confirmation — you'll get tracking as soon as it ships.</p>
+        <ul className="cart-done__steps">
+          <li><span className="cart-done__step-ic"><Icon name="check" size={15} /></span>Order confirmed &amp; payment received</li>
+          <li><span className="cart-done__step-ic"><Icon name="warehouse" size={15} /></span>Picked and packed at our warehouse</li>
+          <li><span className="cart-done__step-ic"><Icon name="truck" size={15} /></span>On its way — tracking emailed on dispatch</li>
+        </ul>
         <div className="cart-done__cta">
           <a className="btn btn--brand btn--lg" href="#/shop" onClick={(e) => { e.preventDefault(); navigate('/shop') }}>Continue shopping</a>
           <a className="btn btn--ghost btn--lg" href="#/" onClick={(e) => { e.preventDefault(); navigate('/') }}>Back to home</a>
@@ -30,6 +89,7 @@ export default function CartPage() {
         <h1>Your cart is empty</h1>
         <p>Browse our range of adhesive tapes, dispensers and fastening solutions.</p>
         <a className="btn btn--brand btn--lg" href="#/shop" onClick={(e) => { e.preventDefault(); navigate('/shop') }}>Shop the range <Icon name="arrowRight" size={18} /></a>
+        <UpsellRail title="Our bestsellers" picks={pickUpsell([])} />
       </main>
     )
   }
@@ -49,6 +109,7 @@ export default function CartPage() {
             <h1>Your cart <span className="num">({count} item{count !== 1 ? 's' : ''})</span></h1>
             <button className="cart__clear" onClick={clearCart}>Clear cart</button>
           </div>
+          <FreeShipBar subtotal={subtotal} />
           <ul className="cart__list">
             {cart.map((it) => (
               <li key={it.key} className="cart-line">
@@ -74,18 +135,21 @@ export default function CartPage() {
             ))}
           </ul>
           <a className="cart__continue" href="#/shop" onClick={(e) => { e.preventDefault(); navigate('/shop') }}><Icon name="chevronRight" size={15} className="cart__continue-icon" /> Continue shopping</a>
+
+          <UpsellRail title="Frequently bought together" picks={upsell} />
         </div>
 
         <aside className="cart__summary">
           <h2>Order summary</h2>
           <dl className="cart__sum-rows">
             <div><dt>Subtotal <span>({count} item{count !== 1 ? 's' : ''})</span></dt><dd className="num">{money(subtotal)}</dd></div>
-            <div><dt>Shipping</dt><dd>Calculated at checkout</dd></div>
+            <div><dt>Shipping</dt><dd>{subtotal >= FREE_SHIP ? <span className="cart__free-tag">Free</span> : 'Calculated at checkout'}</dd></div>
             <div><dt>Estimated delivery</dt><dd>3–5 business days</dd></div>
             <div><dt>GST</dt><dd className="cart__sum-note">Included in prices</dd></div>
           </dl>
           <div className="cart__total"><span>Total</span><b className="num">{money(subtotal)}</b></div>
           <button className="btn btn--brand btn--lg btn--block cart__checkout" onClick={checkout}><Icon name="lock" size={18} /> Proceed to checkout</button>
+          <DispatchCutoff />
           <ul className="cart__trust">
             <li><Icon name="lock" size={15} /> Secure, encrypted checkout</li>
             <li><Icon name="truck" size={15} /> Dispatch to 3,600+ AU postcodes</li>
@@ -94,6 +158,7 @@ export default function CartPage() {
           </ul>
           <div className="cart__pay">
             {['visa', 'mastercard', 'amex', 'paypal'].map((k) => <img key={k} src={'/img/pay/' + k + '.svg'} alt={k} height="22" />)}
+            <span className="cart__pay-badge"><Icon name="shieldCheck" size={13} /> SSL secured</span>
           </div>
         </aside>
       </div>

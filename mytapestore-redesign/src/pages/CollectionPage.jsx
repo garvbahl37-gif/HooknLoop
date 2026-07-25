@@ -38,7 +38,6 @@ const PRICE_OPTS = [
 function CollectionBanner({ slug, all, title, count, group, crumbs }) {
   const bg = all ? '/img/site/banners/banner-3.jpg' : (slug ? `/img/site/cat/${slug}.jpg` : null)
   const hasImg = !!bg
-  const trust = [['truck', 'Fast delivery'], ['badgeCheck', 'Lowest-price guarantee'], ['mapPin', 'Australian owned']]
   return (
     <div className={'colban grain' + (hasImg ? ' colban--img' : '')} style={hasImg ? { backgroundImage: `url(${bg})` } : undefined}>
       <div className="colban__scrim" />
@@ -47,11 +46,6 @@ function CollectionBanner({ slug, all, title, count, group, crumbs }) {
         {group && <span className="eyebrow eyebrow--onink">{group}</span>}
         <h1 className="colban__title">{title}</h1>
         <span className="colban__count num">{count} product{count !== 1 ? 's' : ''} available</span>
-        <ul className="colban__trust">
-          {trust.map(([ic, label]) => (
-            <li key={label}><span className="colban__trust-ic"><Icon name={ic} size={26} /></span>{label}</li>
-          ))}
-        </ul>
       </div>
     </div>
   )
