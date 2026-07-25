@@ -35,12 +35,9 @@ const PRICE_OPTS = [
   ['o100', 'Over $100', (p) => p.from >= 100],
 ]
 
-function CollectionBanner({ slug, all, title, desc, count, group, crumbs }) {
+function CollectionBanner({ slug, all, title, count, group, crumbs }) {
   const bg = all ? '/img/site/banners/banner-3.jpg' : (slug ? `/img/site/cat/${slug}.jpg` : null)
   const hasImg = !!bg
-  /* full original SEO copy — drop a short leading heading line that just repeats the title */
-  let lines = (desc || '').split(/\r?\n/).map((s) => s.trim()).filter(Boolean)
-  if (lines.length > 1 && lines[0].length < 62) lines = lines.slice(1)
   const trust = [['truck', 'Fast delivery'], ['badgeCheck', 'Lowest-price guarantee'], ['mapPin', 'Australian owned']]
   return (
     <div className={'colban grain' + (hasImg ? ' colban--img' : '')} style={hasImg ? { backgroundImage: `url(${bg})` } : undefined}>
@@ -49,7 +46,6 @@ function CollectionBanner({ slug, all, title, desc, count, group, crumbs }) {
         <Breadcrumbs items={crumbs} />
         {group && <span className="eyebrow eyebrow--onink">{group}</span>}
         <h1 className="colban__title">{title}</h1>
-        {lines.length > 0 && <div className="colban__desc">{lines.map((p, i) => <p key={i}>{p}</p>)}</div>}
         <span className="colban__count num">{count} product{count !== 1 ? 's' : ''} available</span>
         <ul className="colban__trust">
           {trust.map(([ic, label]) => (
@@ -106,20 +102,29 @@ function FilterPanel({ priceBucket, setPriceBucket, colours, availColours, toggl
   )
 }
 
-function CategorySEO({ slug }) {
+function CategorySEO({ slug, cat }) {
   const [openFaq, setOpenFaq] = useState(0)
   const data = CATEGORY_SEO[slug]
-  if (!data) return null
-  const hasAside = data.whyChooseHeading || data.whyChooseIntro || (data.perks && data.perks.length) || data.serviceCoverage || data.closingCta
+  let introLines = (cat?.desc || '').split(/\r?\n/).map((s) => s.trim()).filter(Boolean)
+  if (introLines.length > 1 && introLines[0].length < 62) introLines = introLines.slice(1)
+  if (!data && !introLines.length) return null
+  const hasAside = data && (data.whyChooseHeading || data.whyChooseIntro || (data.perks && data.perks.length) || data.serviceCoverage || data.closingCta)
 
   return (
     <section className="section catseo">
       <div className="wrap catseo__grid">
         <div className="catseo__main">
-          {data.sectionHeading && <h2 className="catseo__heading">{data.sectionHeading}</h2>}
-          {(data.benefits || []).map((p, i) => <p key={i}>{p}</p>)}
+          {introLines.length > 0 && (
+            <div className="catseo__intro">
+              <span className="catseo__intro-eyebrow">Overview</span>
+              {introLines.map((p, i) => <p key={i}>{p}</p>)}
+            </div>
+          )}
 
-          {data.faqs && data.faqs.length > 0 && (
+          {data?.sectionHeading && <h2 className="catseo__heading">{data.sectionHeading}</h2>}
+          {(data?.benefits || []).map((p, i) => <p key={i}>{p}</p>)}
+
+          {data?.faqs && data.faqs.length > 0 && (
             <div className="catseo__faqs">
               <h3>Frequently asked questions</h3>
               <ul className="faq__list">
@@ -205,7 +210,7 @@ export default function CollectionPage({ slug, all = false }) {
 
   return (
     <main id="main" className="col">
-      <CollectionBanner slug={slug} all={all} title={title} desc={all ? 'Buy adhesive tape online from My Tape Store — Australia’s tape specialists. From double-sided, foam and duct to foil, hook & loop, safety and packaging tapes plus dispensers, we stock the full range with fast delivery Australia-wide and a lowest-price guarantee.' : cat?.desc} count={products.length} group={group} crumbs={crumbs} />
+      <CollectionBanner slug={slug} all={all} title={title} count={products.length} group={group} crumbs={crumbs} />
 
       <div className="wrap col__layout">
         <aside className="col__side">
@@ -241,7 +246,7 @@ export default function CollectionPage({ slug, all = false }) {
         </div>
       </div>
 
-      {!all && <CategorySEO slug={slug} />}
+      {!all && <CategorySEO slug={slug} cat={cat} />}
     </main>
   )
 }

@@ -42,8 +42,12 @@
 .pdp-buy__tax { font-size: var(--t-sm); color: var(--faint); margin-top: 8px; }
 .pdp-buy__blurb { font-size: var(--t-body); color: var(--muted); line-height: 1.65; margin-top: 16px; max-width: 54ch; }
 
+/* buy card — options, volume pricing, stock and actions grouped into one cohesive premium panel */
+.pdp-buybox { margin-top: 26px; padding: 24px 24px 26px; border: 1px solid var(--line); border-radius: var(--r-lg); background: #fff; box-shadow: var(--sh-sm); }
+
 /* section separators — hairline, airy */
 .pdp-buy__section { margin-top: 26px; padding-top: 26px; border-top: 1px solid var(--line); }
+.pdp-buybox > .pdp-buy__section:first-child { margin-top: 0; padding-top: 0; border-top: none; }
 
 /* options */
 .pdp-opt { margin-bottom: 20px; }

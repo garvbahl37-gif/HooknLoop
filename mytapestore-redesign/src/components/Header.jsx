@@ -88,13 +88,14 @@ export default function Header() {
         </div>
 
         {/* mega-nav (desktop) */}
-        <nav className="hd-nav" ref={navRef} onMouseLeave={() => setOpenMenu(null)} aria-label="Primary">
+        <nav className="hd-nav" ref={navRef} onMouseLeave={() => setOpenMenu(null)}
+          onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) setOpenMenu(null) }} aria-label="Primary">
           <div className="wrap hd-nav__row">
             <ul className="hd-nav__list">
               <li className="hd-nav__item"><a className="hd-nav__link" href="#/" onClick={(e) => go(e, '/')}>Home</a></li>
               {['Double-Sided Tape', 'Single-Sided Tapes'].map((label) => (
                 <li key={label} className={'hd-nav__item' + (label === 'Single-Sided Tapes' ? ' hd-nav__item--wide' : '') + (openMenu === label ? ' is-open' : '')}
-                  onMouseEnter={() => setOpenMenu(label)}>
+                  onMouseEnter={() => setOpenMenu(label)} onFocus={() => setOpenMenu(label)}>
                   <button className="hd-nav__link" aria-expanded={openMenu === label}
                     onClick={() => setOpenMenu(openMenu === label ? null : label)}>
                     {label} <Icon name="chevronDown" size={15} />
@@ -120,7 +121,7 @@ export default function Header() {
               <li className="hd-nav__item"><a className="hd-nav__link" href="#/collection/tapes-dispensers"
                 onClick={(e) => go(e, '/collection/tapes-dispensers')}>Dispensers</a></li>
               <li className={'hd-nav__item hd-nav__item--right' + (openMenu === 'Industries' ? ' is-open' : '')}
-                onMouseEnter={() => setOpenMenu('Industries')}>
+                onMouseEnter={() => setOpenMenu('Industries')} onFocus={() => setOpenMenu('Industries')}>
                 <button className="hd-nav__link" aria-expanded={openMenu === 'Industries'}
                   onClick={() => setOpenMenu(openMenu === 'Industries' ? null : 'Industries')}>
                   Industries <Icon name="chevronDown" size={15} />

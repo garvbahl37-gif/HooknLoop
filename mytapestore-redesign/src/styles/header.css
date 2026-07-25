@@ -70,13 +70,16 @@
   background: #fff; border: 1px solid var(--line); border-top: none;
   box-shadow: var(--sh-lg); border-radius: 0 0 var(--r-lg) var(--r-lg);
   padding: 20px 24px; min-width: 320px;
-  opacity: 0; visibility: hidden; transform: translateY(6px); transition: opacity .16s var(--ease), transform .16s var(--ease), visibility .16s;
+  opacity: 0; visibility: hidden; pointer-events: none; transform: translateY(8px) scale(0.98); transform-origin: top center;
+  transition: opacity .22s var(--ease), transform .24s var(--ease), visibility .22s;
 }
-/* Reveal is driven ONLY by the single-valued React state (.is-open) + keyboard focus,
-   never bare :hover — otherwise a second panel can flash in during the hand-off between
-   two buttons and the wide panels overlap. Exactly one mega can ever be visible. */
-.hd-nav__item.is-open .hd-mega, .hd-nav__item:focus-within .hd-mega {
-  opacity: 1; visibility: visible; transform: translateY(0);
+/* Reveal is driven ONLY by the single-valued React state (.is-open) — never :hover or
+   :focus-within, which can each stay true independently and let two panels show at once
+   (e.g. a clicked button keeps DOM focus while the mouse opens a sibling via hover).
+   openMenu is single-valued, onFocus/onBlur in JS keep keyboard nav in sync with it,
+   so exactly one mega can ever be visible. */
+.hd-nav__item.is-open .hd-mega {
+  opacity: 1; visibility: visible; pointer-events: auto; transform: translateY(0) scale(1);
 }
 .hd-mega__cols { display: flex; gap: 34px; }
 .hd-mega__cols ul { min-width: 190px; }
@@ -96,8 +99,8 @@
 .hd-mega { max-width: calc(100vw - 24px); }
 /* the wide multi-column menu is centred on its button so its right edge can't run off
    the screen at narrow desktop widths (it overflowed ~66px at 920px before) */
-.hd-nav__item--wide .hd-mega { left: 50%; right: auto; transform: translateX(-50%) translateY(6px); }
-.hd-nav__item--wide.is-open .hd-mega, .hd-nav__item--wide:focus-within .hd-mega { transform: translateX(-50%) translateY(0); }
+.hd-nav__item--wide .hd-mega { left: 50%; right: auto; transform: translateX(-50%) translateY(8px) scale(0.98); }
+.hd-nav__item--wide.is-open .hd-mega { transform: translateX(-50%) translateY(0) scale(1); }
 
 .hd-nav__trade {
   position: absolute; right: 0; top: 50%; transform: translateY(-50%);

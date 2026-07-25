@@ -239,61 +239,64 @@ export default function ProductPage({ handle }) {
           </div>
           <p className="pdp-buy__tax">Tax included · Shipping calculated at checkout{hasRange(p) && price == null ? ` · Range ${money(p.min)} – ${money(p.max)}` : ''}</p>
 
-          {(p.axes || []).length > 0 && (
+          {/* one cohesive buy card — options, volume pricing, stock and actions grouped together */}
+          <div className="pdp-buybox">
+            {(p.axes || []).length > 0 && (
+              <div className="pdp-buy__section">
+                {(p.axes || []).map(renderOption)}
+              </div>
+            )}
+
+            <div className="pdp-buy__section pdp-vol">
+              <div className="pdp-vol__head"><Icon name="tag" size={14} /> Buy more, save more <span>— applied automatically at checkout</span></div>
+              <div className="pdp-vol__row" role="group" aria-label="Quantity price breaks">
+                {TIERS.map((t) => {
+                  const active = t.min === tier.min
+                  return (
+                    <button key={t.min} className={'pdp-vtier' + (active ? ' is-active' : '')} onClick={() => { setQty(t.min); setAdded(false) }}>
+                      <span className="pdp-vtier__lbl">{t.label}{t.min === 1 ? ' unit' : ' units'}</span>
+                      <b className="num">{money(unit * (1 - t.off))}</b>
+                      <span className={'pdp-vtier__off' + (t.off ? '' : ' pdp-vtier__off--muted')}>{t.off ? `Save ${t.off * 100}%` : 'each'}</span>
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+
             <div className="pdp-buy__section">
-              {(p.axes || []).map(renderOption)}
-            </div>
-          )}
-
-          <div className="pdp-buy__section pdp-vol">
-            <div className="pdp-vol__head"><Icon name="tag" size={14} /> Buy more, save more <span>— applied automatically at checkout</span></div>
-            <div className="pdp-vol__row" role="group" aria-label="Quantity price breaks">
-              {TIERS.map((t) => {
-                const active = t.min === tier.min
-                return (
-                  <button key={t.min} className={'pdp-vtier' + (active ? ' is-active' : '')} onClick={() => { setQty(t.min); setAdded(false) }}>
-                    <span className="pdp-vtier__lbl">{t.label}{t.min === 1 ? ' unit' : ' units'}</span>
-                    <b className="num">{money(unit * (1 - t.off))}</b>
-                    <span className={'pdp-vtier__off' + (t.off ? '' : ' pdp-vtier__off--muted')}>{t.off ? `Save ${t.off * 100}%` : 'each'}</span>
-                  </button>
-                )
-              })}
-            </div>
-          </div>
-
-          <div className="pdp-buy__section">
-            <div className="pdp-buy__stock">
-              {inStock
-                ? <span className="pdp-buy__instock"><span className="pdp-buy__dot" /> In stock — dispatched in 1–2 business days</span>
-                : <span className="pdp-buy__oos">Currently out of stock</span>}
-            </div>
-            {canBuy && (
-              <p className="pdp-buy__selected">
-                {variant && <span className="pdp-buy__selected-attrs">{Object.values(variant.attrs).join(' · ')}</span>}
-                <span className="num">{qty} unit{qty !== 1 ? 's' : ''}</span>
-              </p>
-            )}
-            <div className="pdp-buy__actions">
-              <div className="qty" role="group" aria-label="Quantity">
-                <button onClick={() => setQty((q) => Math.max(1, q - 1))} aria-label="Decrease quantity"><Icon name="minus" size={16} /></button>
-                <input className="num" type="text" inputMode="numeric" value={qty} onChange={(e) => setQty(Math.max(1, parseInt(e.target.value) || 1))} aria-label="Quantity" />
-                <button onClick={() => setQty((q) => q + 1)} aria-label="Increase quantity"><Icon name="plus" size={16} /></button>
+              <div className="pdp-buy__stock">
+                {inStock
+                  ? <span className="pdp-buy__instock"><span className="pdp-buy__dot" /> In stock — dispatched in 1–2 business days</span>
+                  : <span className="pdp-buy__oos">Currently out of stock</span>}
               </div>
-              <button className="btn btn--brand btn--lg pdp-buy__add" onClick={add} disabled={!canBuy}>
-                <Icon name="cart" size={19} /> Add to cart
-              </button>
-              <button className={'pdp-buy__wish' + (wished ? ' is-on' : '')} onClick={() => toggleWish(p.handle)} aria-label={wished ? 'Remove from wishlist' : 'Add to wishlist'}><Icon name="heart" size={20} /></button>
-            </div>
-            {canBuy && (
-              <p className="pdp-buy__linetotal">Total <b className="num">{money(lineTotal)}</b>{saved > 0.005 && <span className="pdp-buy__linetotal-save num"> — you save {money(saved)}</span>}</p>
-            )}
-            <button className="btn btn--dark btn--lg btn--block pdp-buy__buynow" onClick={buyNow} disabled={!canBuy}><Icon name="lock" size={17} /> Buy it now</button>
-            {added && (
-              <div className="pdp-buy__added" role="status">
-                <Icon name="check" size={18} /> Added {qty} to your cart.
-                <a href="#/cart" onClick={(e) => { e.preventDefault(); navigate('/cart') }}>View cart &amp; checkout →</a>
+              {canBuy && (
+                <p className="pdp-buy__selected">
+                  {variant && <span className="pdp-buy__selected-attrs">{Object.values(variant.attrs).join(' · ')}</span>}
+                  <span className="num">{qty} unit{qty !== 1 ? 's' : ''}</span>
+                </p>
+              )}
+              <div className="pdp-buy__actions">
+                <div className="qty" role="group" aria-label="Quantity">
+                  <button onClick={() => setQty((q) => Math.max(1, q - 1))} aria-label="Decrease quantity"><Icon name="minus" size={16} /></button>
+                  <input className="num" type="text" inputMode="numeric" value={qty} onChange={(e) => setQty(Math.max(1, parseInt(e.target.value) || 1))} aria-label="Quantity" />
+                  <button onClick={() => setQty((q) => q + 1)} aria-label="Increase quantity"><Icon name="plus" size={16} /></button>
+                </div>
+                <button className="btn btn--brand btn--lg pdp-buy__add" onClick={add} disabled={!canBuy}>
+                  <Icon name="cart" size={19} /> Add to cart
+                </button>
+                <button className={'pdp-buy__wish' + (wished ? ' is-on' : '')} onClick={() => toggleWish(p.handle)} aria-label={wished ? 'Remove from wishlist' : 'Add to wishlist'}><Icon name="heart" size={20} /></button>
               </div>
-            )}
+              {canBuy && (
+                <p className="pdp-buy__linetotal">Total <b className="num">{money(lineTotal)}</b>{saved > 0.005 && <span className="pdp-buy__linetotal-save num"> — you save {money(saved)}</span>}</p>
+              )}
+              <button className="btn btn--dark btn--lg btn--block pdp-buy__buynow" onClick={buyNow} disabled={!canBuy}><Icon name="lock" size={17} /> Buy it now</button>
+              {added && (
+                <div className="pdp-buy__added" role="status">
+                  <Icon name="check" size={18} /> Added {qty} to your cart.
+                  <a href="#/cart" onClick={(e) => { e.preventDefault(); navigate('/cart') }}>View cart &amp; checkout →</a>
+                </div>
+              )}
+            </div>
           </div>
 
           {/* one calm trust band — replaces the three separate stacked clusters */}
