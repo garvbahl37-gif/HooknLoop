@@ -25,7 +25,7 @@ export function AboutPage() {
         </div>
       </section>
       <div className="wrap page-prose">
-        <p>We're Australian owned and operated, and we keep a deep range in stock so you can order the exact tape your job needs — with volume discounts that apply automatically as your order grows.</p>
+        <p>We're Australian owned, and we keep a deep range in stock so you can order the exact tape your job needs — with volume discounts that apply automatically as your order grows.</p>
         <p>We stock trusted brands alongside our own value lines, back every stocked product with a lowest-price guarantee, and dispatch quickly to more than 3,600 postcodes across the country.</p>
         <div className="page-stats">
           <div><b className="num">{PRODUCTS.length}+</b><span>Tape lines in stock</span></div>
