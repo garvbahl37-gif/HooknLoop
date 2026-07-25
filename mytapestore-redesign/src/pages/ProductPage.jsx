@@ -219,18 +219,12 @@ export default function ProductPage({ handle }) {
             )
           })}
         </div>
-      ) : axis.terms.length > 4 ? (
+      ) : (
         <div className="pdp-opt__select">
           <select value={sel[axis.name] || ''} onChange={(e) => setAxis(axis.name, e.target.value)} aria-label={axis.name}>
             {axis.terms.map((t) => <option key={t} value={t}>{t}</option>)}
           </select>
           <Icon name="chevronDown" size={16} />
-        </div>
-      ) : (
-        <div className="pdp-opt__chips">
-          {axis.terms.map((t) => (
-            <button key={t} className={'pdp-opt__chip' + (sel[axis.name] === t ? ' is-active' : '')} onClick={() => setAxis(axis.name, t)}>{t}</button>
-          ))}
         </div>
       )}
     </div>
@@ -356,14 +350,15 @@ export default function ProductPage({ handle }) {
               <li><Icon name="truck" size={18} /><span>Fast AU dispatch</span></li>
               <li><Icon name="refresh" size={18} /><span>Easy returns</span></li>
               <li><Icon name="lock" size={18} /><span>Secure checkout</span></li>
+              <li><Icon name="medal" size={18} /><span>Lowest-price guarantee</span></li>
             </ul>
             <div className="pdp-trust__pay">
+              <span className="pdp-trust__pay-label">We accept</span>
               <div className="pdp-buy__pay-marks">{PAY.map((k) => <img key={k} src={'/img/pay/' + k + '.svg'} alt={k} height="20" />)}</div>
-              <a className="pdp-trust__guarantee" href="#/shipping" onClick={(e) => { e.preventDefault(); navigate('/shipping') }}><Icon name="medal" size={14} /> Lowest-price guarantee</a>
             </div>
             <div className="pdp-buy__meta">
-              <a href="#/shipping" onClick={(e) => { e.preventDefault(); navigate('/shipping') }}>Shipping info</a>
-              <a href="#/returns" onClick={(e) => { e.preventDefault(); navigate('/returns') }}>Returns &amp; exchanges</a>
+              <a href="#/shipping" onClick={(e) => { e.preventDefault(); navigate('/shipping') }}>Shipping info <Icon name="chevronRight" size={14} /></a>
+              <a href="#/returns" onClick={(e) => { e.preventDefault(); navigate('/returns') }}>Returns &amp; exchanges <Icon name="chevronRight" size={14} /></a>
             </div>
           </div>
         </div>

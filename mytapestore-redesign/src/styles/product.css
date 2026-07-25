@@ -66,10 +66,6 @@
 .pdp-opt__label { display: flex; align-items: baseline; gap: 8px; margin-bottom: 10px; }
 .pdp-opt__label > span { font-family: var(--f-head); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; font-size: var(--t-xs); color: var(--faint); }
 .pdp-opt__label b { font-family: var(--f-head); color: var(--ink); font-weight: 600; font-size: var(--t-sm); }
-.pdp-opt__chips { display: flex; flex-wrap: wrap; gap: 8px; }
-.pdp-opt__chip { padding: 9px 16px; border: 1.5px solid var(--line-2); border-radius: 8px; font-family: var(--f-head); font-weight: 600; font-size: 0.9rem; color: var(--ink-2); background: #fff; transition: border-color .12s var(--ease), background .12s var(--ease), color .12s var(--ease); }
-.pdp-opt__chip:hover { border-color: var(--ink); }
-.pdp-opt__chip.is-active { border-color: var(--brand); background: var(--brand-wash); color: var(--brand-ink); }
 .pdp-opt__select { position: relative; display: inline-flex; align-items: center; max-width: 340px; width: 100%; }
 .pdp-opt__select select { appearance: none; width: 100%; border: 1.5px solid var(--line-2); border-radius: 8px; padding: 12px 40px 12px 14px; font-family: var(--f-head); font-weight: 600; font-size: 0.95rem; background: #fff; cursor: pointer; }
 .pdp-opt__select select:focus { outline: none; border-color: var(--ink); }
@@ -125,17 +121,18 @@
 
 /* one calm trust band — replaces the reassure + pay + meta stacking */
 .pdp-trust { margin-top: 26px; padding-top: 22px; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 15px; }
-.pdp-trust__row { display: flex; flex-wrap: wrap; gap: 10px 22px; }
-.pdp-trust__row li { display: inline-flex; align-items: center; gap: 8px; font-family: var(--f-head); font-weight: 600; font-size: var(--t-sm); color: var(--ink-2); }
+.pdp-trust__row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px 18px; }
+.pdp-trust__row li { display: inline-flex; align-items: center; gap: 9px; font-family: var(--f-head); font-weight: 600; font-size: var(--t-sm); color: var(--ink-2); }
 .pdp-trust__row svg { color: var(--brand); flex-shrink: 0; }
-.pdp-trust__pay { display: flex; align-items: center; justify-content: space-between; gap: 12px 18px; flex-wrap: wrap; }
-.pdp-trust__guarantee { display: inline-flex; align-items: center; gap: 6px; font-family: var(--f-head); font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; font-size: var(--t-xs); color: var(--brand-ink); }
-.pdp-trust__guarantee:hover { text-decoration: underline; }
+.pdp-trust__pay { display: flex; align-items: center; gap: 12px; }
+.pdp-trust__pay-label { font-family: var(--f-head); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; font-size: var(--t-xs); color: var(--faint); }
 .pdp-buy__pay-marks { display: flex; gap: 6px; flex-wrap: wrap; }
 .pdp-buy__pay-marks img { height: 20px; border: 1px solid var(--line); border-radius: 3px; padding: 1px 3px; background: #fff; }
-.pdp-buy__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 22px; margin-top: 2px; padding-top: 13px; border-top: 1px dashed var(--line); font-size: var(--t-sm); color: var(--muted); }
-.pdp-buy__meta b { color: var(--faint); font-family: var(--f-head); font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; font-size: var(--t-xs); margin-right: 6px; }
-.pdp-buy__meta a { color: var(--brand-ink); font-weight: 600; }
+.pdp-buy__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 24px; margin-top: 2px; padding-top: 14px; border-top: 1px solid var(--line); font-size: var(--t-sm); color: var(--muted); }
+.pdp-buy__meta a { display: inline-flex; align-items: center; gap: 2px; color: var(--brand-ink); font-weight: 600; }
+.pdp-buy__meta a svg { color: var(--brand-ink); opacity: .7; }
+.pdp-buy__meta a:hover { text-decoration: underline; }
+@media (max-width: 420px){ .pdp-trust__row { grid-template-columns: 1fr; } }
 .pdp-buy__meta a:hover { text-decoration: underline; }
 
 /* details — tabbed */
