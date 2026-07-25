@@ -48,7 +48,7 @@ function UpsellRail({ title, picks }) {
   return (
     <section className="cart-upsell">
       <h2>{title}</h2>
-      <div className="grid-products grid-products--4">
+      <div className="grid-products grid-products--fit">
         {picks.map((p) => <ProductCard key={p.handle} p={p} />)}
       </div>
     </section>

@@ -6,6 +6,14 @@
 @media (max-width: 1100px){ .grid-products, .grid-products--5 { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 720px){ .grid-products, .grid-products--5 { grid-template-columns: repeat(2, 1fr); gap: 14px; } }
 
+/* fixed-width, centred cards — for short rows (related products, cart cross-sell) that
+   shouldn't stretch to fill 4 columns when there are fewer than 4 items */
+.grid-products--fit { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
+.grid-products--fit > * { flex: 0 1 auto; width: calc(25% - 15px); min-width: 240px; max-width: 300px; }
+@media (max-width: 1100px){ .grid-products--fit > * { width: calc(33.333% - 14px); } }
+@media (max-width: 720px){ .grid-products--fit { gap: 14px; } .grid-products--fit > * { width: calc(50% - 7px); min-width: 160px; } }
+@media (max-width: 460px){ .grid-products--fit > * { width: 100%; max-width: 340px; } }
+
 .section-cta { display: flex; justify-content: center; margin-top: 36px; }
 .section-head__link { display: inline-flex; align-items: center; gap: 7px; margin-top: 18px; padding: 9px 20px; border: 1.5px solid var(--line-2); border-radius: var(--r-pill); font-family: var(--f-head); font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; font-size: var(--t-xs); color: var(--ink); }
 .section-head__link:hover { border-color: var(--brand); color: var(--brand-ink); }

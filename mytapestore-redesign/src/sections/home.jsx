@@ -407,7 +407,7 @@ export function ValueProps() {
     ['truck', 'Fast delivery Australia-wide', 'Dispatched in 1–2 business days to 3,600+ postcodes.'],
     ['card', 'Secure payment', 'Checkout safely with major cards, PayPal and Shop Pay.'],
     ['badgeCheck', 'Lowest-price guarantee', 'Find a stocked line cheaper and we’ll match it.'],
-    ['australia', 'Australian owned & operated', 'Local stock, local support and honest advice.'],
+    ['mapPin', 'Australian owned & operated', 'Local stock, local support and honest advice.'],
   ]
   return (
     <section className="section vprops-sec">

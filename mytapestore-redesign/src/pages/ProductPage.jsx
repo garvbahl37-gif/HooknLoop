@@ -379,7 +379,7 @@ export default function ProductPage({ handle }) {
         <section className="section section--paper">
           <div className="wrap">
             <div className="section-head"><div className="section-title-wrap"><span className="eyebrow">You might also need</span><h2>Related products</h2></div></div>
-            <div className="grid-products grid-products--4">{related.slice(0, 4).map((r) => <ProductCard key={r.handle} p={r} />)}</div>
+            <div className="grid-products grid-products--fit">{related.slice(0, 4).map((r) => <ProductCard key={r.handle} p={r} />)}</div>
           </div>
         </section>
       )}
