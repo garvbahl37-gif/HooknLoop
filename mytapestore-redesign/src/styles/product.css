@@ -19,7 +19,7 @@
 .pdp-gallery__main { flex: 1; width: 100%; padding: 0; appearance: none; position: relative; border: 1px solid var(--line); border-radius: var(--r-lg); background: #fff; aspect-ratio: 1/1; display: grid; place-items: center; overflow: hidden; box-shadow: var(--sh-sm); cursor: zoom-in; }
 .pdp-gallery__main img { width: 100%; height: 100%; object-fit: contain; padding: 44px; transition: transform .45s var(--ease); }
 .pdp-gallery__main:hover img { transform: scale(1.16); }
-.pdp-gallery__badge { position: absolute; top: 14px; left: 14px; z-index: 2; }
+.pdp-gallery__badges { position: absolute; top: 14px; left: 14px; z-index: 2; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
 .pdp-gallery__zoom { position: absolute; bottom: 12px; right: 12px; width: 36px; height: 36px; display: grid; place-items: center; background: rgba(255,255,255,.94); border: 1px solid var(--line); border-radius: var(--r); color: var(--ink-2); opacity: 0; transform: translateY(4px); transition: opacity .16s var(--ease), transform .16s var(--ease), background .16s var(--ease), color .16s var(--ease); }
 .pdp-gallery__main:hover .pdp-gallery__zoom, .pdp-gallery__main:focus-visible .pdp-gallery__zoom { opacity: 1; transform: translateY(0); }
 .pdp-gallery__main:hover .pdp-gallery__zoom { background: var(--brand-cta); color: #fff; border-color: var(--brand-cta); }

@@ -3,7 +3,7 @@ import Icon from '../components/Icon.jsx'
 import Stars from '../components/Stars.jsx'
 import Breadcrumbs from '../components/Breadcrumbs.jsx'
 import ProductCard from '../components/ProductCard.jsx'
-import { findProduct, productsInCat, NAV_GROUPS } from '../data/catalog.js'
+import { findProduct, productsInCat, NAV_GROUPS, BESTSELLER_HANDLES } from '../data/catalog.js'
 import { productReviews } from '../data/reviews.js'
 import { money, hasRange, variantFor, defaultSelection, addToCart, navigate, toggleWish, useWish } from '../lib/cart.js'
 
@@ -255,6 +255,7 @@ export default function ProductPage({ handle }) {
   const unit = price != null ? price : p.from
   const sku = variant ? variant.sku : p.sku
   const inStock = variant ? variant.inStock : p.inStock
+  const bestseller = BESTSELLER_HANDLES.includes(p.handle)
   const wished = wish.includes(p.handle)
   const tier = tierFor(qty)
   const [myReviews, setMyReviews] = useState(() => getMyReviews(p.handle))
@@ -359,7 +360,11 @@ export default function ProductPage({ handle }) {
             )}
             <button className="pdp-gallery__main" onClick={() => setLightbox(true)} aria-label="Zoom image">
               <img src={img} alt={p.name} width="600" height="600" />
-              {p.onSale && <span className="tag tag--sale pdp-gallery__badge">Sale</span>}
+              <div className="pdp-gallery__badges">
+                {bestseller && <span className="tag tag--best"><Icon name="star" size={11} /> Bestseller</span>}
+                {p.onSale && <span className="tag tag--sale">Sale</span>}
+                {!inStock && <span className="tag tag--out">Out of stock</span>}
+              </div>
               <span className="pdp-gallery__zoom"><Icon name="search" size={16} /></span>
             </button>
           </div>
