@@ -41,6 +41,7 @@
 .colban__inner .crumbs__sep { color: rgba(255,255,255,.35); }
 .colban__inner .eyebrow--onink { margin-bottom: 14px; }
 .colban__title { font-family: var(--f-display); font-weight: 700; font-size: clamp(2.1rem, 4.2vw, 3.4rem); letter-spacing: -0.02em; color: #fff; line-height: 1.05; }
+.colban__desc { margin-top: 16px; color: rgba(255,255,255,.86); font-size: var(--t-sm); line-height: 1.65; max-width: 62ch; margin-inline: auto; }
 .colban__count { display: inline-block; margin-top: 24px; font-family: var(--f-head); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; font-size: var(--t-xs); color: #fff; border: 1px solid rgba(255,255,255,.28); border-radius: var(--r-pill); padding: 6px 16px; }
 
 /* category rail */

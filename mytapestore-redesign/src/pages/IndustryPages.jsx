@@ -1,8 +1,10 @@
 import Icon from '../components/Icon.jsx'
 import ProductCard from '../components/ProductCard.jsx'
+import FilterPanel from '../components/FilterPanel.jsx'
 import Breadcrumbs from '../components/Breadcrumbs.jsx'
-import { INDUSTRIES, productsInIndustry, catName } from '../data/catalog.js'
+import { INDUSTRIES, productsInIndustry } from '../data/catalog.js'
 import { navigate } from '../lib/cart.js'
+import { SORTS, useProductFilters } from '../lib/filters.js'
 
 const go = (e, h) => { e.preventDefault(); navigate(h) }
 
@@ -35,38 +37,63 @@ export function IndustriesPage() {
 
 export function IndustryPage({ slug }) {
   const ind = INDUSTRIES.find((c) => c.slug === slug)
-  const products = productsInIndustry(slug)
-  const others = INDUSTRIES.filter((c) => c.slug !== slug).slice(0, 10)
+  const baseList = productsInIndustry(slug)
+  const {
+    sort, setSort, products,
+    inStockOnly, setInStockOnly, priceBucket, setPriceBucket,
+    colours, availColours, toggleColour, sizeFilter, setSizeFilter, availSizes,
+    filtersActive, clearAll,
+  } = useProductFilters(baseList)
+
   if (!ind) return <main id="main" className="wrap pdp-missing"><h1>Industry not found</h1><a className="btn btn--brand" href="#/industries" onClick={(e) => go(e, '/industries')}>All industries</a></main>
 
+  const bg = `/img/site/industry/${slug}.jpg`
+
   return (
-    <main id="main">
-      <div className="wrap ind-page__crumbs"><Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Industries', href: '/industries' }, { label: ind.name }]} /></div>
-      <div className="ind-hero">
-        <div className="wrap ind-hero__row">
-          <div>
-            <span className="eyebrow eyebrow--onink">Industry</span>
-            <h1>{ind.name}</h1>
-            <p>{ind.desc || `Adhesive tapes and fastening solutions selected for ${ind.name.toLowerCase()} applications. ${products.length} product${products.length !== 1 ? 's' : ''} recommended for this sector.`}</p>
-          </div>
-          <div className="ind-hero__count"><b className="num">{products.length}</b><span>Products for<br />{ind.name}</span></div>
+    <main id="main" className="col">
+      <div className={'colban grain colban--img'} style={{ backgroundImage: `url(${bg})` }}>
+        <div className="colban__scrim" />
+        <div className="wrap colban__inner">
+          <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Industries', href: '/industries' }, { label: ind.name }]} />
+          <span className="eyebrow eyebrow--onink">Industry</span>
+          <h1 className="colban__title">{ind.name}</h1>
+          <p className="colban__desc">{ind.desc || `Adhesive tapes and fastening solutions selected for ${ind.name.toLowerCase()} applications.`}</p>
+          <span className="colban__count num">{products.length} product{products.length !== 1 ? 's' : ''} available</span>
         </div>
       </div>
-      <div className="wrap section">
-        {products.length ? (
-          <div className="grid-products grid-products--5">{products.map((p) => <ProductCard key={p.handle} p={p} />)}</div>
-        ) : (
-          <div className="col__empty"><Icon name="layers" size={40} /><p>No products are tagged for this industry yet.</p><a className="btn btn--ghost" href="#/shop" onClick={(e) => go(e, '/shop')}>Browse all products</a></div>
-        )}
-      </div>
-      <section className="section section--paper">
-        <div className="wrap">
-          <div className="section-head"><div className="section-title-wrap"><span className="eyebrow">Explore more</span><h2>Other industries</h2></div></div>
-          <div className="ind-strip">
-            {others.map((c) => <a key={c.slug} href={'#/industry/' + c.slug} className="ind-chip" onClick={(e) => go(e, '/industry/' + c.slug)}><Icon name="factory" size={16} /><span>{c.name}</span></a>)}
+
+      <div className="wrap col__layout">
+        <aside className="col__side">
+          <FilterPanel {...{ priceBucket, setPriceBucket, colours, availColours, toggleColour, sizeFilter, setSizeFilter, availSizes, inStockOnly, setInStockOnly, onClear: clearAll, active: filtersActive }} />
+        </aside>
+
+        <div className="col__main">
+          <div className="col__toolbar">
+            <span className="col__count num">{products.length} product{products.length !== 1 ? 's' : ''}</span>
+            <div className="col__tools">
+              <label className="col__sort">
+                <span>Sort by</span>
+                <select value={sort} onChange={(e) => setSort(e.target.value)} aria-label="Sort products">
+                  {SORTS.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
+                </select>
+                <Icon name="chevronDown" size={16} />
+              </label>
+            </div>
           </div>
+
+          {products.length ? (
+            <div className="grid-products col__grid">
+              {products.map((p) => <ProductCard key={p.handle} p={p} />)}
+            </div>
+          ) : (
+            <div className="col__empty">
+              <Icon name="layers" size={40} />
+              <p>No products match your filters here.</p>
+              <button className="btn btn--ghost" onClick={clearAll}>Clear filters</button>
+            </div>
+          )}
         </div>
-      </section>
+      </div>
     </main>
   )
 }
