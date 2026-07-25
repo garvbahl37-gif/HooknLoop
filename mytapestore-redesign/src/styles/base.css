@@ -92,6 +92,8 @@ strong { font-weight: 700; color: var(--ink); }
   color: var(--muted); background: #fff;
 }
 .tag--brand { color: #fff; background: var(--brand-cta); border-color: var(--brand-cta); }
+.tag--best  { color: #fff; background: var(--ink); border-color: var(--ink); }
+.tag--best svg { color: var(--brand-cta); fill: var(--brand-cta); }
 .tag--sale  { color: #fff; background: var(--sale); border-color: var(--sale); }
 .tag--stock { color: var(--stock); border-color: color-mix(in srgb, var(--stock) 40%, #fff); background: color-mix(in srgb, var(--stock) 8%, #fff); }
 .tag--out   { color: var(--faint); background: var(--paper); }

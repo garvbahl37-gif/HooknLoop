@@ -1,19 +1,13 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Icon from '../components/Icon.jsx'
 import ProductCard from '../components/ProductCard.jsx'
-import { PRODUCTS, PRODUCT_CATEGORIES, INDUSTRIES } from '../data/catalog.js'
+import { PRODUCTS, PRODUCT_CATEGORIES, INDUSTRIES, BESTSELLER_HANDLES } from '../data/catalog.js'
 import { REVIEWS } from '../data/reviews.js'
 import { navigate, money } from '../lib/cart.js'
 
 const go = (e, h) => { e.preventDefault(); navigate(h) }
 
-/* real bestsellers from the live store, ranked by WooCommerce popularity (total sales) */
-const BESTSELLERS = [
-  'utility-grade-masking-tapes', 'general-purpose-masking-tape', 'hook-loop-roll-adhesive-backed',
-  'joist-protection-tape', 'hook-loop-adhesive-dots', 'cloth-tapes',
-  'high-bond-acrylic-tape-clear', 'structural-glazing-tape',
-]
-export const FEATURED = BESTSELLERS.map((h) => PRODUCTS.find((p) => p.handle === h)).filter(Boolean)
+export const FEATURED = BESTSELLER_HANDLES.map((h) => PRODUCTS.find((p) => p.handle === h)).filter(Boolean)
 
 const TILE_CATS = PRODUCT_CATEGORIES
   .filter((c) => c.img && c.count > 0 && c.slug !== 'double-sided-tape' && c.slug !== 'strapping-and-filament')
@@ -226,6 +220,64 @@ export function SealTheDeal() {
 }
 
 /* ---------- COVERING DIVERSE INDUSTRIES ---------- */
+function perPageFor(w) {
+  if (w < 560) return 2
+  if (w < 900) return 3
+  if (w < 1220) return 4
+  return 5
+}
+
+function IndustriesStrip() {
+  const [perPage, setPerPage] = useState(() => perPageFor(typeof window !== 'undefined' ? window.innerWidth : 1280))
+  const [page, setPage] = useState(0)
+  const paused = useRef(false)
+  const pages = Math.max(1, Math.ceil(INDUSTRIES.length / perPage))
+
+  useEffect(() => {
+    const onResize = () => setPerPage(perPageFor(window.innerWidth))
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
+  }, [])
+
+  useEffect(() => { setPage((p) => (p >= pages ? 0 : p)) }, [pages])
+
+  useEffect(() => {
+    if (pages <= 1) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const id = setInterval(() => { if (!paused.current) setPage((p) => (p + 1) % pages) }, 2800)
+    return () => clearInterval(id)
+  }, [pages])
+
+  return (
+    <div className="indx-strip" onMouseEnter={() => { paused.current = true }} onMouseLeave={() => { paused.current = false }}>
+      <div className="indx-strip__viewport">
+        <div className="indx-strip__track" style={{ transform: `translateX(-${page * 100}%)` }}>
+          {Array.from({ length: pages }).map((_, pi) => (
+            <div className="indx-strip__page" key={pi} style={{ gridTemplateColumns: `repeat(${perPage}, 1fr)` }}>
+              {INDUSTRIES.slice(pi * perPage, pi * perPage + perPage).map((c) => (
+                <a key={c.slug} href={'#/industry/' + c.slug} className="indx-tile" onClick={(e) => go(e, '/industry/' + c.slug)}>
+                  <div className="indx-tile__media"><img src={c.img} alt={c.name} loading="lazy" /></div>
+                  <div className="indx-tile__body">
+                    <b className="indx-tile__name">{c.name}</b>
+                    <span className="indx-tile__num num">{c.count} products <Icon name="arrowRight" size={14} /></span>
+                  </div>
+                </a>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+      {pages > 1 && (
+        <div className="indx-strip__dots">
+          {Array.from({ length: pages }).map((_, pi) => (
+            <button key={pi} className={'indx-strip__dot' + (pi === page ? ' is-on' : '')} onClick={() => setPage(pi)} aria-label={`Show industries, set ${pi + 1} of ${pages}`} />
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
 export function IndustriesShowcase() {
   return (
     <section className="section section--paper">
@@ -238,17 +290,7 @@ export function IndustriesShowcase() {
             <p>The right adhesive for your trade — quality-checked tapes across {INDUSTRIES.length} industries.</p>
           </div>
         </div>
-        <div className="indx-grid">
-          {INDUSTRIES.slice(0, 12).map((c) => (
-            <a key={c.slug} href={'#/industry/' + c.slug} className="indx-tile" onClick={(e) => go(e, '/industry/' + c.slug)}>
-              <div className="indx-tile__media"><img src={c.img} alt={c.name} loading="lazy" /></div>
-              <div className="indx-tile__body">
-                <b className="indx-tile__name">{c.name}</b>
-                <span className="indx-tile__num num">{c.count} products <Icon name="arrowRight" size={14} /></span>
-              </div>
-            </a>
-          ))}
-        </div>
+        <IndustriesStrip />
         <div className="section-cta"><a href="#/industries" className="btn btn--brand btn--lg" onClick={(e) => go(e, '/industries')}>Explore all {INDUSTRIES.length} industries <Icon name="arrowRight" size={18} /></a></div>
       </div>
     </section>
@@ -365,7 +407,7 @@ export function ValueProps() {
     ['truck', 'Fast delivery Australia-wide', 'Dispatched in 1–2 business days to 3,600+ postcodes.'],
     ['badgeCheck', 'Lowest-price guarantee', 'Find a stocked line cheaper and we’ll match it.'],
     ['warehouse', 'Every tape, one supplier', 'The full range — held in stock and ready to ship.'],
-    ['mapPin', 'Australian owned & operated', 'Local stock, local support and honest advice.'],
+    ['australia', 'Australian owned & operated', 'Local stock, local support and honest advice.'],
   ]
   return (
     <section className="section vprops-sec">

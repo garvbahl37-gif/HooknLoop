@@ -98,3 +98,27 @@
   .col__layout { grid-template-columns: 1fr; }
   .rail { display: none; }
 }
+
+/* category SEO content — original store's below-grid copy, benefits, why-choose perks + FAQ */
+.catseo { border-top: 1px solid var(--line); background: var(--paper); }
+.catseo__grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 44px; align-items: start; }
+.catseo__main { color: var(--ink-2); line-height: 1.75; font-size: var(--t-sm); }
+.catseo__heading { font-family: var(--f-head); font-weight: 700; font-size: 1.4rem; letter-spacing: -0.01em; color: var(--ink); margin-bottom: 14px; }
+.catseo__main p { margin-bottom: 14px; }
+.catseo__faqs { margin-top: 30px; }
+.catseo__faqs h3 { font-family: var(--f-head); font-weight: 700; font-size: 1.05rem; color: var(--ink); margin-bottom: 14px; }
+
+.catseo__why { border: 1px solid var(--line); border-radius: var(--r-lg); overflow: hidden; background: #fff; box-shadow: var(--sh-sm); position: sticky; top: 96px; }
+.catseo__why-head { display: flex; align-items: center; gap: 9px; background: var(--ink); color: #fff; padding: 15px 20px; }
+.catseo__why-head svg { color: var(--brand); flex-shrink: 0; }
+.catseo__why-head h3 { font-family: var(--f-head); font-weight: 700; font-size: 1rem; letter-spacing: -0.005em; }
+.catseo__why-intro { padding: 16px 20px 0; color: var(--ink-2); font-size: var(--t-sm); line-height: 1.7; }
+.catseo__perks { padding: 14px 20px 4px; display: flex; flex-direction: column; gap: 12px; }
+.catseo__perks li { display: flex; align-items: flex-start; gap: 10px; font-size: var(--t-sm); color: var(--ink-2); line-height: 1.6; }
+.catseo__perks li svg { color: var(--stock); flex-shrink: 0; margin-top: 3px; }
+.catseo__perks li b { color: var(--ink); font-weight: 600; }
+.catseo__coverage { display: flex; align-items: flex-start; gap: 10px; margin: 6px 20px 0; padding-top: 16px; border-top: 1px solid var(--line); color: var(--muted); font-size: var(--t-xs); line-height: 1.65; }
+.catseo__coverage svg { color: var(--brand-ink); flex-shrink: 0; margin-top: 2px; }
+.catseo__cta-line { margin: 12px 20px 0; color: var(--muted); font-size: var(--t-xs); line-height: 1.65; }
+.catseo__contact { margin: 18px; width: calc(100% - 36px); }
+@media (max-width: 900px){ .catseo__grid { grid-template-columns: 1fr; } .catseo__why { position: static; } }

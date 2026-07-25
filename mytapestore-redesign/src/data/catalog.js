@@ -16,3 +16,10 @@ export const findProduct = (h) => PRODUCTS.find(p => p.handle === h)
 export const catName = (slug) => (PRODUCT_CATEGORIES.find(c=>c.slug===slug)||INDUSTRIES.find(c=>c.slug===slug)||{}).name || "All Products"
 export const productsInCat = (slug) => PRODUCTS.filter(p => p.cats.some(c=>c.slug===slug))
 export const productsInIndustry = (slug) => PRODUCTS.filter(p => p.industries.some(c=>c.slug===slug))
+
+/* real bestsellers from the live store, ranked by WooCommerce popularity (total sales) */
+export const BESTSELLER_HANDLES = [
+  'utility-grade-masking-tapes', 'general-purpose-masking-tape', 'hook-loop-roll-adhesive-backed',
+  'joist-protection-tape', 'hook-loop-adhesive-dots', 'cloth-tapes',
+  'high-bond-acrylic-tape-clear', 'structural-glazing-tape',
+]

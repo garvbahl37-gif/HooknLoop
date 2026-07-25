@@ -177,7 +177,6 @@
 
 /* premium photo tiles — the original store shows a flat photo-per-industry grid;
    this keeps that but adds card chrome, an image-reveal gradient, and hover the original lacks */
-.indx-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
 .indx-tile { position: relative; display: block; aspect-ratio: 4 / 3; border-radius: 14px; overflow: hidden; border: 1px solid var(--line); box-shadow: 0 1px 2px rgba(20,15,10,.06); transition: transform .2s var(--ease), box-shadow .2s var(--ease), border-color .2s var(--ease); }
 .indx-tile:hover { transform: translateY(-4px); box-shadow: var(--sh-lg); border-color: var(--brand); }
 .indx-tile__media { position: absolute; inset: 0; background: var(--paper); }
@@ -190,9 +189,16 @@
 .indx-tile__num svg { transition: transform .16s var(--ease); }
 .indx-tile:hover .indx-tile__num { color: #fff; }
 .indx-tile:hover .indx-tile__num svg { transform: translateX(3px); }
-@media (max-width: 1000px){ .indx-grid { grid-template-columns: repeat(3, 1fr); } }
-@media (max-width: 680px){ .indx-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 420px){ .indx-grid { grid-template-columns: 1fr; } }
+
+/* auto-advancing strip — shows 4–5 industries at a time, slides to the next set every ~2.8s */
+.indx-strip__viewport { overflow: hidden; }
+.indx-strip__track { display: flex; transition: transform .65s cubic-bezier(.65,0,.35,1); }
+.indx-strip__page { flex: 0 0 100%; display: grid; gap: 16px; }
+.indx-strip__dots { display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 22px; }
+.indx-strip__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--line-2); transition: background .2s var(--ease), width .2s var(--ease); }
+.indx-strip__dot:hover { background: var(--faint); }
+.indx-strip__dot.is-on { background: var(--brand); width: 24px; border-radius: 5px; }
+@media (prefers-reduced-motion: reduce){ .indx-strip__track { transition: none; } }
 
 /* ---- testimonials ---- */
 .tmx { position: relative; overflow: hidden; color: #fff; padding-block: clamp(40px, 4.5vw, 64px); background: radial-gradient(120% 120% at 50% -10%, #2a2a2a 0%, var(--ink) 55%, #131313 100%); }

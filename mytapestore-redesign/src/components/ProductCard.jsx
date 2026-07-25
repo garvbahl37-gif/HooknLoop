@@ -1,6 +1,7 @@
 import Icon from './Icon.jsx'
 import Stars from './Stars.jsx'
 import { money, hasRange, navigate, addToCart, defaultSelection, variantFor, toggleWish, useWish } from '../lib/cart.js'
+import { BESTSELLER_HANDLES } from '../data/catalog.js'
 
 /* Traditionally-premium catalogue card: matted product frame, refined type,
    display-face pricing, and a full-width CTA that fills brand-red on hover. */
@@ -10,6 +11,7 @@ export default function ProductCard({ p }) {
   const sizeAxis = (p.axes || []).find((a) => /size/i.test(a.name))
   const sizeCount = sizeAxis ? new Set(sizeAxis.terms.map((t) => t.replace(/\s*(Hook|Loop)$/i, ''))).size : 0
   const variable = p.type === 'variable'
+  const bestseller = BESTSELLER_HANDLES.includes(p.handle)
   const open = () => navigate('/product/' + p.handle)
 
   const addSimple = (e) => {
@@ -30,6 +32,7 @@ export default function ProductCard({ p }) {
       <div className="pc__media">
         <img src={p.img} alt={p.name} loading="lazy" width="300" height="300" />
         <div className="pc__badges">
+          {bestseller && <span className="tag tag--best"><Icon name="star" size={11} /> Bestseller</span>}
           {p.onSale && <span className="tag tag--sale">Sale</span>}
           {!p.inStock && <span className="tag tag--out">Out of stock</span>}
         </div>
