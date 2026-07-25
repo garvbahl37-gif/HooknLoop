@@ -2,8 +2,15 @@
 .pdp__crumbs { padding-top: 4px; }
 .pdp__top { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: 54px; padding-bottom: 56px; align-items: start; }
 
-/* gallery — vertical thumb rail + large image */
-.pdp-gallery { align-self: start; display: flex; gap: 14px; }
+/* gallery — vertical thumb rail + large image, plus a short key-specs strip
+   underneath so the column has something useful to hold rather than trailing
+   into blank space next to the (usually taller) buy column. */
+.pdp-gallery { align-self: start; display: flex; flex-direction: column; gap: 20px; }
+.pdp-gallery__row { display: flex; gap: 14px; }
+.pdp-gallery__specs { display: flex; flex-direction: column; gap: 10px; padding: 18px 20px; background: var(--panel); border: 1px solid var(--line); border-radius: var(--r-lg); }
+.pdp-gallery__specs li { display: flex; align-items: flex-start; gap: 10px; color: var(--ink-2); font-size: 0.9rem; line-height: 1.5; min-width: 0; }
+.pdp-gallery__specs li span { min-width: 0; }
+.pdp-gallery__specs svg { color: var(--stock); flex-shrink: 0; margin-top: 3px; }
 .pdp-gallery__thumbs { display: flex; flex-direction: column; gap: 10px; width: 74px; flex-shrink: 0; }
 .pdp-gallery__thumb { width: 74px; height: 74px; border: 1.5px solid var(--line); border-radius: var(--r); background: #fff; padding: 7px; overflow: hidden; transition: border-color .14s var(--ease); }
 .pdp-gallery__thumb img { width: 100%; height: 100%; object-fit: contain; }
@@ -159,7 +166,8 @@
 .pdp-desc h3 { font-size: 1.2rem; margin: 26px 0 12px; }
 .pdp-desc h3:first-child { margin-top: 0; }
 .pdp-desc__features { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 26px; margin: 6px 0 22px; }
-.pdp-desc__features li { display: flex; align-items: flex-start; gap: 10px; color: var(--ink-2); font-size: 0.97rem; }
+.pdp-desc__features li { display: flex; align-items: flex-start; gap: 10px; color: var(--ink-2); font-size: 0.97rem; min-width: 0; }
+.pdp-desc__features li span { min-width: 0; }
 .pdp-desc__features svg { color: var(--stock); flex-shrink: 0; margin-top: 3px; }
 .pdp-desc__img { border: 1px solid var(--line); border-radius: var(--r-lg); margin: 8px 0 20px; max-width: 100%; }
 .pdp-desc__table-wrap { overflow-x: auto; margin-bottom: 20px; }
@@ -201,9 +209,11 @@
 .pdp-missing { text-align: center; padding: 80px 20px; display: flex; flex-direction: column; align-items: center; gap: 20px; }
 
 @media (max-width: 920px){
-  .pdp__top { grid-template-columns: 1fr; gap: 30px; }
-  .pdp-gallery { flex-direction: column-reverse; width: 100%; min-width: 0; max-width: 100%; }
+  .pdp__top { grid-template-columns: minmax(0, 1fr); gap: 30px; }
+  .pdp-gallery { width: 100%; min-width: 0; max-width: 100%; }
+  .pdp-gallery__row { flex-direction: column-reverse; width: 100%; min-width: 0; }
   .pdp-gallery__main { min-width: 0; width: 100%; }
+  .pdp-gallery__thumbs { min-width: 0; }
   .pdp-gallery__thumbs { flex-direction: row; width: 100%; max-width: 100%; overflow-x: auto; flex-wrap: nowrap; padding-bottom: 4px; }
   .pdp-gallery__thumb { flex-shrink: 0; }
 }

@@ -57,8 +57,7 @@ function DescBlocks({ blocks }) {
       {blocks.map((b, i) => {
         if (b.type === 'h') return <h3 key={i}>{b.text}</h3>
         if (b.type === 'p') return <p key={i}>{b.text}</p>
-        if (b.type === 'lines') return <p key={i}>{b.items.map((l, j) => <span key={j}>{l}{j < b.items.length - 1 && <br />}</span>)}</p>
-        if (b.type === 'features') return (
+        if (b.type === 'lines' || b.type === 'features') return (
           <ul key={i} className="pdp-desc__features">
             {b.items.map((it, j) => <li key={j}><Icon name="check" size={16} /><span>{it}</span></li>)}
           </ul>
@@ -164,6 +163,15 @@ export default function ProductPage({ handle }) {
     return t.length > 210 ? t.slice(0, 207).replace(/\s+\S*$/, '') + '…' : t
   }, [p])
 
+  /* First short bullet-point block from the description, surfaced beside the
+     gallery so key specs are scannable without a tab click — also gives the
+     gallery column something useful to hold instead of trailing off into
+     blank space under a short image. */
+  const keySpecs = useMemo(() => {
+    const b = p.desc.find((x) => (x.type === 'features' || x.type === 'lines') && x.items?.length)
+    return (b?.items || []).slice(0, 4)
+  }, [p])
+
   const setAxis = (axis, val) => { setSel((s) => ({ ...s, [axis]: val })); setAdded(false) }
   const related = productsInCat(p.cats[0]?.slug || '').filter((x) => x.handle !== p.handle).slice(0, 5)
   const goReviews = () => { setTab('reviews'); tabsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }) }
@@ -235,20 +243,27 @@ export default function ProductPage({ handle }) {
       <div className="wrap pdp__top">
         {/* gallery */}
         <div className="pdp-gallery">
-          {p.gallery.length > 1 && (
-            <div className="pdp-gallery__thumbs">
-              {p.gallery.slice(0, 6).map((g) => (
-                <button key={g} className={'pdp-gallery__thumb' + (g === img ? ' is-active' : '')} onClick={() => setImg(g)} aria-label="View image">
-                  <img src={g} alt="" width="72" height="72" loading="lazy" />
-                </button>
-              ))}
-            </div>
+          <div className="pdp-gallery__row">
+            {p.gallery.length > 1 && (
+              <div className="pdp-gallery__thumbs">
+                {p.gallery.slice(0, 6).map((g) => (
+                  <button key={g} className={'pdp-gallery__thumb' + (g === img ? ' is-active' : '')} onClick={() => setImg(g)} aria-label="View image">
+                    <img src={g} alt="" width="72" height="72" loading="lazy" />
+                  </button>
+                ))}
+              </div>
+            )}
+            <button className="pdp-gallery__main" onClick={() => setLightbox(true)} aria-label="Zoom image">
+              <img src={img} alt={p.name} width="600" height="600" />
+              {p.onSale && <span className="tag tag--sale pdp-gallery__badge">Sale</span>}
+              <span className="pdp-gallery__zoom"><Icon name="search" size={16} /></span>
+            </button>
+          </div>
+          {keySpecs.length > 0 && (
+            <ul className="pdp-gallery__specs">
+              {keySpecs.map((s, i) => <li key={i}><Icon name="check" size={15} /><span>{s}</span></li>)}
+            </ul>
           )}
-          <button className="pdp-gallery__main" onClick={() => setLightbox(true)} aria-label="Zoom image">
-            <img src={img} alt={p.name} width="600" height="600" />
-            {p.onSale && <span className="tag tag--sale pdp-gallery__badge">Sale</span>}
-            <span className="pdp-gallery__zoom"><Icon name="search" size={16} /></span>
-          </button>
         </div>
 
         {/* buy column — open, airy layout */}
