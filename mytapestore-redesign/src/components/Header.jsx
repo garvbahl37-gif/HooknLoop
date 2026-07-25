@@ -135,8 +135,8 @@ export default function Header() {
           <ul className="hd-util__feats">
             <li className="hd-util__lead"><span className="hd-util__ic"><img src="/img/icons/fast-delivery.svg" alt="" width="18" height="18" /></span> Fast delivery across Australia</li>
             <li className="hd-util__sep"><span className="hd-util__ic"><img src="/img/icons/secure-payment.svg" alt="" width="16" height="16" /></span> Secure checkout</li>
-            <li className="hd-util__sep"><span className="hd-util__ic"><img src="/img/icons/price.svg" alt="" width="16" height="16" /></span> Lowest-price guarantee</li>
-            <li className="hd-util__sep"><span className="hd-util__ic"><img src="/img/icons/flag-australia.svg" alt="" width="16" height="16" /></span> Australian owned</li>
+            <li className="hd-util__sep"><span className="hd-util__ic"><Icon name="medal" size={16} /></span> Lowest-price guarantee</li>
+            <li className="hd-util__sep"><span className="hd-util__ic"><Icon name="flag" size={16} /></span> Australian owned</li>
           </ul>
         </div>
       </div>

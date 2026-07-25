@@ -18,6 +18,7 @@ const paths = {
   warehouse: <><path d="M22 8.35V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8.35A2 2 0 0 1 3.26 6.5l8-3.2a2 2 0 0 1 1.48 0l8 3.2A2 2 0 0 1 22 8.35Z" {...P} /><path d="M6 18h12" {...P} /><path d="M6 14h12" {...P} /><rect width="12" height="12" x="6" y="10" {...P} /></>,
   lock: <><rect x="5" y="10.5" width="14" height="9.5" rx="1.5" {...P} /><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" {...P} /></>,
   medal: <><circle cx="12" cy="10" r="5" {...P} /><path d="M9 14l-2 7 5-3 5 3-2-7" {...P} /></>,
+  flag: <><path d="M5 21V4" {...P} /><path d="M5 4h13l-3 4 3 4H5" {...P} /></>,
   ruler: <><rect x="2.5" y="8" width="19" height="8" rx="1" transform="rotate(0)" {...P} /><path d="M7 8v3M11 8v4M15 8v3M19 8v4" {...P} /></>,
   check: <path d="M4 12.5l5 5 11-11" {...P} />,
   chevronDown: <path d="M6 9l6 6 6-6" {...P} />,
