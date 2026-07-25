@@ -311,7 +311,7 @@ export default function ProductPage({ handle }) {
               <a className="pdp-trust__guarantee" href="#/shipping" onClick={(e) => { e.preventDefault(); navigate('/shipping') }}><Icon name="medal" size={14} /> Lowest-price guarantee</a>
             </div>
             <div className="pdp-buy__meta">
-              <span><b>Brand</b> My Tape Store</span>
+              <span><b>Brand</b> {p.brand}</span>
               <a href="#/shipping" onClick={(e) => { e.preventDefault(); navigate('/shipping') }}>Shipping info</a>
               <a href="#/returns" onClick={(e) => { e.preventDefault(); navigate('/returns') }}>Returns &amp; exchanges</a>
             </div>
@@ -341,7 +341,7 @@ export default function ProductPage({ handle }) {
                   ))}
                   <tr><th>Price</th><td className="num">{hasRange(p) ? `${money(p.min)} – ${money(p.max)}` : money(p.price)} Inc GST</td></tr>
                   <tr><th>Availability</th><td>{p.inStock ? 'In stock' : 'Out of stock'}</td></tr>
-                  <tr><th>Brand</th><td>My Tape Store</td></tr>
+                  <tr><th>Brand</th><td>{p.brand}</td></tr>
                 </tbody>
               </table>
               {p.industries.length > 0 && (

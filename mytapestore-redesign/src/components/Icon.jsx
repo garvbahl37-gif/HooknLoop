@@ -44,7 +44,6 @@ const paths = {
   youtube: <><rect x="2.5" y="5.5" width="19" height="13" rx="4" {...P} /><path d="M10.5 9.2l5 2.8-5 2.8z" fill="currentColor" stroke="none" /></>,
   x: <path d="M5 4l14 16M19 4 5 20" fill="none" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" />,
   chat: <path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719" {...P} />,
-  tapeRoll: <><ellipse cx="12" cy="7.4" rx="7.3" ry="3.6" {...P} /><ellipse cx="12" cy="7.4" rx="2.6" ry="1.3" {...P} /><path d="M4.7 7.4v7.6a7.3 3.6 0 0 0 14.6 0V7.4" {...P} /></>,
   send: <><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z" {...P} /><path d="m21.854 2.147-10.94 10.939" {...P} /></>,
   linkedin: <><path d="M16 8.3a5.7 5.7 0 0 1 5.5 5.7V21h-3.2v-6.6a2.3 2.3 0 0 0-4.6 0V21h-3.2V8.7h3.2v1.5A4.6 4.6 0 0 1 16 8.3z" {...P} /><rect x="3.2" y="8.7" width="3.2" height="12.3" {...P} /><circle cx="4.8" cy="4.6" r="1.9" {...P} /></>,
 }

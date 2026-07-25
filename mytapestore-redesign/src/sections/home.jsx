@@ -23,6 +23,8 @@ const BRANDS = [
 ]
 
 const nameOf = Object.fromEntries(PRODUCTS.map((p) => [p.handle, p.name]))
+const ALL_REVIEWS = Object.values(REVIEWS).flat()
+const AVG_RATING = (Math.floor((ALL_REVIEWS.reduce((s, r) => s + r.rating, 0) / ALL_REVIEWS.length) * 10) / 10).toFixed(1)
 const TESTIMONIALS = Object.entries(REVIEWS)
   .flatMap(([h, rs]) => rs.map((r) => ({ ...r, product: nameOf[h] })))
   .filter((r) => r.rating >= 5 && r.text.length > 90 && r.text.length < 280)
@@ -65,7 +67,7 @@ export function Hero() {
 export function IntroBand() {
   const brands = ['FrogTape®', 'T-Rex®', 'Shurtape', 'Husky Tape', 'Kikusui', 'Acribond']
   const stats = [
-    [`${PRODUCTS.length}+`, 'Tape lines in stock'],
+    [`${AVG_RATING}★`, `From ${ALL_REVIEWS.length}+ customer reviews`],
     [`${INDUSTRIES.length}`, 'Industries served'],
     ['3,600+', 'AU postcodes'],
     ['2–3', 'Day typical delivery'],
