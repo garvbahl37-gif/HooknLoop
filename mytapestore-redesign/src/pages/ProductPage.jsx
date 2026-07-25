@@ -8,6 +8,20 @@ import { productReviews } from '../data/reviews.js'
 import { money, hasRange, variantFor, defaultSelection, addToCart, navigate, toggleWish, useWish } from '../lib/cart.js'
 
 const groupOf = (slug) => Object.entries(NAV_GROUPS).find(([, ss]) => ss.includes(slug))?.[0]
+
+/* Reviews a visitor submits themselves — client-side only (no backend on this
+   redesign), persisted to localStorage keyed by product handle so they survive
+   a refresh and show up immediately alongside the seeded reviews. */
+const MYREV_KEY = 'mts_my_reviews_v1'
+function getMyReviews(handle) {
+  try { return (JSON.parse(localStorage.getItem(MYREV_KEY)) || {})[handle] || [] } catch { return [] }
+}
+function addMyReview(handle, review) {
+  let all = {}
+  try { all = JSON.parse(localStorage.getItem(MYREV_KEY)) || {} } catch { /* ignore */ }
+  all[handle] = [review, ...(all[handle] || [])]
+  localStorage.setItem(MYREV_KEY, JSON.stringify(all))
+}
 const PAY = ['visa', 'mastercard', 'amex', 'paypal', 'shop-pay']
 
 const TIERS = [
@@ -52,6 +66,7 @@ function swatchFill(name) {
 const isColourAxis = (n) => /colou?r/i.test(n)
 
 function DescBlocks({ blocks }) {
+  const [openFaq, setOpenFaq] = useState(0)
   return (
     <div className="pdp-desc">
       {blocks.map((b, i) => {
@@ -68,6 +83,22 @@ function DescBlocks({ blocks }) {
           </tbody></table></div>
         )
         if (b.type === 'img') return <img key={i} className="pdp-desc__img" src={b.src} alt={b.alt || ''} loading="lazy" />
+        if (b.type === 'faq' && b.qas?.length) return (
+          <div key={i} className="catseo__faqs pdp-desc__faqs">
+            <span className="catseo__faqs-eyebrow">Good to know</span>
+            <h3>Frequently asked questions</h3>
+            <ul className="faq__list">
+              {b.qas.map((f, j) => (
+                <li key={j} className={'faq__item' + (openFaq === j ? ' is-open' : '')}>
+                  <button className="faq__q" aria-expanded={openFaq === j} onClick={() => setOpenFaq(openFaq === j ? -1 : j)}>
+                    <span>{f.q}</span><Icon name={openFaq === j ? 'minus' : 'plus'} size={18} />
+                  </button>
+                  {openFaq === j && <div className="faq__a"><p>{f.a}</p></div>}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
         return null
       })}
     </div>
