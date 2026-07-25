@@ -25,3 +25,9 @@
 .ind-hero__count b { display: block; font-family: var(--f-display); font-size: 2.6rem; color: var(--brand); line-height: 1; }
 .ind-hero__count span { font-size: var(--t-xs); color: var(--on-ink-mute); }
 @media (max-width: 620px){ .ind-hero__count { display: none; } }
+
+/* "other industries" chip row on the individual industry page */
+.ind-strip { display: flex; flex-wrap: wrap; gap: 10px; }
+.ind-chip { display: inline-flex; align-items: center; gap: 8px; padding: 11px 18px; border: 1px solid var(--line-2); border-radius: var(--r-pill); background: #fff; font-family: var(--f-head); font-weight: 600; font-size: var(--t-sm); color: var(--ink-2); transition: border-color .16s var(--ease), background .16s var(--ease), color .16s var(--ease); }
+.ind-chip svg { color: var(--brand); flex-shrink: 0; }
+.ind-chip:hover { border-color: var(--brand); background: var(--brand-wash); color: var(--brand-ink); }

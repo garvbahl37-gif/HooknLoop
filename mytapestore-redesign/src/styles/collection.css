@@ -17,10 +17,11 @@
 .filt__colour:hover { border-color: var(--ink); }
 .filt__colour.is-on { border-color: var(--brand); color: var(--brand-ink); background: var(--brand-wash); }
 .filt__colour-dot { width: 14px; height: 14px; border-radius: 50%; border: 1px solid rgba(0,0,0,.15); flex-shrink: 0; }
-.filt__sizes { display: flex; flex-wrap: wrap; gap: 7px; }
-.filt__size { padding: 6px 12px; border: 1px solid var(--line-2); border-radius: var(--r); font-size: var(--t-xs); font-weight: 600; color: var(--ink-2); background: #fff; transition: border-color .14s var(--ease), color .14s var(--ease), background .14s var(--ease); }
-.filt__size:hover { border-color: var(--ink); }
-.filt__size.is-on { border-color: var(--brand); color: var(--brand-ink); background: var(--brand-wash); }
+.filt__select { position: relative; display: flex; align-items: center; }
+.filt__select select { width: 100%; appearance: none; border: 1.5px solid var(--line-2); border-radius: var(--r); padding: 10px 34px 10px 13px; font-family: var(--f-head); font-weight: 600; font-size: var(--t-sm); color: var(--ink-2); background: var(--panel); cursor: pointer; }
+.filt__select select:hover { background: #fff; }
+.filt__select select:focus { outline: none; border-color: var(--ink); background: #fff; }
+.filt__select svg { position: absolute; right: 11px; pointer-events: none; color: var(--muted); }
 .filt__clear { display: block; width: 100%; padding: 12px; background: var(--paper); font-family: var(--f-head); font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; font-size: var(--t-xs); color: var(--brand-ink); border-top: 1px solid var(--line); transition: background .14s var(--ease); }
 .filt__clear:hover { background: var(--brand-wash); }
 

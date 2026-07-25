@@ -52,7 +52,7 @@ function CollectionBanner({ slug, all, title, count, group, crumbs }) {
   )
 }
 
-function FilterPanel({ priceBucket, setPriceBucket, colours, availColours, toggleColour, sizes, availSizes, toggleSize, inStockOnly, setInStockOnly, onClear, active }) {
+function FilterPanel({ priceBucket, setPriceBucket, colours, availColours, toggleColour, sizeFilter, setSizeFilter, availSizes, inStockOnly, setInStockOnly, onClear, active }) {
   return (
     <div className="filt-card">
       <div className="filt-card__head"><Icon name="ruler" size={15} /> Filter</div>
@@ -85,13 +85,12 @@ function FilterPanel({ priceBucket, setPriceBucket, colours, availColours, toggl
       {availSizes.length > 0 && (
         <div className="filt">
           <h3 className="filt__title">Size</h3>
-          <div className="filt__sizes">
-            {availSizes.map((s) => {
-              const on = sizes.includes(s)
-              return (
-                <button key={s} className={'filt__size' + (on ? ' is-on' : '')} onClick={() => toggleSize(s)} aria-pressed={on}>{s}</button>
-              )
-            })}
+          <div className="filt__select">
+            <select value={sizeFilter} onChange={(e) => setSizeFilter(e.target.value)} aria-label="Filter by size">
+              <option value="all">All sizes</option>
+              {availSizes.map((s) => <option key={s} value={s}>{s}</option>)}
+            </select>
+            <Icon name="chevronDown" size={15} />
           </div>
         </div>
       )}
@@ -193,7 +192,7 @@ export default function CollectionPage({ slug, all = false }) {
   const [inStockOnly, setInStockOnly] = useState(false)
   const [priceBucket, setPriceBucket] = useState('all')
   const [colours, setColours] = useState([])
-  const [sizes, setSizes] = useState([])
+  const [sizeFilter, setSizeFilter] = useState('all')
   const cat = all ? null : PRODUCT_CATEGORIES.find((c) => c.slug === slug)
   const title = all ? 'All products' : catName(slug)
   const group = all ? null : groupOf(slug)
@@ -216,7 +215,7 @@ export default function CollectionPage({ slug, all = false }) {
     const priceFn = (PRICE_OPTS.find(([v]) => v === priceBucket) || [])[2]
     if (priceFn) list = list.filter(priceFn)
     if (colours.length) list = list.filter((p) => { const ca = colourAxis(p); return ca && ca.terms.some((t) => colours.includes(t)) })
-    if (sizes.length) list = list.filter((p) => { const sa = sizeAxis(p); return sa && sa.terms.some((t) => sizes.includes(t)) })
+    if (sizeFilter !== 'all') list = list.filter((p) => { const sa = sizeAxis(p); return sa && sa.terms.includes(sizeFilter) })
     const s = {
       'price-asc': (a, b) => a.from - b.from,
       'price-desc': (a, b) => b.from - a.from,
@@ -225,12 +224,11 @@ export default function CollectionPage({ slug, all = false }) {
       featured: (a, b) => (b.reviews - a.reviews) || (b.rating - a.rating),
     }[sort]
     return list.sort(s)
-  }, [baseList, sort, inStockOnly, priceBucket, colours, sizes])
+  }, [baseList, sort, inStockOnly, priceBucket, colours, sizeFilter])
 
   const toggleColour = (c) => setColours((cs) => cs.includes(c) ? cs.filter((x) => x !== c) : [...cs, c])
-  const toggleSize = (s) => setSizes((ss) => ss.includes(s) ? ss.filter((x) => x !== s) : [...ss, s])
-  const filtersActive = inStockOnly || priceBucket !== 'all' || colours.length > 0 || sizes.length > 0
-  const clearAll = () => { setInStockOnly(false); setPriceBucket('all'); setColours([]); setSizes([]) }
+  const filtersActive = inStockOnly || priceBucket !== 'all' || colours.length > 0 || sizeFilter !== 'all'
+  const clearAll = () => { setInStockOnly(false); setPriceBucket('all'); setColours([]); setSizeFilter('all') }
 
   const crumbs = [{ label: 'Home', href: '/' }]
   if (all) crumbs.push({ label: 'All products' })
@@ -242,8 +240,8 @@ export default function CollectionPage({ slug, all = false }) {
 
       <div className="wrap col__layout">
         <aside className="col__side">
-          <FilterPanel {...{ priceBucket, setPriceBucket, colours, availColours, toggleColour, sizes, availSizes, toggleSize, inStockOnly, setInStockOnly, onClear: clearAll, active: filtersActive }} />
           <CategoryRail activeSlug={slug} />
+          <FilterPanel {...{ priceBucket, setPriceBucket, colours, availColours, toggleColour, sizeFilter, setSizeFilter, availSizes, inStockOnly, setInStockOnly, onClear: clearAll, active: filtersActive }} />
         </aside>
 
         <div className="col__main">
