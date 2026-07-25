@@ -22,12 +22,16 @@
 .pdp-buy__cat { align-self: flex-start; font-family: var(--f-head); font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; font-size: var(--t-xs); color: var(--brand-ink); margin-bottom: 10px; }
 .pdp-buy__cat:hover { text-decoration: underline; }
 .pdp-buy__title { font-family: var(--f-head); font-weight: 700; font-size: clamp(1.5rem, 2.5vw, 2.05rem); line-height: 1.15; letter-spacing: -0.015em; color: var(--ink); margin-bottom: 14px; }
-.pdp-buy__rating { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 24px; }
+.pdp-buy__rating { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
 .pdp-buy__ratebtn { background: none; display: inline-flex; }
 .pdp-buy__ratebtn:hover { opacity: .85; }
 .pdp-buy__revlink { font-size: var(--t-sm); color: var(--muted); text-decoration: underline; text-underline-offset: 2px; }
 .pdp-buy__revlink:hover { color: var(--brand-ink); }
-.pdp-buy__sku { font-size: var(--t-xs); color: var(--faint); margin-left: auto; }
+
+/* Brand + SKU — highlighted identity chips, sat right under the rating row */
+.pdp-buy__idline { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; }
+.pdp-buy__idchip { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; background: var(--brand-wash); border: 1px solid var(--brand-wash-2); border-radius: 7px; font-size: var(--t-sm); color: var(--ink-2); }
+.pdp-buy__idchip b { font-family: var(--f-head); font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; font-size: var(--t-xs); color: var(--brand-ink); margin-right: 1px; }
 
 .pdp-buy__pricerow { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
 .pdp-buy__price { font-family: var(--f-display); font-weight: 700; font-size: clamp(1.9rem, 3.2vw, 2.4rem); color: var(--ink); line-height: 1; }
@@ -93,8 +97,9 @@
 .pdp-buy__actions { display: flex; align-items: stretch; gap: 10px; margin-bottom: 10px; }
 .pdp-buy__actions .qty { border-radius: 10px; }
 .pdp-buy__actions .qty button { width: 46px; }
-.pdp-buy__add { flex: 1; border-radius: 10px; }
+.pdp-buy__add { flex: 1; border-radius: 10px; transition: background .16s var(--ease), color .16s var(--ease); }
 .pdp-buy__add:disabled { opacity: .5; cursor: not-allowed; }
+.pdp-buy__add.is-added { background: var(--stock) !important; }
 .pdp-buy__wish { width: 54px; border: 1.5px solid var(--line-2); border-radius: 10px; display: grid; place-items: center; color: var(--faint); transition: color .14s var(--ease), border-color .14s var(--ease); }
 .pdp-buy__wish:hover { color: var(--brand-ink); border-color: var(--ink); }
 .pdp-buy__wish.is-on { color: var(--brand); border-color: var(--brand); }

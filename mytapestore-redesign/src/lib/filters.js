@@ -12,11 +12,34 @@ export const SORTS = [
 export const SWATCH = {
   black: '#1a1a1a', white: '#ffffff', orange: '#df3c22', brown: '#6b4423', red: '#c0392b',
   blue: '#2b5cb8', navy: '#1f2d5a', green: '#2e7d32', yellow: '#e8b800', grey: '#8a8a8a', gray: '#8a8a8a',
+  'dark grey': '#4d4d4d', 'dark gray': '#4d4d4d',
   silver: '#c7c7c7', aluminium: '#c7c7c7', gold: '#c9a227', pink: '#e35b8f', purple: '#7b4bb8',
   clear: 'linear-gradient(135deg,#eee 25%,#fff 25% 50%,#eee 50% 75%,#fff 75%)',
   transparent: 'linear-gradient(135deg,#eee 25%,#fff 25% 50%,#eee 50% 75%,#fff 75%)',
 }
-export const swatchFill = (n) => SWATCH[String(n).toLowerCase().trim()] || null
+/* Two-tone hazard/marking tapes ("B/Y Left", "Red/White Danger"...) don't have a single
+   flat colour — resolve them to a real diagonal stripe instead of leaving no swatch at all. */
+const LETTER = { b: SWATCH.black, w: SWATCH.white, y: SWATCH.yellow, r: SWATCH.red, g: SWATCH.green, o: '#ff6a1a' }
+const WORD = { black: 'b', white: 'w', yellow: 'y', red: 'r', green: 'g', orange: 'o', fluro: 'o', danger: null }
+function resolvePart(raw) {
+  const p = raw.trim()
+  if (!p) return null
+  if (SWATCH[p]) return SWATCH[p]
+  if (p.length <= 2 && LETTER[p[0]]) return LETTER[p[0]]
+  for (const w in WORD) { if (WORD[w] && p.includes(w)) return LETTER[WORD[w]] }
+  return null
+}
+export function swatchFill(n) {
+  const s = String(n).toLowerCase().trim()
+  if (SWATCH[s]) return SWATCH[s]
+  const stripped = s.replace(/\b(left|right)\b/g, '').replace(/\s*\/\s*/g, '/').trim()
+  if (stripped.includes('/')) {
+    const [a, b] = stripped.split('/')
+    const c1 = resolvePart(a), c2 = resolvePart(b)
+    if (c1 && c2) return `repeating-linear-gradient(45deg, ${c1} 0 7px, ${c2} 7px 14px)`
+  }
+  return null
+}
 export const colourAxis = (p) => (p.axes || []).find((a) => /colou?r/i.test(a.name))
 export const sizeAxis = (p) => (p.axes || []).find((a) => /size/i.test(a.name))
 

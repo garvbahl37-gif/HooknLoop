@@ -1,7 +1,13 @@
 /* ===== Collection / shop: banner + rail + grid ===== */
 .col__crumbs { padding-top: 4px; }
 .col__layout { display: grid; grid-template-columns: 256px 1fr; gap: 32px; align-items: start; padding-top: 34px; padding-bottom: 64px; }
-.col__side { display: flex; flex-direction: column; gap: 16px; }
+/* Sticky + internally-scrollable: on sparse categories the sidebar (category rail +
+   filters) is naturally taller than a 1–2 product grid. A plain static sidebar would
+   leave a tall dead gap below the grid before the next section starts — sticking it
+   keeps the (still useful) filters in view while scrolling instead of leaving blank
+   space, and the max-height/overflow caps how tall it can ever get. */
+.col__side { display: flex; flex-direction: column; gap: 16px; position: sticky; top: 143px; align-self: start; max-height: calc(100vh - 159px); overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--line-2) transparent; }
+@media (max-width: 900px){ .col__side { position: static; max-height: none; overflow-y: visible; } }
 
 /* filter panel (price + colour) */
 .filt-card { border: 1px solid var(--line); border-radius: var(--r-lg); overflow: hidden; background: #fff; }

@@ -2,35 +2,6 @@ import { useState, useEffect, useRef } from 'react'
 import Icon from './Icon.jsx'
 import { navigate } from '../lib/cart.js'
 
-/* Tape-measure glyph (native 458×458 viewBox) — kept as its own inline SVG
-   rather than forced into Icon.jsx's shared 24×24 grid, so it stays crisp
-   and colours via currentColor like the rest of the chat widget's icons. */
-function TapeMeasureIcon({ size = 20 }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 458.439 458.438" fill="currentColor" aria-hidden="true">
-      <path d="M454.208,333.888V194.524c0-1.988-0.307-3.907-0.849-5.721c0.914-0.208,1.834-0.377,2.764-0.471
-		c-11.59-64.657-65.992-113.609-131.399-113.609c-73.85,0-133.709,62.378-133.709,139.328v25.85v75.163H8.988v-22.479
-		c0-2.471-2.011-4.492-4.493-4.492c-2.48,0-4.495,2.014-4.495,4.492v86.523c0,2.091,1.436,3.832,3.374,4.334v0.153h230.28
-		c0.769,0.046,1.529,0.12,2.31,0.12h177.535c24.821,0,44.94-20.124,44.94-44.945v-4.5C457.01,334.276,455.6,334.14,454.208,333.888z
-		 M12.355,374.61V324.05h15.729v24.831h3V324.05h5.572v14.245h2.875V324.05h6.832v14.245h2.873V324.05h7.302v14.245h2.873V324.05
-		h6.832v14.245h2.876V324.05h5.406v24.831h2.999V324.05h6.465v14.245h2.875V324.05h6.829v14.245h2.876V324.05h7.295v14.245h2.875
-		V324.05h6.83v14.245h2.875V324.05h6.77v24.831h2.998V324.05h5.593v14.245h2.872V324.05h6.833v14.245h2.872V324.05h7.302v14.245
-		h2.874V324.05h6.832v14.245h2.875V324.05h5.396v24.831h2.998V324.05h18.35v14.725c0,14.653,7.048,27.639,17.903,35.842H12.355
-		V374.61z M321.348,155.627c31.026,0,56.188,25.152,56.188,56.178c0,31.029-25.162,56.178-56.188,56.178
-		s-56.174-25.149-56.174-56.178C265.174,180.779,290.322,155.627,321.348,155.627z M241.578,342.895h-6.367V324.05h6.367V342.895z
-		 M404.5,342.895H250.565v-25.466H404.5V342.895z M365.627,105.459l6.577-14.29c2.06,0.95,50.534,23.674,63.406,65.51l-15.043,4.627
-		C409.797,126.258,366.065,105.667,365.627,105.459z M447.467,331.54c-11.732-5.953-21.297-21.214-26.118-41.1V232.06
-		c4.757-19.633,14.136-34.764,25.665-40.875c0.285,1.069,0.453,2.186,0.453,3.346V331.54z M434.095,234.648
-		c-6.327,0-9.74,13.312-9.74,25.844c0,12.524,3.413,25.845,9.74,25.845c6.312,0,9.729-13.32,9.729-25.845
-		C443.825,247.967,440.408,234.648,434.095,234.648z M434.095,284.087c-3.548,0-7.499-9.69-7.499-23.589
-		c0-13.91,3.951-23.597,7.499-23.597c3.533,0,7.483,9.687,7.483,23.597C441.579,274.396,437.628,284.087,434.095,284.087z
-		M435.178,242.439c0.239,0.23,2.441,2.496,3.577,11.07l-2.228,0.301c-1.022-7.704-2.895-9.729-2.905-9.739L435.178,242.439z
-		M298.508,211.805c0-12.613,10.221-22.846,22.84-22.846c12.621,0,22.852,10.232,22.852,22.846c0,12.619-10.23,22.848-22.852,22.848
-		C308.729,234.648,298.508,224.424,298.508,211.805z" />
-    </svg>
-  )
-}
-
 /* Lightweight, honest FAQ assistant — clearly automated, answers the real
    policies used across the site, and hands off to a human for anything else. */
 const QUICK = [
@@ -134,7 +105,7 @@ export default function ChatWidget() {
 
       {!open && (
         <button className="chatw__launch" onClick={openChat} aria-label="Open chat assistant">
-          <TapeMeasureIcon size={25} />
+          <Icon name="chat" size={23} />
           {teaser && <span className="chatw__ping" />}
         </button>
       )}
@@ -142,7 +113,7 @@ export default function ChatWidget() {
       {open && (
         <div className="chatw__panel" role="dialog" aria-label="Chat with My Tape Store">
           <div className="chatw__head">
-            <span className="chatw__avatar"><TapeMeasureIcon size={18} /></span>
+            <span className="chatw__avatar"><Icon name="chat" size={17} /></span>
             <div className="chatw__head-info">
               <b>My Tape Store</b>
               <span><em className="chatw__dot" />Automated assistant · instant replies</span>

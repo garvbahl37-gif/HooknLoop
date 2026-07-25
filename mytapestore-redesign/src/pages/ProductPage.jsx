@@ -21,10 +21,34 @@ const tierFor = (q) => TIERS.reduce((a, t) => (q >= t.min ? t : a), TIERS[0])
 const SWATCH = {
   black: '#1a1a1a', white: '#ffffff', orange: '#df3c22', brown: '#6b4423', red: '#c0392b',
   blue: '#2b5cb8', green: '#2e7d32', yellow: '#e8b800', grey: '#8a8a8a', gray: '#8a8a8a',
+  'dark grey': '#4d4d4d', 'dark gray': '#4d4d4d',
   silver: '#c7c7c7', aluminium: '#c7c7c7', gold: '#c9a227', clear: 'linear-gradient(135deg,#eee 25%,#fff 25% 50%,#eee 50% 75%,#fff 75%)',
   transparent: 'linear-gradient(135deg,#eee 25%,#fff 25% 50%,#eee 50% 75%,#fff 75%)',
 }
-const swatchFill = (name) => SWATCH[String(name).toLowerCase().trim()] || null
+/* Two-tone hazard/marking tapes ("B/Y Left", "Red/White Danger", "Fluro Orange / Black"...)
+   don't have a single flat colour — render them as a real diagonal stripe swatch instead
+   of falling back to a plain text box. */
+const LETTER = { b: SWATCH.black, w: SWATCH.white, y: SWATCH.yellow, r: SWATCH.red, g: SWATCH.green, o: '#ff6a1a' }
+const WORD = { black: 'b', white: 'w', yellow: 'y', red: 'r', green: 'g', orange: 'o', fluro: 'o', danger: null }
+function resolvePart(raw) {
+  const p = raw.trim()
+  if (!p) return null
+  if (SWATCH[p]) return SWATCH[p]
+  if (p.length <= 2 && LETTER[p[0]]) return LETTER[p[0]]
+  for (const w in WORD) { if (WORD[w] && p.includes(w)) return LETTER[WORD[w]] }
+  return null
+}
+function swatchFill(name) {
+  const n = String(name).toLowerCase().trim()
+  if (SWATCH[n]) return SWATCH[n]
+  const stripped = n.replace(/\b(left|right)\b/g, '').replace(/\s*\/\s*/g, '/').trim()
+  if (stripped.includes('/')) {
+    const [a, b] = stripped.split('/')
+    const c1 = resolvePart(a), c2 = resolvePart(b)
+    if (c1 && c2) return `repeating-linear-gradient(45deg, ${c1} 0 7px, ${c2} 7px 14px)`
+  }
+  return null
+}
 const isColourAxis = (n) => /colou?r/i.test(n)
 
 function DescBlocks({ blocks }) {
@@ -104,6 +128,8 @@ export default function ProductPage({ handle }) {
   const [tab, setTab] = useState('description')
   const [lightbox, setLightbox] = useState(false)
   const tabsRef = useRef(null)
+  const addedTimer = useRef(null)
+  useEffect(() => () => clearTimeout(addedTimer.current), [])
 
   const galleryImgs = p.gallery.length ? p.gallery : [p.img]
   const imgIndex = Math.max(0, galleryImgs.indexOf(img))
@@ -149,7 +175,13 @@ export default function ProductPage({ handle }) {
     variant: variant ? Object.values(variant.attrs).join(' · ') : '', qty,
   })
   const canBuy = inStock && !(p.type === 'variable' && !variant)
-  const add = () => { if (!canBuy) return; addToCart(buildItem()); setAdded(true) }
+  const add = () => {
+    if (!canBuy) return
+    addToCart(buildItem())
+    setAdded(true)
+    clearTimeout(addedTimer.current)
+    addedTimer.current = setTimeout(() => setAdded(false), 2200)
+  }
   const buyNow = () => { if (!canBuy) return; addToCart(buildItem()); navigate('/cart') }
 
   const grp = groupOf(p.cats[0]?.slug)
@@ -227,7 +259,11 @@ export default function ProductPage({ handle }) {
           <div className="pdp-buy__rating">
             <button className="pdp-buy__ratebtn" onClick={goReviews} aria-label="See reviews"><Stars rating={p.rating} size={16} showCount={false} /></button>
             <button className="pdp-buy__revlink" onClick={goReviews}>{p.reviews > 0 ? `${p.reviews} review${p.reviews !== 1 ? 's' : ''}` : 'No reviews yet'}</button>
-            {sku && <span className="pdp-buy__sku num">SKU {sku}</span>}
+          </div>
+
+          <div className="pdp-buy__idline">
+            <span className="pdp-buy__idchip"><b>Brand</b> {p.brand}</span>
+            {sku && <span className="pdp-buy__idchip num"><b>SKU</b> {sku}</span>}
           </div>
 
           <div className="pdp-buy__pricerow">
@@ -281,8 +317,8 @@ export default function ProductPage({ handle }) {
                   <input className="num" type="text" inputMode="numeric" value={qty} onChange={(e) => setQty(Math.max(1, parseInt(e.target.value) || 1))} aria-label="Quantity" />
                   <button onClick={() => setQty((q) => q + 1)} aria-label="Increase quantity"><Icon name="plus" size={16} /></button>
                 </div>
-                <button className="btn btn--brand btn--lg pdp-buy__add" onClick={add} disabled={!canBuy}>
-                  <Icon name="cart" size={19} /> Add to cart
+                <button className={'btn btn--brand btn--lg pdp-buy__add' + (added ? ' is-added' : '')} onClick={add} disabled={!canBuy}>
+                  {added ? <><Icon name="check" size={19} /> Added to cart</> : <><Icon name="cart" size={19} /> Add to cart</>}
                 </button>
                 <button className={'pdp-buy__wish' + (wished ? ' is-on' : '')} onClick={() => toggleWish(p.handle)} aria-label={wished ? 'Remove from wishlist' : 'Add to wishlist'}><Icon name="heart" size={20} /></button>
               </div>
@@ -311,7 +347,6 @@ export default function ProductPage({ handle }) {
               <a className="pdp-trust__guarantee" href="#/shipping" onClick={(e) => { e.preventDefault(); navigate('/shipping') }}><Icon name="medal" size={14} /> Lowest-price guarantee</a>
             </div>
             <div className="pdp-buy__meta">
-              <span><b>Brand</b> {p.brand}</span>
               <a href="#/shipping" onClick={(e) => { e.preventDefault(); navigate('/shipping') }}>Shipping info</a>
               <a href="#/returns" onClick={(e) => { e.preventDefault(); navigate('/returns') }}>Returns &amp; exchanges</a>
             </div>
