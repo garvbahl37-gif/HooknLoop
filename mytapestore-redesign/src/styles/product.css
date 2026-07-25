@@ -30,7 +30,7 @@
 .pdp-buy__sku { font-size: var(--t-xs); color: var(--faint); margin-left: auto; }
 
 .pdp-buy__pricerow { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
-.pdp-buy__price { font-family: var(--f-display); font-weight: 700; font-size: clamp(2.4rem, 4.2vw, 3.1rem); color: var(--ink); line-height: 1; }
+.pdp-buy__price { font-family: var(--f-display); font-weight: 700; font-size: clamp(1.9rem, 3.2vw, 2.4rem); color: var(--ink); line-height: 1; }
 .pdp-buy__from { font-family: var(--f-head); font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; font-size: var(--t-sm); color: var(--faint); }
 .pdp-buy__gst { font-size: var(--t-xs); color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; background: var(--panel); border: 1px solid var(--line); border-radius: 5px; padding: 3px 8px; align-self: center; }
 .pdp-buy__quote { margin-top: 18px; padding: 13px 16px; background: var(--panel); border: 1px solid var(--line); border-left: 3px solid var(--brand); border-radius: 0 var(--r) var(--r) 0; }
