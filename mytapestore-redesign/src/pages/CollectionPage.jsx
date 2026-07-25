@@ -4,7 +4,7 @@ import ProductCard from '../components/ProductCard.jsx'
 import Breadcrumbs from '../components/Breadcrumbs.jsx'
 import FilterPanel from '../components/FilterPanel.jsx'
 import Icon from '../components/Icon.jsx'
-import { PRODUCTS, PRODUCT_CATEGORIES, BESTSELLER_HANDLES, productsInCat, catName, NAV_GROUPS } from '../data/catalog.js'
+import { PRODUCTS, PRODUCT_CATEGORIES, productsInCat, catName, NAV_GROUPS } from '../data/catalog.js'
 import { CATEGORY_SEO } from '../data/categorySeo.js'
 import { navigate } from '../lib/cart.js'
 import { SORTS, useProductFilters } from '../lib/filters.js'
@@ -122,31 +122,6 @@ export default function CollectionPage({ slug, all = false }) {
   if (all) crumbs.push({ label: 'All products' })
   else { if (group) crumbs.push({ label: group }); crumbs.push({ label: title }) }
 
-  /* Sparse categories (1-2 products) leave the main column much shorter than the
-     sidebar (category rail + filters). Rather than fight that with layout hacks,
-     fill the space with genuinely useful cross-sell content instead of blank air. */
-  const related = useMemo(() => {
-    if (all || !products.length || products.length >= 6) return []
-    const shown = new Set(products.map((x) => x.handle))
-    const pool = []
-    if (group) {
-      for (const s of NAV_GROUPS[group] || []) {
-        if (s === slug) continue
-        for (const p of productsInCat(s)) {
-          if (!shown.has(p.handle) && !pool.some((x) => x.handle === p.handle)) pool.push(p)
-        }
-      }
-    }
-    if (pool.length < 4) {
-      for (const h of BESTSELLER_HANDLES) {
-        const p = PRODUCTS.find((x) => x.handle === h)
-        if (p && !shown.has(p.handle) && !pool.some((x) => x.handle === p.handle)) pool.push(p)
-        if (pool.length >= 8) break
-      }
-    }
-    return pool.slice(0, 4)
-  }, [all, products, group, slug])
-
   return (
     <main id="main" className="col">
       <CollectionBanner slug={slug} all={all} title={title} count={products.length} group={group} crumbs={crumbs} />
@@ -180,16 +155,6 @@ export default function CollectionPage({ slug, all = false }) {
               <Icon name="layers" size={40} />
               <p>No products match your filters here.</p>
               <button className="btn btn--ghost" onClick={clearAll}>Clear filters</button>
-            </div>
-          )}
-
-          {related.length > 0 && (
-            <div className="col__related">
-              <span className="col__related-eyebrow">You might also like</span>
-              <h3 className="col__related-title">More from {group || 'My Tape Store'}</h3>
-              <div className="grid-products col__grid">
-                {related.map((p) => <ProductCard key={p.handle} p={p} />)}
-              </div>
             </div>
           )}
         </div>

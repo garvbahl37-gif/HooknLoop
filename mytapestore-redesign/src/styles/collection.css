@@ -106,12 +106,6 @@
 @media (max-width: 720px){ .col__grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 460px){ .col__grid { grid-template-columns: 1fr; } }
 
-/* cross-sell filler for sparse categories — gives the main column real content
-   to hold instead of trailing into blank space beside the taller sidebar */
-.col__related { margin-top: 48px; padding-top: 32px; border-top: 1px solid var(--line); }
-.col__related-eyebrow { display: block; font-family: var(--f-head); font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; font-size: var(--t-xs); color: var(--brand-ink); margin-bottom: 8px; }
-.col__related-title { font-family: var(--f-display); font-weight: 600; font-size: 1.3rem; letter-spacing: -0.01em; color: var(--ink); margin-bottom: 20px; }
-
 @media (max-width: 900px){
   .col__layout { grid-template-columns: 1fr; }
   .rail { display: none; }

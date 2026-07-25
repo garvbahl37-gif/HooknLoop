@@ -38,16 +38,11 @@ function matchKeyword(text) {
 export default function ChatWidget() {
   const [open, setOpen] = useState(false)
   const [greeted, setGreeted] = useState(false)
-  const [teaser, setTeaser] = useState(false)
+  const [teaser, setTeaser] = useState(true)
   const [messages, setMessages] = useState([])
   const [input, setInput] = useState('')
   const [typing, setTyping] = useState(false)
   const listRef = useRef(null)
-
-  useEffect(() => {
-    const t = setTimeout(() => setTeaser(true), 7000)
-    return () => clearTimeout(t)
-  }, [])
 
   useEffect(() => {
     if (!open || greeted) return

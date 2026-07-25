@@ -313,7 +313,9 @@ export default function ProductPage({ handle }) {
 
   const renderOption = (axis) => (
     <div key={axis.name} className="pdp-opt">
-      <div className="pdp-opt__label"><span>{axis.name}</span><b>{sel[axis.name] || 'Select'}</b></div>
+      {/* The dimension dropdown already shows its own selected value — repeating it in the
+          label above read as cluttered, so only the colour label (no visible swatch text) gets it. */}
+      <div className="pdp-opt__label"><span>{axis.name}</span>{isColourAxis(axis.name) && <b>{sel[axis.name] || 'Select'}</b>}</div>
       {isColourAxis(axis.name) ? (
         <div className="pdp-opt__swatches">
           {axis.terms.map((t) => {
@@ -422,7 +424,10 @@ export default function ProductPage({ handle }) {
               </div>
               {canBuy && (
                 <p className="pdp-buy__selected">
-                  {variant && <span className="pdp-buy__selected-attrs">{Object.values(variant.attrs).join(' · ')}</span>}
+                  {variant && (() => {
+                    const nonDim = Object.entries(variant.attrs).filter(([k]) => isColourAxis(k)).map(([, v]) => v)
+                    return nonDim.length > 0 ? <span className="pdp-buy__selected-attrs">{nonDim.join(' · ')}</span> : null
+                  })()}
                   <span className="num">{qty} unit{qty !== 1 ? 's' : ''}</span>
                 </p>
               )}
