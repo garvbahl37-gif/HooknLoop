@@ -105,43 +105,114 @@ function DescBlocks({ blocks }) {
   )
 }
 
-function Reviews({ reviews, avg }) {
-  if (!reviews.length) return (
-    <div className="pdp-rev__empty"><Icon name="star" size={30} /><p>No reviews yet — be the first to review this product.</p></div>
-  )
-  const dist = [5, 4, 3, 2, 1].map((s) => reviews.filter((r) => Math.round(r.rating) === s).length)
-  const total = reviews.length
+function ReviewForm({ onCancel, onSubmit }) {
+  const [rating, setRating] = useState(0)
+  const [hover, setHover] = useState(0)
+  const [name, setName] = useState('')
+  const [text, setText] = useState('')
+  const [error, setError] = useState('')
+
+  const submit = (e) => {
+    e.preventDefault()
+    if (!rating) return setError('Please select a rating.')
+    if (!name.trim()) return setError('Please enter your name.')
+    if (!text.trim()) return setError('Please write a few words about your experience.')
+    setError('')
+    onSubmit({ name: name.trim(), rating, text: text.trim(), date: 'Just now', verified: false })
+  }
+
   return (
-    <div className="pdp-rev">
-      <div className="pdp-rev__summary">
-        <div className="pdp-rev__avg">
-          <b className="num">{avg.toFixed(1)}</b>
-          <Stars rating={avg} size={18} showCount={false} />
-          <span className="num">{total} review{total !== 1 ? 's' : ''}</span>
-        </div>
-        <div className="pdp-rev__bars">
-          {[5, 4, 3, 2, 1].map((s, i) => (
-            <div key={s} className="pdp-rev__bar">
-              <span className="num">{s}★</span>
-              <div className="pdp-rev__track"><div className="pdp-rev__fill" style={{ width: (total ? dist[i] / total * 100 : 0) + '%' }} /></div>
-              <span className="num pdp-rev__n">{dist[i]}</span>
-            </div>
+    <form className="pdp-rev__form" onSubmit={submit}>
+      <h4>Write a review</h4>
+      <div className="pdp-rev__form-row">
+        <label>Your rating</label>
+        <div className="pdp-rev__pick" role="radiogroup" aria-label="Your rating">
+          {[1, 2, 3, 4, 5].map((n) => (
+            <button key={n} type="button" className={'pdp-rev__pickstar' + ((hover || rating) >= n ? ' is-on' : '')}
+              onMouseEnter={() => setHover(n)} onMouseLeave={() => setHover(0)} onClick={() => setRating(n)}
+              aria-label={`${n} star${n > 1 ? 's' : ''}`} aria-pressed={rating === n}>
+              <Icon name="star" size={26} />
+            </button>
           ))}
         </div>
       </div>
-      <ul className="pdp-rev__list">
-        {reviews.map((r, i) => (
-          <li key={i} className="pdp-rev__item">
-            <div className="pdp-rev__meta">
-              <span className="pdp-rev__who"><span className="pdp-rev__ava">{(r.name || '?').slice(0, 1).toUpperCase()}</span>{r.name}</span>
-              {r.verified && <span className="pdp-rev__verified"><Icon name="check" size={12} /> Verified buyer</span>}
-              {r.date && <span className="pdp-rev__date">{r.date}</span>}
-            </div>
-            <Stars rating={r.rating} size={14} showCount={false} />
-            <p>{r.text}</p>
-          </li>
-        ))}
-      </ul>
+      <div className="pdp-rev__form-row">
+        <label htmlFor="rev-name">Your name</label>
+        <input id="rev-name" type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g. Sam" maxLength={60} />
+      </div>
+      <div className="pdp-rev__form-row">
+        <label htmlFor="rev-text">Your review</label>
+        <textarea id="rev-text" value={text} onChange={(e) => setText(e.target.value)} placeholder="What did you use this tape for, and how did it perform?" rows={4} maxLength={600} />
+      </div>
+      {error && <p className="pdp-rev__form-error">{error}</p>}
+      <div className="pdp-rev__form-actions">
+        <button type="button" className="btn btn--ghost" onClick={onCancel}>Cancel</button>
+        <button type="submit" className="btn btn--brand">Submit review</button>
+      </div>
+    </form>
+  )
+}
+
+function Reviews({ reviews, avg, onSubmit }) {
+  const [formOpen, setFormOpen] = useState(false)
+  const [justSubmitted, setJustSubmitted] = useState(false)
+  const total = reviews.length
+  const dist = [5, 4, 3, 2, 1].map((s) => reviews.filter((r) => Math.round(r.rating) === s).length)
+
+  const submit = (data) => {
+    onSubmit(data)
+    setFormOpen(false)
+    setJustSubmitted(true)
+  }
+
+  return (
+    <div className="pdp-rev">
+      {total > 0 ? (
+        <div className="pdp-rev__summary">
+          <div className="pdp-rev__avg">
+            <b className="num">{avg.toFixed(1)}</b>
+            <Stars rating={avg} size={18} showCount={false} />
+            <span className="num">{total} review{total !== 1 ? 's' : ''}</span>
+          </div>
+          <div className="pdp-rev__bars">
+            {[5, 4, 3, 2, 1].map((s, i) => (
+              <div key={s} className="pdp-rev__bar">
+                <span className="num">{s}★</span>
+                <div className="pdp-rev__track"><div className="pdp-rev__fill" style={{ width: (total ? dist[i] / total * 100 : 0) + '%' }} /></div>
+                <span className="num pdp-rev__n">{dist[i]}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <div className="pdp-rev__empty"><Icon name="star" size={30} /><p>No reviews yet — be the first to review this product.</p></div>
+      )}
+
+      {justSubmitted && (
+        <div className="pdp-rev__thanks" role="status"><Icon name="check" size={18} /> Thanks — your review has been posted below.</div>
+      )}
+
+      {formOpen ? (
+        <ReviewForm onCancel={() => setFormOpen(false)} onSubmit={submit} />
+      ) : (
+        !justSubmitted && <button type="button" className="btn btn--ghost pdp-rev__write-btn" onClick={() => setFormOpen(true)}>Write a review</button>
+      )}
+
+      {total > 0 && (
+        <ul className="pdp-rev__list">
+          {reviews.map((r, i) => (
+            <li key={i} className="pdp-rev__item">
+              <div className="pdp-rev__meta">
+                <span className="pdp-rev__who"><span className="pdp-rev__ava">{(r.name || '?').slice(0, 1).toUpperCase()}</span>{r.name}</span>
+                {r.verified && <span className="pdp-rev__verified"><Icon name="check" size={12} /> Verified buyer</span>}
+                {r.date && <span className="pdp-rev__date">{r.date}</span>}
+              </div>
+              <Stars rating={r.rating} size={14} showCount={false} />
+              <p>{r.text}</p>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   )
 }
@@ -184,7 +255,11 @@ export default function ProductPage({ handle }) {
   const inStock = variant ? variant.inStock : p.inStock
   const wished = wish.includes(p.handle)
   const tier = tierFor(qty)
-  const reviews = productReviews(p.handle)
+  const [myReviews, setMyReviews] = useState(() => getMyReviews(p.handle))
+  useEffect(() => { setMyReviews(getMyReviews(p.handle)) }, [p.handle])
+  const reviews = useMemo(() => [...myReviews, ...productReviews(p.handle)], [myReviews, p.handle])
+  const avgRating = reviews.length ? reviews.reduce((s, r) => s + r.rating, 0) / reviews.length : (p.rating || 5)
+  const submitReview = (review) => { addMyReview(p.handle, review); setMyReviews(getMyReviews(p.handle)) }
   const lineTotal = unit * (1 - tier.off) * qty
   const saved = unit * tier.off * qty
 
@@ -433,7 +508,7 @@ export default function ProductPage({ handle }) {
             </div>
           )}
 
-          {tab === 'reviews' && <Reviews reviews={reviews} avg={p.rating || 5} />}
+          {tab === 'reviews' && <Reviews reviews={reviews} avg={avgRating} onSubmit={submitReview} />}
 
           {tab === 'shipping' && (
             <div className="pdp-desc pdp-ship">
