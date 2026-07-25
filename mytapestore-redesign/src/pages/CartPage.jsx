@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useMemo } from 'react'
 import Icon from '../components/Icon.jsx'
 import Breadcrumbs from '../components/Breadcrumbs.jsx'
 import ProductCard from '../components/ProductCard.jsx'
@@ -57,30 +57,10 @@ function UpsellRail({ title, picks }) {
 
 export default function CartPage() {
   const cart = useCart()
-  const [placed, setPlaced] = useState(null)
   const subtotal = cartTotal(cart)
   const count = cartCount(cart)
   const cartHandles = useMemo(() => cart.map((c) => c.handle), [cart])
   const upsell = useMemo(() => pickUpsell(cartHandles), [cartHandles])
-
-  if (placed) {
-    return (
-      <main id="main" className="wrap cart-done">
-        <span className="cart-done__tick"><Icon name="check" size={40} /></span>
-        <h1>Thank you — your order is confirmed</h1>
-        <p>Order <b className="num">{placed.id}</b> for <b className="num">{money(placed.total)}</b> has been received. We've emailed your confirmation — you'll get tracking as soon as it ships.</p>
-        <ul className="cart-done__steps">
-          <li><span className="cart-done__step-ic"><Icon name="check" size={15} /></span>Order confirmed &amp; payment received</li>
-          <li><span className="cart-done__step-ic"><Icon name="warehouse" size={15} /></span>Picked and packed at our warehouse</li>
-          <li><span className="cart-done__step-ic"><Icon name="truck" size={15} /></span>On its way — tracking emailed on dispatch</li>
-        </ul>
-        <div className="cart-done__cta">
-          <a className="btn btn--brand btn--lg" href="#/shop" onClick={(e) => { e.preventDefault(); navigate('/shop') }}>Continue shopping</a>
-          <a className="btn btn--ghost btn--lg" href="#/" onClick={(e) => { e.preventDefault(); navigate('/') }}>Back to home</a>
-        </div>
-      </main>
-    )
-  }
 
   if (!count) {
     return (
@@ -92,12 +72,6 @@ export default function CartPage() {
         <UpsellRail title="Our bestsellers" picks={pickUpsell([])} />
       </main>
     )
-  }
-
-  const checkout = () => {
-    const id = 'MTS-' + Math.floor(100000 + (subtotal * 37 % 899999))
-    setPlaced({ id, total: subtotal })
-    clearCart()
   }
 
   return (
@@ -148,7 +122,7 @@ export default function CartPage() {
             <div><dt>GST</dt><dd className="cart__sum-note">Included in prices</dd></div>
           </dl>
           <div className="cart__total"><span>Total</span><b className="num">{money(subtotal)}</b></div>
-          <button className="btn btn--brand btn--lg btn--block cart__checkout" onClick={checkout}><Icon name="lock" size={18} /> Proceed to checkout</button>
+          <a className="btn btn--brand btn--lg btn--block cart__checkout" href="#/checkout" onClick={(e) => { e.preventDefault(); navigate('/checkout') }}><Icon name="lock" size={18} /> Proceed to checkout</a>
           <DispatchCutoff />
           <ul className="cart__trust">
             <li><Icon name="lock" size={15} /> Secure, encrypted checkout</li>

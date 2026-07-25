@@ -6,6 +6,7 @@ import Home from './pages/Home.jsx'
 import CollectionPage from './pages/CollectionPage.jsx'
 import ProductPage from './pages/ProductPage.jsx'
 import CartPage from './pages/CartPage.jsx'
+import CheckoutPage from './pages/CheckoutPage.jsx'
 import SearchPage from './pages/SearchPage.jsx'
 import { IndustriesPage, IndustryPage } from './pages/IndustryPages.jsx'
 import { AboutPage, ContactPage, BulkPage, PolicyPage, WishlistPage, AccountPage } from './pages/ContentPages.jsx'
@@ -19,6 +20,7 @@ import './styles/ui.css'
 import './styles/collection.css'
 import './styles/product.css'
 import './styles/cart.css'
+import './styles/checkout.css'
 import './styles/industries.css'
 import './styles/pages.css'
 import './styles/chat.css'
@@ -32,6 +34,7 @@ export default function App() {
     case 'collection': page = <CollectionPage slug={param} />; break
     case 'product': page = <ProductPage handle={param} />; break
     case 'cart': page = <CartPage />; break
+    case 'checkout': page = <CheckoutPage />; break
     case 'wishlist': page = <WishlistPage />; break
     case 'account': case 'signin': page = <AccountPage />; break
     case 'search': page = <SearchPage query={param} />; break

@@ -1,0 +1,75 @@
+/* ===== Checkout ===== */
+.chk__crumbs { padding-top: 4px; }
+.chk__layout { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 40px; align-items: start; padding-bottom: 64px; }
+
+.chk-section { padding: 26px 0; border-bottom: 1px solid var(--line); }
+.chk-section:first-of-type { padding-top: 8px; }
+.chk-section h2 { display: flex; align-items: center; gap: 12px; font-family: var(--f-head); font-weight: 700; font-size: 1.15rem; letter-spacing: -0.01em; color: var(--ink); margin-bottom: 18px; }
+.chk-num { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--ink); color: #fff; font-size: 0.78rem; font-weight: 700; flex-shrink: 0; }
+
+.chk-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 16px; }
+.chk-col-2 { grid-column: span 2; }
+.chk-field { display: flex; flex-direction: column; gap: 6px; font-family: var(--f-head); font-weight: 600; font-size: var(--t-sm); color: var(--ink-2); }
+.chk-field span { font-weight: 400; color: var(--faint); text-transform: none; }
+.chk-field input { width: 100%; border: 1.5px solid var(--line-2); border-radius: var(--r); padding: 11px 13px; font-family: var(--f-body); font-size: var(--t-body); font-weight: 400; color: var(--ink); background: #fff; }
+.chk-field input:focus { outline: none; border-color: var(--ink); }
+.chk-select { position: relative; display: flex; align-items: center; }
+.chk-select select { width: 100%; appearance: none; border: 1.5px solid var(--line-2); border-radius: var(--r); padding: 11px 36px 11px 13px; font-family: var(--f-body); font-size: var(--t-body); background: #fff; color: var(--ink); cursor: pointer; }
+.chk-select select:focus { outline: none; border-color: var(--ink); }
+.chk-select svg { position: absolute; right: 12px; pointer-events: none; color: var(--muted); }
+
+.chk-check { display: inline-flex; align-items: center; gap: 9px; font-size: var(--t-sm); color: var(--ink-2); font-weight: 500; cursor: pointer; }
+.chk-check input { width: 17px; height: 17px; accent-color: var(--brand-cta); }
+.chk-billing-fields { margin-top: 18px; }
+
+/* shipping method */
+.chk-ship-opts { display: flex; flex-direction: column; gap: 10px; }
+.chk-ship-opt { display: flex; align-items: center; gap: 14px; padding: 15px 16px; border: 1.5px solid var(--line-2); border-radius: var(--r-lg); cursor: pointer; transition: border-color .14s var(--ease), background .14s var(--ease); }
+.chk-ship-opt:hover { border-color: var(--ink); }
+.chk-ship-opt.is-active { border-color: var(--brand); background: var(--brand-wash); }
+.chk-ship-opt input { width: 18px; height: 18px; accent-color: var(--brand-cta); flex-shrink: 0; }
+.chk-ship-opt__info { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.chk-ship-opt__info b { font-family: var(--f-head); font-weight: 600; font-size: 0.95rem; color: var(--ink); }
+.chk-ship-opt__info span { font-size: var(--t-sm); color: var(--muted); }
+.chk-ship-opt__price { font-size: 0.95rem; color: var(--ink); }
+
+/* payment */
+.chk-pay-tabs { display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap; }
+.chk-pay-tab { display: inline-flex; align-items: center; gap: 8px; padding: 11px 18px; border: 1.5px solid var(--line-2); border-radius: var(--r); font-family: var(--f-head); font-weight: 600; font-size: 0.88rem; color: var(--ink-2); background: #fff; transition: border-color .14s var(--ease), background .14s var(--ease), color .14s var(--ease); }
+.chk-pay-tab:hover { border-color: var(--ink); }
+.chk-pay-tab.is-active { border-color: var(--brand); background: var(--brand-wash); color: var(--brand-ink); }
+.chk-card { margin-top: 4px; }
+.chk-card-input { position: relative; display: flex; align-items: center; }
+.chk-card-input input { padding-right: 40px; }
+.chk-card-input svg { position: absolute; right: 13px; color: var(--faint); pointer-events: none; }
+.chk-pay-note { display: flex; align-items: center; gap: 8px; padding: 13px 16px; background: var(--paper); border-radius: var(--r); font-size: var(--t-sm); color: var(--ink-2); }
+.chk-pay-note svg { color: var(--brand-ink); flex-shrink: 0; }
+.chk-secure { display: flex; align-items: center; gap: 6px; margin-top: 14px; font-size: var(--t-xs); color: var(--faint); }
+.chk-secure svg { color: var(--stock); flex-shrink: 0; }
+
+/* order summary sidebar */
+.chk__summary { position: sticky; top: 138px; border: 1px solid var(--line); border-top: 3px solid var(--brand); border-radius: var(--r-lg); padding: 24px; background: var(--panel); }
+.chk__summary h2 { font-family: var(--f-head); text-transform: uppercase; letter-spacing: 0.04em; font-size: 1.1rem; margin-bottom: 18px; }
+.chk-lines { display: flex; flex-direction: column; gap: 14px; padding-bottom: 18px; border-bottom: 1px solid var(--line); max-height: 320px; overflow-y: auto; }
+.chk-line { display: grid; grid-template-columns: 52px 1fr auto; gap: 12px; align-items: center; }
+.chk-line__img { position: relative; border: 1px solid var(--line); border-radius: var(--r); background: #fff; }
+.chk-line__img img { width: 52px; height: 52px; object-fit: contain; padding: 4px; }
+.chk-line__img em { position: absolute; top: -7px; right: -7px; display: grid; place-items: center; min-width: 18px; height: 18px; padding: 0 3px; border-radius: 50%; background: var(--ink); color: #fff; font-size: 0.62rem; font-weight: 700; font-style: normal; }
+.chk-line__info { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.chk-line__info b { font-size: 0.85rem; font-weight: 600; color: var(--ink); line-height: 1.3; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.chk-line__info em { font-style: normal; font-size: var(--t-xs); color: var(--muted); }
+.chk-line__price { font-size: 0.85rem; color: var(--ink-2); }
+.chk-sum-rows { display: flex; flex-direction: column; gap: 12px; padding: 16px 0; border-bottom: 1px solid var(--line); }
+.chk-sum-rows > div { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.chk-sum-rows dt { color: var(--muted); font-size: var(--t-sm); }
+.chk-sum-rows dt span { color: var(--faint); }
+.chk-sum-rows dd { font-weight: 600; color: var(--ink-2); font-size: var(--t-sm); }
+
+@media (max-width: 900px){
+  .chk__layout { grid-template-columns: 1fr; }
+  .chk__summary { position: static; order: -1; }
+}
+@media (max-width: 560px){
+  .chk-grid { grid-template-columns: 1fr; }
+  .chk-col-2 { grid-column: span 1; }
+}
