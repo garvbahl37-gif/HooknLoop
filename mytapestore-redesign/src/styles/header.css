@@ -14,7 +14,11 @@
 .hd-util__feats { display: flex; gap: 0; align-items: center; flex-wrap: wrap; justify-content: center; }
 .hd-util li { display: inline-flex; align-items: center; gap: 8px; padding-inline: 20px; font-size: var(--t-xs); font-weight: 600; letter-spacing: 0.02em; color: rgba(255,255,255,.94); }
 .hd-util li svg { color: #fff; flex-shrink: 0; }
-.hd-util__ic { display: inline-flex; opacity: .95; }
+/* Real full-colour icon assets (shared with "Buy with confidence") need a
+   light backdrop to stay legible on the brand-red strip — several of them
+   use red/pink tones that would otherwise wash out against the gradient. */
+.hd-util__ic { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; flex-shrink: 0; background: #fff; border-radius: 7px; box-shadow: 0 1px 2px rgba(0,0,0,.12); }
+.hd-util__ic img { display: block; }
 .hd-util__lead { font-weight: 700 !important; font-size: var(--t-sm); letter-spacing: 0.01em; color: #fff; padding-left: 0; }
 .hd-util__sep { position: relative; }
 .hd-util__sep::before { content: ""; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 1px; height: 14px; background: rgba(255,255,255,.3); }

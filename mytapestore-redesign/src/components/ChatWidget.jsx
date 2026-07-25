@@ -91,7 +91,7 @@ export default function ChatWidget() {
     <div className="chatw">
       {!open && teaser && (
         <div className="chatw__teaser" onClick={openChat} role="button" tabIndex={0} onKeyDown={(e) => e.key === 'Enter' && openChat()}>
-          <span>👋 Need help choosing a tape?</span>
+          <span>👋 Need help?</span>
           <button className="chatw__teaser-x" aria-label="Dismiss" onClick={(e) => { e.stopPropagation(); setTeaser(false) }}>
             <Icon name="close" size={13} />
           </button>

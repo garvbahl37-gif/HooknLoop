@@ -2,6 +2,7 @@ import Header from './components/Header.jsx'
 import Footer from './components/Footer.jsx'
 import CallButton from './components/CallButton.jsx'
 import ChatWidget from './components/ChatWidget.jsx'
+import { ValueProps } from './sections/home.jsx'
 import Home from './pages/Home.jsx'
 import CollectionPage from './pages/CollectionPage.jsx'
 import ProductPage from './pages/ProductPage.jsx'
@@ -52,6 +53,7 @@ export default function App() {
       <a className="skip" href="#main">Skip to content</a>
       <Header />
       {page}
+      <ValueProps />
       <Footer />
       <CallButton />
       <ChatWidget />

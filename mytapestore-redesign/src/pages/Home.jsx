@@ -1,5 +1,5 @@
 import HeroSlider from '../components/HeroSlider.jsx'
-import { IntroBand, CategoryShowcase, FeaturedGrid, BrandWall, RangeSection, SealTheDeal, IndustriesShowcase, Testimonials, Wholesale, FAQ, ValueProps } from '../sections/home.jsx'
+import { IntroBand, CategoryShowcase, FeaturedGrid, BrandWall, RangeSection, SealTheDeal, IndustriesShowcase, Testimonials, Wholesale, FAQ } from '../sections/home.jsx'
 
 export default function Home() {
   return (
@@ -15,7 +15,6 @@ export default function Home() {
       <Testimonials />
       <Wholesale />
       <FAQ />
-      <ValueProps />
     </main>
   )
 }
