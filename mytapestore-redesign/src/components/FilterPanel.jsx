@@ -1,7 +1,7 @@
 import Icon from './Icon.jsx'
 import { swatchFill, PRICE_OPTS } from '../lib/filters.js'
 
-export default function FilterPanel({ priceBucket, setPriceBucket, colours, availColours, toggleColour, sizeFilter, setSizeFilter, availSizes, inStockOnly, setInStockOnly, onClear, active }) {
+export default function FilterPanel({ priceBucket, setPriceBucket, colours, availColours, toggleColour, sizeFilter, setSizeFilter, availSizes, categories, availCategories, toggleCategory, inStockOnly, setInStockOnly, onClear, active }) {
   return (
     <div className="filt-card">
       <div className="filt-card__head"><Icon name="ruler" size={15} /> Filter</div>
@@ -13,6 +13,20 @@ export default function FilterPanel({ priceBucket, setPriceBucket, colours, avai
           <span>In stock only</span>
         </label>
       </div>
+
+      {availCategories && availCategories.length > 1 && (
+        <div className="filt">
+          <h3 className="filt__title">Product category</h3>
+          <div className="filt__cats">
+            {availCategories.map((c) => (
+              <label key={c.slug} className="filt__check">
+                <input type="checkbox" checked={categories.includes(c.slug)} onChange={() => toggleCategory(c.slug)} />
+                <span>{c.name}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+      )}
 
       {availColours.length > 0 && (
         <div className="filt">

@@ -114,6 +114,7 @@ export default function CollectionPage({ slug, all = false }) {
     sort, setSort, products,
     inStockOnly, setInStockOnly, priceBucket, setPriceBucket,
     colours, availColours, toggleColour, sizeFilter, setSizeFilter, availSizes,
+    categories, availCategories, toggleCategory,
     filtersActive, clearAll,
   } = useProductFilters(baseList)
 
@@ -128,7 +129,7 @@ export default function CollectionPage({ slug, all = false }) {
       <div className="wrap col__layout">
         <aside className="col__side">
           <CategoryRail activeSlug={slug} />
-          <FilterPanel {...{ priceBucket, setPriceBucket, colours, availColours, toggleColour, sizeFilter, setSizeFilter, availSizes, inStockOnly, setInStockOnly, onClear: clearAll, active: filtersActive }} />
+          <FilterPanel {...{ priceBucket, setPriceBucket, colours, availColours, toggleColour, sizeFilter, setSizeFilter, availSizes, categories, availCategories, toggleCategory, inStockOnly, setInStockOnly, onClear: clearAll, active: filtersActive }} />
         </aside>
 
         <div className="col__main">

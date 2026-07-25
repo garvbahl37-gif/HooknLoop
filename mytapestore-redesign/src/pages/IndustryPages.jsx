@@ -42,6 +42,7 @@ export function IndustryPage({ slug }) {
     sort, setSort, products,
     inStockOnly, setInStockOnly, priceBucket, setPriceBucket,
     colours, availColours, toggleColour, sizeFilter, setSizeFilter, availSizes,
+    categories, availCategories, toggleCategory,
     filtersActive, clearAll,
   } = useProductFilters(baseList)
 
@@ -64,7 +65,7 @@ export function IndustryPage({ slug }) {
 
       <div className="wrap col__layout">
         <aside className="col__side">
-          <FilterPanel {...{ priceBucket, setPriceBucket, colours, availColours, toggleColour, sizeFilter, setSizeFilter, availSizes, inStockOnly, setInStockOnly, onClear: clearAll, active: filtersActive }} />
+          <FilterPanel {...{ priceBucket, setPriceBucket, colours, availColours, toggleColour, sizeFilter, setSizeFilter, availSizes, categories, availCategories, toggleCategory, inStockOnly, setInStockOnly, onClear: clearAll, active: filtersActive }} />
         </aside>
 
         <div className="col__main">

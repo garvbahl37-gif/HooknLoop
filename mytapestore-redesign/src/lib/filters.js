@@ -36,6 +36,7 @@ export function useProductFilters(baseList) {
   const [priceBucket, setPriceBucket] = useState('all')
   const [colours, setColours] = useState([])
   const [sizeFilter, setSizeFilter] = useState('all')
+  const [categories, setCategories] = useState([])
 
   const availColours = useMemo(() => {
     const set = new Set()
@@ -47,6 +48,13 @@ export function useProductFilters(baseList) {
     for (const p of baseList) { const sa = sizeAxis(p); if (sa) sa.terms.forEach((t) => set.add(t)) }
     return [...set]
   }, [baseList])
+  /* only meaningful when baseList spans more than one category (e.g. an industry
+     page) — a single-category listing has nothing useful to filter here */
+  const availCategories = useMemo(() => {
+    const map = new Map()
+    for (const p of baseList) { const c = p.cats?.[0]; if (c) map.set(c.slug, c.name) }
+    return [...map.entries()].map(([slug, name]) => ({ slug, name })).sort((a, b) => a.name.localeCompare(b.name))
+  }, [baseList])
 
   const products = useMemo(() => {
     let list = [...baseList]
@@ -55,6 +63,7 @@ export function useProductFilters(baseList) {
     if (priceFn) list = list.filter(priceFn)
     if (colours.length) list = list.filter((p) => { const ca = colourAxis(p); return ca && ca.terms.some((t) => colours.includes(t)) })
     if (sizeFilter !== 'all') list = list.filter((p) => { const sa = sizeAxis(p); return sa && sa.terms.includes(sizeFilter) })
+    if (categories.length) list = list.filter((p) => p.cats?.[0] && categories.includes(p.cats[0].slug))
     const s = {
       'price-asc': (a, b) => a.from - b.from,
       'price-desc': (a, b) => b.from - a.from,
@@ -63,16 +72,18 @@ export function useProductFilters(baseList) {
       featured: (a, b) => (b.reviews - a.reviews) || (b.rating - a.rating),
     }[sort]
     return list.sort(s)
-  }, [baseList, sort, inStockOnly, priceBucket, colours, sizeFilter])
+  }, [baseList, sort, inStockOnly, priceBucket, colours, sizeFilter, categories])
 
   const toggleColour = (c) => setColours((cs) => cs.includes(c) ? cs.filter((x) => x !== c) : [...cs, c])
-  const filtersActive = inStockOnly || priceBucket !== 'all' || colours.length > 0 || sizeFilter !== 'all'
-  const clearAll = () => { setInStockOnly(false); setPriceBucket('all'); setColours([]); setSizeFilter('all') }
+  const toggleCategory = (slug) => setCategories((cs) => cs.includes(slug) ? cs.filter((x) => x !== slug) : [...cs, slug])
+  const filtersActive = inStockOnly || priceBucket !== 'all' || colours.length > 0 || sizeFilter !== 'all' || categories.length > 0
+  const clearAll = () => { setInStockOnly(false); setPriceBucket('all'); setColours([]); setSizeFilter('all'); setCategories([]) }
 
   return {
     sort, setSort, products,
     inStockOnly, setInStockOnly, priceBucket, setPriceBucket,
     colours, availColours, toggleColour, sizeFilter, setSizeFilter, availSizes,
+    categories, availCategories, toggleCategory,
     filtersActive, clearAll,
   }
 }
