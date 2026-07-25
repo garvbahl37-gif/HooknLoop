@@ -102,67 +102,72 @@ function FilterPanel({ priceBucket, setPriceBucket, colours, availColours, toggl
   )
 }
 
+/* Renders one content block from the original category page verbatim, in the order it
+   appeared — heading / paragraph / titled-item list / plain bullet list / FAQ accordion.
+   Kept generic on purpose: forcing every category's content into a fixed set of named
+   fields (benefits / perks / etc) silently dropped whatever didn't fit that shape. */
+function CatBlock({ block, i, openFaq, setOpenFaq, faqBase }) {
+  if (block.type === 'heading') return <h3 key={i} className="catseo__heading">{block.text}</h3>
+  if (block.type === 'p') return <p key={i}>{block.text}</p>
+  if (block.type === 'list') return (
+    <ul key={i} className="catseo__list">
+      {block.items.map((t, j) => <li key={j}><Icon name="check" size={14} /><span>{t}</span></li>)}
+    </ul>
+  )
+  if (block.type === 'items') return (
+    <ul key={i} className="catseo__items">
+      {block.items.map((it, j) => (
+        <li key={j}><Icon name="check" size={15} /><span>{it.title && <b>{it.title} </b>}{it.text}</span></li>
+      ))}
+    </ul>
+  )
+  if (block.type === 'faq' && block.qas?.length) return (
+    <div key={i} className="catseo__faqs">
+      <h3>Frequently asked questions</h3>
+      <ul className="faq__list">
+        {block.qas.map((f, j) => {
+          const id = faqBase + j
+          return (
+            <li key={j} className={'faq__item' + (openFaq === id ? ' is-open' : '')}>
+              <button className="faq__q" aria-expanded={openFaq === id} onClick={() => setOpenFaq(openFaq === id ? -1 : id)}>
+                <span>{f.q}</span><Icon name={openFaq === id ? 'minus' : 'plus'} size={18} />
+              </button>
+              {openFaq === id && <div className="faq__a"><p>{f.a}</p></div>}
+            </li>
+          )
+        })}
+      </ul>
+    </div>
+  )
+  return null
+}
+
 function CategorySEO({ slug, cat }) {
   const [openFaq, setOpenFaq] = useState(0)
   const data = CATEGORY_SEO[slug]
   let introLines = (cat?.desc || '').split(/\r?\n/).map((s) => s.trim()).filter(Boolean)
   if (introLines.length > 1 && introLines[0].length < 62) introLines = introLines.slice(1)
-  if (!data && !introLines.length) return null
-  const hasAside = data && (data.whyChooseHeading || data.whyChooseIntro || (data.perks && data.perks.length) || data.serviceCoverage || data.closingCta)
+  const blocks = data?.blocks || []
+  if (!introLines.length && !blocks.length) return null
 
+  let faqIndex = 0
   return (
     <section className="section catseo">
-      <div className="wrap catseo__grid">
-        <div className="catseo__main">
-          {introLines.length > 0 && (
-            <div className="catseo__intro">
-              <span className="catseo__intro-eyebrow">Overview</span>
-              {introLines.map((p, i) => <p key={i}>{p}</p>)}
-            </div>
-          )}
-
-          {data?.sectionHeading && <h2 className="catseo__heading">{data.sectionHeading}</h2>}
-          {(data?.benefits || []).map((p, i) => <p key={i}>{p}</p>)}
-
-          {data?.faqs && data.faqs.length > 0 && (
-            <div className="catseo__faqs">
-              <h3>Frequently asked questions</h3>
-              <ul className="faq__list">
-                {data.faqs.map((f, i) => (
-                  <li key={i} className={'faq__item' + (openFaq === i ? ' is-open' : '')}>
-                    <button className="faq__q" aria-expanded={openFaq === i} onClick={() => setOpenFaq(openFaq === i ? -1 : i)}>
-                      <span>{f.q}</span><Icon name={openFaq === i ? 'minus' : 'plus'} size={18} />
-                    </button>
-                    {openFaq === i && <div className="faq__a"><p>{f.a}</p></div>}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </div>
-
-        {hasAside && (
-          <aside className="catseo__why">
-            <div className="catseo__why-head">
-              <Icon name="shieldCheck" size={18} />
-              <h3>{data.whyChooseHeading || 'Why choose My Tape Store'}</h3>
-            </div>
-            {data.whyChooseIntro && <p className="catseo__why-intro">{data.whyChooseIntro}</p>}
-            {data.perks && data.perks.length > 0 && (
-              <ul className="catseo__perks">
-                {data.perks.map((perk, i) => (
-                  <li key={i}>
-                    <Icon name="check" size={15} />
-                    <span>{perk.title && <b>{perk.title} </b>}{perk.text}</span>
-                  </li>
-                ))}
-              </ul>
-            )}
-            {data.serviceCoverage && <p className="catseo__coverage"><Icon name="truck" size={15} /><span>{data.serviceCoverage}</span></p>}
-            {data.closingCta && <p className="catseo__cta-line">{data.closingCta}</p>}
-            <a href="#/contact" className="btn btn--brand btn--block catseo__contact" onClick={(e) => { e.preventDefault(); navigate('/contact') }}>Talk to our tape experts <Icon name="arrowRight" size={16} /></a>
-          </aside>
+      <div className="wrap catseo__main">
+        {introLines.length > 0 && (
+          <div className="catseo__intro">
+            <span className="catseo__intro-eyebrow">Overview</span>
+            {introLines.map((p, i) => <p key={i}>{p}</p>)}
+          </div>
         )}
+
+        {blocks.map((b, i) => {
+          const el = <CatBlock key={i} block={b} i={i} openFaq={openFaq} setOpenFaq={setOpenFaq} faqBase={faqIndex} />
+          if (b.type === 'faq') faqIndex += (b.qas?.length || 0)
+          return el
+        })}
+
+        <a href="#/contact" className="btn btn--brand catseo__contact" onClick={(e) => { e.preventDefault(); navigate('/contact') }}>Talk to our tape experts <Icon name="arrowRight" size={16} /></a>
       </div>
     </section>
   )
