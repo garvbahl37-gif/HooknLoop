@@ -405,8 +405,8 @@ export function Wholesale() {
 export function ValueProps() {
   const props = [
     ['/img/icons/fast-delivery.svg', 'Fast delivery Australia-wide', 'Dispatched in 1–2 business days to 3,600+ postcodes.', true],
-    ['card', 'Secure payment', 'Checkout safely with major cards, PayPal and Shop Pay.', false],
-    ['badgeCheck', 'Lowest-price guarantee', 'Find a stocked line cheaper and we’ll match it.', false],
+    ['/img/icons/secure-payment.svg', 'Secure payment', 'Checkout safely with major cards, PayPal and Shop Pay.', true],
+    ['/img/icons/price.svg', 'Lowest-price guarantee', 'Find a stocked line cheaper and we’ll match it.', true],
     ['/img/icons/flag-australia.svg', 'Australian owned & operated', 'Local stock, local support and honest advice.', true],
   ]
   return (

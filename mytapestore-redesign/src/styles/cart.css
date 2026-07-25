@@ -41,6 +41,11 @@
 .cart-upsell { margin-top: 44px; padding-top: 28px; border-top: 1px solid var(--line); }
 .cart-upsell h2 { font-family: var(--f-head); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; font-size: 1rem; color: var(--ink); margin-bottom: 16px; }
 .cart-empty .cart-upsell { text-align: left; margin-top: 56px; max-width: 920px; }
+/* the cart items column sits beside a 350px summary sidebar, so it's narrower than the
+   grid-products--fit default was tuned for — shrink the card floor so 4 fit in one row */
+.cart-upsell .grid-products--fit > * { min-width: 0; max-width: none; }
+@media (max-width: 1100px){ .cart-upsell .grid-products--fit > * { width: calc(50% - 10px); } }
+@media (max-width: 560px){ .cart-upsell .grid-products--fit > * { width: 100%; max-width: 340px; } }
 
 /* summary */
 .cart__summary { position: sticky; top: 138px; border: 1px solid var(--line); border-top: 3px solid var(--brand); border-radius: var(--r-lg); padding: 24px; background: var(--panel); }
