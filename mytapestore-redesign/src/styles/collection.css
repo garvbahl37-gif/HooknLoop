@@ -17,6 +17,10 @@
 .filt__colour:hover { border-color: var(--ink); }
 .filt__colour.is-on { border-color: var(--brand); color: var(--brand-ink); background: var(--brand-wash); }
 .filt__colour-dot { width: 14px; height: 14px; border-radius: 50%; border: 1px solid rgba(0,0,0,.15); flex-shrink: 0; }
+.filt__sizes { display: flex; flex-wrap: wrap; gap: 7px; }
+.filt__size { padding: 6px 12px; border: 1px solid var(--line-2); border-radius: var(--r); font-size: var(--t-xs); font-weight: 600; color: var(--ink-2); background: #fff; transition: border-color .14s var(--ease), color .14s var(--ease), background .14s var(--ease); }
+.filt__size:hover { border-color: var(--ink); }
+.filt__size.is-on { border-color: var(--brand); color: var(--brand-ink); background: var(--brand-wash); }
 .filt__clear { display: block; width: 100%; padding: 12px; background: var(--paper); font-family: var(--f-head); font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; font-size: var(--t-xs); color: var(--brand-ink); border-top: 1px solid var(--line); transition: background .14s var(--ease); }
 .filt__clear:hover { background: var(--brand-wash); }
 
@@ -95,26 +99,42 @@
 }
 
 /* category SEO content — the original store's full below-grid copy, rendered in original
-   order as generic blocks so nothing gets silently dropped or restructured */
+   order as generic blocks so nothing gets silently dropped or restructured. Content is
+   untouched here; only the presentation is elevated (card frame, type hierarchy,
+   feature-card item lists, refined FAQ + closing band). */
 .catseo { border-top: 1px solid var(--line); background: var(--paper); }
-.catseo__main { max-width: 860px; margin: 0 auto; color: var(--ink-2); line-height: 1.75; font-size: var(--t-sm); }
-.catseo__heading { font-family: var(--f-head); font-weight: 700; font-size: 1.3rem; letter-spacing: -0.01em; color: var(--ink); margin: 34px 0 14px; }
+.catseo__main { max-width: 920px; margin: 0 auto; }
+.catseo__card { background: #fff; border: 1px solid var(--line); border-radius: var(--r-lg); box-shadow: var(--sh-sm); padding: clamp(28px, 4.5vw, 56px); color: var(--ink-2); line-height: 1.75; font-size: var(--t-sm); }
+
+.catseo__heading { display: flex; align-items: center; gap: 12px; font-family: var(--f-display); font-weight: 600; font-size: 1.4rem; letter-spacing: -0.012em; color: var(--ink); margin: 40px 0 16px; }
+.catseo__heading::before { content: ''; display: inline-block; width: 26px; height: 3px; border-radius: 2px; background: var(--brand); flex-shrink: 0; }
 .catseo__heading:first-child { margin-top: 0; }
-.catseo__main > p { margin-bottom: 14px; }
+.catseo__main > .catseo__card > p { max-width: 68ch; margin-bottom: 15px; }
 
 /* intro — the original banner copy, now a distinct lead-in card instead of overlaid on the hero image */
-.catseo__intro { margin-bottom: 32px; padding: 24px 28px; background: var(--brand-wash); border-left: 3px solid var(--brand); border-radius: 0 var(--r-lg) var(--r-lg) 0; }
+.catseo__intro { margin-bottom: 8px; padding: 24px 28px; background: var(--brand-wash); border-left: 3px solid var(--brand); border-radius: 4px var(--r-lg) var(--r-lg) 4px; }
 .catseo__intro-eyebrow { display: block; font-family: var(--f-head); font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; font-size: var(--t-xs); color: var(--brand-ink); margin-bottom: 12px; }
-.catseo__intro p { font-family: var(--f-display); font-weight: 500; font-size: 1.18rem; line-height: 1.55; color: var(--ink); margin-bottom: 0; }
+.catseo__intro p { font-family: var(--f-display); font-weight: 500; font-size: 1.18rem; line-height: 1.55; color: var(--ink); margin-bottom: 0; max-width: none; }
 .catseo__intro p + p { margin-top: 10px; }
 
-/* titled item lists (product breakdowns, why-choose perks) + plain bullet lists */
-.catseo__items, .catseo__list { list-style: none; display: flex; flex-direction: column; gap: 11px; margin: 4px 0 18px; }
-.catseo__items li, .catseo__list li { display: flex; align-items: flex-start; gap: 10px; line-height: 1.6; }
-.catseo__items svg, .catseo__list svg { color: var(--stock); flex-shrink: 0; margin-top: 3px; }
-.catseo__items b { color: var(--ink); font-weight: 600; }
+/* titled item lists (product breakdowns, why-choose perks) — presented as a feature-card grid */
+.catseo__items { list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; margin: 8px 0 28px; }
+.catseo__items li { display: flex; flex-direction: column; align-items: flex-start; gap: 11px; padding: 20px; border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--paper); transition: border-color .16s var(--ease), box-shadow .16s var(--ease), transform .16s var(--ease); }
+.catseo__items li:hover { border-color: var(--line-2); box-shadow: var(--sh-sm); transform: translateY(-2px); background: #fff; }
+.catseo__items svg { width: 30px; height: 30px; padding: 7px; box-sizing: border-box; border-radius: 50%; background: var(--brand-cta); color: #fff; flex-shrink: 0; }
+.catseo__items span { display: block; font-size: 0.92rem; line-height: 1.6; }
+.catseo__items b { display: block; font-family: var(--f-head); font-weight: 700; font-size: 0.98rem; color: var(--ink); margin-bottom: 4px; }
 
-.catseo__faqs { margin-top: 30px; }
-.catseo__faqs h3 { font-family: var(--f-head); font-weight: 700; font-size: 1.05rem; color: var(--ink); margin-bottom: 14px; }
+/* plain bullet lists — compact two-column checklist */
+.catseo__list { list-style: none; display: grid; grid-template-columns: repeat(2, 1fr); gap: 11px 22px; margin: 8px 0 26px; }
+.catseo__list li { display: flex; align-items: flex-start; gap: 9px; font-size: 0.92rem; line-height: 1.6; }
+.catseo__list svg { color: var(--stock); flex-shrink: 0; margin-top: 3px; }
+@media (max-width: 640px){ .catseo__list { grid-template-columns: 1fr; } }
 
-.catseo__contact { display: inline-flex; margin-top: 28px; }
+.catseo__faqs { margin-top: 36px; padding-top: 32px; border-top: 1px solid var(--line); }
+.catseo__faqs-eyebrow { display: block; font-family: var(--f-head); font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; font-size: var(--t-xs); color: var(--brand-ink); margin-bottom: 8px; }
+.catseo__faqs h3 { font-family: var(--f-display); font-weight: 600; font-size: 1.4rem; letter-spacing: -0.01em; color: var(--ink); margin-bottom: 18px; }
+
+.catseo__close { margin-top: 40px; padding-top: 32px; border-top: 1px solid var(--line); text-align: center; }
+.catseo__close p { font-family: var(--f-display); font-weight: 500; font-size: 1.15rem; color: var(--ink); margin-bottom: 18px; }
+.catseo__contact { display: inline-flex; }
