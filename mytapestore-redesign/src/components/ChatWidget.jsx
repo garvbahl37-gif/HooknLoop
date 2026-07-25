@@ -105,7 +105,7 @@ export default function ChatWidget() {
 
       {!open && (
         <button className="chatw__launch" onClick={openChat} aria-label="Open chat assistant">
-          <Icon name="chat" size={23} />
+          <Icon name="tapeRoll" size={26} />
           {teaser && <span className="chatw__ping" />}
         </button>
       )}
@@ -113,7 +113,7 @@ export default function ChatWidget() {
       {open && (
         <div className="chatw__panel" role="dialog" aria-label="Chat with My Tape Store">
           <div className="chatw__head">
-            <span className="chatw__avatar"><Icon name="chat" size={17} /></span>
+            <span className="chatw__avatar"><Icon name="tapeRoll" size={19} /></span>
             <div className="chatw__head-info">
               <b>My Tape Store</b>
               <span><em className="chatw__dot" />Automated assistant · instant replies</span>
