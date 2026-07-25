@@ -97,6 +97,7 @@ strong { font-weight: 700; color: var(--ink); }
 .tag--sale  { color: #fff; background: var(--sale); border-color: var(--sale); }
 .tag--stock { color: var(--stock); border-color: color-mix(in srgb, var(--stock) 40%, #fff); background: color-mix(in srgb, var(--stock) 8%, #fff); }
 .tag--out   { color: var(--faint); background: var(--paper); }
+.tag--processing { color: var(--brand-ink); border-color: var(--brand-wash-2); background: var(--brand-wash); }
 
 /* spec tag — the width×length identity of a tape, monospaced-tabular ------- */
 .spectag {

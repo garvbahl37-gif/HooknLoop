@@ -2,8 +2,8 @@ import { useState } from 'react'
 import Icon from '../components/Icon.jsx'
 import ProductCard from '../components/ProductCard.jsx'
 import Breadcrumbs from '../components/Breadcrumbs.jsx'
-import { PRODUCTS, INDUSTRIES } from '../data/catalog.js'
-import { navigate, useWish } from '../lib/cart.js'
+import { PRODUCTS, INDUSTRIES, findProduct } from '../data/catalog.js'
+import { navigate, useWish, money, addToCart } from '../lib/cart.js'
 
 const go = (e, h) => { e.preventDefault(); navigate(h) }
 const Page = ({ crumbs, children }) => (
@@ -167,55 +167,262 @@ export function PolicyPage({ which }) {
   )
 }
 
-/* ---------- WISHLIST ---------- */
-export function AccountPage() {
-  const [mode, setMode] = useState('signin')
-  const [done, setDone] = useState(false)
-  const swap = (m) => { setMode(m); setDone(false) }
+/* ---------- ACCOUNT: sign-in/register + dashboard ---------- */
+/* Session persists client-side, same localStorage pattern as cart/wishlist.
+   No backend on this redesign, so "signing in" is honest about being a demo:
+   a returning-customer sign-in gets a small set of realistic past orders
+   (real catalogue products/prices), a fresh registration starts with none. */
+const ACCT_KEY = 'mts_account_v1'
+const getAccount = () => { try { return JSON.parse(localStorage.getItem(ACCT_KEY)) } catch { return null } }
+const saveAccount = (acc) => localStorage.setItem(ACCT_KEY, JSON.stringify(acc))
+const clearAccount = () => localStorage.removeItem(ACCT_KEY)
+
+const ORDER_STATUS = {
+  completed: { label: 'Completed', cls: 'tag--stock' },
+  shipped: { label: 'Shipped', cls: 'tag--processing' },
+  processing: { label: 'Processing', cls: 'tag--processing' },
+  cancelled: { label: 'Cancelled', cls: 'tag--out' },
+}
+const DEMO_ORDERS = [
+  { id: '10241', date: 'Jul 14, 2026', status: 'completed', items: [{ handle: 'hook-loop-roll-adhesive-backed', qty: 2 }, { handle: 'general-purpose-masking-tape', qty: 1 }] },
+  { id: '10198', date: 'Jun 28, 2026', status: 'shipped', items: [{ handle: 'gaffer-tape', qty: 3 }] },
+  { id: '10122', date: 'Jun 2, 2026', status: 'completed', items: [{ handle: 'clear-packaging-tape', qty: 4 }, { handle: 'black-electrical-tape', qty: 2 }] },
+  { id: '10077', date: 'May 11, 2026', status: 'cancelled', items: [{ handle: 'danger-tape', qty: 1 }] },
+  { id: '9958', date: 'Mar 30, 2026', status: 'completed', items: [{ handle: 'frog-tapes-multi-surface', qty: 1 }, { handle: 'anti-slip-tread-tape', qty: 2 }] },
+]
+const orderTotal = (order) => order.items.reduce((sum, it) => {
+  const p = findProduct(it.handle)
+  return sum + (p ? (p.price ?? p.from ?? 0) * it.qty : 0)
+}, 0)
+const reorder = (order) => {
+  order.items.forEach((it) => {
+    const p = findProduct(it.handle)
+    if (!p) return
+    addToCart({ key: p.handle + '|reorder-' + order.id, handle: p.handle, name: p.name, img: p.img, price: p.price ?? p.from, sku: p.sku, variant: '', qty: it.qty })
+  })
+  navigate('/cart')
+}
+
+function AcctOrdersTable({ orders }) {
+  const [open, setOpen] = useState(null)
+  if (!orders.length) return (
+    <div className="col__empty">
+      <Icon name="layers" size={34} />
+      <p>No orders yet — once you place one, it'll show up here.</p>
+      <a className="btn btn--brand btn--lg" href="#/shop" onClick={(e) => go(e, '/shop')}>Start shopping <Icon name="arrowRight" size={18} /></a>
+    </div>
+  )
   return (
-    <Page crumbs={[{ label: 'Home', href: '/' }, { label: mode === 'signin' ? 'Sign in' : 'Create account' }]}>
-      <div className="wrap page-hero page-hero--plain">
-        <span className="eyebrow">Your account</span>
-        <h1>{mode === 'signin' ? 'Sign in to My Tape Store' : 'Create your account'}</h1>
-      </div>
-      <div className="wrap auth">
-        <div className="auth__card">
-          <div className="auth__tabs" role="tablist">
-            <button role="tab" aria-selected={mode === 'signin'} className={'auth__tab' + (mode === 'signin' ? ' is-active' : '')} onClick={() => swap('signin')}>Sign in</button>
-            <button role="tab" aria-selected={mode === 'register'} className={'auth__tab' + (mode === 'register' ? ' is-active' : '')} onClick={() => swap('register')}>Create account</button>
+    <div className="acct-orders">
+      {orders.map((o) => {
+        const status = ORDER_STATUS[o.status]
+        const isOpen = open === o.id
+        return (
+          <div key={o.id} className={'acct-order' + (isOpen ? ' is-open' : '')}>
+            <button className="acct-order__row" onClick={() => setOpen(isOpen ? null : o.id)} aria-expanded={isOpen}>
+              <span className="acct-order__id num">#{o.id}</span>
+              <span className="acct-order__date">{o.date}</span>
+              <span className={'tag ' + status.cls}>{status.label}</span>
+              <span className="acct-order__total num">{money(orderTotal(o))}</span>
+              <Icon name="chevronDown" size={16} className="acct-order__chev" />
+            </button>
+            {isOpen && (
+              <div className="acct-order__detail">
+                <ul className="acct-order__items">
+                  {o.items.map((it) => {
+                    const p = findProduct(it.handle)
+                    if (!p) return null
+                    return (
+                      <li key={it.handle}>
+                        <img src={p.img} alt="" width="44" height="44" />
+                        <a className="acct-order__item-name" href={'#/product/' + p.handle} onClick={(e) => go(e, '/product/' + p.handle)}>{p.name}</a>
+                        <span className="num acct-order__item-qty">× {it.qty}</span>
+                        <span className="num">{money((p.price ?? p.from) * it.qty)}</span>
+                      </li>
+                    )
+                  })}
+                </ul>
+                {o.status !== 'cancelled' && (
+                  <button className="btn btn--ghost" onClick={() => reorder(o)}><Icon name="refresh" size={15} /> Reorder these items</button>
+                )}
+              </div>
+            )}
           </div>
-          {done ? (
-            <div className="auth__done" role="status">
-              <span className="auth__done-ic"><Icon name="check" size={26} /></span>
-              <b>{mode === 'signin' ? 'Welcome back!' : 'Your account is ready.'}</b>
-              <p>You're all set — start browsing the range or head to your cart.</p>
-              <a className="btn btn--brand btn--lg" href="#/shop" onClick={(e) => go(e, '/shop')}>Continue shopping <Icon name="arrowRight" size={18} /></a>
+        )
+      })}
+    </div>
+  )
+}
+
+function AcctOverview({ account, orders, wishCount, setTab }) {
+  const totalSpent = orders.filter((o) => o.status !== 'cancelled').reduce((s, o) => s + orderTotal(o), 0)
+  return (
+    <div className="acct__panel">
+      <h2>Welcome back{account.name ? `, ${account.name}` : ''}</h2>
+      <p className="acct__lede">Here's what's happening with your account.</p>
+      <div className="page-stats acct__stats">
+        <div><b className="num">{orders.length}</b><span>Orders placed</span></div>
+        <div><b className="num">{money(totalSpent)}</b><span>Total spent</span></div>
+        <div><b className="num">{wishCount}</b><span>Items saved</span></div>
+      </div>
+      {orders.length > 0 && (
+        <div className="acct__panel-head">
+          <h3>Recent orders</h3>
+          <button type="button" className="acct__viewall" onClick={() => setTab('orders')}>View all <Icon name="chevronRight" size={14} /></button>
+        </div>
+      )}
+      <AcctOrdersTable orders={orders.slice(0, 3)} />
+    </div>
+  )
+}
+
+function AcctAddresses() {
+  return (
+    <div className="acct__panel">
+      <h2>Addresses</h2>
+      <div className="col__empty">
+        <Icon name="mapPin" size={34} />
+        <p>No saved addresses yet — add one at checkout and we'll remember it here next time.</p>
+        <a className="btn btn--brand btn--lg" href="#/checkout" onClick={(e) => go(e, '/checkout')}>Go to checkout <Icon name="arrowRight" size={18} /></a>
+      </div>
+    </div>
+  )
+}
+
+function AcctDetails({ account, onSave }) {
+  const [name, setName] = useState(account.name || '')
+  const [email, setEmail] = useState(account.email || '')
+  const [saved, setSaved] = useState(false)
+  const submit = (e) => {
+    e.preventDefault()
+    onSave({ ...account, name: name.trim(), email: email.trim() })
+    setSaved(true)
+    setTimeout(() => setSaved(false), 2200)
+  }
+  return (
+    <div className="acct__panel">
+      <h2>Account details</h2>
+      <form className="auth__form acct__form" onSubmit={submit}>
+        <label className="auth__field"><span>Full name</span><input value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" /></label>
+        <label className="auth__field"><span>Email address</span><input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@company.com.au" /></label>
+        <div className="acct__form-actions">
+          <button className="btn btn--brand" type="submit">Save changes</button>
+          {saved && <span className="acct__saved"><Icon name="check" size={15} /> Saved</span>}
+        </div>
+      </form>
+    </div>
+  )
+}
+
+function AcctSidebar({ account, tab, setTab, onSignOut }) {
+  const initial = (account.name || account.email || 'A').trim().slice(0, 1).toUpperCase()
+  const NAV = [
+    ['overview', 'Dashboard', 'grid'],
+    ['orders', 'Orders', 'layers'],
+    ['addresses', 'Addresses', 'mapPin'],
+    ['details', 'Account details', 'user'],
+  ]
+  return (
+    <aside className="acct__side">
+      <div className="acct__profile">
+        <span className="acct__avatar">{initial}</span>
+        <b>{account.name || 'Your account'}</b>
+        {account.email && <span className="num">{account.email}</span>}
+      </div>
+      <nav className="acct__nav">
+        {NAV.map(([id, label, ic]) => (
+          <button key={id} type="button" className={'acct__nav-item' + (tab === id ? ' is-active' : '')} onClick={() => setTab(id)}>
+            <Icon name={ic} size={17} /><span>{label}</span>
+          </button>
+        ))}
+        <a className="acct__nav-item" href="#/wishlist" onClick={(e) => go(e, '/wishlist')}><Icon name="heart" size={17} /><span>Wishlist</span></a>
+        <button type="button" className="acct__nav-item acct__nav-item--out" onClick={onSignOut}><Icon name="close" size={17} /><span>Sign out</span></button>
+      </nav>
+    </aside>
+  )
+}
+
+export function AccountPage() {
+  const [account, setAccountState] = useState(getAccount)
+  const [mode, setMode] = useState('signin')
+  const [tab, setTab] = useState('overview')
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const wish = useWish()
+
+  const swap = (m) => setMode(m)
+
+  const submit = (e) => {
+    e.preventDefault()
+    const isRegister = mode === 'register'
+    const acc = { name: name.trim(), email: email.trim(), isNew: isRegister }
+    saveAccount(acc)
+    setAccountState(acc)
+    setTab('overview')
+  }
+
+  const signOut = () => { clearAccount(); setAccountState(null); setMode('signin'); setName(''); setEmail('') }
+  const updateAccount = (acc) => { saveAccount(acc); setAccountState(acc) }
+
+  if (!account) {
+    return (
+      <Page crumbs={[{ label: 'Home', href: '/' }, { label: mode === 'signin' ? 'Sign in' : 'Create account' }]}>
+        <div className="wrap page-hero page-hero--plain">
+          <span className="eyebrow">Your account</span>
+          <h1>{mode === 'signin' ? 'Sign in to My Tape Store' : 'Create your account'}</h1>
+        </div>
+        <div className="wrap auth">
+          <div className="auth__card">
+            <div className="auth__tabs" role="tablist">
+              <button role="tab" aria-selected={mode === 'signin'} className={'auth__tab' + (mode === 'signin' ? ' is-active' : '')} onClick={() => swap('signin')}>Sign in</button>
+              <button role="tab" aria-selected={mode === 'register'} className={'auth__tab' + (mode === 'register' ? ' is-active' : '')} onClick={() => swap('register')}>Create account</button>
             </div>
-          ) : (
-            <form className="auth__form" onSubmit={(e) => { e.preventDefault(); setDone(true) }}>
+            <form className="auth__form" onSubmit={submit}>
               {mode === 'register' && (
-                <label className="auth__field"><span>Full name</span><input type="text" required placeholder="Your name" /></label>
+                <label className="auth__field"><span>Full name</span><input type="text" required placeholder="Your name" value={name} onChange={(e) => setName(e.target.value)} /></label>
               )}
-              <label className="auth__field"><span>Email address</span><input type="email" required placeholder="you@company.com.au" /></label>
+              <label className="auth__field"><span>Email address</span><input type="email" required placeholder="you@company.com.au" value={email} onChange={(e) => setEmail(e.target.value)} /></label>
               <label className="auth__field">
                 <span>Password{mode === 'signin' && <a className="auth__forgot" href="#/account" onClick={(e) => e.preventDefault()}>Forgot?</a>}</span>
                 <input type="password" required placeholder="••••••••" />
               </label>
               <button className="btn btn--brand btn--lg btn--block" type="submit">{mode === 'signin' ? 'Sign in' : 'Create account'}</button>
             </form>
-          )}
-          <p className="auth__alt">
-            {mode === 'signin'
-              ? <>New to My Tape Store? <button onClick={() => swap('register')}>Create an account</button></>
-              : <>Already registered? <button onClick={() => swap('signin')}>Sign in</button></>}
-          </p>
+            <p className="auth__alt">
+              {mode === 'signin'
+                ? <>New to My Tape Store? <button onClick={() => swap('register')}>Create an account</button></>
+                : <>Already registered? <button onClick={() => swap('signin')}>Sign in</button></>}
+            </p>
+          </div>
+          <ul className="auth__perks">
+            <li><Icon name="truck" size={18} /><span>Track orders and reorder in a click</span></li>
+            <li><Icon name="tag" size={18} /><span>See trade pricing and volume discounts</span></li>
+            <li><Icon name="heart" size={18} /><span>Save products to your wishlist</span></li>
+            <li><Icon name="lock" size={18} /><span>Faster, secure checkout every time</span></li>
+          </ul>
         </div>
-        <ul className="auth__perks">
-          <li><Icon name="truck" size={18} /><span>Track orders and reorder in a click</span></li>
-          <li><Icon name="tag" size={18} /><span>See trade pricing and volume discounts</span></li>
-          <li><Icon name="heart" size={18} /><span>Save products to your wishlist</span></li>
-          <li><Icon name="lock" size={18} /><span>Faster, secure checkout every time</span></li>
-        </ul>
+      </Page>
+    )
+  }
+
+  const orders = account.isNew ? [] : DEMO_ORDERS
+  const TITLES = { overview: 'Dashboard', orders: 'Orders', addresses: 'Addresses', details: 'Account details' }
+
+  return (
+    <Page crumbs={[{ label: 'Home', href: '/' }, { label: 'My account' }, { label: TITLES[tab] }]}>
+      <div className="wrap acct">
+        <AcctSidebar account={account} tab={tab} setTab={setTab} onSignOut={signOut} />
+        <div className="acct__main">
+          {tab === 'overview' && <AcctOverview account={account} orders={orders} wishCount={wish.length} setTab={setTab} />}
+          {tab === 'orders' && (
+            <div className="acct__panel">
+              <h2>My orders</h2>
+              <AcctOrdersTable orders={orders} />
+            </div>
+          )}
+          {tab === 'addresses' && <AcctAddresses />}
+          {tab === 'details' && <AcctDetails account={account} onSave={updateAccount} />}
+        </div>
       </div>
     </Page>
   )
