@@ -404,10 +404,10 @@ export function Wholesale() {
 /* ---------- VALUE PROPS ---------- */
 export function ValueProps() {
   const props = [
-    ['truck', 'Fast delivery Australia-wide', 'Dispatched in 1–2 business days to 3,600+ postcodes.'],
-    ['card', 'Secure payment', 'Checkout safely with major cards, PayPal and Shop Pay.'],
-    ['badgeCheck', 'Lowest-price guarantee', 'Find a stocked line cheaper and we’ll match it.'],
-    ['mapPin', 'Australian owned & operated', 'Local stock, local support and honest advice.'],
+    ['/img/icons/fast-delivery.svg', 'Fast delivery Australia-wide', 'Dispatched in 1–2 business days to 3,600+ postcodes.', true],
+    ['card', 'Secure payment', 'Checkout safely with major cards, PayPal and Shop Pay.', false],
+    ['badgeCheck', 'Lowest-price guarantee', 'Find a stocked line cheaper and we’ll match it.', false],
+    ['/img/icons/flag-australia.svg', 'Australian owned & operated', 'Local stock, local support and honest advice.', true],
   ]
   return (
     <section className="section vprops-sec">
@@ -417,9 +417,9 @@ export function ValueProps() {
           <h2>Buy with confidence</h2>
         </div>
         <div className="vprops">
-          {props.map(([icon, title, body]) => (
+          {props.map(([icon, title, body, isImg]) => (
             <div key={title} className="vprop">
-              <span className="vprop__icon"><Icon name={icon} size={40} /></span>
+              <span className="vprop__icon">{isImg ? <img src={icon} alt="" width="44" height="44" loading="lazy" /> : <Icon name={icon} size={40} />}</span>
               <h3>{title}</h3>
               <p>{body}</p>
             </div>
