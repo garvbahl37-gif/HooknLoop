@@ -167,36 +167,38 @@ function Reviews({ reviews, avg, onSubmit }) {
 
   return (
     <div className="pdp-rev">
-      {total > 0 ? (
-        <div className="pdp-rev__summary">
-          <div className="pdp-rev__avg">
-            <b className="num">{avg.toFixed(1)}</b>
-            <Stars rating={avg} size={18} showCount={false} />
-            <span className="num">{total} review{total !== 1 ? 's' : ''}</span>
+      <div className="pdp-rev__head">
+        {total > 0 ? (
+          <div className="pdp-rev__summary">
+            <div className="pdp-rev__avg">
+              <b className="num">{avg.toFixed(1)}</b>
+              <Stars rating={avg} size={18} showCount={false} />
+              <span className="num">{total} review{total !== 1 ? 's' : ''}</span>
+            </div>
+            <div className="pdp-rev__bars">
+              {[5, 4, 3, 2, 1].map((s, i) => (
+                <div key={s} className="pdp-rev__bar">
+                  <span className="num">{s}★</span>
+                  <div className="pdp-rev__track"><div className="pdp-rev__fill" style={{ width: (total ? dist[i] / total * 100 : 0) + '%' }} /></div>
+                  <span className="num pdp-rev__n">{dist[i]}</span>
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="pdp-rev__bars">
-            {[5, 4, 3, 2, 1].map((s, i) => (
-              <div key={s} className="pdp-rev__bar">
-                <span className="num">{s}★</span>
-                <div className="pdp-rev__track"><div className="pdp-rev__fill" style={{ width: (total ? dist[i] / total * 100 : 0) + '%' }} /></div>
-                <span className="num pdp-rev__n">{dist[i]}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      ) : (
-        <div className="pdp-rev__empty"><Icon name="star" size={30} /><p>No reviews yet — be the first to review this product.</p></div>
-      )}
+        ) : (
+          <div className="pdp-rev__empty"><Icon name="star" size={30} /><p>No reviews yet — be the first to review this product.</p></div>
+        )}
+
+        {!formOpen && !justSubmitted && (
+          <button type="button" className="btn btn--brand pdp-rev__write-btn" onClick={() => setFormOpen(true)}>Write a review</button>
+        )}
+      </div>
 
       {justSubmitted && (
         <div className="pdp-rev__thanks" role="status"><Icon name="check" size={18} /> Thanks — your review has been posted below.</div>
       )}
 
-      {formOpen ? (
-        <ReviewForm onCancel={() => setFormOpen(false)} onSubmit={submit} />
-      ) : (
-        !justSubmitted && <button type="button" className="btn btn--ghost pdp-rev__write-btn" onClick={() => setFormOpen(true)}>Write a review</button>
-      )}
+      {formOpen && <ReviewForm onCancel={() => setFormOpen(false)} onSubmit={submit} />}
 
       {total > 0 && (
         <ul className="pdp-rev__list">
@@ -422,15 +424,6 @@ export default function ProductPage({ handle }) {
                   ? <span className="pdp-buy__instock"><span className="pdp-buy__dot" /> In stock — dispatched in 1–2 business days</span>
                   : <span className="pdp-buy__oos">Currently out of stock</span>}
               </div>
-              {canBuy && (
-                <p className="pdp-buy__selected">
-                  {variant && (() => {
-                    const nonDim = Object.entries(variant.attrs).filter(([k]) => isColourAxis(k)).map(([, v]) => v)
-                    return nonDim.length > 0 ? <span className="pdp-buy__selected-attrs">{nonDim.join(' · ')}</span> : null
-                  })()}
-                  <span className="num">{qty} unit{qty !== 1 ? 's' : ''}</span>
-                </p>
-              )}
               <div className="pdp-buy__actions">
                 <div className="qty" role="group" aria-label="Quantity">
                   <button onClick={() => setQty((q) => Math.max(1, q - 1))} aria-label="Decrease quantity"><Icon name="minus" size={16} /></button>
