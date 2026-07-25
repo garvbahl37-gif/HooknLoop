@@ -4,14 +4,22 @@
 .hd { display: contents; }
 
 /* branding strip (original red bar) — centred facilities */
-.hd-util { background: var(--brand); color: #fff; font-family: var(--f-head); }
-.hd-util__row { display: flex; align-items: center; justify-content: center; min-height: 38px; }
-.hd-util__feats { display: flex; gap: 26px; align-items: center; flex-wrap: wrap; justify-content: center; }
-.hd-util li { display: inline-flex; align-items: center; gap: 7px; font-size: var(--t-xs); font-weight: 500; letter-spacing: 0.02em; color: #fff; }
-.hd-util li svg { color: #fff; }
-.hd-util__lead { font-weight: 700 !important; font-size: var(--t-sm); letter-spacing: 0.01em; }
-@media (max-width: 900px){ .hd-util__sep:nth-child(n+3) { display: none; } }
-@media (max-width: 560px){ .hd-util__sep { display: none; } .hd-util__feats { gap: 0; } }
+.hd-util {
+  background: linear-gradient(115deg, #e2472c 0%, var(--brand) 45%, #c1301a 100%);
+  color: #fff; font-family: var(--f-head);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.18), inset 0 -1px 0 rgba(0,0,0,.1);
+}
+.hd-util.grain::after { opacity: .09; z-index: 1; }
+.hd-util__row { position: relative; z-index: 2; display: flex; align-items: center; justify-content: center; min-height: 42px; }
+.hd-util__feats { display: flex; gap: 0; align-items: center; flex-wrap: wrap; justify-content: center; }
+.hd-util li { display: inline-flex; align-items: center; gap: 8px; padding-inline: 20px; font-size: var(--t-xs); font-weight: 600; letter-spacing: 0.02em; color: rgba(255,255,255,.94); }
+.hd-util li svg { color: #fff; flex-shrink: 0; }
+.hd-util__ic { display: inline-flex; opacity: .95; }
+.hd-util__lead { font-weight: 700 !important; font-size: var(--t-sm); letter-spacing: 0.01em; color: #fff; padding-left: 0; }
+.hd-util__sep { position: relative; }
+.hd-util__sep::before { content: ""; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 1px; height: 14px; background: rgba(255,255,255,.3); }
+@media (max-width: 900px){ .hd-util .hd-util__sep:nth-child(n+3) { display: none; } }
+@media (max-width: 560px){ .hd-util .hd-util__sep { display: none; } .hd-util__feats { gap: 0; } .hd-util__lead { padding-inline: 16px; } }
 
 /* sticky block */
 .hd-stick { position: sticky; top: 0; z-index: 100; background: #fff; box-shadow: var(--sh-sm); }

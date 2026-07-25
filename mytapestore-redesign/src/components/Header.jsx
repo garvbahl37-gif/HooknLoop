@@ -130,13 +130,13 @@ export default function Header() {
   return (
     <header className="hd">
       {/* branding strip (original red bar) — centred facilities */}
-      <div className="hd-util">
+      <div className="hd-util grain">
         <div className="wrap hd-util__row">
           <ul className="hd-util__feats">
-            <li className="hd-util__lead"><Icon name="truck" size={16} /> Fast delivery across Australia</li>
-            <li className="hd-util__sep"><Icon name="shield" size={14} /> Australian owned &amp; operated</li>
-            <li className="hd-util__sep"><Icon name="medal" size={14} /> Lowest-price guarantee</li>
-            <li className="hd-util__sep"><Icon name="lock" size={14} /> Secure checkout</li>
+            <li className="hd-util__lead"><span className="hd-util__ic"><Icon name="truck" size={17} /></span> Fast delivery across Australia</li>
+            <li className="hd-util__sep"><span className="hd-util__ic"><Icon name="shield" size={15} /></span> Australian owned &amp; operated</li>
+            <li className="hd-util__sep"><span className="hd-util__ic"><Icon name="medal" size={15} /></span> Lowest-price guarantee</li>
+            <li className="hd-util__sep"><span className="hd-util__ic"><Icon name="lock" size={15} /></span> Secure checkout</li>
           </ul>
         </div>
       </div>
