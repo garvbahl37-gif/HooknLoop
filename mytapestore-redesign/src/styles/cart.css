@@ -81,6 +81,8 @@
 .cart-done__steps { display: flex; flex-direction: column; gap: 10px; align-items: flex-start; margin: 8px 0 4px; padding: 18px 24px; background: var(--paper); border: 1px solid var(--line); border-radius: var(--r-lg); }
 .cart-done__steps li { display: flex; align-items: center; gap: 10px; font-size: var(--t-sm); color: var(--ink-2); }
 .cart-done__step-ic { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: color-mix(in srgb, var(--stock) 14%, #fff); color: var(--stock); flex-shrink: 0; }
+.cart-done__optin { display: inline-flex; align-items: center; gap: 7px; font-size: var(--t-xs); color: var(--brand-ink); }
+.cart-done__optin svg { flex-shrink: 0; }
 
 @media (max-width: 860px){
   .cart__layout { grid-template-columns: 1fr; }

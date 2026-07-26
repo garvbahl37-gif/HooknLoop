@@ -48,6 +48,7 @@ function Confirmation({ placed }) {
         <li><span className="cart-done__step-ic"><Icon name="warehouse" size={15} /></span>Picked and packed at our warehouse</li>
         <li><span className="cart-done__step-ic"><Icon name="truck" size={15} /></span>On its way — tracking emailed on dispatch</li>
       </ul>
+      {placed.marketingOptIn && <p className="cart-done__optin"><Icon name="mail" size={14} /> You're subscribed to deals, restock alerts and bulk-pricing offers by email and SMS.</p>}
       <div className="cart-done__cta">
         <a className="btn btn--brand btn--lg" href="#/shop" onClick={(e) => { e.preventDefault(); navigate('/shop') }}>Continue shopping</a>
         <a className="btn btn--ghost btn--lg" href="#/" onClick={(e) => { e.preventDefault(); navigate('/') }}>Back to home</a>
@@ -61,6 +62,7 @@ export default function CheckoutPage() {
   const count = cartCount(cart)
   const subtotal = cartTotal(cart)
   const [placed, setPlaced] = useState(null)
+  const [marketingOptIn, setMarketingOptIn] = useState(true)
   const [billingSame, setBillingSame] = useState(true)
   const [shipMethod, setShipMethod] = useState('standard')
   const [payMethod, setPayMethod] = useState('card')
@@ -93,7 +95,7 @@ export default function CheckoutPage() {
     e.preventDefault()
     const email = e.target.elements.email?.value || ''
     const id = 'MTS-' + Math.floor(100000 + (subtotal * 37 % 899999))
-    setPlaced({ id, total, email })
+    setPlaced({ id, total, email, marketingOptIn })
     clearCart()
   }
 
@@ -109,6 +111,13 @@ export default function CheckoutPage() {
               <label className="chk-field chk-col-2">Email<input name="email" type="email" required placeholder="you@email.com" /></label>
               <label className="chk-field chk-col-2">Phone<input name="phone" type="tel" required placeholder="04xx xxx xxx" /></label>
             </div>
+            <label className="chk-optin">
+              <input type="checkbox" checked={marketingOptIn} onChange={(e) => setMarketingOptIn(e.target.checked)} />
+              <span className="chk-optin__copy">
+                <b>Keep me in the loop</b>
+                <span>Exclusive deals, restock alerts and bulk-pricing offers by email and SMS. Unsubscribe anytime.</span>
+              </span>
+            </label>
           </section>
 
           <section className="chk-section">
