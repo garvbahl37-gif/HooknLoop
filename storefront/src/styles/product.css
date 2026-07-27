@@ -124,9 +124,15 @@
 .pdp__pill { padding: 11px 18px; border: 1.5px solid var(--line-card); border-radius: var(--r-ctrl); background: #fff; font-weight: 600; font-size: 0.9rem; color: var(--navy); transition: border-color 0.14s, background 0.14s; }
 .pdp__pill:hover { border-color: var(--muted-ink); }
 .pdp__pill.is-on { border-color: var(--navy); background: var(--navy); color: #fff; }
-.pdp__swatches { display: flex; gap: 10px; }
-.pdp__swatch { width: 40px; height: 40px; border-radius: var(--r-pill); border: 2px solid var(--line-card); box-shadow: inset 0 0 0 2px #fff; }
-.pdp__swatch.is-on { border-color: var(--orange); }
+.pdp__swatches { display: flex; gap: 16px; flex-wrap: wrap; }
+.pdp__swatch { position: relative; width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+  border: 2px solid var(--line-card); box-shadow: inset 0 0 0 2px #fff; transition: border-color 0.14s, transform 0.14s; }
+.pdp__swatch:hover { transform: scale(1.08); }
+.pdp__swatch.is-on { border-color: var(--orange); box-shadow: inset 0 0 0 2px #fff, 0 0 0 2px var(--orange); }
+.pdp__swatch.is-on::after {
+  content: ''; position: absolute; inset: 0; margin: auto; width: 8px; height: 8px; border-radius: 50%;
+  background: #fff; box-shadow: 0 0 0 1px rgba(8,18,40,0.15);
+}
 
 /* SIDE selector — a clean dropdown; sits in the same rhythm as Size and Colour */
 .pdp__select { position: relative; display: block; max-width: 400px; }
@@ -141,16 +147,15 @@
 .pdp__nudge { margin-top: 12px; font-size: 0.82rem; color: var(--orange-ink); background: #fff7f0; border: 1px solid rgba(232,119,34,0.3); border-radius: var(--r-ctrl); padding: 10px 12px; }
 .pdp__nudge button { color: var(--orange-ink); font-weight: 700; text-decoration: underline; }
 
-.pdp__qtyrow { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
-.pdp__qty { display: inline-flex; align-items: center; border: 1.5px solid var(--line-card); border-radius: var(--r-ctrl); overflow: hidden; }
-.pdp__qty button { width: 42px; height: 44px; font-size: 1.2rem; color: var(--navy); } .pdp__qty button:hover { background: var(--cloud); }
-.pdp__qty span { width: 44px; text-align: center; font-weight: 700; }
-.pdp__breakhint { text-align: right; } .pdp__breakhint > span { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted-ink); }
-.pdp__breakhint div { display: flex; gap: 12px; margin-top: 6px; } .pdp__breakhint em { font-style: normal; font-size: 0.78rem; color: var(--muted-ink); } .pdp__breakhint b { color: var(--orange-ink); }
-
-/* two full-width, stacked CTAs so the buy action is impossible to miss */
+/* quantity + Add to cart sit in one row (the Buy Now stays full-width below) so
+   the stepper reads as part of the buy action instead of a stray control */
 .pdp__cta { display: flex; flex-direction: column; gap: 12px; margin: 22px 0 18px; }
-.pdp__add { width: 100%; font-size: 1.05rem; font-weight: 800; min-height: 58px; } .pdp__add.is-added { background: #1f9d55; color: #fff; }
+.pdp__cta-row { display: flex; gap: 10px; align-items: stretch; }
+.pdp__qty { display: inline-flex; align-items: center; flex-shrink: 0;
+  border: 1.5px solid var(--line-card); border-radius: var(--r-ctrl); overflow: hidden; }
+.pdp__qty button { width: 44px; height: 100%; font-size: 1.2rem; color: var(--navy); } .pdp__qty button:hover { background: var(--cloud); }
+.pdp__qty span { width: 40px; text-align: center; font-weight: 700; }
+.pdp__add { flex: 1; min-width: 0; font-size: 1.05rem; font-weight: 800; min-height: 58px; } .pdp__add.is-added { background: #1f9d55; color: #fff; }
 .pdp__buynow { width: 100%; min-height: 58px; border-radius: var(--r-ctrl); background: #5a31f4; color: #fff; font-weight: 600; font-size: 1.05rem;
   display: inline-flex; align-items: center; justify-content: center; gap: 7px; transition: background 0.15s, transform 0.12s; }
 .pdp__buynow:hover { background: #4a27d4; transform: translateY(-1px); }

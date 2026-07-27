@@ -48,6 +48,41 @@
 .film__resume:hover { background: rgba(20,37,72,0.75); transform: scale(1.06); }
 .film__resume:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; }
 
+/* — founder story, sits between the film and the closing brand line — */
+.film__story {
+  max-width: 680px;
+  margin: var(--sp-8) auto 0;
+  padding-top: var(--sp-7);
+  border-top: 1px solid var(--line-navy);
+  text-align: center;
+}
+.film__story-mark {
+  display: block;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 3.25rem;
+  line-height: 1;
+  color: var(--orange-word);
+  opacity: 0.85;
+  margin-bottom: var(--sp-2);
+}
+.film__story-text {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+  line-height: 1.55;
+  color: var(--on-navy-2);
+  letter-spacing: -0.01em;
+}
+.film__story-by {
+  margin: var(--sp-4) 0 0;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 0.8125rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--faint-navy);
+}
+
 .film__tag {
   text-align: center;
   margin: var(--sp-6) 0 0;

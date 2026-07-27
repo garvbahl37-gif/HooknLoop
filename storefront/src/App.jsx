@@ -1,6 +1,7 @@
 import Header from './components/Header.jsx'
 import HeroSlides from './components/HeroSlides.jsx'
 import FloatingActions from './components/FloatingActions.jsx'
+import CartDrawer from './components/CartDrawer.jsx'
 import BottomNav from './components/BottomNav.jsx'
 import { WhyUs, OneStop, TrustedSupplier } from './sections/Basic.jsx'
 import BestSellers from './sections/BestSellers.jsx'
@@ -22,6 +23,7 @@ import './styles/product.css'
 import './styles/pages.css'
 import './styles/industries.css'
 import './styles/film.css'
+import './styles/cartdrawer.css'
 
 function Landing() {
   return (
@@ -64,6 +66,7 @@ export default function App() {
       <div className="route-view" key={route + '/' + param}>{page}</div>
       <Footer />
       <FloatingActions />
+      <CartDrawer />
       <BottomNav />
     </>
   )

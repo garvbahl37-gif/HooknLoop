@@ -78,6 +78,16 @@ export default function BrandFilm() {
           </button>
         </div>
 
+        <figure className="film__story">
+          <span className="film__story-mark" aria-hidden="true">&ldquo;</span>
+          <blockquote className="film__story-text">
+            We started four years ago with a single garage warehouse and a simple promise: make sourcing hook and loop
+            tape effortless. Today HooknLoop supplies premium hook and loop solutions right across Australia, trusted
+            by more than 26 industries in both private and government sectors — retail and wholesale alike.
+          </blockquote>
+          <figcaption className="film__story-by">Founder, HooknLoop</figcaption>
+        </figure>
+
         <p className="film__tag">HooknLoop. <span>Made to connect.</span></p>
       </div>
     </section>

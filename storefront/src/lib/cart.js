@@ -37,6 +37,21 @@ export function useCart() {
   return cart
 }
 
+/* mini-cart drawer — opens automatically right after Add to cart */
+let drawerListeners = []
+let drawerOpen = false
+export function openCartDrawer() { drawerOpen = true; drawerListeners.forEach((l) => l(true)) }
+export function closeCartDrawer() { drawerOpen = false; drawerListeners.forEach((l) => l(false)) }
+export function useCartDrawer() {
+  const [open, setOpen] = useState(drawerOpen)
+  useEffect(() => {
+    const fn = (v) => setOpen(v)
+    drawerListeners.push(fn)
+    return () => { drawerListeners = drawerListeners.filter((l) => l !== fn) }
+  }, [])
+  return open
+}
+
 /* tiny hash router helper */
 export function navigate(hash) { window.location.hash = hash; window.scrollTo(0, 0) }
 export function useRoute() {

@@ -4,7 +4,7 @@
     [TDS] gaps; trust; sticky add-to-cart; FAQ; cross-sell.                      */
 import { useState, useEffect } from 'react'
 import { PRODUCTS, findProduct, productDetails, productRating, productFaqs, productCopy, BRAND } from '../data/catalog.js'
-import { addToCart, navigate } from '../lib/cart.js'
+import { addToCart, openCartDrawer, navigate } from '../lib/cart.js'
 import { useInView } from '../lib/useInView.js'
 import Stars from '../components/Stars.jsx'
 import ProductCard from '../components/ProductCard.jsx'
@@ -69,14 +69,18 @@ export default function ProductPage({ handle }) {
   const faqs = productFaqs(p.handle)   // the store's real, product-specific FAQs
   const copy = productCopy(p.handle)   // real description + Key Features from the live store
 
-  const add = () => {
+  const addOnly = () => {
     addToCart({
       key: `${p.handle}|${size.label}|${colour}|${side}`,
       handle: p.handle, name: p.name, img: p.img,
       variant: `${size.label} · ${colour}${p.hookLoop ? ` · ${side === 'both' ? 'Both' : side}` : ''}`,
       price: unit, qty,
     })
+  }
+  const add = () => {
+    addOnly()
     setAdded(true); setTimeout(() => setAdded(false), 1800)
+    openCartDrawer()
   }
 
   return (
@@ -156,16 +160,16 @@ export default function ProductPage({ handle }) {
             </div>
           )}
 
-          <div className="pdp__opt">
-            <span className="pdp__opt-label">Quantity</span>
-            <div className="pdp__qty">
-              <button onClick={() => setQty(Math.max(1, qty - 1))} aria-label="Decrease">−</button><span>{qty}</span><button onClick={() => setQty(qty + 1)} aria-label="Increase">+</button>
-            </div>
-          </div>
-
           <div className="pdp__cta">
-            <button className={`btn btn--primary pdp__add ${added ? 'is-added' : ''}`} onClick={add}>{added ? '✓ Added to cart' : <>Add to cart — ${price.toFixed(2)}</>}</button>
-            <button className="pdp__buynow" onClick={() => { add(); navigate('cart') }} aria-label="Buy it now with Shop Pay">Buy with <span className="pdp__buynow-logo">shop</span></button>
+            <div className="pdp__cta-row">
+              <div className="pdp__qty" role="group" aria-label="Quantity">
+                <button onClick={() => setQty(Math.max(1, qty - 1))} aria-label="Decrease quantity">−</button>
+                <span aria-live="polite">{qty}</span>
+                <button onClick={() => setQty(qty + 1)} aria-label="Increase quantity">+</button>
+              </div>
+              <button className={`btn btn--primary pdp__add ${added ? 'is-added' : ''}`} onClick={add}>{added ? '✓ Added to cart' : <>Add to cart — ${price.toFixed(2)}</>}</button>
+            </div>
+            <button className="pdp__buynow" onClick={() => { addOnly(); navigate('cart') }} aria-label="Buy it now with Shop Pay">Buy with <span className="pdp__buynow-logo">shop</span></button>
           </div>
 
           <div className="pdp__policies">
