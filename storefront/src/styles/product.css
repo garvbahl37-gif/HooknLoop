@@ -24,6 +24,8 @@
 /* buy box */
 .pdp__eyebrow { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--orange-ink); }
 .pdp__brand { display: block; font-size: 0.82rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--blue); margin: 8px 0 0; }
+.pdp__brand-sku { color: var(--muted-ink); font-weight: 600; letter-spacing: normal; text-transform: none; }
+.pdp__brand-sku b { color: var(--navy); font-weight: 800; letter-spacing: 0.03em; }
 /* Estimated delivery calculator */
 .pdp__eta { display: flex; gap: 13px; align-items: flex-start; background: var(--cloud); border: 1px solid var(--line-card); border-radius: var(--r-card); padding: 15px 16px; margin-top: 16px; }
 .pdp__eta-ic { flex: none; width: 40px; height: 40px; border-radius: 11px; background: rgba(20,108,67,0.1); color: #146c43; display: grid; place-items: center; }
@@ -108,7 +110,6 @@
 .pdp__rating > span { font-weight: 600; }
 .pdp__stars { color: var(--orange); letter-spacing: 1px; } .pdp__star-empty { color: #d7deea; }
 .pdp__rating-none { font-weight: 500; opacity: 0.75; }
-.pdp__rating-sep { opacity: 0.4; }
 .pdp__badge-velcro { background: rgba(25,82,204,0.1); color: var(--blue); font-weight: 700; font-size: 0.72rem; padding: 4px 10px; border-radius: var(--r-pill); }
 
 .pdp__price { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap;
@@ -206,10 +207,6 @@
 .pdp__spec tr:last-child td, .pdp__spec tr:last-child th { border-bottom: 0; } .pdp__spec th { border-bottom: 1px solid var(--line-card); }
 .pdp__tds { color: var(--orange-ink); font-style: italic; font-weight: 600; }
 .pdp__spec-note { font-size: 0.78rem; margin-top: 12px; color: var(--muted-ink); }
-
-/* SKU chip in the rating row — bordered so it clearly reads as a product code */
-.pdp__sku { font-size: 0.78rem; color: var(--muted-ink); border: 1px solid var(--line-card); border-radius: 6px; padding: 2px 9px; }
-.pdp__sku b { color: var(--navy); font-weight: 700; letter-spacing: 0.03em; }
 
 /* key applications — orange-check list */
 .pdp__apps { display: grid; gap: 11px; }

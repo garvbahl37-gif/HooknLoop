@@ -31,7 +31,7 @@ export const PRODUCTS = [
     sizes: [{ label: '12mm × 12.5m', single: 21.66 }, { label: '15mm × 12.5m', single: 22.95 }, { label: '25mm × 12.5m', single: 30.93 }], colours: ['Black'], gallery: ['/img/p-doubleside.png'] },
   { handle: 'heavy-duty-straps', name: 'Heavy-Duty Hook & Loop Straps', cat: 'straps', from: 63.00, img: '/img/p-strap2.png',
     badge: null, spec: '50mm × 5m · set of 5', hookLoop: false,
-    sizes: [{ label: '50mm × 5m (set of 5)', single: 63.00 }], colours: ['Orange', 'Black'], gallery: ['/img/p-strap2.png'] },
+    sizes: [{ label: '50mm × 5m (set of 5)', single: 63.00 }], colours: ['Orange/Black'], gallery: ['/img/p-strap2.png'] },
   { handle: 'heavy-duty-adhesive', name: 'Heavy-Duty Adhesive Hook & Loop', cat: 'self-adhesive', from: 55.43, img: '/img/p-heavyduty.png',
     badge: 'Industrial', spec: 'High-tack acrylic · heat & outdoor', hookLoop: true,
     sizes: [{ label: '25mm × 25m', single: 55.43 }, { label: '50mm × 25m', single: 78.60 }], colours: ['Black', 'White'], gallery: ['/img/p-heavyduty.png'] },

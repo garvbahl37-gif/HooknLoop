@@ -12,6 +12,19 @@ import ProductReviews from '../components/ProductReviews.jsx'
 
 /*  Volume pricing mirrors the live store's "Buy More & Save" ladder. */
 const QTY_BREAKS = [['Buy 5+', 'Save 5%'], ['Buy 10+', 'Save 10%'], ['Buy 20+', 'Save 20%'], ['Buy 50+', 'Save 30%']]
+
+/*  Swatch fill for a colour option. Some products (e.g. Heavy-Duty Straps) ship
+    as a single SKU that's inherently two-tone — one real choice, not two — so
+    the catalog encodes that as "Orange/Black" and the swatch renders as one
+    split circle instead of two separate solid buttons.                        */
+const SWATCH_HEX = { Black: '#1a1a1a', White: '#fff', Orange: '#e8600a' }
+function swatchFill(c) {
+  if (c.includes('/')) {
+    const [a, b] = c.split('/').map((s) => s.trim())
+    return `linear-gradient(90deg, ${SWATCH_HEX[a] || '#ccc'} 50%, ${SWATCH_HEX[b] || '#ccc'} 50%)`
+  }
+  return SWATCH_HEX[c] || '#fff'
+}
 const PDP_TRUST = [
   ['truck', 'Fast Australian shipping', 'Speedy delivery Australia-wide'],
   ['lock', 'Secured payment', 'Safe checkout with SSL encryption'],
@@ -100,7 +113,7 @@ export default function ProductPage({ handle }) {
 
         <div className="pdp__buy">
           <span className="pdp__eyebrow">Australian stock · fast dispatch</span>
-          <span className="pdp__brand">{BRAND}</span>
+          <span className="pdp__brand">{BRAND} <span className="pdp__brand-sku">· SKU <b>{d.sku}</b></span></span>
           <h1 className="pdp__title">{p.name}</h1>
           <div className="pdp__rating">
             {reviews > 0 ? (
@@ -108,8 +121,6 @@ export default function ProductPage({ handle }) {
             ) : (
               <span className="pdp__rating-none">No reviews yet</span>
             )}
-            <span className="pdp__rating-sep" aria-hidden="true">·</span>
-            <span className="pdp__sku">SKU <b>{d.sku}</b></span>
           </div>
 
           <div className="pdp__price">
@@ -131,7 +142,7 @@ export default function ProductPage({ handle }) {
             <div className="pdp__swatches">
               {p.colours.map((c) => (
                 <button key={c} className={`pdp__swatch ${colour === c ? 'is-on' : ''}`} onClick={() => setColour(c)} aria-label={c}
-                        style={{ background: c === 'Black' ? '#1a1a1a' : c === 'Orange' ? '#e8600a' : '#fff' }} />
+                        style={{ background: swatchFill(c) }} />
               ))}
             </div>
           </div>
