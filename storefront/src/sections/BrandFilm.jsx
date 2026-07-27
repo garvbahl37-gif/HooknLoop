@@ -78,23 +78,6 @@ export default function BrandFilm() {
           </button>
         </div>
 
-        <figure className="film__story">
-          <span className="film__story-mark" aria-hidden="true">&ldquo;</span>
-          <blockquote className="film__story-text">
-            We started four years ago with a single garage warehouse and a simple promise: make sourcing hook and loop
-            tape effortless. Today HooknLoop supplies premium hook and loop solutions right across Australia, trusted
-            by more than 26 industries in both private and government sectors — retail and wholesale alike.
-          </blockquote>
-          <figcaption className="film__story-by">Founder, HooknLoop</figcaption>
-
-          <ul className="film__stats">
-            <li className="film__stat"><span className="film__stat-n">4 yrs</span><span className="film__stat-l">Garage to nationwide</span></li>
-            <li className="film__stat"><span className="film__stat-n">26+</span><span className="film__stat-l">Industries supplied</span></li>
-            <li className="film__stat"><span className="film__stat-n">AU-wide</span><span className="film__stat-l">Delivery footprint</span></li>
-            <li className="film__stat"><span className="film__stat-n">Retail &amp; Wholesale</span><span className="film__stat-l">Private &amp; government</span></li>
-          </ul>
-        </figure>
-
         <p className="film__tag">HooknLoop. <span>Made to connect.</span></p>
       </div>
     </section>
