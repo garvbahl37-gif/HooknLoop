@@ -113,8 +113,8 @@ export default function ProductPage({ handle }) {
 
         <div className="pdp__buy">
           <span className="pdp__eyebrow">Australian stock · fast dispatch</span>
-          <span className="pdp__brand">{BRAND} <span className="pdp__brand-sku">· SKU <b>{d.sku}</b></span></span>
           <h1 className="pdp__title">{p.name}</h1>
+          <span className="pdp__brand">{BRAND} <span className="pdp__brand-sku">· SKU <b>{d.sku}</b></span></span>
           <div className="pdp__rating">
             {reviews > 0 ? (
               <><Stars v={rating} size={16} /><button type="button" className="pdp__rating-link" onClick={() => document.getElementById('reviews')?.scrollIntoView({ behavior: 'smooth' })}>{rating.toFixed(1)} · {reviews} review{reviews > 1 ? 's' : ''}</button></>

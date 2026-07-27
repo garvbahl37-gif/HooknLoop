@@ -23,7 +23,7 @@
 
 /* buy box */
 .pdp__eyebrow { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--orange-ink); }
-.pdp__brand { display: block; font-size: 0.82rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--blue); margin: 8px 0 0; }
+.pdp__brand { display: block; font-size: 0.82rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--blue); margin: 0 0 12px; }
 .pdp__brand-sku { color: var(--muted-ink); font-weight: 600; letter-spacing: normal; text-transform: none; }
 .pdp__brand-sku b { color: var(--navy); font-weight: 800; letter-spacing: 0.03em; }
 /* Estimated delivery calculator */
