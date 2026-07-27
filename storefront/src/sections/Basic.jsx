@@ -63,24 +63,19 @@ export function CategoryGrid() {
 }
 
 /* ── One-Stop Shop — lifestyle category bento (from the live store, elevated) ──
-   Main bento: one tall featured tile (Dots & Coins) beside two stacked full-width
-   tiles (Self-Adhesive, then Sew-On) — the bottom-right pair used to be split into
-   two half-width tiles that didn't match the width of the tile above; merged into
-   one so the right column reads as two clean, evenly-sized bands.
-   Below the bento: a new symmetric strip row for Material Handling Straps and
-   Heavy Duty — shorter "sleek strip" cards (name + Shop now), not full photo tiles. */
+   Each tile deep-links straight to its flagship product page (not the category
+   listing) — one click from homepage to buy. Badge text is each product's own
+   real merchandising badge from the catalogue (same "Best seller" etc. shown on
+   product cards), not invented per-tile. Name label sits top-right as its own
+   frosted chip so it reads clearly over any photo without a full scrim.        */
 const ONESTOP = [
-  { slug: 'dots',          title: 'Dots & Coins',  sub: 'Peel & stick',              img: '/img/lifestyle/ls-dots.png',     cls: 'os__tile--a' },
-  { slug: 'self-adhesive', title: 'Self-Adhesive', sub: 'Peel & stick · industrial', img: '/img/lifestyle/ls-adhesive.png', cls: 'os__tile--b' },
-  { slug: 'sew-on',        title: 'Sew-On',        sub: 'For fabric & garments',     img: '/img/lifestyle/ls-sew-on.png',   cls: 'os__tile--c' },
-]
-/* Temporary placeholders reusing real existing photography (never a broken image) —
-   see the image-generation prompts handed off separately for the real lifestyle shots. */
-const STRIPS = [
-  { slug: 'straps', title: 'Material Handling Straps', img: '/img/lifestyle/ls-straps.png', to: 'collection/straps' },
-  { title: 'Heavy Duty', img: '/img/products/heavy-duty-adhesive-1.png', to: 'product/heavy-duty-adhesive' },
+  { handle: 'hook-and-loop-dots',    title: 'Dots & Coins',        badge: 'Popular',        img: '/img/lifestyle/ls-dots.png',     cls: 'os__tile--a' },
+  { handle: 'self-adhesive-roll',    title: 'Self-Adhesive',       badge: 'Best seller',     img: '/img/lifestyle/ls-adhesive.png', cls: 'os__tile--b' },
+  { handle: 'sew-on',                title: 'Sew-On',              badge: 'Best seller',     img: '/img/lifestyle/ls-sew-on.png',   cls: 'os__tile--c' },
+  { handle: 'reusable-cable-straps', title: 'Straps & Cable Ties', badge: 'Self-fastening',  img: '/img/lifestyle/ls-straps.png',   cls: 'os__tile--d' },
 ]
 export function OneStop() {
+  const goProd = (handle) => (e) => { e.preventDefault(); navigate(`product/${handle}`) }
   return (
     <section className="os" aria-labelledby="os-h">
       <div className="wrap">
@@ -91,18 +86,10 @@ export function OneStop() {
         </div>
         <div className="os__grid">
           {ONESTOP.map((t) => (
-            <a key={t.slug} href="#" className={`os__tile ${t.cls}`} onClick={goCat(t.slug)} aria-label={`Shop ${t.title}`}>
+            <a key={t.handle} href="#" className={`os__tile ${t.cls}`} onClick={goProd(t.handle)} aria-label={`Shop ${t.title}`}>
               <span className="os__media"><img src={t.img} alt={t.title} loading="lazy" /></span>
-              <span className="os__shop">Shop now<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.8"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-            </a>
-          ))}
-        </div>
-        <div className="os__strips">
-          {STRIPS.map((s) => (
-            <a key={s.title} href="#" className="os__strip" onClick={(e) => { e.preventDefault(); navigate(s.to) }} aria-label={`Shop ${s.title}`}>
-              <span className="os__media"><img src={s.img} alt={s.title} loading="lazy" /></span>
-              <span className="os__strip-scrim" />
-              <span className="os__strip-name">{s.title}</span>
+              {t.badge && <span className="pc__badge">{t.badge}</span>}
+              <span className="os__name">{t.title}</span>
               <span className="os__shop">Shop now<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.8"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
             </a>
           ))}

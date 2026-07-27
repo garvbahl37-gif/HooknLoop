@@ -1,7 +1,9 @@
 /*  FloatingActions — clean icon buttons: call (bottom-left) · chat (bottom-right).
     Chat opens a branded panel; both are circular icon-only with a hover tooltip.
-    Both retire once the footer is on screen so they never cover it.             */
-import { useState } from 'react'
+    Both retire once the footer is on screen so they never cover it. The call
+    button also gets a one-time proactive "Stuck? Call us" teaser bubble a few
+    seconds after load — nudges undecided visitors without being a modal.      */
+import { useState, useEffect } from 'react'
 import { navigate } from '../lib/cart.js'
 import { useInView } from '../lib/useInView.js'
 
@@ -22,6 +24,18 @@ export default function FloatingActions() {
   const atFooter = useInView('.ft')
   const parked = atFooter && !chat
 
+  const [callTeaser, setCallTeaser] = useState(false)
+  const [teaserDismissed, setTeaserDismissed] = useState(false)
+  useEffect(() => {
+    const t = setTimeout(() => setCallTeaser(true), 3500)
+    return () => clearTimeout(t)
+  }, [])
+  const dismissTeaser = (e) => {
+    e.preventDefault()
+    setCallTeaser(false)
+    setTeaserDismissed(true)
+  }
+
   const send = (e) => {
     e.preventDefault()
     if (!msg.trim()) return
@@ -30,7 +44,17 @@ export default function FloatingActions() {
 
   return (
     <>
-      {/* bottom-left: call — clean icon */}
+      {/* bottom-left: call — clean icon, with a one-time proactive teaser bubble */}
+      {callTeaser && !teaserDismissed && !parked && (
+        <div className="calltease">
+          <a href="tel:1300183481" className="calltease__link">
+            <span className="calltease__text"><strong>Stuck?</strong> Call us — real humans answer fast.</span>
+          </a>
+          <button className="calltease__close" onClick={dismissTeaser} aria-label="Dismiss">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"><path d="M6 6l12 12M18 6 6 18"/></svg>
+          </button>
+        </div>
+      )}
       <a className={`fab fab--call ${parked ? 'is-parked' : ''}`} href="tel:1300183481" aria-label="Call us on 1300 183 481" tabIndex={parked ? -1 : 0}>
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 12l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 2 6a2 2 0 0 1 2-2Z"/></svg>
         <span className="fab__tip fab__tip--left">Call 1300 183 481</span>

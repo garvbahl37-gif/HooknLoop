@@ -31,6 +31,29 @@
 .fab__tip--right { right: calc(100% + 12px); }
 .fab:hover .fab__tip { opacity: 1; visibility: visible; transition: opacity 0.15s; }
 
+/* proactive "Stuck? Call us" teaser — sits above the call fab, points down at it */
+.calltease {
+  position: fixed; left: 24px; bottom: 92px; z-index: 62;
+  display: flex; align-items: center; gap: 4px;
+  max-width: 248px;
+  background: #fff; border-radius: var(--r-card);
+  box-shadow: var(--shadow-card);
+  padding: 4px 4px 4px 14px;
+  animation: chatIn 0.24s var(--ease);
+}
+.calltease::after {
+  content: ''; position: absolute; left: 24px; bottom: -7px;
+  width: 14px; height: 14px; background: #fff;
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+  transform: rotate(-45deg);
+}
+.calltease__link { padding: 8px 0; }
+.calltease__text { font-size: 0.84rem; font-weight: 600; color: var(--ink); line-height: 1.35; }
+.calltease__text strong { color: var(--orange-ink); }
+.calltease__close { flex-shrink: 0; width: 24px; height: 24px; display: grid; place-items: center;
+  color: var(--muted-ink); border-radius: 50%; }
+.calltease__close:hover { background: var(--cloud); color: var(--ink); }
+
 /* chat panel */
 .chatp { width: 360px; max-width: calc(100vw - 44px); background: #fff; border-radius: var(--r-card);
   box-shadow: 0 18px 48px rgba(8,18,40,0.34); overflow: hidden; animation: chatIn 0.22s var(--ease); }
@@ -79,7 +102,7 @@
 .btabs { display: none; }
 @media (max-width: 900px){
   /* the floating call/chat bubbles are replaced by the tab bar down here */
-  .fab--call, .fabchat { display: none; }
+  .fab--call, .fabchat, .calltease { display: none; }
   /* leave room so the fixed bar never covers the last content or the footer
      (the 0px fallback keeps this valid where env() isn't supported) */
   body { padding-bottom: calc(58px + env(safe-area-inset-bottom, 0px)); }
