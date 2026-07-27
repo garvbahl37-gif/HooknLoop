@@ -55,30 +55,46 @@ section { scroll-margin-top: 80px; }
 .os__grid { display: grid; grid-template-columns: repeat(12,1fr); grid-template-rows: clamp(200px,20vw,248px) clamp(200px,20vw,248px); gap: 16px; }
 .os__tile--a { grid-column: 1 / 7;  grid-row: 1 / 3; }   /* featured, large */
 .os__tile--b { grid-column: 7 / 13; grid-row: 1; }        /* wide */
-.os__tile--c { grid-column: 7 / 10; grid-row: 2; }
-.os__tile--d { grid-column: 10 / 13; grid-row: 2; }
+.os__tile--c { grid-column: 7 / 13; grid-row: 2; }        /* was split into two half-tiles; now matches --b's width */
 .os__tile { position: relative; overflow: hidden; border-radius: var(--r-card); display: block; background: var(--navy);
   box-shadow: 0 1px 2px rgba(8,18,40,0.06), 0 14px 30px -16px rgba(8,18,40,0.30);
   transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease); }
 .os__tile:hover { transform: translateY(-4px); box-shadow: var(--shadow-card); }
 .os__media { position: absolute; inset: 0; overflow: hidden; }
 .os__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s var(--ease); }
-.os__tile:hover .os__media img { transform: scale(1.05); }
+.os__tile:hover .os__media img, .os__strip:hover .os__media img { transform: scale(1.05); }
 /* only the Shop now button sits on the photo — bottom-left, no strip or overlay */
 .os__shop { position: absolute; left: clamp(14px,1.6vw,20px); bottom: clamp(14px,1.6vw,20px); z-index: 2;
   display: inline-flex; align-items: center; gap: 7px; background: var(--orange); color: var(--cta-text);
   font-weight: 700; font-size: 0.86rem; padding: 10px 17px; border-radius: var(--r-ctrl); box-shadow: var(--shadow-cta);
   white-space: nowrap; transition: background 0.15s var(--ease), transform 0.15s var(--ease); }
-.os__tile:hover .os__shop { background: var(--orange-word); transform: translateY(-2px); }
+.os__tile:hover .os__shop, .os__strip:hover .os__shop { background: var(--orange-word); transform: translateY(-2px); }
+
+/* new symmetric pair below the bento — shorter "sleek strip" cards: category
+   name + Shop now, over a lifestyle photo. Same card language as .os__tile,
+   just lower and with a visible name label (needs the scrim to stay legible). */
+.os__strips { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+.os__strip { position: relative; overflow: hidden; border-radius: var(--r-card); display: block; background: var(--navy);
+  height: clamp(140px,15vw,180px);
+  box-shadow: 0 1px 2px rgba(8,18,40,0.06), 0 14px 30px -16px rgba(8,18,40,0.30);
+  transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease); }
+.os__strip:hover { transform: translateY(-4px); box-shadow: var(--shadow-card); }
+.os__strip-scrim { position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(0deg, rgba(15,29,58,0.82) 0%, rgba(15,29,58,0.35) 45%, rgba(15,29,58,0) 70%); }
+.os__strip-name { position: absolute; left: clamp(14px,1.6vw,20px); bottom: 54px; z-index: 2;
+  font-family: var(--font-head); font-weight: 800; font-size: clamp(1.05rem,1.6vw,1.3rem); color: #fff; letter-spacing: -0.01em; }
+
 @media (max-width:900px){
   .os__grid { grid-template-columns: 1fr 1fr; grid-template-rows: none; gap: 14px; }
   .os__tile { grid-column: auto; grid-row: auto; aspect-ratio: 4/3; }
   .os__tile--a { grid-column: 1 / -1; aspect-ratio: 16/8; }
+  .os__tile--c { grid-column: 1 / -1; aspect-ratio: 16/8; }
 }
 @media (max-width:560px){
   .os__grid { grid-template-columns: 1fr; }
   .os__tile, .os__tile--a { aspect-ratio: 3/2; }
   .os__body { flex-direction: column; align-items: flex-start; }
+  .os__strips { grid-template-columns: 1fr; }
 }
 
 /* ═══ TRUSTED SUPPLIER — B2C & B2B / wholesale ════════════════════════ */
