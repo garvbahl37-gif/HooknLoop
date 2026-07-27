@@ -1,0 +1,11 @@
+/* DM Sans — the real hooknloop.com.au live site's font (--font-body-family /
+   --font-heading-family, both DM Sans), self-hosted here rather than pulled
+   from Google Fonts at runtime. One variable file covers the full weight
+   range (400/500/600/700/800) this redesign actually uses. */
+@font-face {
+  font-family: 'DM Sans';
+  font-style: normal;
+  font-weight: 100 1000;
+  font-display: swap;
+  src: url('/fonts/DMSans-var.woff2') format('woff2-variations'), url('/fonts/DMSans-var.woff2') format('woff2');
+}

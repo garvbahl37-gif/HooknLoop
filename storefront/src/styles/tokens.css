@@ -35,9 +35,9 @@
   --line-navy:  rgba(255,255,255,0.10);
   --line-card:  #e7ecf4;
 
-  /* — type: rounded friendly sans (matches theme feel), local fallbacks — */
-  --font-body: "Poppins", "Avenir Next", "Segoe UI", system-ui, -apple-system, sans-serif;
-  --font-head: "Poppins", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  /* — type: DM Sans, the real hooknloop.com.au theme font (self-hosted, see fonts.css) — */
+  --font-body: "DM Sans", "Avenir Next", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-head: "DM Sans", "Avenir Next", "Segoe UI", system-ui, sans-serif;
 
   --t-hero: clamp(2.5rem, 4.6vw, 4rem);
   --t-h2:   clamp(1.6rem, 3vw, 2.4rem);

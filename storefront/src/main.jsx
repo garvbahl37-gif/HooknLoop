@@ -5,6 +5,7 @@ import { createRoot } from 'react-dom/client'
     landed last and its `.wrap { padding: 0 24px }` beat every `.wrap x` rule of
     equal specificity — silently zeroing the vertical padding on .ft__main,
     .pdp__grid, .ft__news-inner and friends.                                    */
+import './styles/fonts.css'
 import './styles/tokens.css'
 import './styles/base.css'
 import App from './App.jsx'
