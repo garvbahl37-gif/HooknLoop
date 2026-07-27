@@ -48,7 +48,7 @@ export default function FloatingActions() {
       {callTeaser && !teaserDismissed && !parked && (
         <div className="calltease">
           <a href="tel:1300183481" className="calltease__link">
-            <span className="calltease__text"><strong>Stuck?</strong> Call us — real humans answer fast.</span>
+            <span className="calltease__text"><strong>Stuck?</strong> Call us</span>
           </a>
           <button className="calltease__close" onClick={dismissTeaser} aria-label="Dismiss">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"><path d="M6 6l12 12M18 6 6 18"/></svg>

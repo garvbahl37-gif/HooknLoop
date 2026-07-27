@@ -34,11 +34,11 @@
 /* proactive "Stuck? Call us" teaser — sits above the call fab, points down at it */
 .calltease {
   position: fixed; left: 24px; bottom: 92px; z-index: 62;
-  display: flex; align-items: center; gap: 4px;
-  max-width: 248px;
-  background: #fff; border-radius: var(--r-card);
+  display: flex; align-items: center; gap: 2px;
+  width: max-content;
+  background: #fff; border-radius: var(--r-pill);
   box-shadow: var(--shadow-card);
-  padding: 4px 4px 4px 14px;
+  padding: 4px 4px 4px 16px;
   animation: chatIn 0.24s var(--ease);
 }
 .calltease::after {
@@ -47,7 +47,7 @@
   clip-path: polygon(0 0, 100% 0, 0 100%);
   transform: rotate(-45deg);
 }
-.calltease__link { padding: 8px 0; }
+.calltease__link { padding: 9px 0; white-space: nowrap; }
 .calltease__text { font-size: 0.84rem; font-weight: 600; color: var(--ink); line-height: 1.35; }
 .calltease__text strong { color: var(--orange-ink); }
 .calltease__close { flex-shrink: 0; width: 24px; height: 24px; display: grid; place-items: center;

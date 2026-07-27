@@ -64,15 +64,13 @@ export function CategoryGrid() {
 
 /* ── One-Stop Shop — lifestyle category bento (from the live store, elevated) ──
    Each tile deep-links straight to its flagship product page (not the category
-   listing) — one click from homepage to buy. Badge text is each product's own
-   real merchandising badge from the catalogue (same "Best seller" etc. shown on
-   product cards), not invented per-tile. Name label sits top-right as its own
-   frosted chip so it reads clearly over any photo without a full scrim.        */
+   listing) — one click from homepage to buy. Name label sits top-right as its
+   own frosted chip so it reads clearly over any photo without a full scrim.   */
 const ONESTOP = [
-  { handle: 'hook-and-loop-dots',    title: 'Dots & Coins',        badge: 'Popular',        img: '/img/lifestyle/ls-dots.png',     cls: 'os__tile--a' },
-  { handle: 'self-adhesive-roll',    title: 'Self-Adhesive',       badge: 'Best seller',     img: '/img/lifestyle/ls-adhesive.png', cls: 'os__tile--b' },
-  { handle: 'sew-on',                title: 'Sew-On',              badge: 'Best seller',     img: '/img/lifestyle/ls-sew-on.png',   cls: 'os__tile--c' },
-  { handle: 'reusable-cable-straps', title: 'Straps & Cable Ties', badge: 'Self-fastening',  img: '/img/lifestyle/ls-straps.png',   cls: 'os__tile--d' },
+  { handle: 'hook-and-loop-dots',    title: 'Dots & Coins',        img: '/img/lifestyle/ls-dots.png',     cls: 'os__tile--a' },
+  { handle: 'self-adhesive-roll',    title: 'Self-Adhesive',       img: '/img/lifestyle/ls-adhesive.png', cls: 'os__tile--b' },
+  { handle: 'sew-on',                title: 'Sew-On',              img: '/img/lifestyle/ls-sew-on.png',   cls: 'os__tile--c' },
+  { handle: 'reusable-cable-straps', title: 'Straps & Cable Ties', img: '/img/lifestyle/ls-straps.png',   cls: 'os__tile--d' },
 ]
 export function OneStop() {
   const goProd = (handle) => (e) => { e.preventDefault(); navigate(`product/${handle}`) }
@@ -88,7 +86,6 @@ export function OneStop() {
           {ONESTOP.map((t) => (
             <a key={t.handle} href="#" className={`os__tile ${t.cls}`} onClick={goProd(t.handle)} aria-label={`Shop ${t.title}`}>
               <span className="os__media"><img src={t.img} alt={t.title} loading="lazy" /></span>
-              {t.badge && <span className="pc__badge">{t.badge}</span>}
               <span className="os__name">{t.title}</span>
               <span className="os__shop">Shop now<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.8"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
             </a>
