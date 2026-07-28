@@ -84,7 +84,7 @@
   <span class="kicker">Design Handoff · for developer</span>
   <h1>HooknLoop — Storefront Redesign</h1>
   <p>What to change, section by section, from the <b>current live store</b> (hooknloop.com.au — “Previous”) to the <b>new premium design</b> (React prototype — “Latest”). Each section shows before → after plus the exact specs to implement. Values reference the prototype’s design tokens in <code>src/styles/tokens.css</code>.</p>
-  <div class="meta"><span>Type: Poppins</span><span>Radii: 16 / 10 / 999</span><span>Accent: #e87722</span><span>Stack: React → port to Shopify Liquid</span></div>
+  <div class="meta"><span>Type: DM Sans (self-hosted)</span><span>Radii: 16 / 10 / 999</span><span>Accent: #e87722</span><span>Stack: React → port to Shopify Liquid</span><span>Mobile home: 0.67 MB</span></div>
   <div class="live"><span class="live-dot"></span> Live site:&nbsp;<a href="https://hookn-loop.vercel.app">hookn-loop.vercel.app</a>&nbsp;<em>(deployed on Vercel — click any menu, add to cart, browse the industry pages)</em></div>
 </div></header>
 
@@ -94,6 +94,7 @@
   <a href="#cart">Cart</a><a href="#wishlist">Wishlist</a><a href="#chat">Chatbot</a><a href="#call">Call</a><a href="#motion">Animations</a>
   <a href="#home-structure" style="color:var(--orange-ink);font-weight:800;">Latest&nbsp;▸</a><a href="#onestop2">One-Stop</a><a href="#bestsellers2">Best&nbsp;Sellers</a><a href="#trusted">Trusted&nbsp;Supplier</a><a href="#cards2">Cards</a><a href="#pdp2">Product&nbsp;page</a><a href="#buymore">Buy&nbsp;More</a><a href="#related">Related</a><a href="#faqs">FAQs</a>
   <a href="#topbar">Top&nbsp;bar</a><a href="#delivery">Shipping&nbsp;calc</a><a href="#pdpreviews">Reviews</a><a href="#descfeat">Description</a><a href="#policies">Policies</a><a href="#browseall">Browse&nbsp;all</a><a href="#bulkpage">Bulk&nbsp;page</a><a href="#industries">Industry&nbsp;pages</a>
+  <a href="#onestop3" style="color:var(--orange-ink);font-weight:800;">This&nbsp;round&nbsp;▸</a><a href="#film">Brand&nbsp;film</a><a href="#cartdrawer">Cart&nbsp;drawer</a><a href="#appshots">Application&nbsp;photos</a><a href="#mobile">Mobile&nbsp;rebuild</a><a href="#perf">Performance</a><a href="#footer2">Footer</a>
 </div></nav>
 
 <!-- COLOUR -->
@@ -126,21 +127,22 @@
 
 <!-- TYPE -->
 <section id="type"><div class="wrap">
-  <h2><span class="n">2</span>Typography <span class="tag tag--redesign">DM&nbsp;Sans → Poppins</span></h2>
-  <p class="lead">The live store uses <b>DM Sans</b>. The new design uses <b>Poppins</b> for both display and body — rounded, friendly, geometric, matching the brand.</p>
+  <h2><span class="n">2</span>Typography <span class="tag tag--redesign">now DM&nbsp;Sans, self-hosted</span></h2>
+  <p class="lead">The design now uses <b>DM Sans</b> — the same face the live hooknloop.com.au theme uses — for both display and body, so the redesign reads as the same brand rather than a different company. It is <b>self-hosted</b> as a single variable-weight file; there is no runtime call to Google Fonts.</p>
   <div class="type-grid">
-    <div class="spec"><div class="lbl">Display / headings — Poppins 800</div><div class="d1">Hook &amp; Loop Tape</div><div style="font-size:.85rem;color:#5a6b8c">weight 800 · letter-spacing −0.015em · line-height 1.05</div></div>
-    <div class="spec"><div class="lbl">Body — Poppins 400 / 600</div><div class="d2" style="font-size:1.05rem">Industrial hook &amp; loop, dispatched Australia-wide. <b>Volume pricing</b> and a GST tax invoice on every order.</div><div style="font-size:.85rem;color:#5a6b8c;margin-top:8px">base 17px · line-height 1.6</div></div>
+    <div class="spec"><div class="lbl">Display / headings — DM Sans 800</div><div class="d1">Hook &amp; Loop Tape</div><div style="font-size:.85rem;color:#5a6b8c">weight 800 · letter-spacing −0.015em · line-height 1.05</div></div>
+    <div class="spec"><div class="lbl">Body — DM Sans 400 / 600</div><div class="d2" style="font-size:1.05rem">Industrial hook &amp; loop, dispatched Australia-wide. <b>Volume pricing</b> and a GST tax invoice on every order.</div><div style="font-size:.85rem;color:#5a6b8c;margin-top:8px">base 17px · line-height 1.6</div></div>
   </div>
   <div class="changes" style="margin-top:16px">
     <h4>Implement</h4>
     <ul>
-      <li>Font tokens: <code>--font-head</code> / <code>--font-body</code> = <code>"Poppins", "Avenir Next", "Segoe UI", system-ui, sans-serif</code>.</li>
+      <li>Font tokens: <code>--font-head</code> / <code>--font-body</code> = <code>"DM Sans", "Avenir Next", "Segoe UI", system-ui, sans-serif</code>.</li>
+      <li>One <code>@font-face</code> in <code>src/styles/fonts.css</code> pointing at <code>/fonts/DMSans-var.woff2</code> (62&nbsp;KB, <code>font-weight: 100 1000</code>, <code>font-display: swap</code>). Imported <b>before</b> tokens and base so the cascade order holds.</li>
       <li>Weights used: <b>400, 600, 700, 800</b>. A <code>.mono</code> utility (system monospace) is used for SKU/spec/data text.</li>
       <li>Type scale (tokens): hero <code>clamp(2.5rem,4.6vw,4rem)</code> · h2 <code>clamp(1.6rem,3vw,2.4rem)</code> · body <code>1.0625rem</code>.</li>
     </ul>
   </div>
-  <div class="note"><b>Action item:</b> Poppins is referenced in the tokens but <b>no web font is loaded</b> in the prototype. For production, load Poppins (Google Fonts link or self-hosted <code>@font-face</code>, weights 400/600/700/800) or it silently falls back to system fonts.</div>
+  <div class="note"><b>Resolved:</b> an earlier draft specified Poppins but never loaded a web font, so it silently fell back to system fonts on every machine. Both halves are now fixed — the face matches the live theme, and the file is actually served. Porting to Liquid: ship the same woff2 as a theme asset; do not add a Google Fonts <code>&lt;link&gt;</code>.</div>
 </div></section>
 
 <!-- NAV -->
@@ -626,6 +628,118 @@
     <li><b>Content is the store's own copy</b>, verbatim. Data-driven from <code>src/data/industries.js</code>; one shared component renders all eight.</li>
     <li><b>Per-page SEO</b>: each sets its own <code>&lt;title&gt;</code> and meta description; recommended product names link to their PDPs; related links cross-link the other guides.</li>
     <li><b>Nav</b>: an “Industries” dropdown lists all eight + an “All industries” index link.</li>
+  </ul></div>
+</div></section>
+
+<!-- ONE-STOP TILES (UPDATED) -->
+<section id="onestop3"><div class="wrap">
+  <h2><span class="n">32</span>One-Stop tiles — direct to product <span class="tag tag--redesign">updated</span></h2>
+  <p class="lead">The four lifestyle tiles now deep-link <b>straight to a product page</b> rather than a category listing, so it is one click from the homepage to a buy button. Each tile carries a frosted <b>name chip</b> so the category is legible over any photograph.</p>
+  <div class="ba single"><figure class="new"><figcaption><span class="dot"></span>One-Stop tiles — name chip, direct product link</figcaption><img src="img/new-onestop-tiles.jpg" alt="one-stop tiles"></figure></div>
+  <div class="changes"><h4>Spec</h4><ul>
+    <li>Tile click → <code>product/&lt;handle&gt;</code>, not <code>collection/&lt;slug&gt;</code>. Handles are real catalogue entries, so the link never lands on an empty listing.</li>
+    <li><b>Name chip</b>: top-right, white at 94% with a 6px backdrop blur, navy 800 text, control radius. A chip rather than a full scrim keeps the photography visible.</li>
+    <li>No merchandising badges on these tiles — they were tried and removed; two competing labels on one small photo reads as clutter.</li>
+    <li>On phones the chip moves to a <b>bottom gradient scrim</b> and the per-tile “Shop now” button is dropped (the whole tile is already the link). See §36.</li>
+  </ul></div>
+</div></section>
+
+<!-- BRAND FILM -->
+<section id="film"><div class="wrap">
+  <h2><span class="n">33</span>Brand film &amp; founder story <span class="tag tag--new">new</span></h2>
+  <p class="lead">A closing emotional beat above the footer: the finished 60-second brand commercial, followed by the founder’s story. This is the last thing a visitor sees before the footer, and it is the only place on the site that sells the company rather than the product.</p>
+  <div class="ba">
+    <figure class="new"><figcaption><span class="dot"></span>Brand film — navy band, 16:9 frame</figcaption><img src="img/new-film.jpg" alt="brand film section"></figure>
+    <figure class="new"><figcaption><span class="dot"></span>Founder story, below the film</figcaption><img src="img/new-founderstory.jpg" alt="founder story"></figure>
+  </div>
+  <div class="changes"><h4>Loading discipline — read this before porting</h4><ul>
+    <li>The video is <b>not</b> loaded on page load. The <code>&lt;source&gt;</code> is attached only when the section comes within 300&nbsp;px of the viewport, via <code>IntersectionObserver</code>.</li>
+    <li><b>Phones get a separate 3.5&nbsp;MB 480p encode and only after a deliberate tap.</b> Desktop gets the 16&nbsp;MB 720p file and autoplays muted. A phone on mobile data should never spend megabytes on a video it did not ask for.</li>
+    <li>Playback is tied to visibility — scrolled out of view, it pauses, so we are never decoding frames nobody is watching.</li>
+    <li><code>prefers-reduced-motion</code> never autoplays anywhere; those visitors get the poster and a play button.</li>
+    <li><b>Why this matters:</b> the first cut used <code>autoplay</code> + <code>preload="metadata"</code>. Browsers that honour autoplay fetch the whole file regardless of <code>preload</code>, so every phone visitor downloaded 16&nbsp;MB before scrolling anywhere near it. See §37.</li>
+  </ul></div>
+</div></section>
+
+<!-- CART DRAWER -->
+<section id="cartdrawer"><div class="wrap">
+  <h2><span class="n">34</span>Cart drawer — slide-in side panel <span class="tag tag--new">new</span></h2>
+  <p class="lead">Adding to cart used to be silent — the item went in and nothing happened. A drawer now slides in from the right on every add, from the product page <b>and</b> from Quick Add on any product card.</p>
+  <div class="ba">
+    <figure class="new"><figcaption><span class="dot"></span>Cart drawer — desktop</figcaption><img src="img/new-cartdrawer.jpg" alt="cart drawer desktop"></figure>
+    <figure class="new"><figcaption><span class="dot"></span>Cart drawer — mobile (full-width sheet)</figcaption><img src="img/new-m-cartdrawer.jpg" alt="cart drawer mobile"></figure>
+  </div>
+  <div class="changes"><h4>Spec</h4><ul>
+    <li>420&nbsp;px panel, full-width below 480&nbsp;px. Slides 0.26s; backdrop fades 0.2s. Closes on backdrop click, Escape, or “View cart”.</li>
+    <li>Contents mirror the cart page exactly — line items with quantity steppers and remove, free-shipping progress, subtotal, Checkout and View cart.</li>
+    <li><b>Body scroll is frozen while it is open</b> (<code>body.drawer-open</code>). Background scrolling under an open sheet is the classic “feels broken” mobile bug.</li>
+    <li>The corner call/chat buttons hide while it is open so nothing floats above the backdrop.</li>
+    <li><b>Buy with Shop</b> deliberately skips the drawer — it navigates straight to checkout, so a confirmation panel would be in the way.</li>
+  </ul></div>
+</div></section>
+
+<!-- APPLICATION PHOTOGRAPHY -->
+<section id="appshots"><div class="wrap">
+  <h2><span class="n">35</span>Application photography on the PDP <span class="tag tag--new">new</span></h2>
+  <p class="lead">Every product now carries in-use photography directly under <b>Key applications</b>. The bullet list says what the product is for; these show it. Captions describe the scene rather than restating the bullet above them.</p>
+  <div class="ba single"><figure class="new"><figcaption><span class="dot"></span>In-use shots under Key applications (three-up variant)</figcaption><img src="img/new-appshots.jpg" alt="application photography"></figure></div>
+  <div class="changes"><h4>Spec</h4><ul>
+    <li><b>25 images across 12 products</b> — two each, three for Fire Retardant Adhesive. WebP, capped at 1100&nbsp;px, ~100&nbsp;KB each, <code>loading="lazy"</code> so they cost nothing until scrolled to.</li>
+    <li>Data lives in <code>src/data/applicationShots.js</code> as <code>handle → [[src, caption], …]</code>. The component renders whatever it finds, so a new product with no shots renders nothing rather than a broken grid.</li>
+    <li>Grid adapts to count: <b>two-up</b> by default, <b>three-up</b> on desktop when there are three. On a phone, three becomes two squares plus a full-width 16:9 banner — a third square would be enormous on a 390&nbsp;px column.</li>
+    <li>Square 1:1 crops, because the gallery frame is <code>aspect-ratio: 1</code>. Generation prompts for all of them are kept in <code>storefront/docs/application-image-prompts.md</code> so future products can be shot to match.</li>
+  </ul></div>
+</div></section>
+
+<!-- MOBILE -->
+<section id="mobile"><div class="wrap">
+  <h2><span class="n">36</span>Mobile experience — rebuilt <span class="tag tag--redesign">major</span></h2>
+  <p class="lead">The phone view was desktop content squeezed into a narrow column: hero type at desktop scale, body copy centred nine lines deep, prices breaking mid-figure (“From&nbsp;$66.74&nbsp;incl.&nbsp;/&nbsp;GST”), four full-height category tiles stacked into a mile of scroll. It read like a shrunken website. It now reads like an app.</p>
+  <div class="ba">
+    <figure class="new"><figcaption><span class="dot"></span>Hero — fits one screen, one decisive CTA</figcaption><img src="img/new-m-hero.jpg" alt="mobile hero"></figure>
+    <figure class="new"><figcaption><span class="dot"></span>One-Stop — 2×2 grid with bottom scrims</figcaption><img src="img/new-m-onestop.jpg" alt="mobile one-stop"></figure>
+  </div>
+  <div class="ba">
+    <figure class="new"><figcaption><span class="dot"></span>Best sellers — horizontal snap rail</figcaption><img src="img/new-m-rail.jpg" alt="mobile product rail"></figure>
+    <figure class="new"><figcaption><span class="dot"></span>Product page — full-bleed gallery</figcaption><img src="img/new-m-pdp.jpg" alt="mobile pdp"></figure>
+  </div>
+  <div class="ba">
+    <figure class="new"><figcaption><span class="dot"></span>Buy box — quantity inline with Add to cart</figcaption><img src="img/new-m-buybox.jpg" alt="mobile buy box"></figure>
+    <figure class="new"><figcaption><span class="dot"></span>Collection — filters as a sticky chip row</figcaption><img src="img/new-m-collection.jpg" alt="mobile collection"></figure>
+  </div>
+  <div class="ba single"><figure class="new"><figcaption><span class="dot"></span>Navigation drawer, with search at the top</figcaption><img src="img/new-m-drawer.jpg" alt="mobile nav drawer"></figure></div>
+  <div class="changes"><h4>How it is built</h4><ul>
+    <li><b>One override layer</b>: <code>src/styles/mobile.css</code>, imported <b>last</b>, every rule inside a <code>max-width</code> query. No existing stylesheet was modified, so desktop is provably untouched.</li>
+    <li><b>Phone type scale</b> and a 34&nbsp;px section rhythm (desktop’s 40–96&nbsp;px is dead air on a phone).</li>
+    <li><b>Horizontal snap rails</b> for best sellers, reviews, trust stats, size pills and collection filters. Each bleeds to the screen edge so the cut-off card signals “swipe me”. This is the single strongest “native” signal available in CSS.</li>
+    <li><b>No mid-figure wrapping.</b> Rating, spec and price are each forced onto one line; names clamp to two; card heights are equal. Ragged card text was the specific thing that read as cheap.</li>
+    <li><b>Long SEO copy is clamped</b> (One-Stop blurb, Trusted Supplier paragraphs) — the “Read more” button now has a job to do.</li>
+    <li><b>App-grade basics</b>: 44&nbsp;px touch targets, <code>env(safe-area-inset-*)</code> on everything pinned to the bottom, momentum scrolling, pressed states, and <b>16&nbsp;px inputs</b> so iOS never zooms on focus.</li>
+  </ul></div>
+  <div class="note"><b>Two traps worth knowing.</b> Setting <code>overflow-x: hidden</code> on <code>html</code>/<code>body</code> as an anti-overflow guard <b>silently disables <code>position: sticky</code></b> and makes iOS scrolling fight touch input — it was removed. And <code>scroll-snap-type: x mandatory</code> fights the thumb near rail edges; <code>proximity</code> is the right setting. Verified clean at 360 / 390 / 430&nbsp;px with no horizontal overflow anywhere.</div>
+</div></section>
+
+<!-- PERFORMANCE -->
+<section id="perf"><div class="wrap">
+  <h2><span class="n">37</span>Performance budget <span class="tag tag--new">new</span></h2>
+  <p class="lead">The mobile home page was transferring <b>26.5&nbsp;MB</b>. It now transfers <b>0.67&nbsp;MB</b>. This is the single biggest change in the build and the one most likely to be undone by accident, so it is written down.</p>
+  <div class="changes"><h4>Where the 26 MB went, and what fixed it</h4><ul>
+    <li><b>16.1&nbsp;MB — the brand film.</b> <code>autoplay</code> forces a full fetch regardless of <code>preload</code>. Now lazy-attached, phone-specific 3.5&nbsp;MB encode, tap-to-play. See §33.</li>
+    <li><b>6.4&nbsp;MB — images.</b> Several were 12-megapixel phone photos (3024×4032, 1.7&nbsp;MB each); several more were photographs saved as <b>PNG</b> at 1.5&nbsp;MB. 44 files converted to WebP capped at 1200&nbsp;px: image directory <b>27.4&nbsp;MB → 6.1&nbsp;MB</b>, no visible quality loss. WebP preserves alpha, so transparent product cut-outs still composite correctly.</li>
+    <li>Remaining payload is ~95&nbsp;KB gzipped JS + ~23&nbsp;KB gzipped CSS + the fonts.</li>
+  </ul></div>
+  <div class="note"><b>Rules to keep it there.</b> No source image over ~1200&nbsp;px on the long edge. Photographs are WebP or JPEG, never PNG — PNG is for flat graphics and cut-outs only. Any new video is lazy-attached and given a phone encode. Nothing above the fold autoplays.</div>
+</div></section>
+
+<!-- FOOTER UPDATE -->
+<section id="footer2" style="border-bottom:0"><div class="wrap">
+  <h2><span class="n">38</span>Footer — Industries column &amp; contact <span class="tag tag--redesign">updated</span></h2>
+  <p class="lead">A fifth column of <b>Industries</b> links mirrors the header dropdown, and the contact block now carries the email address alongside the phone number.</p>
+  <div class="ba single"><figure class="new"><figcaption><span class="dot"></span>Footer — five columns</figcaption><img src="img/new-footer2.jpg" alt="footer with industries column"></figure></div>
+  <div class="changes"><h4>Spec</h4><ul>
+    <li>Grid is <code>1.4fr 1fr 1fr 1fr 1.2fr</code>; collapses to two columns under 1000&nbsp;px with brand and newsletter spanning full width.</li>
+    <li>Industries column: five curated guides plus “All industries”, using the same real slugs as the header dropdown (<code>src/data/industries.js</code>) so the two can never drift apart.</li>
+    <li><code>info@hooknloop.com.au</code> as a highlighted <code>mailto:</code> under the phone number, in <code>--orange-word</code>.</li>
   </ul></div>
 </div></section>
 
