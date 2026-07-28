@@ -24,6 +24,9 @@ import './styles/pages.css'
 import './styles/industries.css'
 import './styles/film.css'
 import './styles/cartdrawer.css'
+/*  Mobile last — it is a deliberate override layer over every stylesheet above,
+    scoped entirely inside max-width queries so desktop is untouched.          */
+import './styles/mobile.css'
 
 function Landing() {
   return (

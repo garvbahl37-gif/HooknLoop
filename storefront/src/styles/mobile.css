@@ -1,0 +1,421 @@
+/* ============================================================================
+   MOBILE — app-grade pass over the whole store.
+
+   Loaded LAST so it wins the cascade at equal specificity. Nothing in here
+   touches desktop: every rule lives inside a max-width query.
+
+   The problem this fixes: the site was built desktop-first and the phone view
+   was desktop content squeezed into a narrow column — hero type at 4rem, body
+   copy centred at 7 lines deep, prices wrapping mid-figure ("From $66.74 incl.
+   / GST"), four full-height category tiles stacked into a mile of scroll. It
+   read like a shrunken website. It should read like an app.
+
+   The moves, in order of how much they buy:
+     1. A phone type scale + left alignment (centred long-form is a desktop
+        luxury; on a 390px column it just looks lost).
+     2. Horizontal snap rails for anything that was a grid of >2 items — the
+        single strongest "this is native" signal available in CSS.
+     3. Kill every mid-word / mid-figure wrap. Ragged card text is the specific
+        thing that reads as cheap.
+     4. Real touch targets (44px), real safe-area insets, momentum scrolling.
+   ========================================================================== */
+
+@media (max-width: 900px) {
+
+  /* ── foundations ──────────────────────────────────────────────────────── */
+  :root {
+    --m-gut: 16px;             /* the single horizontal gutter, used everywhere */
+    --m-sec: 34px;             /* vertical section rhythm                       */
+    --m-tab: calc(58px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .wrap { padding-left: var(--m-gut); padding-right: var(--m-gut); }
+
+  /* iOS: stop the 100vh/rubber-band jitter and give every scroller momentum */
+  html { -webkit-text-size-adjust: 100%; }
+  body { overscroll-behavior-y: none; }
+
+  /* nothing should ever push the page sideways */
+  html, body { overflow-x: hidden; }
+
+  /* section rhythm — was desktop's 40–96px, which on a phone is dead air */
+  .cats, .why, .os, .ts, .hl, .tf, .bs, .rv, .film, .pdp__bulk {
+    padding-top: var(--m-sec); padding-bottom: var(--m-sec);
+  }
+
+  /* ── section headings — left-aligned, phone-scale ─────────────────────── */
+  .sec-head { text-align: left; max-width: none; margin-bottom: 18px; }
+  .sec-h2 { font-size: 1.42rem; line-height: 1.2; letter-spacing: -0.02em; }
+  .sec-eyebrow { font-size: 0.66rem; letter-spacing: 0.12em; }
+  .sec-sub {
+    font-size: 0.9rem; line-height: 1.55; margin-top: 8px; max-width: none;
+    /* the One-Stop blurb is a 7-line wall on a phone — show the first three
+       and let the section get on with showing products */
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* ── reusable: horizontal snap rail ───────────────────────────────────── */
+  /* Bleeds to the screen edge so the last card is visibly cut off — that
+     peek is what tells a thumb there's more to swipe. */
+  .m-rail {
+    display: grid; grid-auto-flow: column; grid-auto-columns: 74vw;
+    gap: 12px;
+    overflow-x: auto; overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    margin-left: calc(var(--m-gut) * -1); margin-right: calc(var(--m-gut) * -1);
+    padding: 4px var(--m-gut) 12px;
+  }
+  .m-rail::-webkit-scrollbar { display: none; }
+  .m-rail > * { scroll-snap-align: start; }
+}
+
+/* ═══ PHONE (≤640px) ═════════════════════════════════════════════════════ */
+@media (max-width: 640px) {
+
+  /* ── header — slimmer, and the search bar comes back ──────────────────── */
+  /* The promo strip was eating 40px to say four things nobody reads on a
+     phone. One message, one line. */
+  .promo__row { justify-content: center; gap: 8px; font-size: 0.72rem; }
+  .promo__lead, .promo__opt, .promo__sep--lead, .promo__sep--opt { display: none; }
+
+  .bar__row { gap: 10px; padding-top: 10px; padding-bottom: 10px; }
+  .logo__img { height: 30px; }
+  .bar__burger, .bar__actions .icn { width: 44px; height: 44px; }
+
+  /* ── hero — the single worst offender. Was ~2.5 screens tall. ─────────── */
+  .hs__stage { padding-top: 26px; padding-bottom: 26px; }
+  .hs__eyebrow { font-size: 0.6rem; letter-spacing: 0.14em; gap: 8px; }
+  .hs__eyebrow-line { width: 18px; }
+  .hs__title { font-size: 2.05rem; line-height: 1.08; letter-spacing: -0.025em; }
+  .hs__sub {
+    font-size: 0.94rem; line-height: 1.5; margin-top: 10px;
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  /* the monospace spec line wrapped into a stray "/ FREE OVER $200" orphan */
+  .hs__spec { font-size: 0.62rem; letter-spacing: 0.04em; margin-top: 12px; flex-wrap: wrap; row-gap: 4px; }
+
+  /* one decisive CTA, full width; the secondary becomes a quiet text link */
+  .hs__cta { flex-direction: column; align-items: stretch; gap: 10px; margin-top: 18px; }
+  .hs__cta .btn { width: 100%; min-height: 52px; font-size: 0.98rem; }
+  .hs__cta .btn--ghost {
+    background: none; border: 0; min-height: 0; padding: 4px;
+    text-decoration: underline; text-underline-offset: 3px; font-size: 0.9rem;
+  }
+
+  .hs__figure { margin-top: 22px; }
+  .hs__bullets { gap: 7px; }
+  .hs__bullet { width: 7px; height: 7px; }
+
+  /* hero trust strip — was four centred lines stacked ~200px tall.
+     Now one swipeable row, the way an app would do it. */
+  .hs__trust {
+    display: flex; flex-wrap: nowrap; justify-content: flex-start; gap: 18px;
+    overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none;
+    padding: 12px var(--m-gut); font-size: 0.78rem;
+  }
+  .hs__trust::-webkit-scrollbar { display: none; }
+  .hs__trust-item { flex: 0 0 auto; white-space: nowrap; }
+
+  /* ── One-Stop bento — four tall tiles became four screens of scroll ───── */
+  /* 2×2 compact grid. Square-ish tiles, name always legible, the whole
+     section now fits in roughly one viewport instead of four. */
+  .os__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .os__tile, .os__tile--a, .os__tile--b, .os__tile--c, .os__tile--d {
+    grid-column: auto !important; grid-row: auto !important;
+    aspect-ratio: 1 / 1; min-height: 0; border-radius: 14px;
+  }
+  .os__media img { object-fit: cover; }
+  /* name moves to a bottom scrim — top-right chips collide with photo subjects
+     at this size, and a scrim guarantees contrast on any image */
+  .os__name {
+    top: auto; right: auto; bottom: 0; left: 0; width: 100%;
+    background: linear-gradient(to top, rgba(8,18,40,0.92), rgba(8,18,40,0.55) 55%, transparent);
+    backdrop-filter: none; -webkit-backdrop-filter: none;
+    color: #fff; border-radius: 0; box-shadow: none;
+    font-size: 0.82rem; line-height: 1.25; white-space: normal;
+    padding: 26px 10px 10px; text-align: left;
+  }
+  /* the per-tile "Shop now" button is redundant when the whole tile is the
+     link — and at this size it covered a third of the photo */
+  .os__shop { display: none; }
+
+  /* ── product cards — where the "cheap" read really came from ──────────── */
+  /* Every one of these lines was wrapping: "5.0 · 1 / review", "From $66.74
+     incl. / GST", "Straps & Cable / Ties". Ragged, uneven, broken-looking. */
+  .bs__grid, .cats__grid, .coll__grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+
+  .pc { border-radius: 14px; display: flex; flex-direction: column; }
+  .pc__body { padding: 10px 11px 12px; display: flex; flex-direction: column; flex: 1; gap: 0; }
+  .pc__name {
+    font-size: 0.86rem; line-height: 1.28; min-height: calc(0.86rem * 1.28 * 2);
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  /* rating: stars + score on ONE line, always */
+  .pc__rating { display: flex; align-items: center; gap: 5px; flex-wrap: nowrap; margin-top: 6px; }
+  .pc__rating span { font-size: 0.7rem; white-space: nowrap; }
+  .pc__rating .stars svg { width: 11px; height: 11px; }
+  /* spec: one line, ellipsis rather than a second ragged row */
+  .pc__spec {
+    font-size: 0.72rem; margin-top: 5px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  /* price: never break "$66.74" from "incl. GST" onto two lines */
+  .pc__price { margin-top: auto; padding-top: 8px; }
+  .pc__set { font-size: 0.76rem; white-space: nowrap; }
+  .pc__set b { font-size: 1rem; }
+  .pc__gst { font-size: 0.66rem; }
+  .pc__add { margin-top: 9px; min-height: 42px; padding: 0 10px; font-size: 0.8rem; gap: 5px; }
+  .pc__add svg { width: 15px; height: 15px; }
+  .pc__wish { width: 34px; height: 34px; top: 7px; right: 7px; }
+  .pc__badge { font-size: 0.55rem; padding: 4px 7px; top: 7px; left: 7px; }
+
+  /* ── best sellers — swipe rail instead of a 12-card grid ──────────────── */
+  /* Twelve cards in a 2-up grid is six rows of vertical scroll before the next
+     section. As a rail it's one screen, and it invites a swipe. */
+  .bs__grid {
+    display: grid; grid-auto-flow: column; grid-template-columns: none;
+    grid-auto-columns: 45vw; gap: 10px;
+    overflow-x: auto; -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory; scrollbar-width: none;
+    margin-left: calc(var(--m-gut) * -1); margin-right: calc(var(--m-gut) * -1);
+    padding: 4px var(--m-gut) 10px;
+  }
+  .bs__grid::-webkit-scrollbar { display: none; }
+  .bs__grid > * { scroll-snap-align: start; }
+  .bs__all { display: inline-block; margin-top: 4px; font-size: 0.88rem; }
+
+  /* ── reviews — same treatment ─────────────────────────────────────────── */
+  .rv__grid {
+    display: grid; grid-auto-flow: column; grid-template-columns: none;
+    grid-auto-columns: 78vw; gap: 12px;
+    overflow-x: auto; -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory; scrollbar-width: none;
+    margin-left: calc(var(--m-gut) * -1); margin-right: calc(var(--m-gut) * -1);
+    padding: 4px var(--m-gut) 10px;
+  }
+  .rv__grid::-webkit-scrollbar { display: none; }
+  .rv__grid > * { scroll-snap-align: start; }
+  .rv__head { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .rv__quote { font-size: 0.9rem; line-height: 1.5; }
+
+  /* ── trusted-supplier block — two 9-line paragraphs of SEO body copy ──── */
+  /* Nobody reads this on a phone; it just buries the video and the footer.
+     Clamp each paragraph to four lines — the "Read more" button underneath
+     already exists and now actually has a job to do. */
+  .ts__grid { gap: 20px; }
+  .ts__block { gap: 12px; }
+  .ts__h { font-size: 1.05rem; line-height: 1.25; }
+  .ts__p {
+    font-size: 0.9rem; line-height: 1.55;
+    display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .ts__icn { width: 40px; height: 40px; flex: 0 0 40px; }
+  .ts__cta { width: 100%; }
+  .ts__cta .btn { width: 100%; min-height: 50px; }
+
+  /* why-us tiles: 2-up, they're short enough to pair on a phone */
+  .why__grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .why__tile { padding: 14px 12px; }
+  .why__t { font-size: 0.88rem; line-height: 1.25; }
+  /* clamp so the six tiles keep an even rhythm — one tile running to six lines
+     while its neighbour runs to three leaves a visible hole in the grid */
+  .why__b {
+    font-size: 0.78rem; line-height: 1.45;
+    display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .why__icn { width: 34px; height: 34px; }
+
+  /* trust stat row — swipe rail, not a stacked list */
+  .tstats__row {
+    display: flex; grid-template-columns: none; gap: 0;
+    overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none;
+    margin-left: calc(var(--m-gut) * -1); margin-right: calc(var(--m-gut) * -1);
+    padding-left: var(--m-gut); padding-right: var(--m-gut);
+  }
+  .tstats__row::-webkit-scrollbar { display: none; }
+  .tstat { flex: 0 0 auto; min-width: 44vw; border-bottom: 0; padding: 14px 16px 14px 0; }
+  .tstat__n { font-size: 1.15rem; }
+  .tstat__l { font-size: 0.72rem; }
+
+  /* ── brand film ───────────────────────────────────────────────────────── */
+  .film__frame { border-radius: 14px; }
+  /* left-aligned: a nine-line centred paragraph on a 390px column gives the eye
+     no consistent return edge, which is most of why it read as "cheap" */
+  .film__story { margin-top: 26px; padding-top: 22px; text-align: left; }
+  .film__story-mark { font-size: 2.2rem; margin-bottom: 0; }
+  .film__story-text { font-size: 0.94rem; line-height: 1.6; }
+  .film__story-text p { margin-bottom: 12px; }
+  .film__story-by { font-size: 0.72rem; }
+  .film__tag { font-size: 0.95rem; }
+
+  /* ══ PRODUCT PAGE ═══════════════════════════════════════════════════════ */
+  .pdp__grid { gap: 0; padding-top: 0; }
+
+  /* gallery goes full-bleed — a phone product shot should own the screen,
+     not sit in a bordered card with 30px of padding inside it */
+  .pdp__gallery { margin-left: calc(var(--m-gut) * -1); margin-right: calc(var(--m-gut) * -1); }
+  .pdp__stage { border-radius: 0; border-left: 0; border-right: 0; }
+  .pdp__stage img { padding: 18px; }
+  .pdp__flag { font-size: 0.68rem; padding: 6px 11px; top: 10px; left: 10px; }
+  .pdp__thumbs {
+    padding: 10px var(--m-gut) 0; gap: 8px;
+    overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none;
+  }
+  .pdp__thumbs::-webkit-scrollbar { display: none; }
+  .pdp__thumb { width: 58px; height: 58px; flex: 0 0 auto; }
+
+  .pdp__buy { padding-top: 18px; }
+  .pdp__eyebrow { font-size: 0.63rem; letter-spacing: 0.12em; }
+  .pdp__title { font-size: 1.5rem; line-height: 1.15; margin: 6px 0 8px; }
+  .pdp__brand { font-size: 0.75rem; margin-bottom: 10px; }
+
+  .pdp__price { padding: 13px 15px; margin: 16px 0; border-radius: 14px; }
+  .pdp__price-now { font-size: 1.8rem; }
+
+  .pdp__opt { margin: 16px 0; }
+  .pdp__opt-label { font-size: 0.82rem; margin-bottom: 9px; }
+
+  /* size pills: one swipeable row rather than a ragged 2+1 wrap */
+  .pdp__pills {
+    flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; padding-bottom: 2px;
+    margin-left: calc(var(--m-gut) * -1); margin-right: calc(var(--m-gut) * -1);
+    padding-left: var(--m-gut); padding-right: var(--m-gut);
+  }
+  .pdp__pills::-webkit-scrollbar { display: none; }
+  .pdp__pill { flex: 0 0 auto; padding: 11px 15px; font-size: 0.86rem; min-height: 44px; }
+
+  .pdp__swatch { width: 44px; height: 44px; }
+
+  /* hook/loop/both — the "Recommended" pill was overflowing its button and
+     overlapping the neighbouring one. Give the row headroom and shrink it. */
+  .pdp__seg { gap: 7px; margin-top: 12px; }
+  .pdp__seg-btn { padding: 16px 6px 11px; min-height: 68px; }
+  .pdp__seg-rec { font-size: 0.5rem; padding: 3px 7px; letter-spacing: 0.05em; top: -1px; }
+  .pdp__seg-t { font-size: 0.92rem; }
+  .pdp__seg-s { font-size: 0.66rem; }
+  .pdp__nudge { font-size: 0.8rem; padding: 10px 12px; }
+
+  /* "Add to cart — $32.90" was breaking across two lines inside the button */
+  .pdp__cta { margin: 18px 0 16px; }
+  .pdp__cta-row { gap: 9px; }
+  .pdp__qty button { width: 40px; }
+  .pdp__qty span { width: 34px; font-size: 0.92rem; }
+  .pdp__add { font-size: 0.92rem; min-height: 54px; white-space: nowrap; padding: 0 10px; }
+  .pdp__buynow { min-height: 52px; font-size: 0.95rem; }
+
+  .pdp__policies { gap: 18px; font-size: 0.84rem; }
+
+  /* long description — 20 lines of body copy at desktop measure is a wall you
+     scroll past without reading. Tighten it to a phone reading size. */
+  .pdp__block { padding: 16px var(--m-gut); border-radius: 14px; }
+  .pdp__block p, .pdp__desc-lead { font-size: 0.93rem; line-height: 1.58; }
+  .pdp__features li, .pdp__apps li { font-size: 0.88rem; line-height: 1.5; }
+  .pdp__spec td, .pdp__spec th { font-size: 0.84rem; }
+  .pdp__faq { font-size: 0.9rem; }
+
+  /* volume pricing tiers: 2×2 rather than 4 stacked cards */
+  .bms__tiers { grid-template-columns: 1fr 1fr; gap: 9px; }
+  .bms__tier { padding: 14px 10px; }
+  .bms__qty { font-size: 0.82rem; }
+  .bms__pct { font-size: 1.5rem; }
+  .bms__h { font-size: 1.3rem; }
+  .bms__sub { font-size: 0.88rem; }
+  .bms__trust { grid-template-columns: 1fr; gap: 10px; }
+
+  /* sticky add-to-cart dock — must clear the tab bar AND the home indicator */
+  .pdp__dock { bottom: var(--m-tab); padding: 9px var(--m-gut); }
+  .pdp__dock-add { min-height: 46px; font-size: 0.9rem; white-space: nowrap; }
+  .pdp__dock-name { font-size: 0.85rem; }
+
+  /* ══ COLLECTION ═════════════════════════════════════════════════════════ */
+  /* The filter panel was a permanently-open two-column list that pushed every
+     product below the fold. On a phone, filters belong behind a control. */
+  .coll__head { padding-bottom: 14px; }
+  .page__h1 { font-size: 1.6rem; line-height: 1.15; }
+  .page__lead { font-size: 0.9rem; line-height: 1.5; }
+  .coll__body { display: block; }
+  .coll__filters {
+    display: flex; gap: 8px; overflow-x: auto; -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; padding: 0 var(--m-gut) 14px;
+    margin-left: calc(var(--m-gut) * -1); margin-right: calc(var(--m-gut) * -1);
+    position: sticky; top: 0; z-index: 5; background: #fff;
+  }
+  .coll__filters::-webkit-scrollbar { display: none; }
+  .coll__filter { flex: 0 0 auto; display: flex; gap: 8px; }
+  /* the "Category" / "Colour" headings become redundant once the options are
+     chips in a row — the labels are self-evident and cost a whole line each */
+  .coll__filter h3 { display: none; }
+  .coll__fbtn {
+    flex: 0 0 auto; white-space: nowrap;
+    width: auto; margin: 0; padding: 9px 14px; min-height: 40px;
+    border: 1.5px solid var(--line-card); border-radius: var(--r-pill);
+    font-size: 0.82rem; background: #fff; color: var(--navy);
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .coll__fbtn.is-on { background: var(--navy); color: #fff; border-color: var(--navy); }
+  .coll__fbtn em { font-style: normal; opacity: 0.6; font-size: 0.75rem; }
+  /* the "not sure which?" helper card belongs below the products on a phone,
+     not above them — it was pushing the grid off the first screen */
+  .coll__help { order: 2; display: none; }
+  .coll__sort { font-size: 0.85rem; }
+
+  /* ══ CART ═══════════════════════════════════════════════════════════════ */
+  .cart { display: block; }
+  .cart__row { grid-template-columns: 64px 1fr; gap: 11px; padding: 14px 0; }
+  .cart__media { width: 64px; height: 64px; }
+  .cart__line { grid-column: 2; text-align: right; }
+  .cart__summary { margin-top: 22px; position: static; }
+  .cart__checkout { min-height: 52px; }
+
+  /* the drawer should feel like a sheet, not a full-screen takeover */
+  .cd__panel { width: 100%; }
+  .cd__foot { padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px)); }
+
+  /* ══ FOOTER ═════════════════════════════════════════════════════════════ */
+  .ft__main { padding-top: 32px; padding-bottom: 26px; gap: 24px 18px; }
+  .ft__logo-img { height: 32px; }
+  .ft__tag { font-size: 0.85rem; margin: 12px 0 16px; }
+  .ft__phone b { font-size: 1.2rem; }
+  .ft__col h4 { font-size: 0.66rem; margin-bottom: 13px; padding-bottom: 9px; }
+  .ft__col ul { gap: 11px; }
+  .ft__col a { font-size: 0.84rem; }
+  .ft__legal-row { font-size: 0.74rem; gap: 12px; }
+  .ft__velcro { font-size: 0.66rem; }
+
+  /* ══ APP-GRADE POLISH ═══════════════════════════════════════════════════ */
+  /* every tap target clears 44px */
+  .btab { height: 58px; }
+  .nav__link, .mdrawer__link, .mdrawer__acc { min-height: 46px; }
+
+  /* kill the tap-highlight flash and give buttons a real pressed state —
+     instant visual feedback is most of what makes a web page feel native */
+  a, button { -webkit-tap-highlight-color: transparent; }
+  .btn:active, .pc__add:active, .pdp__add:active, .pdp__pill:active,
+  .os__tile:active, .cd__checkout:active { transform: scale(0.975); }
+  .btn, .pc__add, .pdp__add, .pdp__pill, .os__tile { transition: transform 0.11s var(--ease); }
+
+  /* respect the home indicator everywhere something is pinned to the bottom */
+  .btabs { padding-bottom: env(safe-area-inset-bottom, 0px); }
+
+  /* iOS zooms the page in when you focus an input under 16px. Never let it. */
+  input, select, textarea { font-size: 16px; }
+}
+
+/* ── very small phones (SE, 360px Androids) ──────────────────────────────── */
+@media (max-width: 380px) {
+  .hs__title { font-size: 1.85rem; }
+  .bs__grid { grid-auto-columns: 52vw; }
+  .pc__name { font-size: 0.82rem; }
+  .pdp__seg-t { font-size: 0.85rem; }
+  .pdp__add { font-size: 0.85rem; }
+}
+
+/* Users who ask for less motion get no transform feedback. */
+@media (prefers-reduced-motion: reduce) {
+  .btn:active, .pc__add:active, .pdp__add:active, .pdp__pill:active,
+  .os__tile:active, .cd__checkout:active { transform: none; }
+}
