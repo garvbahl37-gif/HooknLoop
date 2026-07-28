@@ -3,11 +3,22 @@
     (Discover excluded — irrelevant in Australia).                               */
 import { useState } from 'react'
 import { navigate } from '../lib/cart.js'
+import { INDUSTRIES } from '../data/industries.js'
 
 const go = (to, fn) => (e) => { e.preventDefault(); if (fn) fn(); else navigate(to) }
 
 const SHOP = [['Self-Adhesive Roll', 'product/self-adhesive-roll'], ['Heavy-Duty Adhesive', 'product/heavy-duty-adhesive'], ['VELCRO® Brand Roll', 'product/velcro-brand-roll'], ['Sew-On Hook & Loop', 'product/sew-on'], ['Hook & Loop Dots', 'product/hook-and-loop-dots'], ['Reusable Cable Straps', 'product/reusable-cable-straps']]
 const HELP = [['Browse all products', 'collection'], ['Bulk & trade quotes', 'bulk'], ['Shipping & delivery', 'shipping'], ['Returns & exchanges', 'returns'], ['Contact us', 'contact'], ['About us', 'about']]
+/*  A curated slice (not all 8 — keeps the column the same height as Shop tape
+    and Help) plus the index page, same real slugs the header dropdown uses.  */
+const INDUSTRY_SLUGS = ['construction-industrial', 'warehousing-logistics', 'automotive-caravan-rv', 'schools-education', 'medical-aged-care']
+const INDUSTRY_LINKS = [
+  ...INDUSTRY_SLUGS.map((slug) => {
+    const ind = INDUSTRIES.find((i) => i.slug === slug)
+    return [ind.short, `industry/${ind.slug}`]
+  }),
+  ['All industries', 'industries'],
+]
 
 export default function Footer() {
   const [sent, setSent] = useState(false)
@@ -41,6 +52,11 @@ export default function Footer() {
         <div className="ft__col">
           <h4>Shop tape</h4>
           <ul>{SHOP.map(([label, to]) => <li key={label}><a href="#" onClick={go(to)}>{label}</a></li>)}</ul>
+        </div>
+
+        <div className="ft__col">
+          <h4>Industries</h4>
+          <ul>{INDUSTRY_LINKS.map(([label, to]) => <li key={label}><a href="#" onClick={go(to)}>{label}</a></li>)}</ul>
         </div>
 
         <div className="ft__col">
