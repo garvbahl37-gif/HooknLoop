@@ -3,10 +3,9 @@
     these show it. Captions describe the scene rather than restating the
     bullet — a caption that repeats the list above it is wasted space.
 
-    Files live in /public/img/applications/<handle>-<n>.webp.
-    Three products are still short a second shot (see MISSING below); the
-    component renders whatever exists, so a product with one shot shows one,
-    and a product with none renders nothing at all.                           */
+    Files live in /public/img/applications/<handle>-<n>.webp. Every product in
+    the catalogue has its pair. The component renders whatever it finds, so a
+    new product with no shots simply renders nothing rather than a broken grid. */
 
 export const APPLICATION_SHOTS = {
   'self-adhesive-roll': [
@@ -43,11 +42,14 @@ export const APPLICATION_SHOTS = {
   ],
   'velcro-brand-roll': [
     ['/img/applications/velcro-brand-roll-1.webp', 'Fabric panels onto an exhibition stand frame'],
+    ['/img/applications/velcro-brand-roll-2.webp', 'Acoustic panels onto an office wall — removable, no fixings'],
   ],
   'velcoin-dots': [
     ['/img/applications/velcoin-dots-1.webp', 'A shelf-edge sign holder, fixed in seconds'],
+    ['/img/applications/velcoin-dots-2.webp', 'Artwork onto a display board, straight off the liner'],
   ],
   'fire-retardant-adhesive': [
+    ['/img/applications/fire-retardant-adhesive-1.webp', 'A lining panel refitted in a transit interior'],
     ['/img/applications/fire-retardant-adhesive-2.webp', 'Cable runs secured in a building services riser'],
   ],
   'fire-retardant-sew-on': [
@@ -55,11 +57,5 @@ export const APPLICATION_SHOTS = {
     ['/img/applications/fire-retardant-sew-on-2.webp', 'Joining welding curtain panels in a fabrication shop'],
   ],
 }
-
-/*  MISSING — still need one more shot each (prompts are in
-    docs/application-image-prompts.md under the matching product):
-      · velcro-brand-roll       app-2  — acoustic panel install
-      · velcoin-dots            app-2  — coins on a display board
-      · fire-retardant-adhesive app-1  — train / bus interior lining panel   */
 
 export const applicationShots = (handle) => APPLICATION_SHOTS[handle] || []
