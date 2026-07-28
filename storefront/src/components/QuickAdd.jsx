@@ -3,7 +3,7 @@
     a product card so shoppers configure the variant without leaving the page.   */
 import { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
-import { addToCart, navigate } from '../lib/cart.js'
+import { addToCart, openCartDrawer, navigate } from '../lib/cart.js'
 
 export default function QuickAdd({ p, onClose }) {
   const [size, setSize] = useState(p.sizes[0])
@@ -32,7 +32,12 @@ export default function QuickAdd({ p, onClose }) {
       price: unit, qty,
     })
     onClose()
+    /*  Quick Add is reachable from every product card (home rail, collection,
+        cross-sell), so it has to confirm the same way the PDP does — otherwise
+        the item lands in the cart with no feedback at all. Buy-with-Shop skips
+        the drawer because it navigates straight to the cart.                 */
     if (goCart) navigate('cart')
+    else openCartDrawer()
   }
 
   return createPortal(

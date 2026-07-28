@@ -31,12 +31,15 @@
 
   .wrap { padding-left: var(--m-gut); padding-right: var(--m-gut); }
 
-  /* iOS: stop the 100vh/rubber-band jitter and give every scroller momentum */
   html { -webkit-text-size-adjust: 100%; }
-  body { overscroll-behavior-y: none; }
 
-  /* nothing should ever push the page sideways */
-  html, body { overflow-x: hidden; }
+  /*  Deliberately NOT setting `overflow-x: hidden` on html/body here.
+      The first cut did, as a belt-and-braces guard against sideways scroll —
+      but `overflow-x` on an ancestor silently kills `position: sticky` in every
+      browser, which broke the sticky filter row on the collection page, and on
+      iOS it also causes the scroll position to fight touch input. Overflow is
+      verified clean at 360/390/430px by construction (every horizontal rail
+      scrolls inside its own container), so the guard costs more than it buys. */
 
   /* section rhythm — was desktop's 40–96px, which on a phone is dead air */
   .cats, .why, .os, .ts, .hl, .tf, .bs, .rv, .film, .pdp__bulk {
@@ -62,7 +65,7 @@
     display: grid; grid-auto-flow: column; grid-auto-columns: 74vw;
     gap: 12px;
     overflow-x: auto; overflow-y: hidden;
-    scroll-snap-type: x mandatory;
+    scroll-snap-type: x proximity;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     margin-left: calc(var(--m-gut) * -1); margin-right: calc(var(--m-gut) * -1);
@@ -179,7 +182,7 @@
     display: grid; grid-auto-flow: column; grid-template-columns: none;
     grid-auto-columns: 45vw; gap: 10px;
     overflow-x: auto; -webkit-overflow-scrolling: touch;
-    scroll-snap-type: x mandatory; scrollbar-width: none;
+    scroll-snap-type: x proximity; scrollbar-width: none;
     margin-left: calc(var(--m-gut) * -1); margin-right: calc(var(--m-gut) * -1);
     padding: 4px var(--m-gut) 10px;
   }
@@ -192,7 +195,7 @@
     display: grid; grid-auto-flow: column; grid-template-columns: none;
     grid-auto-columns: 78vw; gap: 12px;
     overflow-x: auto; -webkit-overflow-scrolling: touch;
-    scroll-snap-type: x mandatory; scrollbar-width: none;
+    scroll-snap-type: x proximity; scrollbar-width: none;
     margin-left: calc(var(--m-gut) * -1); margin-right: calc(var(--m-gut) * -1);
     padding: 4px var(--m-gut) 10px;
   }

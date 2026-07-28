@@ -31,7 +31,7 @@ function recommend(a) {
     spots: { name: 'Hook & Loop Dots', from: '66.74', why: 'Coins for fast, repeatable fixings.', img: '/img/p-dots.jpg', side: true },
     fabric: { name: 'Sew-On (Non-Adhesive)', from: '24.46', why: 'Stitches to fabric — no adhesive to fail in the wash.', img: '/img/p-loop.jpg', side: true },
     hardLight: { name: 'Self-Adhesive Roll', from: '32.90', why: 'Peel-and-stick for smooth indoor surfaces.', img: '/img/p-hook.jpg', side: true },
-    hardHeavy: { name: 'Heavy-Duty Adhesive', from: '55.43', why: 'High-tack acrylic for heat, weather and load.', img: '/img/p-heavyduty.png', side: true },
+    hardHeavy: { name: 'Heavy-Duty Adhesive', from: '55.43', why: 'High-tack acrylic for heat, weather and load.', img: '/img/p-heavyduty.webp', side: true },
   }
   if (a.substrate === 'backtoback') return P.backtoback
   if (a.substrate === 'bundle') return P.bundle

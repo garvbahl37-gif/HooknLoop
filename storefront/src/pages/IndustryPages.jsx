@@ -35,7 +35,7 @@ export function IndustryPage({ slug }) {
         <p className="ind-art__intro">{ind.intro}</p>
 
         <figure className="ind-art__hero">
-          <img src={`/img/industries/${ind.slug}-hero.jpg`} alt={ind.name} loading="lazy"
+          <img src={`/img/industries/${ind.slug}-hero.webp`} alt={ind.name} loading="lazy"
                onError={(e) => { const f = e.currentTarget.closest('.ind-art__hero'); if (f) f.style.display = 'none' }} />
         </figure>
 
@@ -48,7 +48,7 @@ export function IndustryPage({ slug }) {
         ))}
 
         <figure className="ind-art__img">
-          <img src={`/img/industries/${ind.slug}-2.jpg`} alt={`Hook and loop in use — ${ind.short}`} loading="lazy"
+          <img src={`/img/industries/${ind.slug}-2.webp`} alt={`Hook and loop in use — ${ind.short}`} loading="lazy"
                onError={(e) => { const f = e.currentTarget.closest('.ind-art__img'); if (f) f.style.display = 'none' }} />
         </figure>
 

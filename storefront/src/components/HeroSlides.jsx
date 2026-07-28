@@ -26,7 +26,7 @@ const SLIDES = [
     sub: 'High-performance hook & loop for metal, plastic, equipment, vehicles and outdoor applications.',
     spec: ['Heat-resistant', 'Moisture-proof', 'Heavy-duty'],
     cta: { label: 'Shop Heavy Duty', to: 'product/heavy-duty-adhesive' }, cta2: { label: 'View Industrial Solutions', to: 'collection/self-adhesive' },
-    fig: { img: '/img/products/heavy-duty-adhesive-1.png', tag: 'INDUSTRIAL', gauge: '50', priceFrom: '55.43' },
+    fig: { img: '/img/products/heavy-duty-adhesive-1.webp', tag: 'INDUSTRIAL', gauge: '50', priceFrom: '55.43' },
   },
   {
     key: 'premium', pill: 'Tested for Real-World Use',
@@ -42,7 +42,7 @@ const SLIDES = [
     sub: 'Dispatched in 1–2 business days from our Australian warehouse — metro, regional and everywhere in between, with free shipping over $200.',
     spec: ['1–2 day dispatch', 'Metro & regional', 'Free over $200'],
     cta: { label: 'Shop the Range', to: 'collection' }, cta2: { label: 'Shipping & Delivery', to: 'shipping' },
-    fig: { img: '/img/australia-network.jpg', tag: 'AUSTRALIA-WIDE', photo: true },
+    fig: { img: '/img/australia-network.webp', tag: 'AUSTRALIA-WIDE', photo: true },
   },
   {
     key: 'bulk', pill: 'Trade, Commercial & Wholesale',
@@ -50,7 +50,7 @@ const SLIDES = [
     sub: 'Bulk pricing, reliable stock, custom widths and tailored fastening solutions for Australian businesses.',
     spec: ['Custom widths', 'Volume pricing', 'Priority dispatch'],
     cta: { label: 'Request a Bulk Quote', to: 'bulk' }, cta2: { label: 'Explore Bulk Orders', to: 'bulk' },
-    fig: { img: '/img/hooknloop-cartons.jpg', tag: 'BULK & WHOLESALE', photo: true },
+    fig: { img: '/img/hooknloop-cartons.webp', tag: 'BULK & WHOLESALE', photo: true },
   },
 ]
 

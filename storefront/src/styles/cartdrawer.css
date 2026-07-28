@@ -48,6 +48,9 @@
 
 /* the corner call/chat fabs would sit above the backdrop otherwise */
 body.drawer-open .fab--call, body.drawer-open .fabchat, body.drawer-open .calltease { display: none; }
+/* freeze the page behind the sheet — scrolling the background under an open
+   drawer is the classic "feels broken" mobile bug */
+body.drawer-open { overflow: hidden; }
 
 @media (max-width: 480px) {
   .cd__panel { width: 100%; }

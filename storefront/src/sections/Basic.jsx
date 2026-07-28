@@ -33,7 +33,7 @@ const CATS = [
   { name: 'Sew-On', slug: 'sew-on', sub: 'Non-adhesive · for fabric', from: '24.46', img: '/img/p-loop.jpg' },
   { name: 'Dots & Coins', slug: 'dots', sub: '1,000–5,000 per reel', from: '66.74', img: '/img/p-dots.jpg' },
   { name: 'Straps & Cable Ties', slug: 'straps', sub: 'Reusable · self-gripping', from: '25.00', img: '/img/p-strap.jpg' },
-  { name: 'Fire Retardant', slug: 'fire-retardant', sub: 'Trade & compliance', from: '32.53', img: '/img/p-fr.png' },
+  { name: 'Fire Retardant', slug: 'fire-retardant', sub: 'Trade & compliance', from: '32.53', img: '/img/p-fr.webp' },
   { name: 'VELCRO® Brand', slug: 'velcro-brand', sub: 'Genuine, stocked in AU', from: '84.99', img: '/img/p-loop.jpg' },
 ]
 export function CategoryGrid() {
@@ -67,10 +67,10 @@ export function CategoryGrid() {
    listing) — one click from homepage to buy. Name label sits top-right as its
    own frosted chip so it reads clearly over any photo without a full scrim.   */
 const ONESTOP = [
-  { handle: 'hook-and-loop-dots',    title: 'Dots & Coins',        img: '/img/lifestyle/ls-dots.png',     cls: 'os__tile--a' },
-  { handle: 'self-adhesive-roll',    title: 'Self-Adhesive',       img: '/img/lifestyle/ls-adhesive.png', cls: 'os__tile--b' },
-  { handle: 'sew-on',                title: 'Sew-On',              img: '/img/lifestyle/ls-sew-on.png',   cls: 'os__tile--c' },
-  { handle: 'reusable-cable-straps', title: 'Straps & Cable Ties', img: '/img/lifestyle/ls-straps.png',   cls: 'os__tile--d' },
+  { handle: 'hook-and-loop-dots',    title: 'Dots & Coins',        img: '/img/lifestyle/ls-dots.webp',     cls: 'os__tile--a' },
+  { handle: 'self-adhesive-roll',    title: 'Self-Adhesive',       img: '/img/lifestyle/ls-adhesive.webp', cls: 'os__tile--b' },
+  { handle: 'sew-on',                title: 'Sew-On',              img: '/img/lifestyle/ls-sew-on.webp',   cls: 'os__tile--c' },
+  { handle: 'reusable-cable-straps', title: 'Straps & Cable Ties', img: '/img/lifestyle/ls-straps.webp',   cls: 'os__tile--d' },
 ]
 export function OneStop() {
   const goProd = (handle) => (e) => { e.preventDefault(); navigate(`product/${handle}`) }
@@ -121,7 +121,7 @@ export function TrustedSupplier() {
           <a href="#" className="btn btn--primary ts__cta" onClick={goRead}>Read more<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         </div>
         <div className="ts__media">
-          <div className="ts__frame"><img src="/img/b2b-hero.jpg" alt="A hand holding hook-and-loop tape beside a glowing map of Australia and HooknLoop delivery boxes on a pallet" loading="lazy" /></div>
+          <div className="ts__frame"><img src="/img/b2b-hero.webp" alt="A hand holding hook-and-loop tape beside a glowing map of Australia and HooknLoop delivery boxes on a pallet" loading="lazy" /></div>
           <div className="ts__proof">
             <span className="ts__proof-stars" aria-hidden="true">★★★★★</span>
             <div><b>4.87 / 5</b><span>Serving B2C &amp; B2B across Australia</span></div>
@@ -209,7 +209,7 @@ export function FireRetardant() {
           <p className="fr__micro">Fire-retardant properties are as stated on the manufacturer’s technical data sheet, supplied on request — we don’t publish a performance rating we can’t certify.</p>
         </div>
         <div className="fr__figure">
-          <div className="fr__card"><img src="/img/p-fr.png" alt="Fire retardant hook and loop tape roll" loading="lazy" /></div>
+          <div className="fr__card"><img src="/img/p-fr.webp" alt="Fire retardant hook and loop tape roll" loading="lazy" /></div>
           <div className="fr__chips">
             <div className="fr__chip"><b>Fire Retardant Adhesive</b><span>from $55.43 · incl. GST</span></div>
             <div className="fr__chip"><b>Fire Retardant Sew-On</b><span>from $32.53 · incl. GST</span></div>

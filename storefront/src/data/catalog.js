@@ -16,7 +16,7 @@ export const PRODUCTS = [
   { handle: 'self-adhesive-roll', name: 'Self-Adhesive Hook & Loop Roll', cat: 'self-adhesive', from: 32.90, img: '/img/p-hook.jpg',
     badge: 'Best seller', spec: 'Peel-and-stick · industrial', hookLoop: true,
     sizes: [{ label: '20mm × 25m', single: 32.90 }, { label: '25mm × 25m', single: 35.28 }, { label: '50mm × 25m', single: 63.59 }],
-    colours: ['Black', 'White'], gallery: ['/img/p-hook.jpg', '/img/sa-4.jpg', '/img/sa-2.jpg', '/img/sa-3.jpg', '/img/p-loop.jpg'] },
+    colours: ['Black', 'White'], gallery: ['/img/p-hook.jpg', '/img/sa-4.webp', '/img/sa-2.jpg', '/img/sa-3.jpg', '/img/p-loop.jpg'] },
   { handle: 'sew-on', name: 'Sew-On Hook & Loop (Non-Adhesive)', cat: 'sew-on', from: 24.46, img: '/img/p-loop.jpg',
     badge: 'Best seller', spec: 'Stitch-on · washes well', hookLoop: true,
     sizes: [{ label: '25mm × 25m', single: 24.46 }, { label: '50mm × 25m', single: 39.56 }, { label: '100mm × 25m', single: 58.73 }], colours: ['Black', 'White'], gallery: ['/img/p-loop.jpg'] },
@@ -29,12 +29,12 @@ export const PRODUCTS = [
   { handle: 'double-sided', name: 'Double-Sided Hook & Loop (Back-to-Back)', cat: 'double-sided', from: 21.66, img: '/img/p-doubleside.png',
     badge: null, spec: 'Self-gripping · no adhesive', hookLoop: false,
     sizes: [{ label: '12mm × 12.5m', single: 21.66 }, { label: '15mm × 12.5m', single: 22.95 }, { label: '25mm × 12.5m', single: 30.93 }], colours: ['Black'], gallery: ['/img/p-doubleside.png'] },
-  { handle: 'heavy-duty-straps', name: 'Heavy-Duty Hook & Loop Straps', cat: 'straps', from: 63.00, img: '/img/p-strap2.png',
+  { handle: 'heavy-duty-straps', name: 'Heavy-Duty Hook & Loop Straps', cat: 'straps', from: 63.00, img: '/img/p-strap2.webp',
     badge: null, spec: '50mm × 5m · set of 5', hookLoop: false,
-    sizes: [{ label: '50mm × 5m (set of 5)', single: 63.00 }], colours: ['Orange/Black'], gallery: ['/img/p-strap2.png'] },
-  { handle: 'heavy-duty-adhesive', name: 'Heavy-Duty Adhesive Hook & Loop', cat: 'self-adhesive', from: 55.43, img: '/img/p-heavyduty.png',
+    sizes: [{ label: '50mm × 5m (set of 5)', single: 63.00 }], colours: ['Orange/Black'], gallery: ['/img/p-strap2.webp'] },
+  { handle: 'heavy-duty-adhesive', name: 'Heavy-Duty Adhesive Hook & Loop', cat: 'self-adhesive', from: 55.43, img: '/img/p-heavyduty.webp',
     badge: 'Industrial', spec: 'High-tack acrylic · heat & outdoor', hookLoop: true,
-    sizes: [{ label: '25mm × 25m', single: 55.43 }, { label: '50mm × 25m', single: 78.60 }], colours: ['Black', 'White'], gallery: ['/img/p-heavyduty.png'] },
+    sizes: [{ label: '25mm × 25m', single: 55.43 }, { label: '50mm × 25m', single: 78.60 }], colours: ['Black', 'White'], gallery: ['/img/p-heavyduty.webp'] },
   { handle: 'hook-and-loop-for-fabric', name: 'Hook & Loop for Fabric & Clothes', cat: 'sew-on', from: 24.46, img: '/img/p-loop.jpg',
     badge: 'Industrial grade', spec: 'Soft & flexible · garments', hookLoop: true,
     sizes: [{ label: '25mm × 25m', single: 24.46 }, { label: '50mm × 25m', single: 39.56 }, { label: '100mm × 25m', single: 58.73 }], colours: ['Black', 'White'], gallery: ['/img/p-loop.jpg'] },
@@ -44,12 +44,12 @@ export const PRODUCTS = [
   { handle: 'velcoin-dots', name: 'VELCRO® Brand Velcoin Dots', cat: 'dots', from: 115.00, img: '/img/p-dots.jpg',
     badge: 'Genuine VELCRO®', spec: 'Genuine VELCRO® coins', hookLoop: true,
     sizes: [{ label: '16mm × 1200 dots', single: 115.00 }, { label: '22mm × 900 dots', single: 139.00 }], colours: ['Black', 'White'], gallery: ['/img/p-dots.jpg'] },
-  { handle: 'fire-retardant-adhesive', name: 'Fire Retardant Adhesive Hook & Loop', cat: 'fire-retardant', from: 55.43, img: '/img/p-fr.png',
+  { handle: 'fire-retardant-adhesive', name: 'Fire Retardant Adhesive Hook & Loop', cat: 'fire-retardant', from: 55.43, img: '/img/p-fr.webp',
     badge: 'Industrial grade', spec: 'FR treated · self-adhesive', hookLoop: true,
-    sizes: [{ label: '25mm × 25m', single: 55.43 }, { label: '50mm × 25m', single: 78.60 }], colours: ['Black'], gallery: ['/img/p-fr.png'] },
-  { handle: 'fire-retardant-sew-on', name: 'Fire Retardant Sew-On Hook & Loop', cat: 'fire-retardant', from: 32.53, img: '/img/p-fr.png',
+    sizes: [{ label: '25mm × 25m', single: 55.43 }, { label: '50mm × 25m', single: 78.60 }], colours: ['Black'], gallery: ['/img/p-fr.webp'] },
+  { handle: 'fire-retardant-sew-on', name: 'Fire Retardant Sew-On Hook & Loop', cat: 'fire-retardant', from: 32.53, img: '/img/p-fr.webp',
     badge: 'Industrial grade', spec: 'FR treated · stitch-on', hookLoop: true,
-    sizes: [{ label: '25mm × 25m', single: 32.53 }, { label: '50mm × 25m', single: 51.27 }, { label: '100mm × 25m', single: 65.53 }], colours: ['Black'], gallery: ['/img/p-fr.png'] },
+    sizes: [{ label: '25mm × 25m', single: 32.53 }, { label: '50mm × 25m', single: 51.27 }, { label: '100mm × 25m', single: 65.53 }], colours: ['Black'], gallery: ['/img/p-fr.webp'] },
 ]
 
 /*  The vendor/brand for every product on the live store. */
@@ -60,18 +60,18 @@ export const BRAND = 'HooknLoop'
     reused a few generic shots — VELCRO, sew-on, fabric, velcoin and FR sew-on
     were wrong). This overrides the img + gallery set inline above.              */
 const PRODUCT_IMAGES = {
-  'self-adhesive-roll': ['/img/products/self-adhesive-roll-1.jpg', '/img/products/self-adhesive-roll-2.jpg', '/img/products/self-adhesive-roll-3.jpg', '/img/products/self-adhesive-roll-4.jpg'],
-  'heavy-duty-adhesive': ['/img/products/heavy-duty-adhesive-1.png', '/img/products/heavy-duty-adhesive-2.jpg'],
+  'self-adhesive-roll': ['/img/products/self-adhesive-roll-1.jpg', '/img/products/self-adhesive-roll-2.jpg', '/img/products/self-adhesive-roll-3.jpg', '/img/products/self-adhesive-roll-4.webp'],
+  'heavy-duty-adhesive': ['/img/products/heavy-duty-adhesive-1.webp', '/img/products/heavy-duty-adhesive-2.jpg'],
   'velcro-brand-roll': ['/img/products/velcro-brand-roll-1.webp', '/img/products/velcro-brand-roll-2.webp', '/img/products/velcro-brand-roll-3.webp', '/img/products/velcro-brand-roll-4.jpg'],
   'sew-on': ['/img/products/sew-on-1.jpg', '/img/products/sew-on-2.jpg', '/img/products/sew-on-3.jpg', '/img/products/sew-on-4.jpg'],
   'hook-and-loop-for-fabric': ['/img/products/hook-and-loop-for-fabric-1.jpg', '/img/products/hook-and-loop-for-fabric-2.jpg', '/img/products/hook-and-loop-for-fabric-3.jpg', '/img/products/hook-and-loop-for-fabric-4.jpg'],
   'hook-and-loop-dots': ['/img/products/hook-and-loop-dots-1.jpg', '/img/products/hook-and-loop-dots-2.jpg', '/img/products/hook-and-loop-dots-3.jpg', '/img/products/hook-and-loop-dots-4.jpg'],
   'velcoin-dots': ['/img/products/velcoin-dots-1.webp', '/img/products/velcoin-dots-2.webp'],
-  'reusable-cable-straps': ['/img/products/reusable-cable-straps-1.png', '/img/products/reusable-cable-straps-2.png', '/img/products/reusable-cable-straps-3.jpg'],
-  'heavy-duty-straps': ['/img/products/heavy-duty-straps-1.png', '/img/products/heavy-duty-straps-2.png', '/img/products/heavy-duty-straps-3.png', '/img/products/heavy-duty-straps-4.png'],
-  'double-sided': ['/img/products/double-sided-1.png', '/img/products/double-sided-2.png', '/img/products/double-sided-3.jpg'],
-  'fire-retardant-adhesive': ['/img/products/fire-retardant-adhesive-1.png'],
-  'fire-retardant-sew-on': ['/img/products/fire-retardant-sew-on-1.png'],
+  'reusable-cable-straps': ['/img/products/reusable-cable-straps-1.webp', '/img/products/reusable-cable-straps-2.webp', '/img/products/reusable-cable-straps-3.jpg'],
+  'heavy-duty-straps': ['/img/products/heavy-duty-straps-1.webp', '/img/products/heavy-duty-straps-2.webp', '/img/products/heavy-duty-straps-3.webp', '/img/products/heavy-duty-straps-4.webp'],
+  'double-sided': ['/img/products/double-sided-1.png', '/img/products/double-sided-2.webp', '/img/products/double-sided-3.jpg'],
+  'fire-retardant-adhesive': ['/img/products/fire-retardant-adhesive-1.webp'],
+  'fire-retardant-sew-on': ['/img/products/fire-retardant-sew-on-1.webp'],
 }
 PRODUCTS.forEach((p) => { const g = PRODUCT_IMAGES[p.handle]; if (g && g.length) { p.img = g[0]; p.gallery = g } })
 
