@@ -73,6 +73,8 @@
   color: var(--on-navy-2);
   letter-spacing: -0.01em;
 }
+.film__story-text p { margin: 0 0 16px; }
+.film__story-text p:last-child { margin-bottom: 0; }
 .film__story-by {
   margin: var(--sp-4) 0 0;
   font-family: var(--font-head);

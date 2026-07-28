@@ -374,6 +374,8 @@ section { scroll-margin-top: 80px; }
 .ft__tag { color: var(--muted-navy); font-size: 0.9rem; line-height: 1.6; margin: 16px 0 22px; max-width: 32ch; }
 .ft__phone { display: block; margin-bottom: 14px; } .ft__phone b { display: block; color: #fff; font-size: 1.35rem; font-family: var(--font-head); letter-spacing: 0.01em; } .ft__phone span { color: var(--muted-navy); font-size: 0.78rem; }
 .ft__phone:hover b { color: var(--orange-word); }
+.ft__email { display: inline-block; margin-bottom: 14px; color: var(--orange-word); font-weight: 700; font-size: 0.92rem; letter-spacing: 0.01em; }
+.ft__email:hover { text-decoration: underline; text-underline-offset: 3px; }
 .ft__addr, .ft__abn { color: var(--muted-navy); font-size: 0.8rem; line-height: 1.5; }
 
 /* every column heading sits on one shared baseline, anchored by a hairline rule */
