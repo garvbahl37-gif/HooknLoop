@@ -4,6 +4,7 @@
     [TDS] gaps; trust; sticky add-to-cart; FAQ; cross-sell.                      */
 import { useState, useEffect } from 'react'
 import { PRODUCTS, findProduct, productDetails, productRating, productFaqs, productCopy, BRAND } from '../data/catalog.js'
+import { applicationShots } from '../data/applicationShots.js'
 import { addToCart, openCartDrawer, navigate } from '../lib/cart.js'
 import { useInView } from '../lib/useInView.js'
 import Stars from '../components/Stars.jsx'
@@ -79,6 +80,7 @@ export default function ProductPage({ handle }) {
     ...PRODUCTS.filter((x) => x.handle !== p.handle && x.cat === p.cat),
     ...PRODUCTS.filter((x) => x.handle !== p.handle && x.cat !== p.cat),
   ].slice(0, 4)
+  const shots = applicationShots(p.handle)   // in-use photography, under Key applications
   const faqs = productFaqs(p.handle)   // the store's real, product-specific FAQs
   const copy = productCopy(p.handle)   // real description + Key Features from the live store
 
@@ -238,6 +240,16 @@ export default function ProductPage({ handle }) {
             <section className="pdp__block">
               <h2>Key applications</h2>
               <ul className="pdp__apps">{d.applications.map((a) => <li key={a}>{a}</li>)}</ul>
+              {shots.length > 0 && (
+                <figure className="pdp__inuse">
+                  {shots.map(([src, caption]) => (
+                    <span className="pdp__inuse-item" key={src}>
+                      <img src={src} alt={caption} loading="lazy" width="1100" height="1100" />
+                      <span className="pdp__inuse-cap">{caption}</span>
+                    </span>
+                  ))}
+                </figure>
+              )}
             </section>
             <section className="pdp__block">
               <h2>Specifications</h2>
