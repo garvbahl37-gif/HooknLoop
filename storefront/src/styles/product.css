@@ -217,6 +217,9 @@
 /* in-use photography — sits directly under the applications list, so the
    bullets say what it's for and the photographs show it */
 .pdp__inuse { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 22px 0 0; }
+/* three shots go three-up rather than leaving one orphaned on a second row —
+   at this container width each still lands near 350px, plenty to read the weave */
+.pdp__inuse--3 { grid-template-columns: repeat(3, 1fr); }
 .pdp__inuse-item { display: block; }
 .pdp__inuse-item img {
   display: block; width: 100%; height: auto; aspect-ratio: 1;

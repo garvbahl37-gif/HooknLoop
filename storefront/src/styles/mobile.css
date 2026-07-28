@@ -327,6 +327,11 @@
      ~160px, big enough to read the fastening that is the point of the shot */
   .pdp__inuse { gap: 10px; margin-top: 18px; }
   .pdp__inuse-cap { font-size: 0.74rem; margin-top: 7px; }
+  /* three-up is far too small on a phone — stay two-up and let the third run
+     full width as a landscape banner rather than a giant orphaned square */
+  .pdp__inuse--3 { grid-template-columns: 1fr 1fr; }
+  .pdp__inuse--3 > :last-child { grid-column: 1 / -1; }
+  .pdp__inuse--3 > :last-child img { aspect-ratio: 16 / 9; }
   .pdp__spec td, .pdp__spec th { font-size: 0.84rem; }
   .pdp__faq { font-size: 0.9rem; }
 

@@ -51,6 +51,7 @@ export const APPLICATION_SHOTS = {
   'fire-retardant-adhesive': [
     ['/img/applications/fire-retardant-adhesive-1.webp', 'A lining panel refitted in a transit interior'],
     ['/img/applications/fire-retardant-adhesive-2.webp', 'Cable runs secured in a building services riser'],
+    ['/img/applications/fire-retardant-adhesive-3.webp', 'Acoustic insulation onto plant-room ductwork'],
   ],
   'fire-retardant-sew-on': [
     ['/img/applications/fire-retardant-sew-on-1.webp', 'The storm flap on a flame-resistant jacket'],

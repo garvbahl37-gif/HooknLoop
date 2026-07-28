@@ -241,7 +241,7 @@ export default function ProductPage({ handle }) {
               <h2>Key applications</h2>
               <ul className="pdp__apps">{d.applications.map((a) => <li key={a}>{a}</li>)}</ul>
               {shots.length > 0 && (
-                <figure className="pdp__inuse">
+                <figure className={`pdp__inuse pdp__inuse--${shots.length}`}>
                   {shots.map(([src, caption]) => (
                     <span className="pdp__inuse-item" key={src}>
                       <img src={src} alt={caption} loading="lazy" width="1100" height="1100" />
