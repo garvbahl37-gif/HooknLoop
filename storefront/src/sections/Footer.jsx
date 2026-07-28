@@ -35,7 +35,6 @@ export default function Footer() {
           <p className="ft__tag">Industrial hook &amp; loop, dispatched fast across Australia.</p>
           <a className="ft__phone" href="tel:1300183481"><b>1300 183 481</b><span>Call our Australian team</span></a>
           <a className="ft__email" href="mailto:info@hooknloop.com.au">info@hooknloop.com.au</a>
-          <p className="ft__addr">Australian warehouse · Australia-wide dispatch</p>
           <p className="ft__abn">ABN 93 878 995 217</p>
         </div>
 
