@@ -1,0 +1,21 @@
+@media only screen and (max-width: 480px) {
+  .brand__logo--items__thumbnail--img {
+    max-width: 90px;
+  }
+}
+.brand__logo--items__thumbnail--img:hover {
+  -webkit-transform: scale(1.05);
+  transform: scale(1.05);
+}
+.brand__logo--items img {
+  transition: var(--transition);
+  height: auto;
+  max-width: 100%;
+  width: 100%;
+}
+.brand__logo--items {
+  align-self: center;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}

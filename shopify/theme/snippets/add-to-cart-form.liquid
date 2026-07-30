@@ -1,0 +1,76 @@
+<div class="product__cart--wrapper {{ custom_class }}">
+  {% if product_card_product.has_only_default_variant %}
+    <product-form>
+      <form action="/cart/add" method="post" enctype="multipart/form-data" data-type="add-to-cart-form">
+        <input type="hidden" name="id" value="{{ variant.id }}">
+
+        
+
+      <!-- Hook / Loop / Both selector -->
+  <div class="hl-wrapper">
+    <label class="hl-label"><strong>Hook or Loop?</strong></label>
+
+    <div class="hl-buttons">
+      <button type="button" class="hl-btn" data-type="Hook">Hook</button>
+      <button type="button" class="hl-btn" data-type="Loop">Loop</button>
+      <button type="button" class="hl-btn active" data-type="Both">Both</button>
+    </div>
+  </div>
+
+
+        <button
+          type="submit"
+          name="add"
+          class="product__card--action-btn product__card--cart-btn {{ button_class }} {% if tooltip %} product--tooltip{% endif %}"
+          {% if product_card_product.selected_or_first_available_variant.available == false %}
+            disabled
+          {% endif %}
+        >
+          {%- if product_card_product.selected_or_first_available_variant.available -%}
+            {%- if product_card_product.selected_or_first_available_variant.inventory_quantity <= 0
+              and product_card_product.selected_or_first_available_variant.inventory_policy == 'continue'
+              and show_preorder_button
+            -%}
+              {% if settings.p_card_cart_icon_type != 'none' %}
+                <span class="action__btn--svg"> {% render 'icon-cart', icon: settings.p_card_cart_icon_type %}</span>
+              {% endif %}
+              <span class="cart__buton--label">{{ 'products.product.pre_order' | t }} </span>
+            {%- else -%}
+              {% if settings.p_card_cart_icon_type != 'none' %}
+                <span class="action__btn--svg"> {% render 'icon-cart', icon: settings.p_card_cart_icon_type %}</span>
+              {% endif %}
+              <span class="cart__buton--label">{{ 'products.product.add_to_cart' | t }} </span>
+            {%- endif -%}
+          {%- else -%}
+            {% if settings.p_card_cart_icon_type != 'none' %}
+              <span class="action__btn--svg"> {% render 'icon-cart', icon: settings.p_card_cart_icon_type %}</span>
+            {% endif %}
+            <span class="cart__buton--label">{{ 'products.product.sold_out' | t }} </span>
+          {%- endif -%}
+
+          {% if tooltip %}
+            <div class="product--tooltip-label {{ tooltip_position }} {% if tooltip_desktop != true %} desktop--tooltip-disable{% endif %}">
+              {% if product_card_product.selected_or_first_available_variant.available %}
+                {{ 'products.product.add_to_cart' | t }}
+              {% else %}
+                {{ 'products.product.sold_out' | t }}
+              {%- endif -%}
+            </div>
+          {% endif %}
+        </button>
+      </form>
+      
+    </product-form>
+  {%- else -%}
+    {%- render 'quick-view',
+      product_card_product: product_card_product,
+      variant: variant,
+      type: 'quick_add',
+      className: 'product__card--action-btn product__card--cart-btn',
+      button_class: button_class,
+      tooltip: true,
+      tooltip_position: 'tooltip--top',
+      tooltip_desktop: tooltip_desktop
+    -%}
+  {%- endif -%}
+</div>

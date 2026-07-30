@@ -1,0 +1,21 @@
+{% comment %}
+  Product recommendation slider
+{% endcomment %}
+{%- layout none -%}
+{%- render 'product-card',
+  product_card_product: product,
+  className: 'swiper-slide',
+  media_size: settings.recent_viewed_proudct_media_size,
+  show_secondary_image: true,
+  show_badge: settings.show_badges,
+  show_cart_button: settings.show_cart_button,
+  show_quick_view: settings.show_quick_view_button,
+  show_quick_compare: settings.show_compare_view_button,
+  show_wishlist: settings.show_wishlist_button,
+  show_title: true,
+  show_price: true,
+  card_style: settings.recent_viewed_proudct_card,
+  color_scheme: settings.product_card_color_scheme,
+  spacing: settings.product_card_spacing,
+  corner_radius: settings.product_card_radius
+-%}

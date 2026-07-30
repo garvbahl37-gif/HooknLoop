@@ -1,0 +1,138 @@
+{% comment %}
+  Renders an article card for a given blog with settings to either show the image or not.
+
+  Accepts:
+  - blog: {Object} Blog object
+  - article: {Object} Article object
+  - show_image: {String} The setting either show the article image or not. If it's not included it will show the image by default
+  - show_date: {String} The setting either show the article date or not. If it's not included it will not show the image by default
+  - show_author: {String} The setting either show the article author or not. If it's not included it will not show the author by default
+
+  Usage:
+  {% render 'article-card' blog: blog, article: article, show_image: section.settings.show_image %}
+{% endcomment %}
+
+<article
+  class="blog__items {{ className }}  {% if corner_radius %}article--card-radius{% endif %}"
+  aria-labelledby="Article-{{ article.id }}"
+>
+  <div class="blog__items--thumbnail">
+    <a class="blog__items--link" href="{{ article.url }}">
+      {%- if show_image == true and article.image -%}
+        <div class="article-card__image-wrapper card--client-height">
+          <div class="article-card__image media media--landscape">
+            <img
+              srcset="
+                {%- if article.image.src.width >= 165 -%}{{ article.image.src | img_url: '165x' }} 165w,{%- endif -%}
+                {%- if article.image.src.width >= 360 -%}{{ article.image.src | img_url: '360x' }} 360w,{%- endif -%}
+                {%- if article.image.src.width >= 533 -%}{{ article.image.src | img_url: '533x' }} 533w,{%- endif -%}
+                {%- if article.image.src.width >= 720 -%}{{ article.image.src | img_url: '720x' }} 720w,{%- endif -%}
+                {%- if article.image.src.width >= 1000 -%}{{ article.image.src | img_url: '1000x' }} 1000w,{%- endif -%}
+                {%- if article.image.src.width >= 1500 -%}{{ article.image.src | img_url: '1500x' }} 1500w,{%- endif -%}
+              "
+              src="{{ article.image.src | img_url: '533x' }}"
+              sizes="(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | divided_by: 2 }}px, (min-width: 750px) calc((100vw - 130px) / 2), calc((100vw - 50px) / 2)"
+              alt="{{ article.image.src.alt | escape }}"
+              width="{{ article.image.width }}"
+              height="{{ article.image.height }}"
+              loading="lazy"
+              class="motion-reduce"
+            >
+          </div>
+        </div>
+      {%- endif -%}
+    </a>
+  </div>
+  <div class="blog__items--content color-{{ color_scheme }} ">
+    <div class="blog__items--meta">
+      <ul class="d-flex">
+        {%- if article.comments_count > 0 and blog.comments_enabled? and show_comment -%}
+          <li class="blog__items--meta__list">
+            <svg
+              class="blog__items--meta__icon"
+              xmlns="http://www.w3.org/2000/svg"
+              width="15"
+              height="15"
+              viewBox="0 0 15 15"
+            >
+              <path  d="M74.705,129.154a6.088,6.088,0,0,0,1.085-5.056,6.167,6.167,0,0,0-2.539-3.839,6.608,6.608,0,0,0-4.958-1.207,6.475,6.475,0,0,0-4.356,2.53,6.056,6.056,0,0,0-1.174,5.154,14.881,14.881,0,0,1,.442,2.339,5.759,5.759,0,0,1-.494,2.849c-.065.136-.139.266-.213.4.029.012.043.022.055.02a6.859,6.859,0,0,0,3.154-1.268.223.223,0,0,1,.281-.043,6.72,6.72,0,0,0,4.658.7,6.475,6.475,0,0,0,4.058-2.585Zm2.717,4.572a2.756,2.756,0,0,1-.261-.425,4.205,4.205,0,0,1-.1-2.971,4.6,4.6,0,0,0-.139-3.087c-.113-.278-.267-.534-.427-.851-.031.134-.046.191-.057.25a6.593,6.593,0,0,1-.849,2.323,7.164,7.164,0,0,1-4.994,3.5c-.367.071-.741.095-1.119.142a.19.19,0,0,0,.036.055c.094.071.185.144.285.2a4.856,4.856,0,0,0,4.87.278.261.261,0,0,1,.23,0,4.912,4.912,0,0,0,1.725.752,2.973,2.973,0,0,0,.72.081C77.531,133.97,77.541,133.895,77.423,133.726Z" transform="translate(-62.5 -118.975)" fill="currentColor"/>
+            </svg>
+            <span class="blog__items--meta__text">
+              {{- 'blogs.article.comments' | t: count: article.comments_count -}}
+            </span>
+          </li>
+        {%- endif -%}
+        {%- if show_date -%}
+          <li class="blog__items--meta__list">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="blog__items--meta__icon"
+            >
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+
+            <span class="blog__items--meta__text"> {{ article.published_at | time_tag: format: 'date' -}}</span>
+          </li>
+        {%- endif -%}
+        {%- if show_author -%}
+          <li class="blog__items--meta__list">
+            <svg
+              class="blog__items--meta__icon"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <span>{{ article.author }}</span>
+          </li>
+        {%- endif -%}
+      </ul>
+    </div>
+    <h3 class="blog__items--title h4 mb-0" id="Article-{{ article.id }}">
+      <a class="article--items__link" href="{{ article.url }}">
+        {{ article.title | escape }}
+      </a>
+    </h3>
+    {%- if show_content -%}
+      {%- if article.excerpt.size > 0 or article.content.size > 0 -%}
+        <p class="blog__items--desc rte-width">
+          {%- if article.excerpt.size > 0 -%}
+            {{ article.excerpt | strip_html | truncatewords: 15 }}
+          {%- else -%}
+            {{ article.content | strip_html | truncatewords: 15 }}
+          {%- endif -%}
+        </p>
+      {%- endif -%}
+    {%- endif -%}
+
+    {% if section.settings.button_label != blank %}
+      <div class="article__button">
+        <a
+          class="{% unless button_type == "link" %} button button--extra-small button--{{ button_type }} {% endunless %} {% if button_type == "link" %} link {% endif %} button--with-icon"
+          href="{{ article.url }}"
+        >
+          {{- section.settings.button_label -}}
+
+          {% if section.settings.button_icon %}
+            <span class="button--icon button--icon-right"> {% render 'icon-arrow-right' %} </span>
+          {% endif %}
+        </a>
+      </div>
+    {%- endif -%}
+  </div>
+</article>

@@ -1,0 +1,54 @@
+{%- assign a = 1 -%}
+{%- for i in (1..9) -%}
+  {%- liquid
+    assign product_item = 'product-' | append: a
+    assign a = a | plus: 1
+  -%}
+  <div class="col mb-20">
+    <div class="product__card--list  {% if corner_radius %} product--corner-radius-true{% endif %} color-{{ color_scheme }}">
+      <div class="product__card-list__thumbnail">
+        {{ product_item | placeholder_svg_tag: 'placeholder' }}
+      </div>
+
+      <div class="product__card--list__content {% if spacing %} product--card-spacing-true{% endif %}">
+        {%- if show_title -%}
+          <h3 class="product__card__title {{ settings.product_title_size }}">
+            <span class="product__card-title--link"> Example product Title </span>
+          </h3>
+        {%- endif -%}
+
+        <div class="product-card-list--price-cart">
+          {%- if show_price -%}
+            <span class="product--card-lits-price">$99.99</span>
+          {%- endif -%}
+
+          {%- if show_cart_button -%}
+            <div class="product-card-list-action-buttons ">
+              <div class="product-card-list-cart-button">
+                <button
+                  aria-haspopup="dialog"
+                  type="button"
+                  class="product--card-list-button {{ className }} {% if tooltip %} product--tooltip{% endif %}"
+                  data-product-handle="{{ product_card_product.handle }}"
+                  aria-label="{{ 'products.product.select_options' | t }}"
+                >
+                  {% render 'icon-cart' %}
+                  {% if tooltip %}
+                    <div class="product--tooltip-label {{ tooltip_position }} {% if tooltip_desktop != true %} desktop--tooltip-disable{% endif %}">
+                      {{ 'products.product.select_options' | t }}
+                    </div>
+                  {% endif %}
+                </button>
+              </div>
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+  {%- liquid
+    if a == 7
+      assign a = 1
+    endif
+  -%}
+{%- endfor -%}

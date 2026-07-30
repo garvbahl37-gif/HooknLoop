@@ -1,0 +1,91 @@
+.search__input.field__input {
+  padding-right: 5rem;
+}
+/* Remove extra spacing for search inputs in Safari */
+input::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+.category__search--box-wrapper {
+  display: flex;
+}
+.category__search--box-wrapper .search__input_field {
+  flex-grow: 0;
+  flex-shrink: 1;
+  width: 100%;
+  flex-basis: auto;
+}
+.category__search--box-wrapper .header-global-search-select {
+  flex-shrink: 0;
+  width: auto;
+  display: block;
+}
+.category__search--box-wrapper .header-global-search-categories {
+  border-radius: 0;
+  border-right-color: transparent;
+  padding-right: 3rem;
+}
+@media only screen and (min-width: 400px) {
+  .category__search--box-wrapper .header-global-search-categories {
+    padding-right: 3.5rem;
+  }
+}
+.reset__button {
+  right: 4.4rem;
+  top: 0.2rem;
+}
+.reset__button .icon.icon-close {
+  height: 1.8rem;
+  width: 1.8rem;
+  stroke-width: 0.1rem;
+}
+/* Popular search tags  */
+.popular__search--tag-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  gap: 1rem;
+}
+.popular__search--tag--link {
+  font-size: 1.7rem;
+}
+.popular__search--tag--link:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.15rem;
+}
+.popular__search--tags {
+  padding: 0 2rem 2rem;
+}
+/* Most searched product  */
+.predictive--search-drawer-inner
+  .predictive-search__item:not(.predictive-search__item--term) {
+  padding: 0.8rem 1rem 0.8rem 0;
+}
+.predictive-search-drawer-result #predictive-search-results-products-list {
+  padding: 2rem;
+}
+.predictive-search-drawer-result
+  .predictive-search__results-list:not(
+    #predictive-search-results-products-list
+  ) {
+  padding-left: 2rem;
+}
+/* Category search css  */
+.category__search--box {
+  padding-bottom: 0;
+}
+.predictive--search-drawer-inner
+  .header-global-search-select
+  .header-global-search-categories {
+  padding: 0 2rem;
+  border-radius: 3rem;
+}
+/* Category search css for inline header */
+.predictive--search-drawer-inner .header-global-search-select svg {
+  height: auto;
+  width: 1.3rem;
+  right: 2rem;
+}

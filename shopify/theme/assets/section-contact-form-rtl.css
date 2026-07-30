@@ -1,0 +1,10 @@
+.contact__info--icon {
+  margin-right: 0;
+  margin-left: 1.2rem;
+}
+@media only screen and (min-width: 1200px) {
+  .contact__info--icon {
+    margin-right: 0;
+    margin-left: 2rem;
+  }
+}

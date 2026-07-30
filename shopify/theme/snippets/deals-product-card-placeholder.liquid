@@ -1,0 +1,66 @@
+{% liquid
+  if card_button_type == 'primary'
+    assign button_class = 'button button--primary'
+  elsif card_button_type == 'link'
+    assign button_class = 'link with--icon button--not-underline'
+  else
+    assign button_class = 'button button--secondary'
+  endif
+%}
+
+{%- if slider_enable -%}<div class="swiper-slide">{%- endif -%}
+<div class="deals--product__card d-flex {% if box_shadow %} product__shadow {% endif %} {% if corner_radius %} product--corner-radius-true{% endif %} {% if spacing %} product--card-spacing-true{% endif %} color-{{ color_scheme }} card--client-height">
+  <div class="product__card__thumbnail placeholder">
+    {{ product_item | placeholder_svg_tag: 'placeholder' }}
+  </div>
+
+  <div class="deals--product-card--content text-{{ settings.product_content_alignment }} {% unless spacing %}card-content-spacing-true{% endunless %}">
+    {%- if show_title -%}
+      <h3 class="product__card__title {{ settings.product_title_size }}">
+        <span class="product__card-title--link"> Example product Title </span>
+      </h3>
+    {%- endif -%}
+
+    {%- if show_price -%}
+      <span class="product--card-lits-price">$99.99</span>
+    {%- endif -%}
+
+    {%- if inventory_status -%}
+      <div class="product--stock-counter" style=" --progress-bar-foreground: {{ progress_foreground_color }}; --progress-bar-background: {{ progress_background_color }}">
+        <div class="product__items--sold__stocks d-flex justify-content-between">
+          {% if inventroy_not_tracked %}
+            <span class="product__items--sold__stocks--text">
+              {{ 'products.product.inventory_status.track_label' | t }}
+            </span>
+          {% else %}
+            <span class="product__items--sold__stocks--text">
+              {{ 'products.product.inventory_status.soldout_label' | t }}
+            </span>
+            <span class="product__items--sold__stocks--text">
+              {{- 'products.product.inventory_status.available_lable' | t }}
+            </span>
+          {% endif %}
+        </div>
+        <div class="stock--progressbar">
+          <span class="progressbar-percentage" style="width: 80%">
+            <span class="visually-hidden">{{ 'products.product.stock_bar' | t }}</span>
+          </span>
+        </div>
+      </div>
+    {%- endif -%}
+
+    <!-- Product action button -->
+    <div class="deals--product-card-footer">
+      <button type="button" class="deals--product-cart-button {{ button_class }}">
+        {% if use_button_icon %}
+          {% render 'icon-cart' %}
+        {% endif %}
+        <span class="cart__buton--label">{{ 'products.product.add_to_cart' | t }} </span>
+      </button>
+    </div>
+    <!-- Product action button ./ -->
+  </div>
+</div>
+{%- if slider_enable -%}
+  </div>
+{%- endif -%}

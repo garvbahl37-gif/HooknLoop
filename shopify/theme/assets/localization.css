@@ -1,0 +1,31 @@
+button.dropdown__open_label {
+    background: none;
+    border: none;
+  }
+  button.dropdown__open_label  svg{
+    height: 10px;
+  }
+  a.dropdown__list__item {
+    padding: 5px 10px;
+    display: block;
+    border-radius: 5px;
+  }
+    .dropdown__open_list {
+    position: absolute;
+    top: 100%;
+    background: rgba(var(--color-background));
+    left: 0;
+    width: 22rem;
+    z-index: 99;
+    box-shadow: 0 20px 30px rgba(var(--color-background));
+    border-radius: 5px;
+    max-height: 19rem;
+    overflow-y: auto;
+  }
+   .dropdown__list__item:hover, .dropdown__list__item.active {
+    background: rgba(var(--color-base-text));
+    color: rgba(var(--color-background))
+  }
+  .disclosure {
+    position: relative;
+  }

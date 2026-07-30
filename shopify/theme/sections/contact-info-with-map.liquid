@@ -1,0 +1,443 @@
+{{ 'section-contact-info-with-map.css' | asset_url | stylesheet_tag }}
+{{ 'section-title.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign container = ''
+  if section.settings.container == 'container'
+    assign container = 'container'
+  elsif section.settings.container == 'container-fluid'
+    assign container = 'container-fluid'
+  else
+    assign container = 'container-fluid px-0'
+  endif
+-%}
+
+{%- style -%}
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.mobile_padding_top }}px;
+      padding-bottom: {{ section.settings.mobile_padding_bottom }}px;
+    }
+    @media screen and (min-width: 750px) {
+      .section-{{ section.id }}-padding {
+        padding-top: {{ section.settings.padding_top }}px;
+        padding-bottom: {{ section.settings.padding_bottom }}px;
+      }
+    }
+    .google__map--media.placeholder {
+    	background: rgba(var(--color-foreground),.35);
+    }
+    .google__map--wrapper iframe{
+      width: 100% !important;
+      height: 50rem !important;
+    }
+  {%- if section.settings.image != blank -%}
+    @media screen and (max-width: 767px) {
+      .google__map--media--large {
+        min-height: 39rem;
+      }
+      .google__map--media--medium {
+        min-height: 34rem;
+      }
+      .google__map--media--small {
+        min-height: 28rem;
+      }
+    }
+
+    @media screen and (min-width: 768px){
+      .google__map--media--large {
+        min-height: 72rem;
+      }
+      .google__map--media--medium {
+        min-height: 56rem;
+      }
+      .google__map--media--small {
+        min-height: 42rem;
+      }
+    }
+  {%- endif -%}
+  h2.google__map--placeholder-heading {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #fff;
+  }
+{%- endstyle -%}
+
+<div class="contact--info-with-map section-{{ section.id }}-padding">
+  <div class="{{ container }}">
+    {% if section.settings.heading != blank or section.settings.subtitle != blank %}
+      <div class="section-heading text-{{ section.settings.text_center }}  {% if section.settings.border_line %} mb-70 {% else %} mb-50{% endif %}">
+        {% if section.settings.heading_position == 'bottom' and section.settings.subtitle != blank %}
+          <span class="section-heading__sub_title">{{- section.settings.subtitle -}}</span>
+        {% endif %}
+        <h2 class="section-heading__title {% if section.settings.heading_position == "top" and section.settings.subtitle != blank and section.settings.border_line %}heading__space--bottom{% endif %} ">
+          {% if section.settings.border_line %}<span>{% endif %}
+          {{- section.settings.heading -}}
+          {% if section.settings.border_line %}</span>{% endif %}
+        </h2>
+        {% if section.settings.heading_position == 'top' and section.settings.subtitle != blank %}
+          <span class="section-heading__sub_title">{{- section.settings.subtitle -}}</span>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <div class="contact--info-with-map-grid {% if section.settings.map_layout == "map_first" %} contact__info--map-first {% endif %}">
+      <div class="contact--info-wrapper {% if section.settings.map_layout == "map_first" %} contact__info--text-last {% endif %}">
+        <div class="contact--info--list">
+          {%- for block in section.blocks -%}
+            {%- case block.type -%}
+              {%- when 'contact_item' -%}
+                <div class="contact--info--list-item d-flex">
+                  {%- if block.settings.icon != 'none' -%}
+                    <div class="contact__info--icon">
+                      {% render 'contact-item-icon', icon: block.settings.icon %}
+                    </div>
+                  {%- endif -%}
+                  <div class="contact__info--content">
+                    {% if block.settings.heading != blank %}
+                      <h3 class="contact__info--title {{ block.settings.heading_size }}">
+                        {{ block.settings.heading }}
+                      </h3>
+                    {% endif %}
+                    <div class="contact__info--text">{{ block.settings.text | replace: 'p>', 'span>' }}</div>
+                  </div>
+                </div>
+            {% endcase %}
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="contact-map-wrapper">
+        {%- if section.settings.image != blank -%}
+          <div
+            class="google__map--media--{{ section.settings.image_height }} media"
+            {% if section.settings.image_height == 'adapt' and section.settings.image != blank %}
+              style="padding-bottom: {{ 1 | divided_by: section.settings.image.aspect_ratio | times: 100 }}%;"
+            {% endif %}
+          >
+            <img
+              srcset="
+                {%- if section.settings.image.width >= 375 -%}{{ section.settings.image | image_url: width: 375 }} 375w,{%- endif -%}
+                {%- if section.settings.image.width >= 550 -%}{{ section.settings.image | image_url: width: 550 }} 550w,{%- endif -%}
+                {%- if section.settings.image.width >= 750 -%}{{ section.settings.image | image_url: width: 750 }} 750w,{%- endif -%}
+                {%- if section.settings.image.width >= 1100 -%}{{ section.settings.image | image_url: width: 1100 }} 1100w,{%- endif -%}
+                {%- if section.settings.image.width >= 1500 -%}{{ section.settings.image | image_url: width: 1500 }} 1500w,{%- endif -%}
+                {%- if section.settings.image.width >= 1780 -%}{{ section.settings.image | image_url: width: 1780 }} 1780w,{%- endif -%}
+                {%- if section.settings.image.width >= 2000 -%}{{ section.settings.image | image_url: width: 2000 }} 2000w,{%- endif -%}
+                {%- if section.settings.image.width >= 3000 -%}{{ section.settings.image | image_url: width: 3000 }} 3000w,{%- endif -%}
+                {%- if section.settings.image.width >= 3840 -%}{{ section.settings.image | image_url: width: 3840 }} 3840w,{%- endif -%}
+                {{ section.settings.image | image_url }} {{ section.settings.image.width }}w
+              "
+              sizes="100vw"
+              src="{{ section.settings.image | image_url: width: 1500 }}"
+              loading="lazy"
+              alt="{{ section.settings.image.alt | escape }}"
+              width="{{ section.settings.image.width }}"
+              height="{{ section.settings.image.width | divided_by: section.settings.image.aspect_ratio | round }}"
+            >
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.map == blank and section.settings.image == blank -%}
+          <div class="google__map--media placeholder">
+            {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-2' }}
+            <h2 class="google__map--placeholder-heading h1 text-center">Add Map iframe code or placholder</h2>
+          </div>
+        {%- endif -%}
+
+        {{ section.settings.map }}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Contact info with map",
+   "tag": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+        "type": "select",
+        "id": "container",
+        "label": "Page width",
+        "default": "container-fluid",
+        "options": [
+          {
+            "value": "container",
+            "label": "Boxed"
+          },
+          {
+            "value": "container-fluid",
+            "label": "Full width"
+          }
+        ]
+      },
+   {
+      "type": "header",
+      "content": "Section header"
+    },
+     {
+      "type": "inline_richtext",
+      "id": "subtitle",
+      "label": "Subheading"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "default": "Find us",
+      "label": "t:sections.featured-collection.settings.title.label"
+    },
+    {
+      "type": "select",
+      "id": "heading_position",
+      "options": [
+        {
+          "value": "top",
+          "label": "Top"
+        },
+        {
+          "value": "bottom",
+          "label": "Bottom"
+        }
+      ],
+      "default": "bottom",
+      "label": "Heading position"
+    },
+    {
+      "type": "select",
+      "id": "text_center",
+      "options": [
+        {
+          "value": "right",
+          "label": "Right"
+        },
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        }
+      ],
+      "default": "center",
+      "label": "Alignment"
+    },
+    {
+       "type": "checkbox",
+       "id": "border_line",
+       "label": "Enable border line",
+       "default": true
+     },
+    {
+     "type": "header",
+     "content": "Google map"
+   },
+    {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Map placeholder image"
+        },
+		{
+          "type": "select",
+          "id": "image_height",
+          "options": [
+            {
+              "value": "adapt",
+              "label": "Adapt to image"
+            },
+            {
+              "value": "small",
+              "label": "Small"
+            },
+            {
+              "value": "medium",
+              "label": "Medium"
+            },
+            {
+              "value": "large",
+              "label": "Large"
+            }
+          ],
+          "default": "adapt",
+          "label": "Image height"
+        },
+		{
+          "type": "textarea",
+          "id": "map",
+          "label": "Map iframe code",
+          "info": "To get iframe code, [Click here](https:\/\/www.maps.ie\/create-google-map)"
+        },
+    {
+      "type": "select",
+      "id": "map_layout",
+      "options": [
+        {
+          "value": "map_first",
+          "label": "Map first"
+        },
+        {
+          "value": "text_first",
+          "label": "Text first"
+        }
+      ],
+      "default": "text_first",
+      "label": "Map position"
+    },
+    {
+     "type": "header",
+     "content": "Section padding"
+   },
+   {
+         "type": "paragraph",
+         "content": "Desktop"
+       },
+       {
+         "type": "range",
+         "id": "padding_top",
+         "min": 0,
+         "max": 150,
+         "step": 5,
+         "unit": "px",
+         "label": "Padding top",
+         "default": 50
+       },
+       {
+         "type": "range",
+         "id": "padding_bottom",
+         "min": 0,
+         "max": 150,
+         "step": 5,
+         "unit": "px",
+         "label": "Padding bottom",
+         "default": 50
+       },
+	{
+         "type": "paragraph",
+         "content": "Mobile"
+       },
+	{
+         "type": "range",
+         "id": "mobile_padding_top",
+         "min": 0,
+         "max": 150,
+         "step": 5,
+         "unit": "px",
+         "label": "Padding top",
+         "default": 50
+       },
+       {
+         "type": "range",
+         "id": "mobile_padding_bottom",
+         "min": 0,
+         "max": 150,
+         "step": 5,
+         "unit": "px",
+         "label": "Padding bottom",
+         "default": 50
+       }
+  ],
+  "blocks": [
+        {
+          "type": "contact_item",
+          "name": "Contact item",
+          "settings": [
+			 {
+              "type": "text",
+              "id": "heading",
+              "default": "Heading",
+              "label": "Heading"
+            },
+            {
+             "type": "select",
+             "id": "heading_size",
+             "options": [
+               {
+                 "value": "h4",
+                 "label": "Small"
+               },
+               {
+                 "value": "h3",
+                 "label": "Medium"
+               },
+               {
+                 "value": "h2",
+                 "label": "Large"
+               }
+             ],
+             "default": "h3",
+             "label": "Heading size"
+           },
+			{
+              "type": "select",
+              "id": "icon",
+              "options": [
+                {
+                  "value": "none",
+                  "label": "t:sections.main-product.blocks.collapsible_tab.settings.icon.options__1.label"
+                },
+                {
+                  "value": "email",
+                  "label": "Email"
+                },
+                {
+                  "value": "phone",
+                  "label": "Phone"
+                },
+                {
+                  "value": "address",
+                  "label": "Adress"
+                }
+              ],
+              "default": "email",
+              "label": "t:sections.main-product.blocks.collapsible_tab.settings.icon.label"
+            },
+			{
+              "type": "richtext",
+              "id": "text",
+              "default": "<p> <strong> (372) 587-2335 </strong> </br> (372) 555-4665</p>",
+              "label": "t:sections.rich-text.blocks.text.settings.text.label"
+            }
+          ]
+        }
+    ],
+  "presets": [
+   {
+     "name": "Contact info with map",
+     "blocks":[
+          {
+          	"type": "contact_item",
+            "settings": {
+              "heading": "Address",
+              "icon": "address",
+              "text": "<p> 123 Stree New York City , United States Of America NY 750065.</p>"
+            }
+          },
+           {
+          	"type": "contact_item",
+             "settings": {
+              "heading": "Phone",
+              "icon": "phone",
+              "text": "<p> <strong> (372) 587-2335 <\/strong> <br\/> (372) 555-4665<\/p>"
+            }
+          },
+         {
+          	"type": "contact_item",
+           "settings": {
+              "heading": "Email",
+              "icon": "email",
+              "text": "<p> info@example.com <br\/> admin@example.com<\/p>"
+            }
+          }
+     ]
+   }
+ ],
+  "disabled_on": {
+    "groups": ["header","footer"]
+  }
+}
+{% endschema %}

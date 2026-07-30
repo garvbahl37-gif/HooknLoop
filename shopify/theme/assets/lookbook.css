@@ -1,0 +1,25 @@
+.lookbook--media.media--adapt.placeholder {
+  padding-top: 56.28%;
+}
+.media--custom_1_5 {
+  padding-bottom: 150%;
+}
+.media--custom_1_7 {
+  padding-bottom: 170%;
+}
+.media--custom_1_9 {
+  padding-bottom: 190%;
+}
+.media--custom_2_1 {
+  padding-bottom: 200%;
+}
+@media only screen and (min-width: 750px) {
+  .rounded--image {
+    border-radius: 2rem;
+  }
+}
+@media only screen and (max-width: 749px) {
+  .rounded--image {
+    border-radius: 1.5rem;
+  }
+}

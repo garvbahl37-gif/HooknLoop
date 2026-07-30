@@ -1,0 +1,67 @@
+.deals__product--countdown {
+  position: absolute;
+  bottom: 8px;
+  left: 0;
+  right: 0;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: var(--transition);
+}
+
+@media only screen and (min-width: 1200px) {
+  .deals__product--countdown {
+    bottom: calc(14px + var(--timer-padding-bottom, 0px));
+  }
+}
+.deals__product--countdown .countdown__item {
+  text-align: center;
+  background: rgba(var(--color-button), var(--alpha-button-background));
+  padding: 0.3rem 0.5rem;
+  color: rgb(var(--color-button-text));
+  border-radius: 0.3rem;
+}
+.deals__product--countdown .countdown__item:last-child {
+  margin-right: 0;
+}
+.deals__product--countdown .countdown__item::before {
+  display: none;
+}
+.countdown__item > span {
+  display: block;
+}
+.deals__product--countdown .countdown__number {
+  font-size: 1.4rem;
+  font-weight: 700;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+  border-radius: 10px 0;
+}
+.deals__product--countdown .countdown__text {
+  font-size: 1.4rem;
+  line-height: 1;
+  padding-bottom: 0.5rem;
+}
+@media only screen and (min-width: 750px) {
+  .deals__product--countdown .countdown__item {
+    min-width: 4.5rem;
+  }
+}
+@media only screen and (max-width: 749px) {
+  .deals__product--countdown {
+    bottom: 15px;
+  }
+  .deals__product--countdown .countdown__text,
+  .deals__product--countdown .countdown__number {
+    font-size: 1.2rem;
+  }
+  .deals__product--countdown {
+    gap: 0.15rem;
+  }
+}
+@media only screen and (min-width: 992px) {
+  .product__card:not(.product__card--style_1):hover .deals__product--countdown {
+    opacity: 0;
+  }
+}

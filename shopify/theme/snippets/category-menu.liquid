@@ -1,0 +1,151 @@
+<div class="dropdown__categories--menu color-{{ section.settings.category_color_scheme }}">
+  <ul class="header--categories-menu d-none d-md-block">
+    {% assign menu_item = 0 %}
+    {%- for block in section.blocks -%}
+      {%- case block.type -%}
+        {%- when 'category_menu' -%}
+          {% assign menu_item = menu_item | plus: 1 %}
+          <li
+            class="categories__menu--items {% if menu_item > 9 %}collapsible--categories-item d-none{% endif %}"
+            {{ block.shopify_attributes }}
+          >
+            <a class="categories__menu--link" href="{{  block.settings.cat_menu_url }}">
+              {% if block.settings.icon != 'none' %}
+                <span class="categories__menu--icon svg--icon">
+                  {% render 'categories-menu-icon', icon: block.settings.icon %}
+                </span>
+              {% endif %}
+              {%- if block.settings.image != blank -%}
+                <span class="categories__menu--icon image--icon">
+                  <img
+                    src="{{ block.settings.image | img_url: '100x' }}"
+                    alt="{{ block.settings.image.alt | escape }}"
+                    width="100"
+                    height="{{ 100 | divided_by: block.settings.image.aspect_ratio | ceil }}"
+                    loading="lazy"
+                  >
+                </span>
+              {%- endif -%}
+              <span class="categories__menu--label">{{ block.settings.cat_menu_name }}</span>
+              {%- if block.settings.menu.links != blnak -%}
+                <div class="cat__has--submenu-icon">
+                  {% render 'icon-chevron-right' %}
+                </div>
+              {%- endif -%}
+            </a>
+
+            {%- if block.settings.menu.links != blank -%}
+              {% if block.settings.vertical_menu_type == 'mega_menu' %}
+                <div
+                  class="categories__submenu vertical__megamenu vertical--megamenu__column-{{ block.settings.mega_menu_column }}  {% if block.settings.promo_image != blank %} vertical--megamenu--with-banner{% endif %}"
+                  {% if block.settings.promo_image != blank %}
+                    style="--vertical-menu-media-width: 250px"
+                  {% endif %}
+                >
+              {% endif %}
+              <ul class="{% if block.settings.vertical_menu_type == "mega_menu" %}vertical__megamenu--wrapper vertical--megamenu__column-{{ block.settings.mega_menu_column }}{% else %}categories__submenu{% endif %}">
+                {%- for link in block.settings.menu.links -%}
+                  {% if block.settings.vertical_menu_type == 'dropdown' %}
+                    <li class="categories__submenu--items">
+                      {%- if link.links != blank -%}
+                        <a class="categories__submenu--items__text" href="{{ link.url }}">
+                          <span class="categories__menu--label">
+                            {{ link.title | escape }}
+                          </span>
+                          <div class="cat__has--submenu-icon">
+                            {% render 'icon-chevron-right' %}
+                          </div>
+                        </a>
+                        <ul class="categories__submenu--child">
+                          {%- for childlink in link.links -%}
+                            <li class="categories__submenu--child__items">
+                              <a class="categories__submenu--child__items--link" href="{{ childlink.url }}">
+                                {{- childlink.title | escape }}
+                              </a>
+                            </li>
+                          {% endfor %}
+                        </ul>
+                      {%- else -%}
+                        <a class="categories__submenu--items__text" href="{{ link.url }}">
+                          {{- link.title | escape -}}
+                        </a>
+                      {%- endif -%}
+                    </li>
+                  {% else %}
+                    <li class="vertical--mega--menu-items">
+                      {%- if link.links != blank -%}
+                        <a class="vertical--mega--menu-items-link" href="{{ link.url }}">
+                          <strong>{{ link.title | escape }}</strong>
+                        </a>
+                        <ul class="vetical__mega--menu--single-item">
+                          {%- for childlink in link.links -%}
+                            <li class="vertical--mega--menu--child-item">
+                              <a class="vertical--mega--menu--child-item-link" href="{{ childlink.url }}">
+                                {{- childlink.title | escape }}
+                              </a>
+                            </li>
+                          {% endfor %}
+                        </ul>
+                      {%- else -%}
+                        <a class="vertical--mega--menu-items-link" href="{{ link.url }}"
+                          ><strong>{{ link.title | escape }}</strong></a
+                        >
+                      {%- endif -%}
+                    </li>
+                  {% endif %}
+                {%- endfor -%}
+              </ul>
+
+              {% if block.settings.vertical_menu_type == 'mega_menu' and block.settings.promo_image != blank %}
+                <div class="vertical__megamenu--media-wrapper">
+                  {{ block.settings.banner_1_link }}
+                  <a href="{{ block.settings.banner_1_link }}" class="mega__menu--promo-link">
+                    <div
+                      class="media--{{ block.settings.height }} media"
+                      {% if block.settings.height == 'adapt' and block.settings.promo_image != blank %}
+                        style="padding-bottom: {{ 1 | divided_by: block.settings.promo_image.aspect_ratio | times: 100 }}%;"
+                      {% endif %}
+                    >
+                      {%- capture sizes -%}(min-width: {{ settings.container_lg_width }}px) {{ settings.container_lg_width | minus: 30 | divided_by: 2 }}px, (min-width: 750px) calc((100vw - 130px) / 2),100vw{%- endcapture -%}
+                      {% assign height = block.settings.promo_image.width
+                        | divided_by: block.settings.promo_image.aspect_ratio
+                      %}
+                      {{
+                        block.settings.promo_image
+                        | image_url: width: 1500
+                        | image_tag:
+                          loading: 'lazy',
+                          sizes: sizes,
+                          widths: '165, 360, 535, 750, 1070, 1500, 2000, 3000, 3840',
+                          height: height
+                      }}
+                    </div>
+                  </a>
+                </div>
+              {% endif %}
+
+              {% if block.settings.vertical_menu_type == 'mega_menu' %}</div>{% endif %}
+            {%- endif -%}
+          </li>
+      {%- endcase -%}
+    {%- endfor -%}
+    {% if menu_item > 9 %}
+      <li
+        class="categories__menu--items all-categories--toggle-btn"
+        data-label="{{ section.settings.menu_toggle_button_label_2 }}"
+        data-label-first="{{ section.settings.menu_toggle_button_label }}"
+      >
+        <span class="categories__menu--link">
+          {% if section.settings.icon != 'none' %}
+            <span class="categories__menu--icon svg--icon">
+              {% render 'categories-menu-icon', icon: section.settings.icon %}
+            </span>
+          {% endif %}
+          <span class="all-categories--toggle-btn-label">
+            {{- section.settings.menu_toggle_button_label -}}
+          </span>
+        </span>
+      </li>
+    {% endif %}
+  </ul>
+</div>

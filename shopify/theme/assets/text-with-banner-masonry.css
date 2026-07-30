@@ -1,0 +1,108 @@
+.masonry--banner__items {
+  min-height: 33.5rem;
+}
+.masonry--banner__items {
+  position: relative;
+  overflow: hidden;
+}
+.banner__media {
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+}
+.banner__items--content {
+  position: relative;
+  display: flex;
+  height: 100%;
+  padding: 3rem;
+}
+.gird {
+  display: grid;
+}
+.masonry--grid {
+  gap: 2rem;
+}
+span.banner__items--content__subtitle {
+  margin-bottom: 0.5rem;
+  display: block;
+}
+.masonry--banner-link {
+  display: block;
+  height: 100%;
+}
+.banner__items--content__link {
+  font-size: 1.7rem;
+}
+.banner__items--content__subtitle {
+  color: rgba(var(--banner-subheading-color));
+}
+.banner__items--content__title {
+  color: rgba(var(--banner-heading-color));
+}
+.banner__items--content__link {
+  color: rgba(var(--banner-button-color));
+}
+.banner__items--content__arrow--icon {
+  color: rgba(var(--banner-button-icon-color));
+}
+.masonry--grid--4 {
+  grid-template-columns: auto;
+}
+.masonry--grid--3 {
+  grid-template-columns: auto auto auto;
+}
+.masonry--grid--2 {
+  grid-template-columns: auto auto;
+}
+@media only screen and (min-width: 992px) {
+  .masonry--grid--4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+@media only screen and (min-width: 600px) and (max-width: 991px) {
+  .masonry--grid--4 {
+    grid-template-columns: auto auto;
+  }
+}
+@media only screen and (min-width: 750px) {
+  .masonry--grid--4 .masonry--banner__items:first-child {
+    grid-row: 2 span;
+    grid-column: 1 / span 2;
+  }
+  .masonry--grid--4 .masonry--banner__items-4 {
+    grid-column: 2 span;
+  }
+}
+.banner__media.media > img {
+  transition: opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.masonry--banner__items:hover .banner__media.media > img {
+  transform: scale(1.04);
+}
+.button__underline {
+  text-decoration: underline;
+  text-underline-offset: 0.3rem;
+}
+.collage__banner--button {
+  box-shadow: 0 0.3rem 1.5rem -0.7rem rgba(0, 0, 0, 0.15);
+}
+
+.banner__items--content.collage--banner-content {
+  background: transparent;
+}
+@media only screena and (min-width: 750px) {
+  .button--small.collage__banner--button {
+    padding: 0.9rem 2.5rem;
+  }
+}
+@media only screena and (max-width: 749px) {
+  .button--small.collage__banner--button {
+    padding: 0.8rem 1.4rem;
+  }
+}
+.banner__items--content__title > span {
+  display: block;
+}

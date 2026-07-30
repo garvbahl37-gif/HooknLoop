@@ -1,0 +1,177 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "footer",
+  "name": "Footer",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "0023984e-906b-47ad-ad7a-af594238863e": {
+          "type": "about_us",
+          "settings": {
+            "heading": "",
+            "about_information": "<p></p><p>Australia's trusted supplier of premium hook and loop fastening solutions for businesses and consumers.</p>",
+            "social_media": false
+          }
+        },
+        "6c12f5ad-1f2b-4d5d-a59e-5931a27ed7cc": {
+          "type": "link_list",
+          "settings": {
+            "heading": "Product",
+            "menu": "foo-product"
+          }
+        },
+        "3d7e2d8c-1b8e-4e2d-be90-97680e4c4ac5": {
+          "type": "link_list",
+          "settings": {
+            "heading": "Menu",
+            "menu": "home-menu"
+          }
+        },
+        "link_list_cw4P3Q": {
+          "type": "link_list",
+          "settings": {
+            "heading": "Information",
+            "menu": "foo-support"
+          }
+        },
+        "link_list_ypehdY": {
+          "type": "link_list",
+          "settings": {
+            "heading": "My Account",
+            "menu": "my-account"
+          }
+        }
+      },
+      "block_order": [
+        "0023984e-906b-47ad-ad7a-af594238863e",
+        "6c12f5ad-1f2b-4d5d-a59e-5931a27ed7cc",
+        "3d7e2d8c-1b8e-4e2d-be90-97680e4c4ac5",
+        "link_list_cw4P3Q",
+        "link_list_ypehdY"
+      ],
+      "settings": {
+        "snow_fall": false,
+        "container": "container",
+        "color_scheme": "accent-1",
+        "column": "5",
+        "powered_by": "<p>HooknLoop © 2026 | All Rights Reserved | ABN:93878995217</p>",
+        "enable_follow_on_shop": true,
+        "enable_country_selector": true,
+        "enable_language_selector": false,
+        "payment_icons_type": "manual",
+        "payment_icons": "visa,master,american_express,paypal,discover,shopify_pay",
+        "padding_top": 60,
+        "padding_bottom": 35,
+        "mobile_padding_top": 40,
+        "mobile_padding_bottom": 30
+      }
+    },
+    "mobile-navigation-bar": {
+      "type": "mobile-navigation-bar",
+      "blocks": {
+        "b4ee618f-91b9-432d-ac3c-8ae8426a3c81": {
+          "type": "home",
+          "settings": {
+            "title": "Home"
+          }
+        },
+        "b4266fdf-61ae-4506-8181-af0b645df7d2": {
+          "type": "search",
+          "settings": {
+            "title": "Search"
+          }
+        },
+        "a60d565d-bc06-4c7e-aaad-dd6b7c100cfe": {
+          "type": "link",
+          "settings": {
+            "title": "Shop",
+            "link": "shopify://collections/all"
+          }
+        },
+        "e2d2845d-c7e8-466a-a4d2-12c7d718d200": {
+          "type": "cart",
+          "settings": {
+            "title": "cart"
+          }
+        },
+        "42c37f7b-e2ef-4572-83af-fdd674fd9866": {
+          "type": "account",
+          "settings": {
+            "title": "account"
+          }
+        }
+      },
+      "block_order": [
+        "b4ee618f-91b9-432d-ac3c-8ae8426a3c81",
+        "b4266fdf-61ae-4506-8181-af0b645df7d2",
+        "a60d565d-bc06-4c7e-aaad-dd6b7c100cfe",
+        "e2d2845d-c7e8-466a-a4d2-12c7d718d200",
+        "42c37f7b-e2ef-4572-83af-fdd674fd9866"
+      ],
+      "settings": {
+        "color_scheme": "background-1"
+      }
+    },
+    "email-popup": {
+      "type": "email-popup",
+      "blocks": {
+        "6bff7e32-a1c3-40e7-b7b0-b6f2828a5441": {
+          "type": "heading",
+          "settings": {
+            "heading": "Exclusive benefits",
+            "heading_size": "h3"
+          }
+        },
+        "f8c0bbcb-d708-4cc1-ab84-cd1caa700308": {
+          "type": "text",
+          "settings": {
+            "richtext": "<p>Sign up for our newsletter to be the first to learn about new arrivals, special promotions, and online exclusives.</p>"
+          }
+        },
+        "77395d1d-95ba-4bd1-af42-79086a37cfed": {
+          "type": "email_form",
+          "settings": {
+            "richtext": "<p>*By submitting this form, you agree to receive our emails and may unsubscribe at any time.</p>",
+            "button_full": false
+          }
+        }
+      },
+      "block_order": [
+        "6bff7e32-a1c3-40e7-b7b0-b6f2828a5441",
+        "f8c0bbcb-d708-4cc1-ab84-cd1caa700308",
+        "77395d1d-95ba-4bd1-af42-79086a37cfed"
+      ],
+      "settings": {
+        "display": "disable",
+        "show_home_page": true,
+        "show_visitors": true,
+        "delay": 5,
+        "dont_show": true,
+        "dont_show_button_label": "No Thanks!",
+        "expire": 7,
+        "popup_position": "center",
+        "popup_width": "medium",
+        "alignment": "left",
+        "corner_radius": false,
+        "image_position": "left",
+        "full--bg-image": false,
+        "image_overlay_opacity": 0,
+        "color_scheme": ""
+      }
+    }
+  },
+  "order": [
+    "footer",
+    "mobile-navigation-bar",
+    "email-popup"
+  ]
+}

@@ -1,0 +1,35 @@
+{% if product != blank %}
+  <div class="lookbook__shop--product-wrapper" style="--hotspot-x: {{ hotspot_x }}%; --hotspot-y: {{ hotspot_y }}%;">
+  {% if product != blank %}
+  {% if quick_shop %} <quick-view-modal> {% endif %}
+  {% endif %} 
+    {% if quick_shop %}
+    <button type="button" class="look__hotspot  {% if product == blank %}no__lookbook{% endif %} {% if hotspot_y > 70 %} lookbook__shop--bottom {% endif %}" data-product-handle="{{ product.handle }}" aria-label="{{ 'products.product.select_options' | t }}" style="--hotspot-background-1: {{ block.settings.background_1 }}; --hotspot-background-2-gradient: {{ block.settings.background_2_gradient | default: "radial-gradient(50% 50% at 50% 50%,#FF9181 0%,#FF9181 100%)" }}" {{ block.shopify_attributes }}>
+       <span class="look__hotspot--arrow"></span>
+    </button>
+    {% else %}
+     <a href="{{ product.url | default: '#' }}" class="look__hotspot  {% if product == blank %}no__lookbook{% endif %}" style="--hotspot-background-1: {{ block.settings.background_1 }}; --hotspot-background-2-gradient: {{ block.settings.background_2_gradient | default: "radial-gradient(50% 50% at 50% 50%,#FF9181 0%, #FF9181 100%)" }}" {{ block.shopify_attributes }}>
+      {% if product != blank %}  
+        <span class="look__hotspot--arrow"></span>
+        <span class="visually-hidden">{{ 'products.product.select_options' | t }}</span>
+      {% endif %}
+    </a>
+    {% endif %}
+  {% if product != blank %}
+ {% if quick_shop %} </quick-view-modal> {% endif %}
+   <div class="lookbook__shop--product {% if hotspot_y > 70 %} lookbook__shop--product-bottom {% endif %} {% if hotspot_x > 70 %} lookbook__shop--product-right {% endif %} {% if hotspot_x < 30 %} lookbook__shop--product-left{% endif %}">
+      <div class="lookbook__shop--product__title h6">
+        {% if quick_shop == false %}<a href="{{ product.url | default: '#' }}"> {% endif %}
+          {{ product.title }}
+         {% if quick_shop == false %}</a>{% endif %}
+      </div>
+      {% render 'price', product: product, price_class: "lookbook__shop--product__price" %}
+   </div>
+  {% else %}
+    <div class="lookbook__shop--product {% if hotspot_y > 70 %} lookbook__shop--product-bottom {% endif %} {% if hotspot_x > 70 %} lookbook__shop--product-right {% endif %} {% if hotspot_x < 30 %} lookbook__shop--product-left{% endif %}">
+      <div class="lookbook__shop--product__title h6">Example product title</div>
+      <span class="price lookbook__shop--product__price">$99.99</span>
+   </div>
+   {% endif %}
+   </div>  
+   {% endif %}

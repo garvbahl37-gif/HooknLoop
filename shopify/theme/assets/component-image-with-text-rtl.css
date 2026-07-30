@@ -1,0 +1,5 @@
+@media only screen and (max-width: 749px) {
+  .image-with-text__content.mobile__text-left {
+    text-align: right;
+  }
+}

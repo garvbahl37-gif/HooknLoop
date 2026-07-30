@@ -1,0 +1,458 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "breadcrumbs": {
+      "type": "breadcrumbs",
+      "settings": {
+        "container": "container",
+        "image_overlay_opacity": 10,
+        "show_page_title": true,
+        "heading_size": "h1",
+        "show_breadcrumb_navigation": true,
+        "text_center": "center",
+        "padding_top": 50,
+        "padding_bottom": 50,
+        "mobile_padding_top": 40,
+        "mobile_padding_bottom": 40,
+        "color_scheme": "background-2",
+        "custom_colors": true,
+        "foreground": "#121212",
+        "background": "#e1e5e8"
+      }
+    },
+    "c2ccf461-6b5d-48be-9b98-3669d96667c4": {
+      "type": "welcome-video",
+      "blocks": {
+        "template--14633138651249__c2ccf461-6b5d-48be-9b98-3669d96667c4-16897046371be201d7-0": {
+          "type": "heading",
+          "settings": {
+            "heading": "Story About Us",
+            "heading_size": "h2"
+          }
+        },
+        "template--14633138651249__c2ccf461-6b5d-48be-9b98-3669d96667c4-16897046371be201d7-2": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>"
+          }
+        },
+        "e6625072-257c-44cf-830c-548e6671980b": {
+          "type": "signature",
+          "settings": {
+            "heading": "Alex Turner",
+            "subheading": "Founder"
+          }
+        }
+      },
+      "block_order": [
+        "template--14633138651249__c2ccf461-6b5d-48be-9b98-3669d96667c4-16897046371be201d7-0",
+        "template--14633138651249__c2ccf461-6b5d-48be-9b98-3669d96667c4-16897046371be201d7-2",
+        "e6625072-257c-44cf-830c-548e6671980b"
+      ],
+      "settings": {
+        "container": "container",
+        "image": "shopify://shop_images/Story_About_Us_1.png",
+        "image_2": "shopify://shop_images/Story_About_Us_2.png",
+        "height": "adapt",
+        "image_layout": "text_first",
+        "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+        "padding_top": 90,
+        "padding_bottom": 90,
+        "mobile_padding_top": 60,
+        "mobile_padding_bottom": 60
+      }
+    },
+    "5a6437d2-d7e9-46cb-a8c5-257c63ea24d9": {
+      "type": "counter-up",
+      "blocks": {
+        "template--14633138651249__5a6437d2-d7e9-46cb-a8c5-257c63ea24d9-168970469115234a51-0": {
+          "type": "couterup",
+          "settings": {
+            "heading": "Happy clients",
+            "number": "600"
+          }
+        },
+        "template--14633138651249__5a6437d2-d7e9-46cb-a8c5-257c63ea24d9-168970469115234a51-1": {
+          "type": "couterup",
+          "settings": {
+            "heading": "Total Products",
+            "number": "1000"
+          }
+        },
+        "template--14633138651249__5a6437d2-d7e9-46cb-a8c5-257c63ea24d9-168970469115234a51-2": {
+          "type": "couterup",
+          "settings": {
+            "heading": "Team Members",
+            "number": "50"
+          }
+        },
+        "template--14633138651249__5a6437d2-d7e9-46cb-a8c5-257c63ea24d9-168970469115234a51-3": {
+          "type": "couterup",
+          "settings": {
+            "heading": "Monthly Orders",
+            "number": "200"
+          }
+        }
+      },
+      "block_order": [
+        "template--14633138651249__5a6437d2-d7e9-46cb-a8c5-257c63ea24d9-168970469115234a51-0",
+        "template--14633138651249__5a6437d2-d7e9-46cb-a8c5-257c63ea24d9-168970469115234a51-1",
+        "template--14633138651249__5a6437d2-d7e9-46cb-a8c5-257c63ea24d9-168970469115234a51-2",
+        "template--14633138651249__5a6437d2-d7e9-46cb-a8c5-257c63ea24d9-168970469115234a51-3"
+      ],
+      "settings": {
+        "container": "container",
+        "image_overlay_opacity": 30,
+        "padding_top": 90,
+        "padding_bottom": 90,
+        "mobile_padding_top": 65,
+        "mobile_padding_bottom": 35,
+        "color_scheme": "",
+        "custom_colors": false,
+        "foreground": "#ffffff",
+        "background": "#f7f8fc"
+      }
+    },
+    "fa14ea68-dd32-4584-8974-44db5422310d": {
+      "type": "image-with-text",
+      "blocks": {
+        "template--14633138651249__fa14ea68-dd32-4584-8974-44db5422310d-heading-1": {
+          "type": "heading",
+          "settings": {
+            "heading": "Our Best Product",
+            "heading_size": "h1"
+          }
+        },
+        "template--14633138651249__fa14ea68-dd32-4584-8974-44db5422310d-text-1": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Customer feedback is highly valued at Company XYZ. The company actively listens to its customers, taking note of their suggestions and needs. This customer-centric approach allows the company to continually improve its products, ensuring they remain relevant and meet the evolving demands of the market.</p>",
+            "text_style": "body"
+          }
+        },
+        "template--14633138651249__fa14ea68-dd32-4584-8974-44db5422310d-button-1": {
+          "type": "button",
+          "settings": {
+            "button_label": "Explore More",
+            "button_icon": true,
+            "button_link": "shopify://collections/all",
+            "button_style": "primary",
+            "button_size": "small"
+          }
+        }
+      },
+      "block_order": [
+        "template--14633138651249__fa14ea68-dd32-4584-8974-44db5422310d-heading-1",
+        "template--14633138651249__fa14ea68-dd32-4584-8974-44db5422310d-text-1",
+        "template--14633138651249__fa14ea68-dd32-4584-8974-44db5422310d-button-1"
+      ],
+      "settings": {
+        "container": "container",
+        "image": "shopify://shop_images/Our_Best_Product_908c8bf7-7e3a-43d8-ba26-0649e20e0bf4.png",
+        "transparent_media": false,
+        "height": "adapt",
+        "desktop_image_width": "medium",
+        "layout": "image_first",
+        "desktop_content_position": "top",
+        "desktop_content_alignment": "left",
+        "card_content_padding": "none",
+        "full_width": false,
+        "round_corner": false,
+        "color_scheme": "",
+        "container_color_scheme": "",
+        "mobile_content_alignment": "left",
+        "padding_top": 90,
+        "padding_bottom": 0,
+        "mobile_padding_top": 60,
+        "mobile_padding_bottom": 0
+      }
+    },
+    "43e7f420-9eb8-4fd1-b45b-9a62a34a1ef9": {
+      "type": "image-with-biography",
+      "blocks": {
+        "bf096610-770d-4732-b507-ba5fa92a8918": {
+          "type": "image_block",
+          "settings": {
+            "image": "shopify://shop_images/1_c5e9d995-6f46-4e8f-8e10-e88c13b0101e.png",
+            "title": "Alex Turner",
+            "subtitle": "Co-Founder",
+            "social_media": true,
+            "social_twitter_link": "#",
+            "social_facebook_link": "#",
+            "social_pinterest_link": "",
+            "social_instagram_link": "#",
+            "social_tiktok_link": "#",
+            "social_tumblr_link": "",
+            "social_snapchat_link": "",
+            "social_youtube_link": "",
+            "social_vimeo_link": ""
+          }
+        },
+        "eaf9dba6-2320-4585-841a-b6a0685ecc78": {
+          "type": "image_block",
+          "settings": {
+            "image": "shopify://shop_images/2_9673608d-feee-4d6e-be83-7a23c7b38e29.png",
+            "title": "Ryan Brooks",
+            "subtitle": "Manager",
+            "social_media": true,
+            "social_twitter_link": "#",
+            "social_facebook_link": "#",
+            "social_pinterest_link": "",
+            "social_instagram_link": "#",
+            "social_tiktok_link": "#",
+            "social_tumblr_link": "",
+            "social_snapchat_link": "",
+            "social_youtube_link": "",
+            "social_vimeo_link": ""
+          }
+        },
+        "c47cdd16-dae7-4a9f-9e49-a205cf40cfee": {
+          "type": "image_block",
+          "settings": {
+            "image": "shopify://shop_images/3_a7f514ab-574c-45a5-a723-c253e0e3a4be.png",
+            "title": "Sophia Lee",
+            "subtitle": "Developer",
+            "social_media": true,
+            "social_twitter_link": "#",
+            "social_facebook_link": "#",
+            "social_pinterest_link": "",
+            "social_instagram_link": "#",
+            "social_tiktok_link": "#",
+            "social_tumblr_link": "",
+            "social_snapchat_link": "",
+            "social_youtube_link": "",
+            "social_vimeo_link": ""
+          }
+        },
+        "9deaa2b1-0f91-413f-bef0-0b51c8fb95c4": {
+          "type": "image_block",
+          "settings": {
+            "image": "shopify://shop_images/4_6cc49199-ebd2-4f92-aca3-acaeab68f2f2.png",
+            "title": "Ava Johnson",
+            "subtitle": "Designer",
+            "social_media": true,
+            "social_twitter_link": "#",
+            "social_facebook_link": "#",
+            "social_pinterest_link": "",
+            "social_instagram_link": "#",
+            "social_tiktok_link": "#",
+            "social_tumblr_link": "",
+            "social_snapchat_link": "",
+            "social_youtube_link": "",
+            "social_vimeo_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "bf096610-770d-4732-b507-ba5fa92a8918",
+        "eaf9dba6-2320-4585-841a-b6a0685ecc78",
+        "c47cdd16-dae7-4a9f-9e49-a205cf40cfee",
+        "9deaa2b1-0f91-413f-bef0-0b51c8fb95c4"
+      ],
+      "settings": {
+        "container": "container",
+        "subtitle": "",
+        "heading": "Our Team",
+        "heading_position": "bottom",
+        "text_center": "center",
+        "border_line": false,
+        "image_ratio": "adapt",
+        "show_border": true,
+        "social_icon_color": "#ee2761",
+        "padding_top": 90,
+        "padding_bottom": 90,
+        "mobile_padding_top": 35,
+        "mobile_padding_bottom": 35
+      }
+    },
+    "96d4f826-f309-4ac1-98fa-31acbac8da6b": {
+      "type": "testimonial",
+      "blocks": {
+        "template--14633138651249__96d4f826-f309-4ac1-98fa-31acbac8da6b-testimonial-1": {
+          "type": "testimonial",
+          "settings": {
+            "heading": "<p>Testimonial</p>",
+            "subheading": "Sub title",
+            "text": "<p>Thanks for the feedback. We are always looking to improve our product and we would love to look into this issue with you further.</p>",
+            "rating": "5",
+            "image": "shopify://shop_images/Ellipse_1034.png",
+            "author_image": true
+          }
+        },
+        "template--14633138651249__96d4f826-f309-4ac1-98fa-31acbac8da6b-testimonial-2": {
+          "type": "testimonial",
+          "settings": {
+            "heading": "<p>Testimonial</p>",
+            "subheading": "Sub title",
+            "text": "<p>Thanks for the feedback. We are always looking to improve our product and we would love to look into this issue with you further.</p>",
+            "rating": "5",
+            "image": "shopify://shop_images/team2.webp",
+            "author_image": true
+          }
+        },
+        "template--14633138651249__96d4f826-f309-4ac1-98fa-31acbac8da6b-testimonial-3": {
+          "type": "testimonial",
+          "settings": {
+            "heading": "<p>Testimonial</p>",
+            "subheading": "Sub title",
+            "text": "<p>Thanks for the feedback. We are always looking to improve our product and we would love to look into this issue with you further.</p>",
+            "rating": "5",
+            "image": "shopify://shop_images/testimonial-thumb1.webp",
+            "author_image": true
+          }
+        },
+        "template--14633138651249__96d4f826-f309-4ac1-98fa-31acbac8da6b-testimonial-4": {
+          "type": "testimonial",
+          "settings": {
+            "heading": "<p>Testimonial</p>",
+            "subheading": "Sub title",
+            "text": "<p>Thanks for the feedback. We are always looking to improve our product and we would love to look into this issue with you further.</p>",
+            "rating": "5",
+            "author_image": true
+          }
+        },
+        "template--14633138651249__96d4f826-f309-4ac1-98fa-31acbac8da6b-testimonial-5": {
+          "type": "testimonial",
+          "settings": {
+            "heading": "<p>Testimonial</p>",
+            "subheading": "Sub title",
+            "text": "<p>Thanks for the feedback. We are always looking to improve our product and we would love to look into this issue with you further.</p>",
+            "rating": "5",
+            "author_image": true
+          }
+        }
+      },
+      "block_order": [
+        "template--14633138651249__96d4f826-f309-4ac1-98fa-31acbac8da6b-testimonial-1",
+        "template--14633138651249__96d4f826-f309-4ac1-98fa-31acbac8da6b-testimonial-2",
+        "template--14633138651249__96d4f826-f309-4ac1-98fa-31acbac8da6b-testimonial-3",
+        "template--14633138651249__96d4f826-f309-4ac1-98fa-31acbac8da6b-testimonial-4",
+        "template--14633138651249__96d4f826-f309-4ac1-98fa-31acbac8da6b-testimonial-5"
+      ],
+      "settings": {
+        "container": "container",
+        "show_offset": true,
+        "subtitle": "",
+        "heading": "Customers Feedback",
+        "heading_position": "bottom",
+        "text_center": "center",
+        "border_line": false,
+        "image_overlay_opacity": 0,
+        "bg_color_scheme": "background-2",
+        "card_image_style": "top",
+        "image_ratio": "circle",
+        "heading_size": "h5",
+        "color_scheme": "background-1",
+        "background_transparent": false,
+        "rating_color": "#ffce31",
+        "slider_enable": true,
+        "show_navigation": false,
+        "show_pagination": true,
+        "color_scheme_navigation": "accent-1",
+        "enable_loop": true,
+        "auto_rotate": false,
+        "change_slides_speed": 5,
+        "products_show_on_desktop": 3,
+        "products_show_on_small_desktop": 2,
+        "products_show_on_tablet": 2,
+        "products_show_on_mobile": 1,
+        "padding_top": 100,
+        "padding_bottom": 70,
+        "mobile_padding_top": 60,
+        "mobile_padding_bottom": 35,
+        "custom_colors": false,
+        "foreground": "#121212",
+        "background": "#f7f8fc",
+        "card_foreground": "#121212",
+        "card_background": "#ffffff",
+        "border_color": "#ee2761"
+      }
+    },
+    "9e1c617c-9bf1-4b11-bea8-6bbaed5c448a": {
+      "type": "featured-promotion",
+      "blocks": {
+        "template--14633138651249__9e1c617c-9bf1-4b11-bea8-6bbaed5c448a-featured_promotion-1": {
+          "type": "featured_promotion",
+          "settings": {
+            "heading": "Free Shipping",
+            "subheading": "Free Shipping for orders over $100",
+            "icon": "truck",
+            "feature_image_icon": "shopify://shop_images/box-tick1.png"
+          }
+        },
+        "template--14633138651249__9e1c617c-9bf1-4b11-bea8-6bbaed5c448a-featured_promotion-2": {
+          "type": "featured_promotion",
+          "settings": {
+            "heading": "Free Returns",
+            "subheading": "Within 30 days for an Returns.",
+            "icon": "return",
+            "feature_image_icon": "shopify://shop_images/music-play1.png"
+          }
+        },
+        "template--14633138651249__9e1c617c-9bf1-4b11-bea8-6bbaed5c448a-featured_promotion-3": {
+          "type": "featured_promotion",
+          "settings": {
+            "heading": "Secure Payment",
+            "subheading": "Within 30 days for an exchange.",
+            "icon": "payment",
+            "feature_image_icon": "shopify://shop_images/shield-tick1.png"
+          }
+        },
+        "04d9bb2b-aa9f-4c50-abd0-9825c9cbd6d5": {
+          "type": "featured_promotion",
+          "settings": {
+            "heading": "Online Support",
+            "subheading": "24 hours a day, 7 days a week",
+            "icon": "chat"
+          }
+        }
+      },
+      "block_order": [
+        "template--14633138651249__9e1c617c-9bf1-4b11-bea8-6bbaed5c448a-featured_promotion-1",
+        "template--14633138651249__9e1c617c-9bf1-4b11-bea8-6bbaed5c448a-featured_promotion-2",
+        "template--14633138651249__9e1c617c-9bf1-4b11-bea8-6bbaed5c448a-featured_promotion-3",
+        "04d9bb2b-aa9f-4c50-abd0-9825c9cbd6d5"
+      ],
+      "settings": {
+        "container": "container",
+        "subtitle": "",
+        "heading": "",
+        "heading_position": "bottom",
+        "text_center": "center",
+        "border_line": true,
+        "desktop_column": "4",
+        "laptop_column": "3",
+        "mobile_column": "1",
+        "heading_size": "h5",
+        "card_solid_button_icon": false,
+        "icon_position": "left",
+        "alignment": "left",
+        "card_padding": "none",
+        "feature_card_radius": false,
+        "card_color_scheme": "background-1",
+        "padding_top": 80,
+        "padding_bottom": 80,
+        "mobile_padding_top": 65,
+        "mobile_padding_bottom": 65,
+        "color_scheme": "background-1"
+      }
+    }
+  },
+  "order": [
+    "breadcrumbs",
+    "c2ccf461-6b5d-48be-9b98-3669d96667c4",
+    "5a6437d2-d7e9-46cb-a8c5-257c63ea24d9",
+    "fa14ea68-dd32-4584-8974-44db5422310d",
+    "43e7f420-9eb8-4fd1-b45b-9a62a34a1ef9",
+    "96d4f826-f309-4ac1-98fa-31acbac8da6b",
+    "9e1c617c-9bf1-4b11-bea8-6bbaed5c448a"
+  ]
+}

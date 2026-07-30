@@ -1,0 +1,549 @@
+{{ 'product-bundle.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.mobile_padding_top }}px;
+    padding-bottom: {{ section.settings.mobile_padding_bottom }}px;
+  }
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+{% liquid
+  assign section_id = section.id
+  assign description = section.settings.description
+  assign title = section.settings.title
+%}
+
+<script src="{{ 'product-bundle.js' | asset_url }}" defer="defer"></script>
+<section class="section-{{ section.id }}-padding color-{{ section.settings.color_scheme }}">
+  <div class=" section--padding {{ section.settings.container }}">
+    <product-bundle class="product-bundle" data-section="{{ section_id }}">
+      {% if title != blank or description != blank %}
+        <div class="section__header text-center mb-30">
+          {% if title != blank %}
+            <h2 class="section__heading">{{ title }}</h2>
+          {% endif %}
+          {% if description != blank %}
+            <p class="section__description">{{ description }}</p>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if section.settings.heading != blank or section.settings.subtitle != blank %}
+        <div class="section-heading text-{{ section.settings.text_center }} mb-50 ">
+          {% if section.settings.heading_position == 'bottom' and section.settings.subtitle != blank %}
+            <span class="section-heading__sub_title">{{- section.settings.subtitle -}}</span>
+          {% endif %}
+          <h2 class="section-heading__title {% if section.settings.heading_position == "top" %}heading__space--bottom{% endif %} ">
+            {{- section.settings.heading -}}
+          </h2>
+          {% if section.settings.heading_position == 'top' and section.settings.subtitle != blank %}
+            <span class="section-heading__sub_title">{{- section.settings.subtitle -}}</span>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      <div class="row {{ section.settings.image_layout }} product--bundle-grid">
+        <div class="col-lg-6">
+          <div class="bundle-image__wrapper">
+            <div
+              class="bundle-main-image media main-image-height-{{ section.settings.main_image_ratio }} {% if section.settings.main_image == blank %} placeholder{% endif %} {% if section.settings.image_rounded == true %}rounded{% endif %}"
+              {% if section.settings.main_image_ratio == 'adapt-to-first' and section.settings.main_image != blank %}
+                style="padding-bottom: {{ 1 | divided_by: section.settings.main_image.aspect_ratio | times: 100 }}%;"
+              {% endif %}
+            >
+              {%- if section.settings.main_image != blank -%}
+                {%- capture sizes -%}
+                (min-width: {{ settings.container_lg_width }}px) {{ settings.container_lg_width | minus: 100 | divided_by: 2 }}px,
+                (min-width: 750px) calc((100vw - 130px) / 2),
+                calc(100vw - 30px)
+              {%- endcapture -%}
+                {{
+                  section.settings.main_image
+                  | image_url: width: 1500
+                  | image_tag: loading: 'lazy', sizes: sizes, widths: '165, 360, 535, 750, 1070, 1500'
+                }}
+              {%- else -%}
+                {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+              {%- endif -%}
+            </div>
+
+            {% for block in section.blocks %}
+              {% if block.settings.product != blank
+                and block.settings.hotspot_x != blank
+                and block.settings.hotspot_y != blank
+              %}
+                <button
+                  type="button"
+                  class="bundle-hotspot"
+                  data-product-index="{{ forloop.index0 }}"
+                  style="left: {{ block.settings.hotspot_x }}%; top: {{ block.settings.hotspot_y }}%"
+                >
+                  <span class="bundle-hotspot__dot"></span>
+                  <span class="bundle-hotspot__pulse"></span>
+                </button>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="bundle__content--wrapper">
+            {% if section.settings.title_2 != blank or section.settings.description_2 != blank %}
+              <div class="bundle__content--heading text-{{ section.settings.text_alignment }} mb-30">
+                {% if section.settings.title_2 != blank %}
+                  <h2 class="bundle__content--title">{{ section.settings.title_2 }}</h2>
+                {% endif %}
+                {% if section.settings.description_2 != blank %}
+                  <p class="bundle__content--description">{{ section.settings.description_2 }}</p>
+                {% endif %}
+              </div>
+            {% endif %}
+
+            <form
+              class="bundle-products"
+              action="{{ routes.cart_add_url }}"
+              method="post"
+              enctype="multipart/form-data"
+            >
+              <input type="hidden" name="form_type" value="product">
+              <input type="hidden" name="utf8" value="✓">
+              <div class="bundle-error text-center hidden"></div>
+              {% assign total_price = 0 %}
+              {% for block in section.blocks %}
+                {% if block.settings.product != blank %}
+                  {% liquid
+                    assign product = block.settings.product
+                    assign current_variant = product.selected_or_first_available_variant
+                    assign compare_price = current_variant.compare_at_price
+                    assign price = current_variant.price
+                    assign total_price = total_price | plus: price
+                  %}
+
+                  <div
+                    class="bundle-product"
+                    data-product-wrapper="{{ forloop.index0 }}"
+                  >
+                    <div class="bundle-product__content {% if section.settings.show_border == true and section.settings.show_border-bottom != true %}product_border{% endif %} {% if section.settings.show_border-bottom == true and section.settings.show_border != true %}product_border_bottom{% endif %}">
+                      <label class="bundle-product__select">
+                        <input
+                          type="checkbox"
+                          name="bundle_items[]"
+                          value="{{ current_variant.id }}"
+                          checked
+                          class="bundle-product__checkbox"
+                          data-variant-id="{{ current_variant.id }}"
+                          data-initial-price="{{ current_variant.price }}"
+                        >
+                        <span class="bundle-product__checkmark"></span>
+                      </label>
+
+                      <div
+                        class="bundle-product__image media media-height-{{ block.settings.image_ratio }}"
+                        {% if block.settings.image_ratio == 'adapt-to-first' and product.featured_image != blank %}
+                          style="padding-bottom: {{ 1 | divided_by: product.featured_image.aspect_ratio | times: 100 }}%;"
+                        {% endif %}
+                      >
+                        {% capture sizes %}
+                        (min-width: (min-width: 1200px) 267px, (min-width: 990px) calc((100vw - 130px) / 4), (min-width: 750px) calc((100vw - 120px) / 3), calc((100vw - 35px) / 2)
+                      {% endcapture %}
+                        {% liquid
+                          assign image_height = product.featured_image.width | divided_by: product.featured_image.aspect_ratio
+                        %}
+                        {{
+                          product.featured_image
+                          | image_url: width: 150
+                          | image_tag:
+                            loading: 'lazy',
+                            sizes: sizes,
+                            width: product.featured_image.width,
+                            height: image_height,
+                            widths: '50, 70, 120, 150'
+                        }}
+                      </div>
+
+                      <div class="bundle-product__info">
+                        <div class="bundle-product__info--inner">
+                          <h4 class="bundle-product__title">{{ product.title }}</h4>
+                          <div class="roduct__variants--select">
+                            {% if product.has_only_default_variant == false %}
+                              <select
+                                name="id[]"
+                                class="bundle-product__variants"
+                                data-index="{{ forloop.index0 }}"
+                                data-product-id="{{ product.id }}"
+                              >
+                                {% for variant in product.variants %}
+                                  <option
+                                    value="{{ variant.id }}"
+                                    {% if variant.id == current_variant.id %}
+                                      selected
+                                    {% endif %}
+                                    data-price="{{ variant.price }}"
+                                    data-compare="{{ variant.compare_at_price }}"
+                                  >
+                                    {{ variant.title }}
+                                  </option>
+                                {% endfor %}
+                              </select>
+                            {% else %}
+                              <input
+                                type="hidden"
+                                name="id[]"
+                                value="{{ current_variant.id }}"
+                              >
+                            {% endif %}
+                          </div>
+                        </div>
+                        <div class="bundle-product__price-wrapper">
+                          <span class="price">{{ current_variant.price | money }}</span>
+                          {% if current_variant.compare_at_price > current_variant.price %}
+                            <s class="compare-price">{{ current_variant.compare_at_price | money }}</s>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                {% endif %}
+              {% endfor %}
+
+              <div class="bundle-footer {% if section.settings.show_border-bottom == true %}border_0{% endif %}">
+                <div class="bundle-total">
+                  <span class="bundle-total__label">{{ 'sections.bundle.total' | t }}</span>
+                  <span class="bundle-total__price">{{ total_price | money }}</span>
+                </div>
+
+                <button
+                  type="submit"
+                  class=" button button--primary bundle-submit"
+                  {% if section.blocks.size == 0 %}
+                    disabled
+                  {% endif %}
+                >
+                  <span>{{ 'sections.bundle.add_to_cart' | t }}</span>
+                  <div class="loading-overlay__spinner hidden">
+                    <svg
+                      aria-hidden="true"
+                      focusable="false"
+                      class="spinner"
+                      viewBox="0 0 66 66"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+                    </svg>
+                  </div>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </product-bundle>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Product Bundle",
+  "settings": [
+    {
+      "type": "select",
+      "id": "container",
+      "label": "Page width",
+      "options": [
+        {
+          "value": "container",
+          "label": "Boxed"
+        },
+        {
+          "value": "container-fluid",
+          "label": "Full-width"
+        },
+      ],
+      "default": "container"
+    },
+   {
+      "type": "header",
+      "content": "Section header"
+    },
+     {
+      "type": "inline_richtext",
+      "id": "subtitle",
+      "label": "Subheading"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "default": "Product Bundle",
+      "label": "t:sections.featured-collection.settings.title.label"
+    },
+    {
+      "type": "select",
+      "id": "heading_position",
+      "options": [
+        {
+          "value": "top",
+          "label": "Top"
+        },
+        {
+          "value": "bottom",
+          "label": "Bottom"
+        }
+      ],
+      "default": "top",
+      "label": "Heading position"
+    },
+    {
+      "type": "select",
+      "id": "text_center",
+      "options": [
+        {
+          "value": "right",
+          "label": "Right"
+        },
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        }
+      ],
+      "default": "center",
+      "label": "Alignment"
+    },
+    {
+      "type": "image_picker",
+      "id": "main_image",
+      "label": "Main Image"
+    },
+    {
+      "type": "select",
+      "id": "main_image_ratio",
+      "label": "Image ratio",
+      "options": [
+        {
+          "value": "adapt-to-first",
+          "label": "Adapt to first image"
+        },
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "select",
+      "id": "image_layout",
+      "options": [
+        {
+          "value": "image_first",
+          "label": "Image first"
+        },
+        {
+          "value": "text_first",
+          "label": "Image second"
+        }
+      ],
+      "default": "image_first",
+      "label": "Desktop image placement",
+    },
+    {
+      "type": "checkbox",
+      "id": "image_rounded",
+      "label": "Image rounded",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Product Bundle Content"
+    },
+    {
+      "type": "text",
+      "id": "title_2",
+      "label": "Title",
+      "default": "Product Collection"
+    },
+    {
+      "type": "richtext",
+      "id": "description_2",
+      "label": "Description"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center",
+      "label": "Alignment"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_border",
+      "label": "Product border",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_border-bottom",
+      "label": "Product border bottom",
+      "default": false
+    },
+    {
+          "type": "header",
+          "content": "Colors"
+        },
+      {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "default": "background-1",
+      "label": "Color scheme"
+    },
+     {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "paragraph",
+      "content": "Desktop"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 50
+    },
+    {
+      "type": "paragraph",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_top",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_bottom",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 50
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Product",
+      "limit": 5,
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
+        {
+          "type": "select",
+          "id": "image_ratio",
+          "label": "Image ratio",
+          "options": [
+            {
+              "value": "adapt-to-first",
+              "label": "Adapt to first image"
+            },
+            {
+              "value": "small",
+              "label": "Small"
+            },
+            {
+              "value": "medium",
+              "label": "Medium"
+            },
+            {
+              "value": "large",
+              "label": "Large"
+            }
+          ],
+          "default": "medium"
+        },
+        {
+          "type": "range",
+          "id": "hotspot_x",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Hotspot Position X",
+          "default": 50
+        },
+        {
+          "type": "range",
+          "id": "hotspot_y",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Hotspot Position Y",
+          "default": 50
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Bundle",
+      "blocks": [
+        {
+          "type": "product"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

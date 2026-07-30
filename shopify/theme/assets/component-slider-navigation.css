@@ -1,0 +1,48 @@
+.component--slider-wrapper {
+  position: relative;
+}
+.button.loadMoreBtn.loading:after {
+  top: unset;
+  left: unset;
+}
+.component--slider--nav {
+  background: rgba(var(--color-background));
+  color: rgba(var(--color-foreground));
+  box-shadow: 0 0 5px 2px rgba(var(--color-foreground), 0.15);
+  width: 4.2rem;
+  height: 4.2rem;
+  border-radius: 50%;
+  transition: 0.3s;
+  opacity: 0;
+  visibility: hidden;
+  top: var(--slider-navigation-top-offset, 50%);
+  margin-top: -2.1rem;
+}
+.swiper-button-next.component--slider--nav {
+  right: 0;
+  left: auto;
+}
+.swiper-button-prev.component--slider--nav {
+  left: 0;
+}
+.component--slider-wrapper:hover .component--slider--nav {
+  opacity: 1;
+  visibility: visible;
+}
+.component--slider-wrapper:hover .swiper-button-next.component--slider--nav {
+  right: 0;
+}
+.component--slider-wrapper:hover .swiper-button-prev.component--slider--nav {
+  left: 0;
+}
+.component--slider--nav:after {
+  display: none;
+}
+.product_slider_wrapper .swiper-wrapper {
+  box-sizing: inherit;
+}
+.component--slider--nav:hover {
+  border-color: rgba(var(--primary-button-hover-background));
+  background: rgba(var(--primary-button-hover-background));
+  color: rgba(var(--primary-button-hover-text));
+}

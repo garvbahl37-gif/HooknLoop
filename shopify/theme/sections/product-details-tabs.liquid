@@ -1,0 +1,402 @@
+{%- liquid
+  assign theme_rtl = false
+  if settings.enable_rtl and settings.langauges_rtl == blank
+    assign theme_rtl = true
+  endif
+
+  if settings.enable_rtl and settings.langauges_rtl != blank
+    assign rtl_languages = settings.langauges_rtl | split: ','
+    for language in rtl_languages
+      if language == request.locale.iso_code
+        assign theme_rtl = true
+      endif
+    endfor
+  endif
+-%}
+{{ 'product-tab-list.css' | asset_url | stylesheet_tag }}
+{% if theme_rtl %}
+  {{ 'product-tab-list-rtl.css' | asset_url | stylesheet_tag }}
+{% endif %}
+
+<script src="{{ 'tab-active.js' | asset_url }}" defer></script>
+<script src="{{ 'empty_unique_tab.js' | asset_url }}" defer></script>
+<style>
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.mobile_padding_top }}px;
+    padding-bottom: {{ section.settings.mobile_padding_bottom }}px;
+    margin-top: {{ section.settings.mobile_margin_top }}px;
+    margin-bottom: {{ section.settings.mobile_margin_bottom }}px;
+  }
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+      margin-top: {{ section.settings.margin_top }}px;
+      margin-bottom: {{ section.settings.margin_bottom }}px;
+    }
+  }
+</style>
+{%- liquid
+  assign container = ''
+  if section.settings.container == 'container'
+    assign container = 'container'
+  elsif section.settings.container == 'container-fluid'
+    assign container = 'container-fluid'
+  else
+    assign container = 'container-fluid px-0'
+  endif
+-%}
+
+<div
+  class="section section-{{ section.id }}-padding color-{{ section.settings.color_scheme }}"
+  data-section-id="{{ section.id }}"
+  data-section-type="product-tab"
+>
+  <div class="{{ container }}">
+    <ul class="product_tab_list ">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'product_description' -%}
+            <li
+              class="product_tab_list__li {% if forloop.first == true %} active {% endif %} h4"
+              data-toggle="tab"
+              data-target="#product_all"
+            >
+              {{ block.settings.header }}
+            </li>
+          {%- when 'reviews' -%}
+            <li
+              class="product_tab_list__li {% if forloop.first == true %} active {% endif %} h4"
+              data-toggle="tab"
+              data-target="#product_new"
+            >
+              {{ block.settings.header }}
+            </li>
+          {%- when 'custom_content' -%}
+            <li
+              class="product_tab_list__li {% if forloop.first == true %} active {% endif %} h4"
+              data-toggle="tab"
+              data-target="#custom_content-{{ block.id }}"
+            >
+              {{ block.settings.header }}
+            </li>
+          {%- when 'custom_liquid' -%}
+            <li
+              class="product_tab_list__li {% if forloop.first == true %} active {% endif %} h4"
+              data-toggle="tab"
+              data-target="#custom_liquid-{{ block.id }}"
+            >
+              {{ block.settings.header }}
+            </li>
+          {%- when 'unique_tab' -%}
+            <li
+              class="product_tab_list__li {% if forloop.first == true %} active {% endif %} h4"
+              data-toggle="tab"
+              data-unique="unique_tab-{{ block.id }}"
+              data-target="#unique_tab-{{ block.id }}"
+            >
+              {{ block.settings.header }}
+            </li>
+        {%- endcase -%}
+      {%- endfor -%}
+    </ul>
+
+    <div class="tab_content">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'product_description' -%}
+            <div id="product_all" class="tab_pane {% if forloop.first == true %} show active{% endif %}">
+              {{ product.description }}
+            </div>
+          {%- when 'reviews' -%}
+            <div id="product_new" class="tab_pane {% if forloop.first == true %} show active{% endif %}">
+              <div class="product__review_inner">
+                {%- assign custom_review = block.settings.custom_liquid_review -%}
+
+                {%- if custom_review != blank -%}
+                  {{ custom_review }}
+                {%- else -%}
+                  <div style="clear:both"></div>
+                  <div id="judgeme_product_reviews" class="jdgm-widget jdgm-review-widget" data-id="{{ product.id }}">
+                    {{ product.metafields.judgeme.widget }}
+                  </div>
+                {%- endif -%}
+              </div>
+            </div>
+          {%- when 'custom_content' -%}
+            <div
+              id="custom_content-{{ block.id }}"
+              class="tab_pane {% if forloop.first == true %} show active{% endif %}"
+            >
+              {{ block.settings.content }}
+              {{ block.settings.content_page.content }}
+            </div>
+          {%- when 'custom_liquid' -%}
+            <div
+              id="custom_liquid-{{ block.id }}"
+              class="tab_pane {% if forloop.first == true %} show active{% endif %}"
+            >
+              {{ block.settings.custom_liquid }}
+            </div>
+          {%- when 'unique_tab' -%}
+            <div
+              id="unique_tab-{{ block.id }}"
+              class="tab_pane {% if forloop.first == true %} show active{% endif %} unique__tab-item"
+            >
+              {{ block.settings.unique_tab_liquid }}
+            </div>
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Product Tabs",
+  "settings": [
+  {
+      "type": "select",
+      "id": "container",
+      "label": "Page width",
+      "default": "container-fluid",
+      "options": [
+        {
+          "value": "container",
+          "label": "Boxed"
+        },
+        {
+          "value": "container-fluid",
+          "label": "Full width"
+        }
+      ]
+    },
+    {
+    "type": "header",
+    "content": "Color scheme"
+  },
+
+    {
+        "type": "color_scheme",
+        "id": "color_scheme",
+        "label": "t:sections.all.colors.label",
+        "default": "background-1"
+      },
+{
+    "type": "header",
+    "content": "Section padding"
+  },
+  {
+        "type": "paragraph",
+        "content": "Desktop"
+      },
+      {
+        "type": "range",
+        "id": "padding_top",
+        "min": 0,
+        "max": 150,
+        "step": 5,
+        "unit": "px",
+        "label": "Padding top",
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "min": 0,
+        "max": 150,
+        "step": 5,
+        "unit": "px",
+        "label": "Padding bottom",
+        "default": 0
+      },
+{
+        "type": "paragraph",
+        "content": "Mobile"
+      },
+{
+        "type": "range",
+        "id": "mobile_padding_top",
+        "min": 0,
+        "max": 150,
+        "step": 5,
+        "unit": "px",
+        "label": "Padding top",
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "mobile_padding_bottom",
+        "min": 0,
+        "max": 150,
+        "step": 5,
+        "unit": "px",
+        "label": "Padding bottom",
+        "default": 0
+      },
+    {
+    "type": "header",
+    "content": "Section spacing"
+  },
+  {
+        "type": "paragraph",
+        "content": "Desktop"
+      },
+      {
+        "type": "range",
+        "id": "margin_top",
+        "min": 0,
+        "max": 150,
+        "step": 5,
+        "unit": "px",
+        "label": "Margin top",
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "margin_bottom",
+        "min": 0,
+        "max": 150,
+        "step": 5,
+        "unit": "px",
+        "label": "Margin bottom",
+        "default": 0
+      },
+    {
+        "type": "paragraph",
+        "content": "Mobile"
+      },
+    {
+        "type": "range",
+        "id": "mobile_margin_top",
+        "min": 0,
+        "max": 150,
+        "step": 5,
+        "unit": "px",
+        "label": "Margin top",
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "mobile_margin_bottom",
+        "min": 0,
+        "max": 150,
+        "step": 5,
+        "unit": "px",
+        "label": "Margin bottom",
+        "default": 0
+      }
+   ],
+   "blocks": [
+    {
+              "type": "product_description",
+              "name": "Product description",
+              "limit": 1,
+              "settings": [
+                  {
+                      "type": "paragraph",
+                      "content": "This tab will show the product's description"
+                  },
+                  {
+                      "type": "text",
+                      "id": "header",
+                      "label": "Tab header",
+                      "default": "Product description"
+                  }
+              ]
+          },
+	   {
+              "type": "reviews",
+              "name": "Product reviews",
+              "limit": 1,
+              "settings": [
+                  {
+                    "type": "header",
+                    "content": "Requirements",
+                    "info": "This section requires [Product Reviews](https://apps.shopify.com/judgeme) app by Shopify to work."
+                  },
+                  {
+                      "type": "text",
+                      "id": "header",
+                      "label": "Tab header",
+                      "default": "Product reviews"
+                  },
+                  {
+                    "type": "header",
+                    "content": "Other review app"
+                  },
+                  {
+                    "type": "liquid",
+                    "id": "custom_liquid_review",
+                    "label": "Custom liquid",
+                    "info": "Paste the liquid code of the app review here"
+                  }
+              ]
+          },
+	{
+              "type": "custom_content",
+              "name": "Custom content",
+              "settings": [
+                  {
+                      "type": "text",
+                      "id": "header",
+                      "label": "Tab heading",
+                      "default": "Shipping & Return",
+                      "placeholder": "Shipping & Return"
+                  },
+                  {
+                      "type": "richtext",
+                      "id": "content",
+                      "label": "Tab content",
+                      "default": "<p>Shipping cost is based on weight. Just add products to your cart and use the Shipping Calculator to see the shipping price.</p><p>We want you to be 100% satisfied with your purchase. Items can be returned or exchanged within 30 days of delivery.</p>"
+                  },
+                  {
+                      "type": "page",
+                      "id": "content_page",
+                      "label": "Tab content from page"
+                  }
+              ]
+          },
+	 {
+              "type": "custom_liquid",
+              "name": "Custom liquid",
+              "settings": [
+                  {
+                      "type": "text",
+                      "id": "header",
+                      "label": "Tab heading",
+                      "default": "Tab heading"
+                  },
+                  {
+                    "type": "liquid",
+                    "id": "custom_liquid",
+                    "label": "Custom liquid"
+                  }
+              ]
+          },
+	{
+              "type": "unique_tab",
+              "name": "Unique Tab",
+              "settings": [
+                  {
+                      "type": "text",
+                      "id": "header",
+                      "label": "Tab heading",
+                      "default": "Tab heading"
+                  },
+			{
+                      "type": "liquid",
+                      "id": "unique_tab_liquid",
+                      "label": "Unique Tab Liquid",
+                      "info": "You need to put the product metafield directly here, e.g. \"{{ product.metafields.meta.unique_tab.value }}\" Go to the [metafileds](\/admin\/metafields\/product)"
+                    },
+                    {
+                      "type": "header",
+                      "content": "Unique Tab Documentation",
+                      "info": "Go to the documentation, [Click here](https://themihub.gitbook.io/suruchi-theme/collections-and-products/products/how-to-add-a-unique-tab-on-the-product-page)"
+                  }
+              ]
+          }
+]
+}
+{% endschema %}

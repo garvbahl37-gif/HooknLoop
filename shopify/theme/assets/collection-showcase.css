@@ -1,0 +1,365 @@
+.featured-collections-wrapper {
+  overflow: hidden; /* Ensure no horizontal scrolling from swipe animations */
+}
+
+.featured__collections {
+  position: relative;
+  touch-action: pan-y; /* Enable vertical scrolling but horizontal swipes are handled by JS */
+  -webkit-user-select: none; /* Prevent text selection during swipe */
+  user-select: none;
+}
+
+/* Image styling */
+.collection__image.image-1,
+.collection__image.image-2,
+.collection__image.image-3,
+.collection__image.image-4 {
+  overflow: hidden;
+  border-radius: 1rem;
+}
+
+/* Links styling */
+.featured__collections-links {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.featured__collections-item {
+  line-height: initial;
+  cursor: pointer;
+}
+
+.featured__collections-link {
+  position: relative;
+  overflow: hidden;
+  opacity: 0.5;
+  transition: opacity 0.4s ease;
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  margin-bottom: 0;
+}
+
+.featured__collections-item.is-active .featured__collections-link {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+.featured__collections-link span.collection--count {
+  font-size: 1.6rem;
+}
+
+/* Text hover animation */
+.featured__collections-link-text {
+  display: inline-block;
+  word-break: break-word;
+  position: relative;
+  transform: translateZ(0);
+  transform-style: preserve-3d;
+  transition: transform 1s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.featured__collections-link-text:after {
+  display: inline-block;
+  content: attr(data-text);
+  position: absolute;
+  top: 120%;
+  left: 0;
+  right: 0;
+  vertical-align: text-top;
+}
+
+/* Images transition for smooth swipe effect */
+.featured__collections-images {
+  transition: opacity 0.5s ease;
+}
+
+.featured__collections-images:not(.is-active) {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.featured__collections-images.is-active {
+  opacity: 1;
+  animation: fade-in 0.3s cubic-bezier(0.7, 0, 0.3, 1) both;
+}
+
+/* Media queries for responsive design */
+@media only screen and (min-width: 992px) {
+  .collection__image.image-1,
+  .collection__image.image-2,
+  .collection__image.image-3,
+  .collection__image.image-4 {
+    position: absolute;
+    will-change: transform;
+  }
+
+  /* Layout for 1 image */
+  .featured-collections--images-1 .collection__image.image-1 {
+    width: 50%;
+    inset-inline-start: 50%;
+    top: 50%;
+    left: 0;
+    transform: translate(-50%, -50%);
+    max-width: 40vw;
+    animation: floatAnimation 8s ease-in-out infinite;
+  }
+
+  .featured-collections--images-1 .featured__collections-content {
+    margin: 0 0 0 auto;
+  }
+  .featured-collections--images-1.text_first .featured__collections-content {
+    margin: 0 auto 0 0;
+  }
+  .featured-collections--images-1.text_first .collection__image.image-1 {
+    right: 0;
+    left: auto;
+  }
+  /* Layout for 2 images */
+  .featured-collections--images-2 .collection__image.image-1 {
+    width: 25%;
+    inset-inline-start: 15%;
+    top: 50%;
+    transform: translateY(-50%);
+    max-width: 25%;
+    animation: floatAnimation 8s ease-in-out infinite;
+    left: 0;
+  }
+
+  .featured-collections--images-2 .collection__image.image-2 {
+    width: 22%;
+    inset-inline-end: 15%;
+    transform: translateY(-50%);
+    max-width: 22%;
+    animation: floatAnimationNormal 12s ease-in-out infinite;
+    right: 0;
+    top: 25%;
+  }
+
+  /* Layout for 3 images - Using your existing positioning */
+  .featured-collections--images-3 .collection__image.image-1 {
+    width: 25%;
+    inset-inline-start: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    max-width: 25%;
+    animation: floatAnimation 8s ease-in-out infinite;
+    right: 0;
+    left: auto;
+  }
+
+  .featured-collections--images-3 .collection__image.image-2 {
+    width: 20%;
+    inset-inline-end: 10.5%;
+    top: 5%;
+    max-width: 20%;
+    animation: floatAnimationNormal 10s ease-in-out infinite;
+    left: 0;
+  }
+
+  .featured-collections--images-3 .collection__image.image-3 {
+    width: 22%;
+    inset-inline-end: 6.5%;
+    bottom: 5%;
+    max-width: 22%;
+    animation: floatAnimationNormal 12s ease-in-out infinite;
+    left: 3rem;
+  }
+
+  /* Layout for 4 images */
+  .featured-collections--images-4 .collection__image.image-1 {
+    width: 20%;
+    inset-inline-start: 5%;
+    top: 0;
+    max-width: 20%;
+    animation: floatAnimationNormal 8s ease-in-out infinite;
+    left: 0;
+  }
+
+  .featured-collections--images-4 .collection__image.image-2 {
+    width: 16%;
+    inset-inline-end: 10%;
+    top: 3%;
+    max-width: 16%;
+    animation: floatAnimationNormal 10s ease-in-out infinite;
+    right: 0;
+  }
+
+  .featured-collections--images-4 .collection__image.image-3 {
+    width: 20%;
+    inset-inline-end: 6%;
+    bottom: 2%;
+    max-width: 20%;
+    animation: floatAnimationNormal 12s ease-in-out infinite;
+    left: 10rem;
+  }
+
+  .featured-collections--images-4 .collection__image.image-4 {
+    width: 20rem;
+    inset-inline-start: 10%;
+    bottom: 5%;
+    max-width: 14vw;
+    animation: floatAnimationNormal 14s ease-in-out infinite;
+    right: 3rem;
+    left: auto;
+  }
+
+  .featured__collections {
+    display: flex;
+    align-items: center;
+    min-height: 60rem;
+    height: 100%;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+  }
+
+  .featured__collections-content {
+    width: 50%;
+    margin: 0 auto;
+    padding: 0 5rem;
+  }
+
+  /* Hover text animation */
+  @media screen and (pointer: fine) {
+    .featured__collections-item:hover .featured__collections-link-text {
+      transform: translate3d(0, -120%, 0);
+    }
+  }
+}
+
+@media only screen and (min-width: 1366px) {
+  .featured-collections--images-1 .collection__image.image-1 {
+    width: 45%;
+    max-width: 45%;
+  }
+  .featured-collections--images-2 .collection__image.image-2 {
+    top: 20%;
+  }
+}
+@media only screen and (min-width: 1600px) {
+  .featured-collections--images-2 .collection__image.image-2 {
+    top: 14%;
+    width: 25%;
+    max-width: 25%;
+  }
+  .featured-collections--images-3 .collection__image.image-2 {
+    width: 18%;
+    top: 2%;
+    max-width: 18%;
+  }
+
+  .featured-collections--images-3 .collection__image.image-3 {
+    width: 18%;
+    bottom: 2%;
+    max-width: 18%;
+    left: 6rem;
+  }
+  .featured-collections--images-4 .collection__image.image-3 {
+    width: 100%;
+    max-width: 22%;
+  }
+}
+/* Mobile optimizations */
+@media only screen and (max-width: 991px) {
+  .featured__collections-images-inner {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(6.5rem, 1fr));
+    gap: 1rem;
+    margin-bottom: 4rem;
+  }
+
+  .featured--collections-media.media {
+    padding-bottom: 125%;
+  }
+
+  /* Disable animations on mobile */
+  .collection__image.image-1,
+  .collection__image.image-2,
+  .collection__image.image-3,
+  .collection__image.image-4 {
+    animation: none;
+  }
+
+  /* Improve touch target size on mobile */
+  .featured__collections-item {
+    padding: 0.5rem 0;
+  }
+
+  /* Visual indicator for swipe */
+  .featured__collections::after {
+    content: "";
+    position: absolute;
+    bottom: -1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4rem;
+    height: 0.3rem;
+    background: rgba(var(--color-foreground), 0.1);
+    border-radius: 1rem;
+    display: none;
+  }
+
+  @media (max-width: 749px) {
+    .featured__collections::after {
+      display: block;
+    }
+  }
+}
+.media--adapt.placeholder {
+  padding-bottom: 100%;
+}
+/* Add pause animation on hover */
+@media (hover: hover) {
+  .collection__image:hover {
+    animation-play-state: paused;
+  }
+}
+
+/* Add animation support for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .collection__image.image-1,
+  .collection__image.image-2,
+  .collection__image.image-3,
+  .collection__image.image-4 {
+    animation: none;
+  }
+}
+
+/* Float animations */
+@keyframes floatAnimation {
+  0% {
+    transform: translateY(-50%); /* Main position */
+  }
+  50% {
+    transform: translateY(
+      calc(-50% - 20px)
+    ); /* Main position + animation offset */
+  }
+  100% {
+    transform: translateY(-50%); /* Back to main position */
+  }
+}
+
+@keyframes floatAnimationNormal {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

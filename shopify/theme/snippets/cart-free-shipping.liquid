@@ -1,0 +1,410 @@
+{% liquid
+  assign theme_rtl = false
+  if settings.enable_rtl and settings.langauges_rtl == blank
+    assign theme_rtl = true
+  endif
+
+  if settings.enable_rtl and settings.langauges_rtl != blank
+    assign rtl_languages = settings.langauges_rtl | split: ','
+    for language in rtl_languages
+      if language == request.locale.iso_code
+        assign theme_rtl = true
+      endif
+    endfor
+  endif
+
+  assign free_shipping_rate = settings.free_shipping_amount | times: 100
+  assign free_shipping_only_amount = settings.free_shipping_only_amount | times: 100
+
+  if cart.total_price < free_shipping_rate
+    assign percentage = cart.total_price | times: 100 | divided_by: free_shipping_rate
+  else
+    assign percentage = 100
+  endif
+%}
+
+<style>
+        {% if percentage < 50 %}
+        .shipping__threshold--color{
+          --shipping-bar-color: {{ settings.shipping_rate_low }};
+        }
+          {% elsif percentage >= 50 and percentage < 75 %}
+      .shipping__threshold--color{
+          --shipping-bar-color: {{ settings.shipping_rate_medium }};
+        }
+
+          {% elsif percentage >= 75 and percentage < 100  %}
+            .shipping__threshold--color{
+          --shipping-bar-color: {{ settings.shipping_rate_high }};
+        }
+          {% else %}
+           .shipping__threshold--color{
+          --shipping-bar-color: {{ settings.shipping_rate_sucess }};
+        }
+          {% endif %}
+
+          {% if theme_rtl %}
+          .cart__shipping--threshold:not(.cart-items-free--shipping-bar) {
+            padding: 0 0 2rem 3rem;
+           }
+          {% else %}
+           .cart__shipping--threshold:not(.cart-items-free--shipping-bar) {
+                padding: 0 3rem 2rem 0;
+            }
+          {% endif %}
+                .shipping--bar-message {
+                    margin-bottom: 1rem;
+                }
+                .percent_shipping_bar_wrapper {
+        border-radius: 5px;
+        margin-bottom: 1.2rem;
+        position: relative;
+        height: 0.8rem;
+        background: rgba(var(--color-foreground), 0.15);
+    }
+              .percent_shipping_bar {
+                display: block;
+                height: 100%;
+                position: relative;
+                border-radius: 5px;
+                transition: all .4s;
+                animation: 5s linear infinite progress;
+                background-color: var(--shipping-bar-color);
+                -webkit-background-image: linear-gradient(135deg,rgba(255,255,255,.15) 0,rgba(255,255,255,.15) 25%,rgba(255,255,255,0) 25%,rgba(255,255,255,0) 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,rgba(255,255,255,0) 75%,rgba(255,255,255,0) 100%);
+                -moz-background-image: linear-gradient(135deg,rgba(255,255,255,.15) 0,rgba(255,255,255,.15) 25%,rgba(255,255,255,0) 25%,rgba(255,255,255,0) 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,rgba(255,255,255,0) 75%,rgba(255,255,255,0) 100%);
+                -ms-background-image: linear-gradient(135deg,rgba(255,255,255,.15) 0,rgba(255,255,255,.15) 25%,rgba(255,255,255,0) 25%,rgba(255,255,255,0) 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,rgba(255,255,255,0) 75%,rgba(255,255,255,0) 100%);
+                background-image: linear-gradient(135deg,rgba(255,255,255,.15) 0,rgba(255,255,255,.15) 25%,rgba(255,255,255,0) 25%,rgba(255,255,255,0) 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,rgba(255,255,255,0) 75%,rgba(255,255,255,0) 100%);
+                background-size: 40px 40px;
+            }
+          {% if theme_rtl %}
+            .free-shipping--icon-wrapper {
+              width: 3rem;
+              height: 3rem;
+              border-radius: 50%;
+              border: 1px solid var(--shipping-bar-color);
+              transition: all .4s;
+              background: #fff;
+              position: absolute;
+              left: -15px;
+              top: 50%;
+              transform: translate(50%,-50%);
+              margin-top: -1px;
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+          }
+            {% else %}
+            .free-shipping--icon-wrapper {
+              width: 3rem;
+              height: 3rem;
+              border-radius: 50%;
+              border: 1px solid var(--shipping-bar-color);
+              transition: all .4s;
+              background: #fff;
+              position: absolute;
+              right: -15px;
+              top: 50%;
+              transform: translate(50%,-50%);
+              margin-top: -1px;
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+          }
+            {% endif %}
+      .free-shipping--icon{
+        width: 1.5rem;
+        color: var(--shipping-bar-color);
+      }
+          @-moz-keyframes progress {
+            from {
+              background-position: 0 0
+            }
+
+            to {
+              background-position: -60px -60px
+            }
+          }
+
+          @-ms-keyframes progress {
+            from {
+              background-position: 0 0
+            }
+
+            to {
+              background-position: -60px -60px
+            }
+          }
+
+          @-o-keyframes progress {
+            from {
+              background-position: 0 0
+            }
+
+            to {
+              background-position: -60px -60px
+            }
+          }
+
+          @keyframes progress {
+            from {
+              background-position: 0 0
+            }
+
+            to {
+              background-position: -60px -60px
+            }
+          }
+        .cart__shipping--threshold.cart-items-free--shipping-bar {
+      margin-top: 0;
+      margin-bottom: 3rem;
+  }
+</style>
+
+<div class="cart__shipping--threshold shipping__threshold--color {{ container_class }}">
+  <div class="cart__shipping--threshold-inner">
+    {% if cart.total_price < free_shipping_rate %}
+      {% assign cartTotal = cart.total_price | money_without_currency %}
+
+      {% assign toFreeShip = cartTotal | times: 100 | minus: free_shipping_rate | abs %}
+
+      <div class="shipping--bar-message">
+        {% if toFreeShip < free_shipping_only_amount %}
+          {{ 'general.free_shipping_message.free_shipping_only_title' | t -}}
+        {%- endif %}
+
+        <span>
+          {{ toFreeShip | money_with_currency -}}
+        </span>
+        {{ 'general.free_shipping_message.free_shipping_title' | t }}
+      </div>
+
+    {% else %}
+      <div class="shipping--bar-message">{{ 'general.free_shipping_message.free_shipping_success' | t }}</div>
+    {% endif %}
+
+    <div class="percent_shipping_bar_wrapper">
+      <div
+        class="percent_shipping_bar"
+        style="width: {{ percentage }}%;"
+      >
+        <span class="free-shipping--icon-wrapper">
+          <svg
+            class="free-shipping--icon"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="feather feather-truck"
+          >
+            <rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle>
+          </svg>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% comment %}
+   {% liquid
+    assign free_shipping_rate = settings.free_shipping_amount | times: 1
+    assign free_shipping_only_amount = settings.free_shipping_only_amount | times: 100
+    assign cart_total_price = cart.total_price | money_without_currency | replace: '.00', '' | replace: ',', '' | times: 1
+    assign temp_percetage = free_shipping_rate | minus: cart_total_price | times: 100 | divided_by: free_shipping_rate | round
+
+    assign percentage = 40
+    if cart_total_price < free_shipping_rate
+      assign percentage = 100 | minus: temp_percetage
+    else
+      assign percentage = 100
+    endif
+  %}
+
+  <style>
+          {% if percentage < 50 %}
+          .shipping__threshold--color{
+            --shipping-bar-color: {{ settings.shipping_rate_low }};
+          }
+            {% elsif percentage >= 50 and percentage < 75 %}
+        .shipping__threshold--color{
+            --shipping-bar-color: {{ settings.shipping_rate_medium }};
+          }
+
+            {% elsif percentage >= 75 and percentage < 100  %}
+              .shipping__threshold--color{
+            --shipping-bar-color: {{ settings.shipping_rate_high }};
+          }
+            {% else %}
+             .shipping__threshold--color{
+            --shipping-bar-color: {{ settings.shipping_rate_sucess }};
+          }
+            {% endif %}
+
+            {% if theme_rtl %}
+            .cart__shipping--threshold:not(.cart-items-free--shipping-bar) {
+              padding: 0 0 2rem 3rem;
+             }
+            {% else %}
+             .cart__shipping--threshold:not(.cart-items-free--shipping-bar) {
+                  padding: 0 3rem 2rem 0;
+              }
+            {% endif %}
+                  .shipping--bar-message {
+                      margin-bottom: 1rem;
+                  }
+                  .percent_shipping_bar_wrapper {
+          border-radius: 5px;
+          margin-bottom: 1.2rem;
+          position: relative;
+          height: 0.8rem;
+          background: rgba(var(--color-foreground), 0.15);
+      }
+                .percent_shipping_bar {
+                  display: block;
+                  height: 100%;
+                  position: relative;
+                  border-radius: 5px;
+                  transition: all .4s;
+                  animation: 5s linear infinite progress;
+                  background-color: var(--shipping-bar-color);
+                  -webkit-background-image: linear-gradient(135deg,rgba(255,255,255,.15) 0,rgba(255,255,255,.15) 25%,rgba(255,255,255,0) 25%,rgba(255,255,255,0) 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,rgba(255,255,255,0) 75%,rgba(255,255,255,0) 100%);
+                  -moz-background-image: linear-gradient(135deg,rgba(255,255,255,.15) 0,rgba(255,255,255,.15) 25%,rgba(255,255,255,0) 25%,rgba(255,255,255,0) 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,rgba(255,255,255,0) 75%,rgba(255,255,255,0) 100%);
+                  -ms-background-image: linear-gradient(135deg,rgba(255,255,255,.15) 0,rgba(255,255,255,.15) 25%,rgba(255,255,255,0) 25%,rgba(255,255,255,0) 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,rgba(255,255,255,0) 75%,rgba(255,255,255,0) 100%);
+                  background-image: linear-gradient(135deg,rgba(255,255,255,.15) 0,rgba(255,255,255,.15) 25%,rgba(255,255,255,0) 25%,rgba(255,255,255,0) 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,rgba(255,255,255,0) 75%,rgba(255,255,255,0) 100%);
+                  background-size: 40px 40px;
+              }
+            {% if theme_rtl %}
+              .free-shipping--icon-wrapper {
+                width: 3rem;
+                height: 3rem;
+                border-radius: 50%;
+                border: 1px solid var(--shipping-bar-color);
+                transition: all .4s;
+                background: #fff;
+                position: absolute;
+                left: -15px;
+                top: 50%;
+                transform: translate(50%,-50%);
+                margin-top: -1px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+            }
+              {% else %}
+              .free-shipping--icon-wrapper {
+                width: 3rem;
+                height: 3rem;
+                border-radius: 50%;
+                border: 1px solid var(--shipping-bar-color);
+                transition: all .4s;
+                background: #fff;
+                position: absolute;
+                right: -15px;
+                top: 50%;
+                transform: translate(50%,-50%);
+                margin-top: -1px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+            }
+              {% endif %}
+        .free-shipping--icon{
+          width: 1.5rem;
+          color: var(--shipping-bar-color);
+        }
+            @-moz-keyframes progress {
+              from {
+                background-position: 0 0
+              }
+
+              to {
+                background-position: -60px -60px
+              }
+            }
+
+            @-ms-keyframes progress {
+              from {
+                background-position: 0 0
+              }
+
+              to {
+                background-position: -60px -60px
+              }
+            }
+
+            @-o-keyframes progress {
+              from {
+                background-position: 0 0
+              }
+
+              to {
+                background-position: -60px -60px
+              }
+            }
+
+            @keyframes progress {
+              from {
+                background-position: 0 0
+              }
+
+              to {
+                background-position: -60px -60px
+              }
+            }
+          .cart__shipping--threshold.cart-items-free--shipping-bar {
+        margin-top: 0;
+        margin-bottom: 3rem;
+    }
+  </style>
+
+  <div class="cart__shipping--threshold shipping__threshold--color {{ container_class }}">
+    <div class="cart__shipping--threshold-inner">
+      {% if cart_total_price < free_shipping_rate %}
+        {% assign toFreeShip = free_shipping_rate | minus: cart_total_price | times: 100 %}
+
+        <div class="shipping--bar-message">
+          {% if toFreeShip < free_shipping_only_amount %}
+            {{ 'general.free_shipping_message.free_shipping_only_title' | t -}}
+          {%- endif %}
+
+          <span>
+            {{ toFreeShip | money_with_currency -}}
+          </span>
+          {{ 'general.free_shipping_message.free_shipping_title' | t }}
+        </div>
+
+      {% else %}
+        <div class="shipping--bar-message">{{ 'general.free_shipping_message.free_shipping_success' | t }}</div>
+      {% endif %}
+
+      <div class="percent_shipping_bar_wrapper">
+        <div
+          class="percent_shipping_bar"
+          style="width: {{ percentage }}%;"
+        >
+          <span class="free-shipping--icon-wrapper">
+            <svg
+              class="free-shipping--icon"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="feather feather-truck"
+            >
+              <rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle>
+            </svg>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endcomment %}

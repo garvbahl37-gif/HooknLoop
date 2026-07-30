@@ -1,0 +1,16 @@
+.product__grid--heading__title:before {
+  left: auto;
+  right: 0;
+}
+.product__grid--items .placeholder__content {
+  padding-left: 0;
+  padding-right: 16px;
+}
+.product__grid--items--content {
+  padding-left: 0;
+  padding-right: 18px;
+  text-align: right;
+}
+.product__grid--items--content .price.product__card__price {
+  justify-content: flex-start;
+}

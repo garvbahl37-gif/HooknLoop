@@ -1,0 +1,117 @@
+{% assign first_collection = collections | first %}
+
+<div class="collections--card collections--card-media-{{ image_position }} {% if card_padded %} collections--card-padded{% endif %} {% unless card_padded %}{% if padded %} collections--card-content-padded{% endif %}{% endunless %} {% if corner_radius %}collections--card-radius-true{% endif %} {% if card_border %} card--border-line{% endif %}  color-{{ color_scheme }} card--client-height">
+  {%- if custom_image != blank or first_collection.featured_image != blank -%}
+    <div class="collection-card--media__wrapper {{ image_width }} ">
+      <a href="{{ first_collection.url }}" class="d-block">
+        <div
+          class="media media--{{ media_aspect_ratio }} media--hover-effect overflow-hidden"
+
+          {% if media_aspect_ratio == 'adapt' %}
+            {% if custom_image != blank %}
+              style="padding-bottom: {{ 1 | divided_by: custom_image.aspect_ratio | times: 100 }}%;"
+            {%- else -%}
+              style="padding-bottom: {{ 1 | divided_by: first_collection.featured_image.aspect_ratio | times: 100 }}%;"
+            {% endif %}
+          {% endif %}
+        >
+          {% if custom_image != blank %}
+            {%- capture sizes -%} (min-width: {{ settings.container_lg_width }}px) {{ settings.container_lg_width | minus: 100 | divided_by: 3 }}px, (min-width: 750px) calc((100vw - 130px) / 3), calc(100vw - 30px) {%- endcapture -%}
+            {% liquid
+              assign height = custom_image.width | divided_by: custom_image.aspect_ratio | round
+            %}
+            {{
+              custom_image
+              | image_url: width: 1500
+              | image_tag:
+                loading: 'lazy',
+                height: height,
+                sizes: sizes,
+                widths: '165, 360, 750, 1000, 1500, 1780, 2000, 3000, 3840'
+            }}
+          {% else %}
+            <img
+              srcset="
+                {%- if first_collection.featured_image.width >= 165 -%}{{ first_collection.featured_image | img_url: '165x' }} 165w,{%- endif -%}
+                   {%- if first_collection.featured_image.width >= 360 -%}{{ first_collection.featured_image | img_url: '360x' }} 360w,{%- endif -%}
+                   {%- if first_collection.featured_image.width >= 535 -%}{{ first_collection.featured_image | img_url: '535x' }} 535w,{%- endif -%}
+                   {%- if first_collection.featured_image.width >= 750 -%}{{ first_collection.featured_image | img_url: '750x' }} 750w,{%- endif -%}
+                   {%- if first_collection.featured_image.width >= 1000 -%}{{ first_collection.featured_image | img_url: '1000x' }} 1000w,{%- endif -%}
+                   {%- if first_collection.featured_image.width >= 1500 -%}{{ first_collection.featured_image | img_url: '1500x' }} 1500w,{%- endif -%}
+                {%- if first_collection.featured_image.width >= 1780 -%}{{ first_collection.featured_image | img_url: '1780x' }} 1780w,{%- endif -%}
+                   {%- if first_collection.featured_image.width >= 2000 -%}{{ first_collection.featured_image | img_url: '2000x' }} 2000w,{%- endif -%}
+                   {%- if first_collection.featured_image.width >= 3000 -%}{{ first_collection.featured_image | img_url: '3000x' }} 3000w,{%- endif -%}
+                   {%- if first_collection.featured_image.width >= 3840 -%}{{ first_collection.featured_image | img_url: '3840x' }} 3840w,{%- endif -%}
+                   {{ first_collection.featured_image | img_url: 'master' }} {{ first_collection.featured_image.width }}w
+              "
+              src="{{ first_collection.featured_image | img_url: '1500x' }}"
+              sizes="(min-width: {{ settings.container_lg_width }}px) {{ settings.container_lg_width | minus: 100 | divided_by: 3 }}px, (min-width: 750px) calc((100vw - 130px) / 3), calc(100vw - 30px)"
+              alt="{{ collection.title | escape }}"
+              height="{{ first_collection.featured_image.height | divided_by: first_collection.featured_image.aspect_ratio }}"
+              width="{{ first_collection.featured_image.width  }}"
+              loading="lazy"
+            >
+          {% endif %}
+        </div>
+      </a>
+    </div>
+  {%- else -%}
+    <div
+      class="collection-card--media__wrapper {{ image_width }}  placeholder_svg_parent media--{{ media_aspect_ratio }} card--client-height"
+    >
+      {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+      {{ 'collection-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+    </div>
+  {%- endif -%}
+  <div class="collections-card--content">
+    {%- if first_collection != blank -%}
+      <h3 class="collections--card-heading">
+        <a class="collections--card-heading--link h5 mb-0" href="{{ first_collection.url }}">
+          {{- first_collection.title -}}
+        </a>
+      </h3>
+    {%- else -%}
+      <h3 class="collections--card-heading h5">{{ 'sections.collection_list.default_title' | t }}</h3>
+    {%- endif -%}
+
+    <div class="collections--card-links">
+      {% for collection in collections offset: 1 %}
+        <a href="{{ collection.url }}" class="collections--card-text-link link d-block button--not-underline">
+          {{ collection.title }}
+        </a>
+      {% endfor %}
+    </div>
+
+    {% liquid
+      if card_button_type == 'primary'
+        assign button_class = 'button button--primary button--small'
+      elsif card_button_type == 'link'
+        assign button_class = 'link with--icon button--not-underline'
+      else
+        assign button_class = 'button button--secondary button--small'
+      endif
+    %}
+
+    {% if collections != blank and card_button_label != blank %}
+      <div class="collections-card--button">
+        <a
+          class="{{ button_class }}  {% if use_button_icon %} button--with-icon{% endif %} "
+          href="{{ first_collection.url }}"
+        >
+          {{ card_button_label }}
+          {% if use_button_icon %}
+            <span class="button--icon button--icon-right">
+              {% if card_button_icon_type == 'arrow' %}
+                {% render 'icon-arrow-right' %}
+              {% elsif card_button_icon_type == 'chevrons' %}
+                {% render 'icon-double-chevron-right' %}
+              {% else %}
+                {% render 'icon-chevron-right' %}
+              {% endif %}
+            </span>
+          {% endif %}
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</div>

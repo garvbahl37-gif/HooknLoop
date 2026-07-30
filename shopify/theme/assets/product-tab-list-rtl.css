@@ -1,0 +1,4 @@
+li.product_tab_list__li + li.product_tab_list__li {
+  margin-left: 0;
+  margin-right: 3rem;
+}

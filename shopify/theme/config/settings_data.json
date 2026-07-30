@@ -1,0 +1,343 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "current": {
+    "favicon": "shopify://shop_images/Hooknloop.com.au-favicon.png",
+    "currency_code_enabled": false,
+    "container_lg_width": 1250,
+    "container_fluid_offset": 190,
+    "type_body_font": "dm_sans_n4",
+    "use_custom_body_font": false,
+    "custom_body_font": "https://cdn.shopify.com/s/files/1/0561/2742/2636/files/Jost-Regular.ttf?v=1618297125@400&https://cdn.shopify.com/s/files/1/0561/2742/2636/files/Jost-Medium.ttf?v=1618297125@500&https://cdn.shopify.com/s/files/1/0561/2742/2636/files/Jost-SemiBold.ttf?v=1618297125@600",
+    "body_font_size": 100,
+    "type_header_font": "dm_sans_n7",
+    "use_custom_heading_font": false,
+    "custom_heading_font": "https://cdn.shopify.com/s/files/1/0637/2776/3637/files/Jellee-Roman.ttf?v=1708099140@700",
+    "heading_font_weight": "700",
+    "button_border_radius": 3,
+    "product_content_alignment": "left",
+    "show_all_wishlist": true,
+    "show_all_compare": true,
+    "product_marquee_color": "background-1",
+    "sale_percentage_show": false,
+    "sale_badge_color_scheme": "background-1",
+    "new_badge_color_scheme": "inverse",
+    "sold_out_badge_color_scheme": "accent-1",
+    "recent_viewed_proudct_card": "style_3",
+    "show_cart_button": true,
+    "show_quick_view_button": false,
+    "show_compare_view_button": false,
+    "product_card_radius": true,
+    "product_card_spacing": true,
+    "product_card_color_scheme": "background-1",
+    "color_swatches": true,
+    "max_swatches_show": 3,
+    "quick_shop_type": "popup",
+    "varian_picker": "button",
+    "color_option_style": "image",
+    "quick_view_preorder_button": false,
+    "wishlist_card_style": "style_1",
+    "wishlist_show_quick_view_button": false,
+    "wishlist_show_compare_view_button": false,
+    "social_twitter_link": "",
+    "social_facebook_link": "https://www.facebook.com/profile.php?id=61587201524181",
+    "social_pinterest_link": "https://www.pinterest.com/hooknloopshop/",
+    "social_instagram_link": "https://www.instagram.com/hooknloopshop",
+    "social_tiktok_link": "",
+    "social_youtube_link": "",
+    "cart_type": "drawer",
+    "cart_note_enable": false,
+    "shipping_calc_enable": false,
+    "coupon_enable": false,
+    "continue_shopping_link": "shopify://collections/all",
+    "free_shipping_amount": 200,
+    "shipping_rate_low": "#e4792f",
+    "predictive_search_enabled": false,
+    "search_type": "none",
+    "search_filter_tags": "Tape",
+    "show_collection": true,
+    "show_article": false,
+    "show_page": false,
+    "most_searced_products_collection": "new-arrivals",
+    "most_searced_products_limit": 6,
+    "popular_search_queries": "Tape",
+    "show_border": true,
+    "account_page_breadcrumb": true,
+    "customer_color_scheme": "background-2",
+    "colors_accent_1": "#ee2761",
+    "gradient_accent_1": "",
+    "colors_solid_button_labels": "#ffffff",
+    "colors_text": "#131313",
+    "colors_text_link_hover": "#ee2761",
+    "colors_accent_2": "#131313",
+    "colors_outline_button_labels": "#131313",
+    "colors_background_1": "#ffffff",
+    "gradient_background_1": "",
+    "colors_background_2": "#f7f8fc",
+    "image_ratio": "adapt",
+    "show_secondary_image": true,
+    "show_product_rating": true,
+    "show_variant_options": false,
+    "pcard_option_display": "1_option",
+    "pcard_option_design": "color",
+    "page_width": "1200",
+    "show_rating": true,
+    "sections": {
+      "main-password": {
+        "type": "main-password",
+        "settings": {
+          "color_scheme": "background-1"
+        }
+      },
+      "password-footer": {
+        "type": "password-footer",
+        "settings": {
+          "color_scheme": "background-2"
+        }
+      },
+      "color-swatches": {
+        "type": "color-swatches",
+        "settings": {}
+      }
+    },
+    "content_for_index": [],
+    "blocks": {
+      "14060646107696862457": {
+        "type": "shopify://apps/judge-me-reviews/blocks/judgeme_core/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+        "disabled": false,
+        "settings": {}
+      },
+      "2567389343055140935": {
+        "type": "shopify://apps/microsoft-clarity/blocks/clarity_js/31c3d126-8116-4b4a-8ba1-baeda7c4aeea",
+        "disabled": false,
+        "settings": {}
+      },
+      "2200952712151285029": {
+        "type": "shopify://apps/microsoft-clarity/blocks/brandAgents_js/31c3d126-8116-4b4a-8ba1-baeda7c4aeea",
+        "disabled": false,
+        "settings": {}
+      },
+      "18443233120380120315": {
+        "type": "shopify://apps/bl-country-blocker/blocks/country-blocker/4f9fba3d-990f-4b67-9682-e3fdc1961431",
+        "disabled": false,
+        "settings": {}
+      },
+      "2840289715346598064": {
+        "type": "shopify://apps/vat-tax-switcher/blocks/switcher-embed/019a6d5b-f2a8-72b2-8f21-38aee646508d",
+        "disabled": true,
+        "settings": {
+          "renderer": "5",
+          "css_selector": ".price__box_wrapper",
+          "insert": "prepend",
+          "base_value": "0",
+          "vat": 10,
+          "switcherInactiveColor": "#3060c9",
+          "switcherActiveColor": "#e4792f",
+          "switcherKnobColor": "#ffffff",
+          "switcherTextColor": "#000000",
+          "switcherIncludingLabel": "Incl. TAX",
+          "switcherExcludingLabel": "Excl. TAX",
+          "textSize": 14,
+          "toggleWidth": 20,
+          "toggleRadius": 16,
+          "toggleHeight": 12,
+          "toggleKnobRadius": 18
+        }
+      },
+      "15683396631634586217": {
+        "type": "shopify://apps/inbox/blocks/chat/841fc607-4181-4ad1-842d-e24d7f8bad6b",
+        "disabled": false,
+        "settings": {
+          "greeting_message": "",
+          "button_color": "#000000",
+          "secondary_color": "#FFFFFF",
+          "ternary_color": "#6A6A6A",
+          "button_icon": "chat_bubble",
+          "button_text": "chat_with_us",
+          "button_horizontal_position": "bottom_right",
+          "button_vertical_position": "lowest"
+        }
+      },
+      "14947870889598929745": {
+        "type": "shopify://apps/smartbot/blocks/app-embed/d9407b81-7d3e-4612-91c3-2020086e2073",
+        "disabled": false,
+        "settings": {}
+      }
+    },
+    "color_schemes": {
+      "background-1": {
+        "settings": {
+          "background": "#ffffff",
+          "background_gradient": "",
+          "text": "#121212",
+          "button": "#e4792f",
+          "button_label": "#ffffff",
+          "primary_button_hover_bg": "#121212",
+          "primary_button_hover_text": "#ffffff",
+          "secondary_button_label": "#121212",
+          "secondary_button_hover_bg": "#ee2761",
+          "secondary_button_hover_text": "#ffffff",
+          "tex_link_hover_color": "#ee2761",
+          "highligt_text": "#ee2761",
+          "highligt_text_gradient": ""
+        }
+      },
+      "background-2": {
+        "settings": {
+          "background": "#f7f7f7",
+          "background_gradient": "",
+          "text": "#121212",
+          "button": "#121212",
+          "button_label": "#ffffff",
+          "primary_button_hover_bg": "#ee2761",
+          "primary_button_hover_text": "#ffffff",
+          "secondary_button_label": "#121212",
+          "secondary_button_hover_bg": "#ee2761",
+          "secondary_button_hover_text": "#ffffff",
+          "tex_link_hover_color": "#ee2761",
+          "highligt_text": "#ee2761",
+          "highligt_text_gradient": ""
+        }
+      },
+      "inverse": {
+        "settings": {
+          "background": "#121212",
+          "background_gradient": "",
+          "text": "#ffffff",
+          "button": "#ee2761",
+          "button_label": "#ffffff",
+          "primary_button_hover_bg": "#121212",
+          "primary_button_hover_text": "#f5f5f5",
+          "secondary_button_label": "#ffffff",
+          "secondary_button_hover_bg": "#121212",
+          "secondary_button_hover_text": "#ffffff",
+          "tex_link_hover_color": "#ee2761",
+          "highligt_text": "#ee2761",
+          "highligt_text_gradient": ""
+        }
+      },
+      "accent-1": {
+        "settings": {
+          "background": "#ffffff",
+          "background_gradient": "",
+          "text": "#121212",
+          "button": "#fceef1",
+          "button_label": "#e55472",
+          "primary_button_hover_bg": "#e55472",
+          "primary_button_hover_text": "#ffffff",
+          "secondary_button_label": "#ffffff",
+          "secondary_button_hover_bg": "#121212",
+          "secondary_button_hover_text": "#ffffff",
+          "tex_link_hover_color": "#ee2761",
+          "highligt_text": "#ee2761",
+          "highligt_text_gradient": ""
+        }
+      },
+      "accent-2": {
+        "settings": {
+          "background": "#ee2761",
+          "background_gradient": "",
+          "text": "#ffffff",
+          "button": "#ee2761",
+          "button_label": "#ffffff",
+          "primary_button_hover_bg": "#121212",
+          "primary_button_hover_text": "#ffffff",
+          "secondary_button_label": "#ffffff",
+          "secondary_button_hover_bg": "#121212",
+          "secondary_button_hover_text": "#ffffff",
+          "tex_link_hover_color": "#ee2761",
+          "highligt_text": "#ee2761",
+          "highligt_text_gradient": ""
+        }
+      },
+      "scheme-7c33f7e7-6445-4008-8736-f4eb82e00b21": {
+        "settings": {
+          "background": "#ffffff",
+          "background_gradient": "",
+          "text": "#121212",
+          "button": "#e8e8e9",
+          "button_label": "#121212",
+          "primary_button_hover_bg": "#f92d8f",
+          "primary_button_hover_text": "#ffffff",
+          "secondary_button_label": "#f92d8f",
+          "secondary_button_hover_bg": "#121212",
+          "secondary_button_hover_text": "#ffffff",
+          "tex_link_hover_color": "#f92d8f",
+          "highligt_text": "#ee2761",
+          "highligt_text_gradient": ""
+        }
+      },
+      "scheme-f7839f5e-0dea-4718-adaf-ebc6a8524191": {
+        "settings": {
+          "background": "#e34875",
+          "background_gradient": "",
+          "text": "#ffffff",
+          "button": "#e34875",
+          "button_label": "#ffffff",
+          "primary_button_hover_bg": "#ffffff",
+          "primary_button_hover_text": "#000000",
+          "secondary_button_label": "#e34875",
+          "secondary_button_hover_bg": "#121212",
+          "secondary_button_hover_text": "#ffffff",
+          "tex_link_hover_color": "#e34875",
+          "highligt_text": "#ee2761",
+          "highligt_text_gradient": ""
+        }
+      },
+      "scheme-5c0ac5b3-2711-4c9f-8d5d-69ee08e33d5a": {
+        "settings": {
+          "background": "#122549",
+          "background_gradient": "",
+          "text": "#121212",
+          "button": "#e4792f",
+          "button_label": "#ffffff",
+          "primary_button_hover_bg": "#121212",
+          "primary_button_hover_text": "#ffffff",
+          "secondary_button_label": "#121212",
+          "secondary_button_hover_bg": "#ee2761",
+          "secondary_button_hover_text": "#ffffff",
+          "tex_link_hover_color": "#ee2761",
+          "highligt_text": "#ee2761",
+          "highligt_text_gradient": ""
+        }
+      }
+    }
+  },
+  "presets": {
+    "Default": {
+      "colors_solid_button_labels": "#FFFFFF",
+      "colors_accent_1": "#121212",
+      "colors_accent_2": "#334FB4",
+      "colors_text": "#121212",
+      "colors_outline_button_labels": "#121212",
+      "colors_background_1": "#FFFFFF",
+      "colors_background_2": "#F3F3F3",
+      "type_header_font": "assistant_n4",
+      "type_body_font": "assistant_n4",
+      "sections": {
+        "announcement-bar": {
+          "type": "announcement-bar",
+          "blocks": {
+            "announcement-bar-0": {
+              "type": "announcement",
+              "settings": {
+                "color_scheme": "background-1"
+              }
+            }
+          },
+          "block_order": [
+            "announcement-bar-0"
+          ],
+          "settings": {}
+        }
+      }
+    }
+  }
+}

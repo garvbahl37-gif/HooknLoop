@@ -1,0 +1,682 @@
+<compare-item>
+  <button
+    class="wishlist__button wishlist__button--text link"
+    type="button"
+    aria-label="{{ 'products.product.add_to_compare' | t }}"
+    class=""
+    data-product-handle="{{ product.handle }}"
+    data-product-title="{{ product.title }}"
+  >
+    <span title="{{ 'products.product.add_to_compare' | t }}" class="add__wishlist  d-flex align-items-center">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="icon icon-tabler icon-tabler-arrows-down-up"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        fill="none"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+        <line x1="17" y1="3" x2="17" y2="21" />
+        <path d="M10 18l-3 3l-3 -3" />
+        <line x1="7" y1="21" x2="7" y2="3" />
+        <path d="M20 6l-3 -3l-3 3" />
+      </svg>
+      <span>{{ 'products.product.add_to_compare' | t }}</span>
+    </span>
+    <span class="loading__wishlist"></span>
+    <span
+      title="{{ 'products.product.remove_from_compare' | t }}"
+      class="remove__wishlist  wishlist__button--text link align-items-center"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="icon icon-tabler icon-tabler-arrows-down-up"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        fill="none"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+        <line x1="17" y1="3" x2="17" y2="21" />
+        <path d="M10 18l-3 3l-3 -3" />
+        <line x1="7" y1="21" x2="7" y2="3" />
+        <path d="M20 6l-3 -3l-3 3" />
+      </svg>
+      <span>{{ 'products.product.remove_from_compare' | t }}</span>
+    </span>
+  </button>
+</compare-item>
+
+
+<wishlist-item style="margin-left: -5%;">
+    <button wishlist-button="" class="wishlist__button wishlist__button--text link" type="button" aria-label="Add to wishlist" data-product-handle="heavy-duty-adhesive-hook-and-loop">
+      <span class="add__wishlist1 d-flex align-items-center">
+        <img src="https://cdn.shopify.com/s/files/1/0975/4509/3489/files/new1_430x.png?v=1771877643">
+        <span><a href="https://hooknloop.com.au/pages/shipping-delivery">Shipping</a></span>
+      </span>
+          
+    </button>
+
+   <button wishlist-button="" class="wishlist__button wishlist__button--text link" type="button" aria-label="Add to wishlist" data-product-handle="heavy-duty-adhesive-hook-and-loop">
+      <span class="add__wishlist1 d-flex align-items-center">
+        <img src="https://cdn.shopify.com/s/files/1/0975/4509/3489/files/new2_430x.png?v=1771877643">
+        <span><a href="https://hooknloop.com.au/pages/return-policy">Returns & Exchanges</a></span>
+      </span>
+          
+    </button>
+
+
+  </wishlist-item>
+ 
+
+  <!-- Buy 10+ Product  -->
+
+ {% if product.title == 'VELCRO ® Self Adhesive Hook and Loop Roll' %} 
+<style>
+.buy-save-wrapper {display:none !important;}
+</style> 
+{% endif %}
+{% if product.title == 'VELCRO ® VELCOIN ® Hook and Loop Sticky Dots' %} 
+<style>
+.buy-save-wrapper {display:none !important;}
+</style> 
+{% endif %}
+
+  
+<div class="custom-product-sections">
+
+  <!-- ===================== -->
+  <!-- BUY MORE & SAVE -->
+  <!-- ===================== -->
+  <div class="buy-save-wrapper">
+
+    <h2 class="buy-save-title">Buy More & Save</h2>
+
+    <div class="buy-save-cards">
+
+
+      <div class="buy-card">
+        <div class="buy-qty">Buy 5+</div>
+        <div class="buy-badge">SAVE 5%</div>
+      </div>
+
+      <div class="buy-card">
+        <div class="buy-qty">Buy 10+</div>
+        <div class="buy-badge">SAVE 10%</div>
+      </div>
+
+      <div class="buy-card">
+        <div class="buy-qty">Buy 20+</div>
+        <div class="buy-badge">SAVE 20%</div>
+      </div>
+
+      <div class="buy-card">
+        <div class="buy-qty">Buy 50+</div>
+        <div class="buy-badge">SAVE 30%</div>
+      </div>
+
+       
+
+    </div>
+
+    <p class="buy-note">
+      Discount applied automatically at checkout.
+    </p>
+
+  </div>
+
+
+  <!-- ===================== -->
+  <!-- FEATURE BAR -->
+  <!-- ===================== -->
+  <div class="feature-bar-premium">
+
+  <!-- Shipping -->
+  <div class="feature-box">
+    <div class="feature-icon">
+      <!-- Truck SVG -->
+      <img src="https://cdn.shopify.com/s/files/1/0975/4509/3489/files/Untitled-1_daeaf2dc-daec-4c91-84f9-9e4c88b9d2d5_430x.png?v=1772130142"/>
+    </div>
+    <div class="feature-content">
+      <h4>Fast Australian Shipping</h4>
+      <p>Speedy delivery Australia wide</p>
+    </div>
+  </div>
+
+  <div class="feature-divider"></div>
+
+  <!-- Payment -->  
+  <div class="feature-box">
+    <div class="feature-icon">
+      <!-- Card SVG -->
+     <img src="https://cdn.shopify.com/s/files/1/0975/4509/3489/files/Untitled-2_0cb255cc-2e2e-47e8-9c61-c1daad372111_430x.png?v=1772130142"/>
+    </div>
+    <div class="feature-content">
+      <h4>Secured Payment</h4>
+      <p>Safe transactions with SSL encryption</p>
+    </div>
+  </div>
+
+  <div class="feature-divider"></div>
+
+  <!-- Returns -->
+  <div class="feature-box">
+    <div class="feature-icon">
+      <!-- Box SVG -->
+      <img src="https://cdn.shopify.com/s/files/1/0975/4509/3489/files/Untitled-3_c07bc95e-85dd-4998-a63c-6288a4218c58_430x.png?v=1772130142"/>
+    </div>
+    <div class="feature-content">
+      <h4>Easy Returns</h4>
+      <p>30-day returns & free exchanges</p>
+    </div>
+  </div>
+
+</div>
+
+
+  <!-- End -->
+<style>
+/* ============================= */
+/* COMMON WRAPPER */
+/* ============================= */
+
+.custom-product-sections {
+  max-width: 900px;
+  margin: 25px auto;
+  padding: 0px 0px;
+}
+
+/* ============================= */
+/* BUY MORE SECTION */
+/* ============================= */
+
+.buy-save-wrapper {
+  background: #f4f4f4;
+  padding: 20px 5px;
+  border-radius: 25px;
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+.buy-save-title {
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.buy-save-cards {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.buy-card {
+  background: linear-gradient(180deg, #2d62d6, #1c3774);
+  color: #fff;
+  padding: 10px 5px 20px;
+  border-radius: 18px;
+  width: 130px;
+  transition: 0.3s ease;
+}
+
+.buy-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+}
+
+.buy-qty {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 0px;
+}
+
+.buy-badge {
+  background: #ff8c1a;
+  color: #fff;
+  padding: 0px 15px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 800;
+  display: inline-block;
+}
+
+.buy-note {
+  font-size: 14px;
+  color: #666;
+}
+
+/* ============================= */
+/* FEATURE BAR */
+/* ============================= */
+
+/* ============================= */
+/* PREMIUM FEATURE BAR */
+/* ============================= */
+
+.feature-bar-premium {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f4f4f4;
+  padding: 30px 0px;
+  border-radius: 28px;
+  margin: 30px 0px;
+}
+
+.feature-box {
+  flex: 1;
+  text-align: center;
+  padding: 0 25px;
+  transition: 0.3s ease;
+}
+
+.feature-box:hover {
+  transform: translateY(-4px);
+}
+
+.feature-icon {
+  margin-bottom: 14px;
+      float: left;
+    width: 100%;
+    display: inline-flex;
+}
+
+.feature-content h4 {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 6px;
+  color: #222;
+  text-align: left;
+}
+
+.feature-content p {
+  font-size: 13px;
+  color: #333;
+  margin: 0;
+  text-align: left;
+  line-height:22px;
+}
+
+.feature-divider {
+  width: 1px;
+  height: 115px;
+  background: #ddd;
+}
+
+/* ============================= */
+/* RESPONSIVE */
+/* ============================= */
+
+/*
+@media (max-width: 768px) {
+
+  .feature-bar-premium {
+    flex-direction: column;
+    gap: 30px;
+    padding: 30px;
+  }
+
+  .feature-divider {
+    display: none;
+  }
+
+}
+*/
+
+/* ============================= */
+/* MOBILE RESPONSIVE */
+/* ============================= */
+
+@media screen and (min-width: 500px) and (max-width: 603px) {
+.buy-save-cards {
+    flex-direction: flex !important;
+    align-items: center !important;
+  }
+
+  .buy-save-cards {
+  display: flex;
+  justify-content: center !important;
+  gap: 12px !important;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  padding: 0px 10px !important;
+}
+
+  .buy-card { width: 100%;  max-width: 160px !important;  }
+
+
+.feature-wrapper {padding: 20px 25px !important;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .feature-divider {
+    display: none;
+  }
+.feature-bar-premium {
+  display: block !important;
+  align-items: left !important;
+  justify-content: space-between;
+  background:none !important;
+  padding: 30px 0px;
+  border-radius: 28px;
+  margin: 30px 0px;
+}
+
+.feature-box {
+  flex: 1;
+  text-align: center;
+  padding: 15px 25px !important;
+  transition: 0.3s ease;
+  border: 1px solid #e3dadae8;
+  margin-bottom: 20px !important;
+  border-radius: 20px !important;
+}
+.feature-icon {
+  margin-bottom: 15px !important;
+  float: left;
+  width: auto !important; 
+  display: inline-flex;
+  padding: 10px 20px 5px 0px !important;
+}
+.feature-content h4 {font-size: 18px !important;}
+.feature-content p {font-size: 15px !important; line-height: 15px !important;}
+.buy-save-wrapper { margin-bottom: 10px !important;}
+} 
+
+@media screen and (min-width: 604px) and (max-width: 768px) {
+.buy-save-cards {
+    flex-direction: flex !important;
+    align-items: center !important;
+  }
+
+  .buy-save-cards {
+  display: flex;
+  justify-content: center !important;
+  gap: 12px !important;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  padding: 0px 10px !important;
+}
+
+  .buy-card { width: 100%;  max-width: 140px !important;  }
+
+
+.feature-wrapper {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .feature-divider {
+    display: none;
+  }
+.feature-bar-premium {
+  display: block !important;
+  align-items: left !important;
+  justify-content: space-between;
+  background:none !important;
+  padding: 30px 0px;
+  border-radius: 28px;
+  margin: 30px 0px;
+}
+
+.feature-box {
+  flex: 1;
+  text-align: center;
+  padding: 15px 25px !important;
+  transition: 0.3s ease;
+  border: 1px solid #e3dadae8;
+  margin-bottom: 20px !important;
+  border-radius: 20px !important;
+}
+.feature-icon {
+  margin-bottom: 15px !important;
+  float: left;
+  width: auto !important; 
+  display: inline-flex;
+  padding: 10px 20px 5px 0px !important;
+}
+.feature-content h4 {font-size: 18px !important;}
+.feature-content p {font-size: 15px !important; line-height: 15px !important;}
+.buy-save-wrapper { margin-bottom: 10px !important;}
+} 
+
+@media screen and (min-width: 1039px) and (max-width: 1135px) {
+.buy-card { width: 100%;  max-width: 115px !important;  }
+.buy-badge {font-size: 14px !important;}
+.buy-save-cards { gap: 20px !important;}
+}  
+
+
+@media screen and (min-width: 950px) and (max-width: 1039px) {
+.buy-save-cards {
+    flex-direction: flex !important;
+    align-items: center !important;
+  }
+
+  .buy-save-cards {
+  display: flex;
+  justify-content: center !important;
+  gap: 20px !important;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  padding: 0px 10px !important;
+}
+
+  .buy-card { width: 100%;  max-width: 170px !important;  }
+
+
+.feature-wrapper {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .feature-divider {
+    display: none;
+  }
+.feature-bar-premium {
+  display: block !important;
+  align-items: left !important;
+  justify-content: space-between;
+  background:none !important;
+  padding: 30px 0px;
+  border-radius: 28px;
+  margin: 30px 0px;
+}
+
+.feature-box {
+  flex: 1;
+  text-align: center;
+  padding: 15px 25px !important;
+  transition: 0.3s ease;
+  border: 1px solid #e3dadae8;
+  margin-bottom: 20px !important;
+  border-radius: 20px !important;
+}
+.feature-icon {
+  margin-bottom: 15px !important;
+  float: left;
+  width: auto !important; 
+  display: inline-flex;
+  padding: 10px 20px 5px 0px !important;
+}
+.feature-content h4 {font-size: 18px !important;}
+.feature-content p {font-size: 15px !important; line-height: 15px !important;}
+.buy-save-wrapper { margin-bottom: 10px !important;}
+} 
+
+
+@media screen and (min-width: 400px) and (max-width: 500px) {
+
+  .buy-qty {font-size: 20px !important;}
+  .buy-badge {font-size: 18px !important;}
+
+
+  .buy-save-wrapper { margin-bottom: 10px !important;}
+
+  .buy-save-cards {
+    flex-direction: flex;
+    align-items: center;
+  }
+
+  .buy-save-cards {
+  display: flex;
+  justify-content: center !important;
+  gap: 10px !important;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  
+}
+.buy-save-title { font-size: 25px !important;}
+  .buy-card {
+    width: 100%;
+    max-width: 160px;
+  }
+
+  .feature-wrapper {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .feature-divider {
+    display: none;
+  }
+
+.feature-bar-premium {
+  display: block !important;
+  align-items: left !important;
+  justify-content: space-between;
+  background:none !important;
+  padding: 30px 0px;
+  border-radius: 28px;
+  margin: 30px 0px;
+}
+
+.feature-box {
+  flex: 1;
+  text-align: center;
+  padding: 15px 25px !important;
+  transition: 0.3s ease;
+  border: 1px solid #e3dadae8;
+  margin-bottom: 20px !important;
+  border-radius: 20px !important;
+}
+.feature-icon {
+  margin-bottom: 15px !important;
+  float: left;
+  width: auto !important; 
+  display: inline-flex;
+  padding: 10px 20px 5px 0px !important;
+}
+.feature-content h4 {font-size: 18px !important;}
+.feature-content p {font-size: 15px !important; line-height: 15px !important;}
+
+
+}
+
+@media screen and (min-width: 768px) and (max-width: 1025px) {
+.feature-wrapper {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .feature-divider {
+    display: none;
+  }
+
+.feature-bar-premium {
+  display: block !important;
+  align-items: left !important;
+  justify-content: space-between;
+  background:none !important;
+  padding: 30px 0px;
+  border-radius: 28px;
+  margin: 30px 0px;
+}
+
+.feature-box {
+  flex: 1;
+  text-align: center;
+  padding: 15px 25px !important;
+  transition: 0.3s ease;
+  border: 1px solid #e3dadae8;
+  margin-bottom: 20px !important;
+  border-radius: 20px !important;
+}
+.feature-icon {
+  margin-bottom: 15px !important;
+  float: left;
+  width: auto !important; 
+  display: inline-flex;
+  padding: 10px 20px 5px 0px !important;
+}
+.feature-content h4 {font-size: 18px !important;}
+.feature-content p {font-size: 15px !important; line-height: 15px !important;}
+}
+
+
+@media screen and (min-width: 320px) and (max-width: 400px) {
+
+  .buy-qty {font-size: 20px !important;}
+  .buy-badge {font-size: 18px !important;}
+
+   .buy-save-wrapper { margin-bottom: 10px !important;}
+  .buy-save-cards { flex-direction: flex;  align-items: center; }
+
+  .buy-save-cards {
+  display: flex;
+  justify-content: center !important;
+  gap: 10px !important;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  }
+
+  .buy-badge { padding: 0px 10px !important;}
+  .buy-save-title { font-size: 25px !important;}
+  .buy-card { width: 100%;  max-width: 140px !important;  }
+
+  .feature-wrapper { flex-direction: column;  gap: 20px; }
+
+  .feature-divider {  display: none; }
+
+.feature-bar-premium {
+  display: block !important;
+  align-items: left !important;
+  justify-content: space-between;
+  background:none !important;
+  padding: 30px 0px;
+  border-radius: 28px;
+  margin: 30px 0px;
+}
+
+.feature-box {
+  flex: 1;
+  text-align: center;
+  padding: 15px 10px !important;
+  transition: 0.3s ease;
+  border: 1px solid #e3dadae8;
+  margin-bottom: 20px !important;
+  border-radius: 20px !important;
+}
+.feature-icon {
+  margin-bottom: 15px !important;
+  float: left;
+  width: auto !important; 
+  display: inline-flex;
+  padding: 10px 20px 5px 0px !important;
+}
+.feature-content h4 {font-size: 18px !important;}
+.feature-content p {font-size: 15px !important; line-height: 15px !important;}
+
+
+}
+
+  .add__wishlist1 span a {padding-left:5px;}
+</style>

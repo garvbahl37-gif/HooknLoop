@@ -1,0 +1,117 @@
+.text--with__banner--media.placeholder {
+  height: 30rem;
+  position: relative;
+}
+.text--with__banner--media {
+    min-height: 100%;
+}
+.text--with__banner--media--small {
+  min-height: 28rem;
+}
+.text--with__banner--media--medium {
+  min-height: 35rem;
+}
+.text--with__banner--media--large {
+  min-height: 40rem;
+}
+.text__with-banner-grid > * {
+    margin-bottom: 0;
+}
+.text__with-banner-grid > span {
+    color: rgb(var(--banner-link-color));
+}
+@media screen and (min-width: 767px) {
+  .text--with__banner--media--small {
+    min-height: 30rem;
+  }
+  .text--with__banner--media--medium {
+    min-height: 40rem;
+  }
+  .text--with__banner--media--large {
+    min-height: 50rem;
+  }
+}
+.banner__items:hover .banner__items--thumbnail__img {
+  -webkit-transform: scale(1.03);
+ .banner__items--content__desc transform: scale(1.03);
+}
+.banner__items--thumbnail {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+@media only screen and (max-width: 575px) {
+  .banner__items--thumbnail {
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width: 575px) {
+  .banner__items--thumbnail__img {
+    width: 100%;
+  }
+}
+.banner__items--content__title {
+  color: var(--banner-heading-color);
+}
+.banner__items--content__desc {
+    color: rgba(var(--color-foreground),.75);
+    font-weight: 500;
+}
+.text__with-banner-grid {
+    padding: 3rem;
+    position: relative;
+    z-index: 10;
+}
+.text--with__banner--media {
+    position: absolute;
+    height: 100%;
+    top: 0;
+    width: 100%;
+    bottom: 0;
+}
+.text--with__banner--media.media>img {
+    transition: all 0.4s ease 0s;
+}
+.banner__items:hover .text--with__banner--media.media > img {
+    transform: scale(1.04);
+}
+.banner__items--content {
+    position: relative;
+    z-index: 9;
+    padding: 3rem;
+}
+.banner__items--thumbnail:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    background: #000000;
+    opacity: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+}
+.banner__items--content .link{
+    color: var(--banner-link-color);
+ }
+a.banner__items--thumbnail.placeholder {
+    height: 28rem;
+}
+.banner__items:hover .text_banner--grid-btn > span.link {
+    color: var(--banner-link-hover-color);
+}
+.banner__items--content__text > p {
+    margin: 0;
+    color: rgba(var(--banner-text-color));
+}
+.text__with-banner-grid {
+    display: grid;
+    gap: 1.5rem;
+}
+.banner__items.banner-grid--corner-radius-true {
+    border-radius: 1.5rem;
+    overflow: hidden;
+}
+.text_banner--grid-btn > .link {
+    color: rgba(var(--banner-link-color));
+}

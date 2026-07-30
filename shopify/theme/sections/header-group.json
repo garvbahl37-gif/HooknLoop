@@ -1,0 +1,358 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "header",
+  "name": "Header",
+  "sections": {
+    "announcement-bar": {
+      "type": "announcement-bar",
+      "blocks": {
+        "announcement-bar-0": {
+          "type": "announcement",
+          "disabled": true,
+          "settings": {
+            "index": false,
+            "no_index": false,
+            "text": "Fast Australia-Wide Delivery | Quality Hook & Loop Since 1995",
+            "link": "",
+            "social_media": false,
+            "country_selector": false,
+            "language_selector": false,
+            "collapsible_content": false,
+            "toggle_button": "More",
+            "subheading": "LIMITED OFFER",
+            "heading": "UP TO 50% OFF",
+            "heading_size": "h1",
+            "description": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Include information about availability, style, or even a review.</p>",
+            "button_label": "SHOP NOW",
+            "button_icon": false,
+            "button_link": "shopify://collections/all",
+            "button_style": "primary",
+            "button_size": "medium",
+            "alignment": "center",
+            "image": "shopify://shop_images/gradient.jpg",
+            "height": "adapt",
+            "background_image": false,
+            "image_overlay_opacity": 0,
+            "section_height": "medium",
+            "color_scheme": "accent-2"
+          }
+        }
+      },
+      "block_order": [
+        "announcement-bar-0"
+      ],
+      "settings": {
+        "announcement_enable": true,
+        "snow_fall": false,
+        "container": "container-fluid",
+        "show_offset": true,
+        "color_scheme": "inverse"
+      }
+    },
+    "header": {
+      "type": "header",
+      "blocks": {
+        "menu_promo_banner_TLJ7c8": {
+          "type": "menu_promo_banner",
+          "settings": {
+            "heading": "Homee",
+            "height": "adapt",
+            "promo1_heading": "",
+            "promo1_text": "",
+            "promo1_link": "",
+            "height_2": "adapt",
+            "promo2_heading": "",
+            "promo2_text": "",
+            "promo2_link": ""
+          }
+        },
+        "collection_list_Xqjarh": {
+          "type": "collection_list",
+          "settings": {
+            "heading": "Categories",
+            "image_width": "full",
+            "image_ratio": "square",
+            "product_items": true,
+            "mega_menu_column_width": "full",
+            "collection_1": "cornflower",
+            "collection_2": "fairy-candles",
+            "collection_3": "sunflower",
+            "collection_4": "water-lily",
+            "collection_5": "purple-giant",
+            "collection_6": ""
+          }
+        },
+        "menu_promo_banner_pcddME": {
+          "type": "menu_promo_banner",
+          "settings": {
+            "heading": "Shop",
+            "height": "adapt",
+            "promo1_heading": "UP TO 70% OFF",
+            "promo1_text": "<p>Shop Now</p>",
+            "promo1_link": "shopify://collections",
+            "height_2": "adapt",
+            "promo2_heading": "",
+            "promo2_text": "",
+            "promo2_link": ""
+          }
+        },
+        "products_NwjzaF": {
+          "type": "products",
+          "settings": {
+            "heading": "Productss",
+            "product_list": [],
+            "product_heading": "Heading",
+            "product_column_width": "third",
+            "slider_enable": true,
+            "product_column": "2",
+            "product_column_laptop": "2",
+            "card_style": "style_2",
+            "image_ratio": "adapt",
+            "show_secondary_image": true,
+            "show_badges": false,
+            "show_cart_button": true,
+            "show_quick_view_button": false,
+            "show_compare_view_button": false,
+            "show_wishlist_button": false,
+            "show_title": true,
+            "show_price": true,
+            "show_vendor": false
+          }
+        },
+        "category_menu_MxNxJB": {
+          "type": "category_menu",
+          "settings": {
+            "cat_menu_name": "Bouquet Flowers",
+            "cat_menu_url": "shopify://collections/all",
+            "icon": "none",
+            "menu": "",
+            "vertical_menu_type": "mega_menu",
+            "mega_menu_column": "3",
+            "height": "adapt",
+            "promo1_heading": "",
+            "promo1_text": "",
+            "promo1_link": ""
+          }
+        },
+        "category_menu_bikAJ4": {
+          "type": "category_menu",
+          "settings": {
+            "cat_menu_name": "Cornflower Calm",
+            "cat_menu_url": "shopify://collections/all",
+            "icon": "none",
+            "menu": "",
+            "vertical_menu_type": "dropdown",
+            "mega_menu_column": "3",
+            "height": "adapt",
+            "promo1_heading": "",
+            "promo1_text": "",
+            "promo1_link": ""
+          }
+        },
+        "category_menu_xyJVQQ": {
+          "type": "category_menu",
+          "settings": {
+            "cat_menu_name": "Flower red roses",
+            "cat_menu_url": "shopify://collections/all",
+            "icon": "none",
+            "menu": "",
+            "vertical_menu_type": "dropdown",
+            "mega_menu_column": "3",
+            "height": "adapt",
+            "promo1_heading": "",
+            "promo1_text": "",
+            "promo1_link": ""
+          }
+        },
+        "category_menu_wnaLhX": {
+          "type": "category_menu",
+          "settings": {
+            "cat_menu_name": "Foxglove Flowers",
+            "cat_menu_url": "shopify://collections/all",
+            "icon": "none",
+            "menu": "",
+            "vertical_menu_type": "dropdown",
+            "mega_menu_column": "3",
+            "height": "adapt",
+            "promo1_heading": "",
+            "promo1_text": "",
+            "promo1_link": ""
+          }
+        },
+        "category_menu_f3p7tL": {
+          "type": "category_menu",
+          "settings": {
+            "cat_menu_name": "Lily Flowers",
+            "cat_menu_url": "shopify://collections/all",
+            "icon": "none",
+            "menu": "",
+            "vertical_menu_type": "dropdown",
+            "mega_menu_column": "3",
+            "height": "adapt",
+            "promo1_heading": "",
+            "promo1_text": "",
+            "promo1_link": ""
+          }
+        },
+        "category_menu_CCfPGX": {
+          "type": "category_menu",
+          "settings": {
+            "cat_menu_name": "Sunflower flowers",
+            "cat_menu_url": "shopify://collections/all",
+            "icon": "none",
+            "menu": "",
+            "vertical_menu_type": "dropdown",
+            "mega_menu_column": "3",
+            "height": "adapt",
+            "promo1_heading": "",
+            "promo1_text": "",
+            "promo1_link": ""
+          }
+        },
+        "category_menu_b37Tkn": {
+          "type": "category_menu",
+          "settings": {
+            "cat_menu_name": "Water Flowers",
+            "cat_menu_url": "shopify://collections/all",
+            "icon": "none",
+            "menu": "",
+            "vertical_menu_type": "dropdown",
+            "mega_menu_column": "3",
+            "height": "adapt",
+            "promo1_heading": "",
+            "promo1_text": "",
+            "promo1_link": ""
+          }
+        },
+        "category_menu_VDE4Ct": {
+          "type": "category_menu",
+          "settings": {
+            "cat_menu_name": "Cherry  Flowers",
+            "cat_menu_url": "shopify://collections/all",
+            "icon": "none",
+            "menu": "",
+            "vertical_menu_type": "dropdown",
+            "mega_menu_column": "3",
+            "height": "adapt",
+            "promo1_heading": "",
+            "promo1_text": "",
+            "promo1_link": ""
+          }
+        },
+        "category_menu_Nw8Uxz": {
+          "type": "category_menu",
+          "settings": {
+            "cat_menu_name": "Rose Flowers",
+            "cat_menu_url": "shopify://collections/all",
+            "icon": "none",
+            "menu": "",
+            "vertical_menu_type": "dropdown",
+            "mega_menu_column": "2",
+            "height": "adapt",
+            "promo1_heading": "",
+            "promo1_text": "",
+            "promo1_link": ""
+          }
+        },
+        "category_menu_tjwPia": {
+          "type": "category_menu",
+          "settings": {
+            "cat_menu_name": "Lady Slipper Flower",
+            "cat_menu_url": "shopify://collections/all",
+            "icon": "none",
+            "menu": "",
+            "vertical_menu_type": "dropdown",
+            "mega_menu_column": "3",
+            "height": "adapt",
+            "promo1_heading": "",
+            "promo1_text": "",
+            "promo1_link": ""
+          }
+        },
+        "category_menu_JCjBiR": {
+          "type": "category_menu",
+          "settings": {
+            "cat_menu_name": "Freshener Flowers",
+            "cat_menu_url": "shopify://collections/all",
+            "icon": "none",
+            "menu": "",
+            "vertical_menu_type": "dropdown",
+            "mega_menu_column": "3",
+            "height": "adapt",
+            "promo1_heading": "",
+            "promo1_text": "",
+            "promo1_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "menu_promo_banner_TLJ7c8",
+        "collection_list_Xqjarh",
+        "menu_promo_banner_pcddME",
+        "products_NwjzaF",
+        "category_menu_MxNxJB",
+        "category_menu_bikAJ4",
+        "category_menu_xyJVQQ",
+        "category_menu_wnaLhX",
+        "category_menu_f3p7tL",
+        "category_menu_CCfPGX",
+        "category_menu_b37Tkn",
+        "category_menu_VDE4Ct",
+        "category_menu_Nw8Uxz",
+        "category_menu_tjwPia",
+        "category_menu_JCjBiR"
+      ],
+      "settings": {
+        "snow_fall": false,
+        "container": "container",
+        "show_offset": true,
+        "logo": "shopify://shop_images/logo_5.png",
+        "logo_width": 250,
+        "menu": "main-menu",
+        "header_design": "logo__left--menu-bottom",
+        "border_hide_on_home_page": true,
+        "header_sticky": true,
+        "sticky_color_background": "#ffffff",
+        "sticky_text_color": "#121212",
+        "transparent_header": false,
+        "transparent_color_foreground": "#121212",
+        "transparent_color_background": "#ffffff",
+        "transparent_text_color": "#121212",
+        "account_button": true,
+        "cart_drawer_button": true,
+        "cart_icon_type": "cart",
+        "wishlist_button": true,
+        "compare_button": false,
+        "search_type": "search_box",
+        "vertical_menu": false,
+        "vertical_button_label": "All Categories",
+        "menu_toggle_button_label": "All Categories +",
+        "menu_toggle_button_label_2": "Hide Categories -",
+        "icon": "lightning_bolt",
+        "category_color_scheme": "background-1",
+        "header_right_info": false,
+        "phone_text": "Special up to 60% Off all item",
+        "welcome_text_with_icon": "lightning_bolt",
+        "welcome_text_link": "",
+        "menu_position": "center",
+        "enable_country_selector": true,
+        "enable_language_selector": true,
+        "color_scheme": "background-1",
+        "color_scheme_3": "background-2",
+        "color_scheme_2": "background-1"
+      }
+    }
+  },
+  "order": [
+    "announcement-bar",
+    "header"
+  ]
+}

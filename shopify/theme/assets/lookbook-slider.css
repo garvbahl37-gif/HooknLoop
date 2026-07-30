@@ -1,0 +1,41 @@
+@media only screen and (min-width: 992px) {
+  .grid.desktop-row-reverse {
+    flex-direction: row-reverse;
+  }
+}
+.swiper.lookbook--slider:not(.swiper-initialized) .swiper-slide {
+  width: 50%;
+}
+
+.swiper.lookbook--slider:not(.swiper-initialized) .swiper-wrapper {
+  gap: 2.54rem;
+}
+.grid__item.lookbook--slider-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.lookbook--slider-inner {
+  width: 100%;
+}
+.lookbook__product--card {
+  transition: var(--transition);
+}
+.swiper.lookbook--slider.lookbook__hover--active
+  .swiper-slide:not(.swiper-slide-active)
+  .lookbook__product--card {
+  opacity: 0.5;
+}
+.lookbook--slider .swiper-wrapper {
+  box-sizing: border-box;
+}
+@media only screen and (max-width: 749px) {
+  .grid__item.image-with-text__media-item {
+    order: -1;
+  }
+}
+@media screen and (min-width: 1500px) {
+  .shop__the--look.lookbook--slider.image-with-text__media--placeholder.placeholder {
+    height: 72rem;
+  }
+}

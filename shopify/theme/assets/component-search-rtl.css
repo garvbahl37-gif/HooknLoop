@@ -1,0 +1,14 @@
+.reset__button {
+  right: auto;
+  left: 4.4rem;
+}
+.input__field_form_button {
+  right: auto;
+  left: 15px;
+}
+.category__search--box-wrapper .header-global-search-categories {
+  border-right-color: rgba(var(--color-foreground), 0.15);
+  padding-right: 1.5rem;
+  border-left-color: transparent;
+  padding-left: 3rem;
+}

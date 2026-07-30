@@ -1,0 +1,228 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "breadcrumbs": {
+      "type": "breadcrumbs",
+      "settings": {
+        "container": "container",
+        "image_overlay_opacity": 0,
+        "show_page_title": true,
+        "heading_size": "h1",
+        "show_breadcrumb_navigation": true,
+        "text_center": "center",
+        "padding_top": 50,
+        "padding_bottom": 50,
+        "mobile_padding_top": 50,
+        "mobile_padding_bottom": 50,
+        "color_scheme": "background-1",
+        "custom_colors": false,
+        "foreground": "#121212",
+        "background": "#f7f8fc"
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "heading": true,
+        "container": "container-fluid",
+        "padding_top": 80,
+        "padding_bottom": 50,
+        "mobile_padding_top": 60,
+        "mobile_padding_bottom": 45,
+        "color_scheme": "background-1"
+      }
+    },
+    "62f5ec4f-7d9c-4e1c-bf72-6f7e07f626d0": {
+      "type": "faq",
+      "blocks": {
+        "template--14634198171761__62f5ec4f-7d9c-4e1c-bf72-6f7e07f626d0-accordion-1": {
+          "type": "accordion",
+          "settings": {
+            "heading": "How can I place an order?",
+            "content": "<p>To place an order, simply browse our online store and add the desired items to your shopping cart. Proceed to the checkout page, where you'll enter your shipping and payment details. Once confirmed, your order will be processed, and you'll receive a confirmation email.</p><p></p>"
+          }
+        },
+        "template--14634198171761__62f5ec4f-7d9c-4e1c-bf72-6f7e07f626d0-accordion-2": {
+          "type": "accordion",
+          "settings": {
+            "heading": "What payment methods do you accept?",
+            "content": "<p>We accept various payment methods, including credit/debit cards (Visa, MasterCard, American Express), PayPal, and other secure online payment gateways. Some regions may have additional local payment options available.</p>"
+          }
+        },
+        "13840008-8f6b-4734-b76f-af856cece57f": {
+          "type": "accordion",
+          "settings": {
+            "heading": "Do you offer international shipping?",
+            "content": "<ol><li>Yes, we do offer international shipping to many countries. During the checkout process, you can select your country to check for shipping availability and associated costs.</li><li></li></ol>"
+          }
+        },
+        "57c344ce-b278-49b2-b198-c4dac00c4430": {
+          "type": "accordion",
+          "settings": {
+            "heading": "What are your shipping times?",
+            "content": "<ol><li>Shipping times depend on your location and the shipping method chosen. Generally, we strive to process orders within 1-3 business days, but actual delivery times may vary. During checkout, you'll be provided with an estimated delivery date.</li><li></li></ol>"
+          }
+        }
+      },
+      "block_order": [
+        "template--14634198171761__62f5ec4f-7d9c-4e1c-bf72-6f7e07f626d0-accordion-1",
+        "template--14634198171761__62f5ec4f-7d9c-4e1c-bf72-6f7e07f626d0-accordion-2",
+        "13840008-8f6b-4734-b76f-af856cece57f",
+        "57c344ce-b278-49b2-b198-c4dac00c4430"
+      ],
+      "settings": {
+        "container": "container",
+        "subtitle": "",
+        "heading": "Shopping Information",
+        "heading_position": "bottom",
+        "text_center": "center",
+        "border_line": false,
+        "enable_image": true,
+        "image": "shopify://shop_images/Shopping_Information.png",
+        "height": "adapt",
+        "round_corner": true,
+        "image_position": "right",
+        "full_width": false,
+        "color_scheme": "background-2",
+        "mobile_image_position": "top",
+        "padding_top": 85,
+        "padding_bottom": 85,
+        "mobile_padding_top": 55,
+        "mobile_padding_bottom": 60
+      }
+    },
+    "c570d65f-7a08-48b9-9c9c-a242ff83543a": {
+      "type": "faq",
+      "blocks": {
+        "template--14634198171761__c570d65f-7a08-48b9-9c9c-a242ff83543a-accordion-1": {
+          "type": "accordion",
+          "settings": {
+            "heading": "What payment methods do you accept?",
+            "content": "<p>We accept various payment methods, including credit cards, debit cards, PayPal, and other secure online payment gateways. Some regions may have additional local payment options available.</p>"
+          }
+        },
+        "template--14634198171761__c570d65f-7a08-48b9-9c9c-a242ff83543a-accordion-2": {
+          "type": "accordion",
+          "settings": {
+            "heading": "Is my payment information secure?",
+            "content": "<ol><li>Yes, we take the security of your payment information seriously. Our website uses encrypted connections (SSL) to protect your personal and payment details, ensuring a safe and secure transaction.</li><li></li></ol>"
+          }
+        },
+        "d365fa06-1dc0-4c9d-9e66-1a9a27b18a17": {
+          "type": "accordion",
+          "settings": {
+            "heading": "Do you accept payment in multiple currencies?",
+            "content": "<p>Our website may support payment in multiple currencies, depending on your location and the available payment methods. During checkout, you can select your preferred currency if applicable.</p>"
+          }
+        },
+        "7bc6ef7f-71c5-49ce-bc5d-f958dd07ea09": {
+          "type": "accordion",
+          "settings": {
+            "heading": "Can I request a refund for my payment?",
+            "content": "<p>Refund eligibility depends on the nature of your purchase and our refund policy. If you believe you are entitled to a refund, please refer to our Returns & Refunds page or contact our customer support for assistance.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "template--14634198171761__c570d65f-7a08-48b9-9c9c-a242ff83543a-accordion-1",
+        "template--14634198171761__c570d65f-7a08-48b9-9c9c-a242ff83543a-accordion-2",
+        "d365fa06-1dc0-4c9d-9e66-1a9a27b18a17",
+        "7bc6ef7f-71c5-49ce-bc5d-f958dd07ea09"
+      ],
+      "settings": {
+        "container": "container",
+        "subtitle": "",
+        "heading": "Payment Information",
+        "heading_position": "bottom",
+        "text_center": "center",
+        "border_line": false,
+        "enable_image": true,
+        "image": "shopify://shop_images/Payment_Information.png",
+        "height": "adapt",
+        "round_corner": true,
+        "image_position": "right",
+        "full_width": false,
+        "color_scheme": "",
+        "mobile_image_position": "top",
+        "padding_top": 85,
+        "padding_bottom": 65,
+        "mobile_padding_top": 50,
+        "mobile_padding_bottom": 60
+      }
+    },
+    "ae81b550-102c-453c-b8c6-7b10d3df59bd": {
+      "type": "faq",
+      "blocks": {
+        "template--14634198171761__ae81b550-102c-453c-b8c6-7b10d3df59bd-accordion-1": {
+          "type": "accordion",
+          "settings": {
+            "heading": "How long does it take to process an order?",
+            "content": "<p>Order processing times may vary depending on the product and its availability. In general, we strive to process orders within 1-3 business days. However, during peak seasons or special promotions, processing times may be slightly longer.</p>"
+          }
+        },
+        "template--14634198171761__ae81b550-102c-453c-b8c6-7b10d3df59bd-accordion-2": {
+          "type": "accordion",
+          "settings": {
+            "heading": "Do you offer international shipping?",
+            "content": "<p>Yes, we offer international shipping to many countries. During the checkout process, you can select your country to check for shipping availability and associated costs.</p>"
+          }
+        },
+        "25850cf8-c2e4-43a6-a2a1-1b03294f6c20": {
+          "type": "accordion",
+          "settings": {
+            "heading": "What is your return policy?",
+            "content": "<p>Our return policy allows you to return eligible items within a specified period from the date of delivery. To be eligible for a return, the item must be in its original condition, unused, and in the original packaging. Certain items, such as personalized or intimate goods, may not be eligible for return due to hygiene reasons.</p>"
+          }
+        },
+        "90adbd57-fdfd-4436-8948-71ec3c57acd0": {
+          "type": "accordion",
+          "settings": {
+            "heading": "Can I exchange an item instead of returning it?",
+            "content": "<p>Yes, we offer exchanges for eligible items. If you wish to exchange an item for a different size, color, or variant, please contact our customer support team for assistance.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "template--14634198171761__ae81b550-102c-453c-b8c6-7b10d3df59bd-accordion-1",
+        "template--14634198171761__ae81b550-102c-453c-b8c6-7b10d3df59bd-accordion-2",
+        "25850cf8-c2e4-43a6-a2a1-1b03294f6c20",
+        "90adbd57-fdfd-4436-8948-71ec3c57acd0"
+      ],
+      "settings": {
+        "container": "container",
+        "subtitle": "",
+        "heading": "Order & Returns",
+        "heading_position": "bottom",
+        "text_center": "center",
+        "border_line": false,
+        "enable_image": false,
+        "height": "adapt",
+        "round_corner": true,
+        "image_position": "right",
+        "full_width": true,
+        "color_scheme": "background-1",
+        "mobile_image_position": "top",
+        "padding_top": 0,
+        "padding_bottom": 45,
+        "mobile_padding_top": 0,
+        "mobile_padding_bottom": 60
+      }
+    }
+  },
+  "order": [
+    "breadcrumbs",
+    "main",
+    "62f5ec4f-7d9c-4e1c-bf72-6f7e07f626d0",
+    "c570d65f-7a08-48b9-9c9c-a242ff83543a",
+    "ae81b550-102c-453c-b8c6-7b10d3df59bd"
+  ]
+}

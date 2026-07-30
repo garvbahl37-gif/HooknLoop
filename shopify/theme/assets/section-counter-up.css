@@ -1,0 +1,28 @@
+.counterup__banner--section{
+	position: relative;
+}
+.counterup--banner__media {
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+}
+.counterup--content {
+    position: relative;
+    z-index: 8;
+}
+@media only screen and (max-width: 750px){
+  .counterup__banner--inner {
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+  }
+  .counterup__banner--items {
+    min-width: 50%;
+    margin-bottom: 3rem;
+  }
+  h2.counterup__banner--items__text {
+    font-size: 1.6rem;
+    line-height: 2.8rem;
+  }
+}

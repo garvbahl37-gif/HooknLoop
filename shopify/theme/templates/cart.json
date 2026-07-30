@@ -1,0 +1,146 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "breadcrumbs": {
+      "type": "breadcrumbs",
+      "settings": {
+        "container": "container",
+        "image_overlay_opacity": 0,
+        "show_page_title": true,
+        "heading_size": "h3",
+        "show_breadcrumb_navigation": false,
+        "text_center": "left",
+        "padding_top": 40,
+        "padding_bottom": 0,
+        "mobile_padding_top": 50,
+        "mobile_padding_bottom": 0,
+        "color_scheme": "background-1",
+        "custom_colors": false,
+        "foreground": "#121212",
+        "background": "#f7f8fc"
+      }
+    },
+    "cart-items": {
+      "type": "main-cart-items",
+      "settings": {
+        "container": "container",
+        "show_vendor": true,
+        "padding_top": 50,
+        "padding_bottom": 50,
+        "mobile_padding_top": 50,
+        "mobile_padding_bottom": 0
+      }
+    },
+    "cart-footer": {
+      "type": "main-cart-footer",
+      "blocks": {
+        "subtotal": {
+          "type": "subtotal",
+          "settings": {}
+        },
+        "buttons": {
+          "type": "buttons",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "subtotal",
+        "buttons"
+      ],
+      "settings": {
+        "container": "container",
+        "show_cart_note": true,
+        "discount_input": true,
+        "discount_title": "Apply a discount code",
+        "shipping_calc": true,
+        "shipping_heading": "Estimate Shipping",
+        "button_text": "Shipping calculator"
+      }
+    },
+    "featured-products": {
+      "type": "featured-collection",
+      "settings": {
+        "container": "container",
+        "subtitle": "",
+        "heading": "You may also like",
+        "heading_position": "bottom",
+        "text_center": "center",
+        "mobile_text_center": "center",
+        "border_line": false,
+        "timer": false,
+        "countdown_timer_label": "Hurry up! Offer ends in:",
+        "countdown_month": "01",
+        "countdown_days": "01",
+        "collection_card": false,
+        "image_place": "image_first",
+        "card_heading": "",
+        "card_text": "",
+        "card_button_label": "",
+        "card_button_type": "primary",
+        "card_button_icon": false,
+        "desktop_content_position": "top_left",
+        "collection_card_radius": false,
+        "card_color_scheme": "",
+        "collection": "all",
+        "products_to_show": 8,
+        "product_column": "4",
+        "product_column_laptop": "4",
+        "product_column_tablet": "3",
+        "product_column_mobile": "2",
+        "card_style": "style_3",
+        "image_ratio": "adapt",
+        "show_secondary_image": false,
+        "color_swatches": true,
+        "show_badges": true,
+        "show_cart_button": true,
+        "show_preorder_button": false,
+        "show_quick_view_button": false,
+        "show_compare_view_button": false,
+        "show_wishlist_button": true,
+        "show_title": true,
+        "enable_word_limit": false,
+        "word_counter": 5,
+        "show_price": true,
+        "show_vendor": false,
+        "show_countdown": false,
+        "show_product_rating": false,
+        "show_border": false,
+        "product_card_radius": true,
+        "product_card_spacing": true,
+        "product_card_color_scheme": "background-1",
+        "slider_enable": true,
+        "show_pagination": false,
+        "show_navigation": true,
+        "slider_loop": true,
+        "slider_rows": "1",
+        "button_label": "Load more",
+        "button_icon": true,
+        "underline": false,
+        "icon_type": "arrow",
+        "button_type": "none",
+        "button_position": "bottom",
+        "button_design": "primary",
+        "button_size": "medium",
+        "padding_top": 50,
+        "padding_bottom": 90,
+        "mobile_padding_top": 25,
+        "mobile_padding_bottom": 60,
+        "color_scheme": "background-1"
+      }
+    }
+  },
+  "order": [
+    "breadcrumbs",
+    "cart-items",
+    "cart-footer",
+    "featured-products"
+  ]
+}

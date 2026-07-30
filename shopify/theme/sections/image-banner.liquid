@@ -1,0 +1,618 @@
+{{ 'image-banner.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign container = ''
+  if section.settings.container == 'container'
+    assign container = 'container'
+  elsif section.settings.container == 'container-fluid'
+    assign container = 'container-fluid'
+  else
+    assign container = 'container-fluid px-0'
+  endif
+-%}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.mobile_padding_top }}px;
+    padding-bottom: {{ section.settings.mobile_padding_bottom }}px;
+  }
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="image--banner section-{{ section.id }}-padding">
+  <div
+    class="{{ container }} {% unless section.settings.show_offset %}p-0{% endunless %}"
+    style="--banner-overlay-opacity: {{ section.settings.image_overlay_opacity | divided_by: 100.0 }};"
+  >
+    <div
+      id="Banner-{{ section.id }}"
+      class="banner banner--content-align-{{ section.settings.desktop_content_alignment }} banner--content-align-mobile-{{ section.settings.mobile_content_alignment }} banner--{{ section.settings.image_height }}{% if section.settings.stack_images_on_mobile and section.settings.image != blank and section.settings.image_2 != blank %} banner--stacked{% endif %}{% if section.settings.image_height == 'adapt' and section.settings.image != blank %} banner--adapt{% endif %}{% if section.settings.show_text_below %} banner--mobile-bottom{%- endif -%}{% if section.settings.show_text_box == false %} banner--desktop-transparent{% endif %}"
+    >
+      {%- if section.settings.image != blank -%}
+        <div class="banner__media media{% if section.settings.image == blank and section.settings.image_2 == blank %} placeholder{% endif %}{% if section.settings.image_2 != blank %} banner__media-half {% if section.settings.show_gap %} banner--media-gap{% endif %}{% endif %}">
+          {%- liquid
+            assign image_height = section.settings.image.width | divided_by: section.settings.image.aspect_ratio
+            if section.settings.image_2 != blank
+              assign image_class = 'banner__media-image-half'
+            endif
+            if section.settings.image_2 != blank and section.settings.stack_images_on_mobile
+              assign sizes = '(min-width: 750px) 50vw, 100vw'
+            elsif section.settings.image_2 != blank
+              assign sizes = '50vw'
+            else
+              assign sizes = '100vw'
+            endif
+          -%}
+          {{
+            section.settings.image
+            | image_url: width: 3840
+            | image_tag:
+              loading: 'lazy',
+              width: section.settings.image.width,
+              height: image_height,
+              class: image_class,
+              sizes: sizes,
+              widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840'
+          }}
+        </div>
+      {%- elsif section.settings.image_2 == blank -%}
+        <div class="banner__media media{% if section.settings.image == blank and section.settings.image_2 == blank %} placeholder{% endif %}{% if section.settings.image_2 != blank %} banner__media-half {% if section.settings.show_gap %} banner--media-gap{% endif %}{% endif %}">
+          {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+        </div>
+      {%- endif -%}
+      {%- if section.settings.image_2 != blank -%}
+        <div class="banner__media media{% if section.settings.image != blank %} banner__media-half {% if section.settings.show_gap %} banner--media-gap{% endif %}{% endif %}">
+          {%- liquid
+            assign image_height_2 = section.settings.image_2.width | divided_by: section.settings.image_2.aspect_ratio
+            if section.settings.image != blank
+              assign image_class_2 = 'banner__media-image-half'
+            endif
+            if section.settings.image != blank and section.settings.stack_images_on_mobile
+              assign sizes = '(min-width: 750px) 50vw, 100vw'
+            elsif section.settings.image != blank
+              assign sizes = '50vw'
+            else
+              assign sizes = '100vw'
+            endif
+          -%}
+          {{
+            section.settings.image_2
+            | image_url: width: 3840
+            | image_tag:
+              loading: 'lazy',
+              width: section.settings.image_2.width,
+              height: image_height_2,
+              class: image_class_2,
+              sizes: sizes,
+              widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840'
+          }}
+        </div>
+      {%- endif -%}
+      <div class="banner__content banner__content--{{ section.settings.desktop_content_position }} container">
+        <div class="banner__box content-container content-container--full-width-mobile color-{{ section.settings.color_scheme }} gradient">
+          {%- for block in section.blocks -%}
+            {%- case block.type -%}
+              {%- when 'heading' -%}
+                <div class="banner__heading" {{ block.shopify_attributes }}>
+                  {{ block.settings.heading | replace: 'p>', 'span>' }}
+                </div>
+              {%- when 'subheading' -%}
+                <div class="banner__subheading {{ block.settings.subheading_size }}" {{ block.shopify_attributes }}>
+                  {{ block.settings.subheading | replace: 'p>', 'span>' }}
+                </div>
+              {%- when 'text' -%}
+                <div class="banner__text {{ block.settings.text_style }}" {{ block.shopify_attributes }}>
+                  <span>{{ block.settings.text | escape }}</span>
+                </div>
+              {%- when 'buttons' -%}
+                {% liquid
+                  if block.settings.button_type_1 == 'primary'
+                    assign button_class_1 = 'button button--primary'
+                  elsif block.settings.button_type_1 == 'secondary'
+                    assign button_class_1 = 'button button--secondary'
+                  else
+                    assign button_class_1 = 'link'
+                  endif
+
+                  if block.settings.button_type_2 == 'primary'
+                    assign button_class_2 = 'button button--primary'
+                  elsif block.settings.button_type_2 == 'secondary'
+                    assign button_class_2 = 'button button--secondary'
+                  else
+                    assign button_class_2 = 'link'
+                  endif
+                %}
+                <div
+                  class="banner__buttons{% if block.settings.button_label_1 != blank and block.settings.button_label_2 != blank %} banner__buttons--multiple{% endif %}"
+                  {{ block.shopify_attributes }}
+                >
+                  {%- if block.settings.button_label_1 != blank -%}
+                    <a
+                      {% if block.settings.button_link_1 == blank %}
+                        role="link" aria-disabled="true"
+                      {% else %}
+                        href="{{ block.settings.button_link_1 }}"
+                      {% endif %}
+                      class="{{ button_class_1 }} {% unless section.settings.button_type_1 == 'link' %}{% if section.settings.button_1_icon %} button--with-icon{% endif %}{% endunless %}"
+                    >
+                      {{- block.settings.button_label_1 | escape -}}
+
+                      {% if block.settings.button_1_icon and block.settings.button_type_1 == 'link' %}
+                        <svg
+                          class="banner__items--content__arrow--icon"
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="20.2"
+                          height="12.2"
+                          viewBox="0 0 6.2 6.2"
+                        >
+                          <path d="M7.1,4l-.546.546L8.716,6.713H4v.775H8.716L6.554,9.654,7.1,10.2,9.233,8.067,10.2,7.1Z" transform="translate(-4 -4)" fill="currentColor"></path>
+                        </svg>
+                      {% endif %}
+
+                      {% unless block.settings.button_type_1 == 'link' %}
+                        {% if block.settings.button_1_icon %}
+                          <span class="button--icon button--icon-right"> {% render 'icon-arrow-right' %} </span>
+                        {% endif %}
+                      {% endunless %}
+                    </a>
+                  {%- endif -%}
+                  {%- if block.settings.button_label_2 != blank -%}
+                    <a
+                      {% if block.settings.button_link_2 == blank %}
+                        role="link" aria-disabled="true"
+                      {% else %}
+                        href="{{ block.settings.button_link_2 }}"
+                      {% endif %}
+                      class="{{ button_class_2 }} {% unless section.settings.button_type_2 == 'link' %}{% if section.settings.button_2_icon %} button--with-icon{% endif %}{% endunless %}"
+                    >
+                      {{- block.settings.button_label_2 | escape -}}
+
+                      {% if block.settings.button_2_icon and block.settings.button_type_2 == 'link' %}
+                        <svg
+                          class="banner__items--content__arrow--icon"
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="20.2"
+                          height="12.2"
+                          viewBox="0 0 6.2 6.2"
+                        >
+                          <path d="M7.1,4l-.546.546L8.716,6.713H4v.775H8.716L6.554,9.654,7.1,10.2,9.233,8.067,10.2,7.1Z" transform="translate(-4 -4)" fill="currentColor"></path>
+                        </svg>
+                      {% endif %}
+
+                      {% unless block.settings.button_type_2 == 'link' %}
+                        {% if block.settings.button_2_icon %}
+                          <span class="button--icon button--icon-right"> {% render 'icon-arrow-right' %} </span>
+                        {% endif %}
+                      {% endunless %}
+                    </a>
+                  {%- endif -%}
+                </div>
+            {%- endcase -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Image banner",
+  "tag": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+        "type": "select",
+        "id": "container",
+        "label": "Page width",
+        "default": "container-fluid",
+        "options": [
+          {
+            "value": "container",
+            "label": "Boxed"
+          },
+          {
+            "value": "container-fluid",
+            "label": "Full width"
+          }
+        ]
+      },
+    {
+       "type": "checkbox",
+       "id": "show_offset",
+       "label": "Enable Offset (left & right)",
+       "default": false
+     },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "t:sections.image-banner.settings.image.label"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "t:sections.image-banner.settings.image_2.label"
+    },
+    {
+      "type": "range",
+      "id": "image_overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "%",
+      "label": "t:sections.image-banner.settings.image_overlay_opacity.label",
+      "default": 0
+    },
+    {
+      "type": "select",
+      "id": "image_height",
+      "options": [
+        {
+          "value": "adapt",
+          "label": "t:sections.image-banner.settings.image_height.options__1.label"
+        },
+        {
+          "value": "small",
+          "label": "t:sections.image-banner.settings.image_height.options__2.label"
+        },
+        {
+          "value": "medium",
+          "label": "t:sections.image-banner.settings.image_height.options__3.label"
+        },
+        {
+          "value": "large",
+          "label": "t:sections.image-banner.settings.image_height.options__4.label"
+        }
+      ],
+      "default": "medium",
+      "label": "t:sections.image-banner.settings.image_height.label",
+      "info": "t:sections.image-banner.settings.image_height.info"
+    },
+     {
+      "type": "checkbox",
+      "id": "show_gap",
+      "default": true,
+      "label": "Show gird gap on desktop",
+      "info": "It will work if two images are added."
+    },
+    {
+      "type": "select",
+      "id": "desktop_content_position",
+      "options": [
+        {
+          "value": "top-left",
+          "label": "t:sections.image-banner.settings.desktop_content_position.options__1.label"
+        },
+        {
+          "value": "top-center",
+          "label": "t:sections.image-banner.settings.desktop_content_position.options__2.label"
+        },
+        {
+          "value": "top-right",
+          "label": "t:sections.image-banner.settings.desktop_content_position.options__3.label"
+        },
+        {
+          "value": "middle-left",
+          "label": "t:sections.image-banner.settings.desktop_content_position.options__4.label"
+        },
+        {
+          "value": "middle-center",
+          "label": "t:sections.image-banner.settings.desktop_content_position.options__5.label"
+        },
+        {
+          "value": "middle-right",
+          "label": "t:sections.image-banner.settings.desktop_content_position.options__6.label"
+        },
+        {
+          "value": "bottom-left",
+          "label": "t:sections.image-banner.settings.desktop_content_position.options__7.label"
+        },
+        {
+          "value": "bottom-center",
+          "label": "t:sections.image-banner.settings.desktop_content_position.options__8.label"
+        },
+        {
+          "value": "bottom-right",
+          "label": "t:sections.image-banner.settings.desktop_content_position.options__9.label"
+        }
+      ],
+      "default": "middle-center",
+      "label": "t:sections.image-banner.settings.desktop_content_position.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_text_box",
+      "default": true,
+      "label": "t:sections.image-banner.settings.show_text_box.label"
+    },
+    {
+      "type": "select",
+      "id": "desktop_content_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "t:sections.image-banner.settings.desktop_content_alignment.options__1.label"
+        },
+        {
+          "value": "center",
+          "label": "t:sections.image-banner.settings.desktop_content_alignment.options__2.label"
+        },
+        {
+          "value": "right",
+          "label": "t:sections.image-banner.settings.desktop_content_alignment.options__3.label"
+        }
+      ],
+      "default": "center",
+      "label": "t:sections.image-banner.settings.desktop_content_alignment.label"
+    },
+
+
+    {
+        "type": "color_scheme",
+        "id": "color_scheme",
+        "label": "t:sections.all.colors.label",
+        "default": "background-1"
+      },
+
+    {
+      "type": "header",
+      "content": "t:sections.image-banner.settings.header.content"
+    },
+    {
+      "type": "select",
+      "id": "mobile_content_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "t:sections.image-banner.settings.mobile_content_alignment.options__1.label"
+        },
+        {
+          "value": "center",
+          "label": "t:sections.image-banner.settings.mobile_content_alignment.options__2.label"
+        },
+        {
+          "value": "right",
+          "label": "t:sections.image-banner.settings.mobile_content_alignment.options__3.label"
+        }
+      ],
+      "default": "center",
+      "label": "t:sections.image-banner.settings.mobile_content_alignment.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "stack_images_on_mobile",
+      "default": true,
+      "label": "t:sections.image-banner.settings.stack_images_on_mobile.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_text_below",
+      "default": true,
+      "label": "t:sections.image-banner.settings.show_text_below.label"
+    },
+    {
+     "type": "header",
+     "content": "Section padding"
+   },
+    {
+          "type": "paragraph",
+          "content": "Desktop"
+        },
+        {
+          "type": "range",
+          "id": "padding_top",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "unit": "px",
+          "label": "Padding top",
+          "default": 50
+        },
+        {
+          "type": "range",
+          "id": "padding_bottom",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "unit": "px",
+          "label": "Padding bottom",
+          "default": 50
+        },
+		{
+          "type": "paragraph",
+          "content": "Mobile"
+        },
+		{
+          "type": "range",
+          "id": "mobile_padding_top",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "unit": "px",
+          "label": "Padding top",
+          "default": 50
+        },
+        {
+          "type": "range",
+          "id": "mobile_padding_bottom",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "unit": "px",
+          "label": "Padding bottom",
+          "default": 50
+        }
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "name": "t:sections.image-banner.blocks.heading.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "heading",
+          "default": "<h2>Image banner</h2>",
+          "label": "t:sections.image-banner.blocks.heading.settings.heading.label"
+        }
+      ]
+    },
+    {
+      "type": "subheading",
+      "name": "Subheading",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "subheading",
+          "default": "<p>Banner subheading</p>",
+          "label": "Subheading"
+        },
+        {
+          "type": "select",
+          "id": "subheading_size",
+          "options": [
+            {
+              "value": "h5",
+              "label": "t:sections.all.heading_size.options__1.label"
+            },
+            {
+              "value": "h4",
+              "label": "t:sections.all.heading_size.options__2.label"
+            },
+            {
+              "value": "h3",
+              "label": "t:sections.all.heading_size.options__3.label"
+            }
+          ],
+          "default": "h5",
+          "label": "Paragraph size"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "t:sections.image-banner.blocks.text.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "text",
+          "default": "Give customers details about the banner image(s) or content on the template.",
+          "label": "t:sections.image-banner.blocks.text.settings.text.label"
+        },
+        {
+          "type": "select",
+          "id": "text_style",
+          "options": [
+            {
+              "value": "body",
+              "label": "t:sections.image-banner.blocks.text.settings.text_style.options__1.label"
+            },
+            {
+              "value": "subtitle",
+              "label": "t:sections.image-banner.blocks.text.settings.text_style.options__2.label"
+            },
+            {
+              "value": "caption-with-letter-spacing",
+              "label": "t:sections.image-banner.blocks.text.settings.text_style.options__3.label"
+            }
+          ],
+          "default": "body",
+          "label": "t:sections.image-banner.blocks.text.settings.text_style.label"
+        }
+      ]
+    },
+    {
+      "type": "buttons",
+      "name": "t:sections.image-banner.blocks.buttons.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_label_1",
+          "default": "Button label",
+          "label": "t:sections.image-banner.blocks.buttons.settings.button_label_1.label",
+          "info": "t:sections.image-banner.blocks.buttons.settings.button_label_1.info"
+        },
+        {
+             "type": "checkbox",
+             "id": "button_1_icon",
+             "label": "Use arrow icon",
+             "default": false
+           },
+        {
+          "type": "url",
+          "id": "button_link_1",
+          "label": "t:sections.image-banner.blocks.buttons.settings.button_link_1.label"
+        },
+        {
+            "type": "select",
+            "id": "button_type_1",
+            "label": "Button type",
+            "default": "link",
+            "options": [
+              {
+              "value": "primary",
+              "label": "Solid"
+              },
+              {
+              "value": "secondary",
+              "label": "Outline"
+              },
+              {
+              "value": "link",
+              "label": "Link"
+              }
+            ]
+          },
+        {
+          "type": "text",
+          "id": "button_label_2",
+          "default": "Button label",
+          "label": "t:sections.image-banner.blocks.buttons.settings.button_label_2.label",
+          "info": "t:sections.image-banner.blocks.buttons.settings.button_label_2.info"
+        },
+         {
+             "type": "checkbox",
+             "id": "button_2_icon",
+             "label": "Use arrow icon",
+             "default": false
+           },
+        {
+          "type": "url",
+          "id": "button_link_2",
+          "label": "t:sections.image-banner.blocks.buttons.settings.button_link_2.label"
+        },
+        {
+            "type": "select",
+            "id": "button_type_2",
+            "label": "Button type",
+            "default": "link",
+            "options": [
+              {
+              "value": "primary",
+              "label": "Solid"
+              },
+              {
+              "value": "secondary",
+              "label": "Outline"
+              },
+              {
+              "value": "link",
+              "label": "Link"
+              }
+            ]
+          }
+      ]
+    }
+  ]
+}
+{% endschema %}

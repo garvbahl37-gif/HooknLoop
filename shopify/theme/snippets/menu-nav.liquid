@@ -1,0 +1,783 @@
+<ul class="header__menu_ul" role="list">
+  {%- for link in section.settings.menu.links -%}
+  {%- assign three_level = false -%}  
+  {%- assign two_level = false -%}  
+  {% assign has_children = false %}
+  {% assign has_children_class = '' %}
+  {% assign promo1 = false %}
+  {% assign promo2 = false %}
+
+  {% if link.links != blank %}
+      {% assign has_children = true %}
+      {% if link.levels == 2 %}
+          {%- assign three_level = true -%}
+      {% endif %}
+      {% if link.levels == 1 %}
+          {%- assign two_level = true -%}
+      {% endif %}
+  {% endif %}
+
+  {% liquid
+    assign title_handle = link.title | handleize
+    assign has_mega_item = false
+    assign has_mega_promo_banner = false
+    assign has_mega_products = false
+    assign has_mega_collection_list = false
+    assign mega_menu_column = ""
+    assign mega_menu_has_banner_column = ""
+  %}   
+  {% for block in section.blocks %}
+      {% assign menu_title = block.settings.heading | handleize %}
+      {% if menu_title == blank or menu_title != title_handle %}
+           {% continue %}
+      {% endif %}
+    {% if menu_title == title_handle %}
+       {%- assign has_mega_item = true -%}
+       {% assign has_children = true %}
+    {% case block.type %}
+    {% when 'banner' %} 
+      {% assign mega_menu_column =  block.settings.mega_menu_column_width  %}
+      {% assign mega_menu_has_banner_column = block.settings.banner_column %}
+      {% capture mega_menu_block %}
+         {% assign has_mega_banner = true %}
+       <div class="mega__menu--banner-grid--{{ mega_menu_has_banner_column }}">
+         {%- comment -%} First banner {%- endcomment -%}
+        {%- if block.settings.banner_1_image != blank -%}
+            <div class="mega__menu--promo">
+                <a href="{{ block.settings.banner_1_link }}" class="mega__menu--promo-link">
+                  <div class="media--{{ block.settings.height }} media" {% if block.settings.height == 'adapt' and block.settings.banner_1_image != blank %}
+                    style="padding-bottom: {{ 1 | divided_by: block.settings.banner_1_image.aspect_ratio | times: 100 }}%;"{% endif %}
+                    >
+                      {%- capture sizes -%}(min-width: {{ settings.container_lg_width }}px) {{ settings.container_lg_width | minus: 30 | divided_by: mega_menu_has_banner_column }}px, (min-width: 750px) calc((100vw - 130px) / {{ mega_menu_has_banner_column }}),100vw{%- endcapture -%}
+                      {% assign height = block.settings.banner_1_image.width | divided_by: block.settings.banner_1_image.aspect_ratio %}
+                      {{ block.settings.banner_1_image | image_url: width: 1500 | image_tag:
+                        loading: 'lazy',
+                        sizes: sizes,
+                        widths: '165, 360, 535, 750, 1070, 1500, 2000, 3000, 3840',
+                        height: height
+                      }}
+                    </div>
+        
+                   {% if block.settings.promo1_heading != blank or block.settings.promo1_text != blank %}
+                    <div class="mega__menu--promo-content text-center mt-15">
+                        {% if block.settings.promo1_heading != blank %}
+                        <div class="mega__menu--promo-heading">
+                          <span class="promo-heading--label h6 mb-0">{{ block.settings.promo1_heading }}</span>
+                        </div>
+                        {% endif %}
+                       {% if block.settings.promo1_text != blank %}
+                        <div class="mega__menu--promo--subheading">
+                          <span class="promo--subheading--label">{{ block.settings.promo1_text }}</span>
+                        </div>
+                        {% endif %}  
+                    </div>
+                    {% endif %}  
+                  </a>
+              </div>
+        {% endif %}
+        {%- comment -%} First banner .\ {%- endcomment -%}
+
+        {%- comment -%} 2nd banner {%- endcomment -%}
+        {%- if block.settings.banner_2_image != blank -%}
+            <div class="mega__menu--promo">
+                <a href="{{ block.settings.banner_2_link }}" class="mega__menu--promo-link">
+                  <div class="media--{{ block.settings.height }} media" {% if block.settings.banner_2_height == 'adapt' and block.settings.banner_2_image != blank %}
+                    style="padding-bottom: {{ 1 | divided_by: block.settings.banner_2_image.aspect_ratio | times: 100 }}%;"{% endif %}
+                    >
+                      {%- capture sizes -%}(min-width: {{ settings.container_lg_width }}px) {{ settings.container_lg_width | minus: 30 | divided_by: mega_menu_has_banner_column }}px, (min-width: 750px) calc((100vw - 130px) / {{ mega_menu_has_banner_column }}),100vw{%- endcapture -%}
+                      {% assign height = block.settings.banner_2_image.width | divided_by: block.settings.banner_2_image.aspect_ratio %}
+                      {{ block.settings.banner_2_image | image_url: width: 1500 | image_tag:
+                        loading: 'lazy',
+                        sizes: sizes,
+                        widths: '165, 360, 535, 750, 1070, 1500, 2000, 3000, 3840',
+                        height: height
+                      }}
+                    </div>
+        
+                   {% if block.settings.promo2_heading != blank or block.settings.promo2_text != blank %}
+                    <div class="mega__menu--promo-content text-center mt-15">
+                        {% if block.settings.promo2_heading != blank %}
+                        <div class="mega__menu--promo-heading">
+                          <span class="promo-heading--label h6 mb-0">{{ block.settings.promo2_heading }}</span>
+                        </div>
+                        {% endif %}
+                       {% if block.settings.promo2_text != blank %}
+                        <div class="mega__menu--promo--subheading">
+                          <span class="promo--subheading--label">{{ block.settings.promo2_text }}</span>
+                        </div>
+                        {% endif %}  
+                    </div>
+                    {% endif %}  
+                  </a>
+              </div>
+        {% endif %}
+        {%- comment -%} 2nd banner .\ {%- endcomment -%}
+
+        {%- comment -%} 3rd banner {%- endcomment -%}
+       {%- if block.settings.banner_3_image != blank -%}
+            <div class="mega__menu--promo">
+                <a href="{{ block.settings.banner_3_link }}" class="mega__menu--promo-link">
+                  <div class="media--{{ block.settings.height }} media" {% if block.settings.banner_3_height == 'adapt' and block.settings.banner_3_image != blank %}
+                    style="padding-bottom: {{ 1 | divided_by: block.settings.banner_3_image.aspect_ratio | times: 100 }}%;"{% endif %}
+                    >
+                      {%- capture sizes -%}(min-width: {{ settings.container_lg_width }}px) {{ settings.container_lg_width | minus: 30 | divided_by: mega_menu_has_banner_column }}px, (min-width: 750px) calc((100vw - 130px) / {{ mega_menu_has_banner_column }}),100vw{%- endcapture -%}
+                      {% assign height = block.settings.banner_3_image.width | divided_by: block.settings.banner_3_image.aspect_ratio %}
+                      {{ block.settings.banner_3_image | image_url: width: 1500 | image_tag:
+                        loading: 'lazy',
+                        sizes: sizes,
+                        widths: '165, 360, 535, 750, 1070, 1500, 2000, 3000, 3840',
+                        height: height
+                      }}
+         
+                    </div>
+        
+                   {% if block.settings.promo3_heading != blank or block.settings.promo3_text != blank %}
+                    <div class="mega__menu--promo-content text-center mt-15">
+                        {% if block.settings.promo3_heading != blank %}
+                        <div class="mega__menu--promo-heading">
+                          <span class="promo-heading--label h6 mb-0">{{ block.settings.promo3_heading }}</span>
+                        </div>
+                        {% endif %}
+                       {% if block.settings.promo3_text != blank %}
+                        <div class="mega__menu--promo--subheading">
+                          <span class="promo--subheading--label">{{ block.settings.promo3_text }}</span>
+                        </div>
+                        {% endif %}  
+                    </div>
+                    {% endif %}  
+                  </a>
+              </div>
+        {% endif %}
+        {%- comment -%} 3rd banner .\ {%- endcomment -%}
+
+        {%- comment -%} 4th banner {%- endcomment -%}
+           {%- if block.settings.banner_4_image != blank -%}
+            <div class="mega__menu--promo">
+                <a href="{{ block.settings.banner_4_link }}" class="mega__menu--promo-link">
+                  <div class="media--{{ block.settings.height }} media" {% if block.settings.banner_4_height == 'adapt' and block.settings.banner_4_image != blank %}
+                    style="padding-bottom: {{ 1 | divided_by: block.settings.banner_4_image.aspect_ratio | times: 100 }}%;"{% endif %}
+                    >
+                      {%- capture sizes -%}(min-width: {{ settings.container_lg_width }}px) {{ settings.container_lg_width | minus: 30 | divided_by: mega_menu_has_banner_column }}px, (min-width: 750px) calc((100vw - 130px) / {{ mega_menu_has_banner_column }}),100vw{%- endcapture -%}
+                      {% assign height = block.settings.banner_4_image.width | divided_by: block.settings.banner_4_image.aspect_ratio %}
+                      {{ block.settings.banner_4_image | image_url: width: 1500 | image_tag:
+                        loading: 'lazy',
+                        sizes: sizes,
+                        widths: '165, 360, 535, 750, 1070, 1500, 2000, 3000, 3840',
+                        height: height
+                      }}
+                    </div>
+        
+                   {% if block.settings.promo4_heading != blank or block.settings.promo4_text != blank %}
+                    <div class="mega__menu--promo-content text-center mt-15">
+                        {% if block.settings.promo4_heading != blank %}
+                        <div class="mega__menu--promo-heading">
+                          <span class="promo-heading--label h6 mb-0">{{ block.settings.promo4_heading }}</span>
+                        </div>
+                        {% endif %}
+                       {% if block.settings.promo4_text != blank %}
+                        <div class="mega__menu--promo--subheading">
+                          <span class="promo--subheading--label">{{ block.settings.promo4_text }}</span>
+                        </div>
+                        {% endif %}  
+                    </div>
+                    {% endif %}  
+                  </a>
+              </div>
+        {% endif %}
+        {%- comment -%} 4th banner .\ {%- endcomment -%}
+
+         {%- comment -%} 5th banner {%- endcomment -%}
+           {%- if block.settings.banner_5_image != blank -%}
+            <div class="mega__menu--promo">
+                <a href="{{ block.settings.banner_5_link }}" class="mega__menu--promo-link">
+                  <div class="media--{{ block.settings.height }} media" {% if block.settings.banner_5_height == 'adapt' and block.settings.banner_5_image != blank %}
+                    style="padding-bottom: {{ 1 | divided_by: block.settings.banner_5_image.aspect_ratio | times: 100 }}%;"{% endif %}
+                    >
+                     {%- capture sizes -%}(min-width: {{ settings.container_lg_width }}px) {{ settings.container_lg_width | minus: 30 | divided_by: mega_menu_has_banner_column }}px, (min-width: 750px) calc((100vw - 130px) / {{ mega_menu_has_banner_column }}),100vw{%- endcapture -%}
+                      {% assign height = block.settings.banner_5_image.width | divided_by: block.settings.banner_5_image.aspect_ratio %}
+                      {{ block.settings.banner_5_image | image_url: width: 1500 | image_tag:
+                        loading: 'lazy',
+                        sizes: sizes,
+                        widths: '165, 360, 535, 750, 1070, 1500, 2000, 3000, 3840',
+                        height: height
+                      }}
+                    </div>
+        
+                   {% if block.settings.promo5_heading != blank or block.settings.promo5_text != blank %}
+                    <div class="mega__menu--promo-content text-center mt-15">
+                        {% if block.settings.promo5_heading != blank %}
+                        <div class="mega__menu--promo-heading">
+                          <span class="promo-heading--label h6 mb-0">{{ block.settings.promo5_heading }}</span>
+                        </div>
+                        {% endif %}
+                       {% if block.settings.promo5_text != blank %}
+                        <div class="mega__menu--promo--subheading">
+                          <span class="promo--subheading--label">{{ block.settings.promo5_text }}</span>
+                        </div>
+                        {% endif %}  
+                    </div>
+                    {% endif %}  
+                  </a>
+              </div>
+        {% endif %}
+        {%- comment -%} 5th banner .\ {%- endcomment -%}
+
+        {%- comment -%} 6th banner {%- endcomment -%}
+           {%- if block.settings.banner_6_image != blank -%}
+            <div class="mega__menu--promo">
+                <a href="{{ block.settings.banner_6_link }}" class="mega__menu--promo-link">
+                  <div class="media--{{ block.settings.height }} media" {% if block.settings.banner_6_height == 'adapt' and block.settings.banner_6_image != blank %}
+                    style="padding-bottom: {{ 1 | divided_by: block.settings.banner_6_image.aspect_ratio | times: 100 }}%;"{% endif %}
+                    >
+                     {%- capture sizes -%}(min-width: {{ settings.container_lg_width }}px) {{ settings.container_lg_width | minus: 30 | divided_by: mega_menu_has_banner_column }}px, (min-width: 750px) calc((100vw - 130px) / {{ mega_menu_has_banner_column }}),100vw{%- endcapture -%}
+                      {% assign height = block.settings.banner_6_image.width | divided_by: block.settings.banner_6_image.aspect_ratio %}
+                      {{ block.settings.banner_6_image | image_url: width: 1500 | image_tag:
+                        loading: 'lazy',
+                        sizes: sizes,
+                        widths: '165, 360, 535, 750, 1070, 1500, 2000, 3000, 3840',
+                        height: height
+                      }}
+                    </div>
+        
+                   {% if block.settings.promo6_heading != blank or block.settings.promo6_text != blank %}
+                    <div class="mega__menu--promo-content text-center mt-15">
+                        {% if block.settings.promo6_heading != blank %}
+                        <div class="mega__menu--promo-heading">
+                          <span class="promo-heading--label h6 mb-0">{{ block.settings.promo6_heading }}</span>
+                        </div>
+                        {% endif %}
+                       {% if block.settings.promo6_text != blank %}
+                        <div class="mega__menu--promo--subheading">
+                          <span class="promo--subheading--label">{{ block.settings.promo6_text }}</span>
+                        </div>
+                        {% endif %}  
+                    </div>
+                    {% endif %}  
+                  </a>
+              </div>
+        {% endif %}
+        {%- comment -%} 6th banner .\ {%- endcomment -%}
+
+        {%- comment -%} 7th banner {%- endcomment -%}
+           {%- if block.settings.banner_7_image != blank -%}
+            <div class="mega__menu--promo">
+                <a href="{{ block.settings.banner_7_link }}" class="mega__menu--promo-link">
+                  <div class="media--{{ block.settings.height }} media" {% if block.settings.banner_7_height == 'adapt' and block.settings.banner_7_image != blank %}
+                    style="padding-bottom: {{ 1 | divided_by: block.settings.banner_7_image.aspect_ratio | times: 100 }}%;"{% endif %}
+                    >
+                     {%- capture sizes -%}(min-width: {{ settings.container_lg_width }}px) {{ settings.container_lg_width | minus: 30 | divided_by: mega_menu_has_banner_column }}px, (min-width: 750px) calc((100vw - 130px) / {{ mega_menu_has_banner_column }}),100vw{%- endcapture -%}
+                      {% assign height = block.settings.banner_7_image.width | divided_by: block.settings.banner_7_image.aspect_ratio %}
+                      {{ block.settings.banner_7_image | image_url: width: 1500 | image_tag:
+                        loading: 'lazy',
+                        sizes: sizes,
+                        widths: '165, 360, 535, 750, 1070, 1500, 2000, 3000, 3840',
+                        height: height
+                      }}
+                    </div>
+        
+                   {% if block.settings.promo7_heading != blank or block.settings.promo7_text != blank %}
+                    <div class="mega__menu--promo-content text-center mt-15">
+                        {% if block.settings.promo7_heading != blank %}
+                        <div class="mega__menu--promo-heading">
+                          <span class="promo-heading--label h6 mb-0">{{ block.settings.promo7_heading }}</span>
+                        </div>
+                        {% endif %}
+                       {% if block.settings.promo7_text != blank %}
+                        <div class="mega__menu--promo--subheading">
+                          <span class="promo--subheading--label">{{ block.settings.promo7_text }}</span>
+                        </div>
+                        {% endif %}  
+                    </div>
+                    {% endif %}  
+                  </a>
+              </div>
+        {% endif %}
+        {%- comment -%} 7th banner .\ {%- endcomment -%}
+
+         {%- comment -%} 8th banner {%- endcomment -%}
+          {%- if block.settings.banner_8_image != blank -%}
+            <div class="mega__menu--promo">
+                <a href="{{ block.settings.banner_8_link }}" class="mega__menu--promo-link">
+                  <div class="media--{{ block.settings.height }} media" {% if block.settings.banner_8_height == 'adapt' and block.settings.banner_8_image != blank %}
+                    style="padding-bottom: {{ 1 | divided_by: block.settings.banner_8_image.aspect_ratio | times: 100 }}%;"{% endif %}
+                    >
+                      {%- capture sizes -%}(min-width: {{ settings.container_lg_width }}px) {{ settings.container_lg_width | minus: 30 | divided_by: mega_menu_has_banner_column }}px, (min-width: 750px) calc((100vw - 130px) / {{ mega_menu_has_banner_column }}),100vw{%- endcapture -%}
+                      {% assign height = block.settings.banner_8_image.width | divided_by: block.settings.banner_8_image.aspect_ratio %}
+                      {{ block.settings.banner_8_image | image_url: width: 1500 | image_tag:
+                        loading: 'lazy',
+                        sizes: sizes,
+                        widths: '165, 360, 535, 750, 1070, 1500, 2000, 3000, 3840',
+                        height: height
+                      }}
+                    </div>
+        
+                   {% if block.settings.promo8_heading != blank or block.settings.promo8_text != blank %}
+                    <div class="mega__menu--promo-content text-center mt-15">
+                        {% if block.settings.promo8_heading != blank %}
+                        <div class="mega__menu--promo-heading">
+                          <span class="promo-heading--label h6 mb-0">{{ block.settings.promo8_heading }}</span>
+                        </div>
+                        {% endif %}
+                       {% if block.settings.promo8_text != blank %}
+                        <div class="mega__menu--promo--subheading">
+                          <span class="promo--subheading--label">{{ block.settings.promo8_text }}</span>
+                        </div>
+                        {% endif %}  
+                    </div>
+                    {% endif %}  
+                  </a>
+              </div>
+        {% endif %}
+        {%- comment -%} 8th banner .\ {%- endcomment -%}
+
+        {%- comment -%} 9th banner {%- endcomment -%}
+          {%- if block.settings.banner_9_image != blank -%}
+            <div class="mega__menu--promo">
+                <a href="{{ block.settings.banner_9_link }}" class="mega__menu--promo-link">
+                  <div class="media--{{ block.settings.height }} media" {% if block.settings.banner_9_height == 'adapt' and block.settings.banner_9_image != blank %}
+                    style="padding-bottom: {{ 1 | divided_by: block.settings.banner_9_image.aspect_ratio | times: 100 }}%;"{% endif %}
+                    >
+                      {%- capture sizes -%}(min-width: {{ settings.container_lg_width }}px) {{ settings.container_lg_width | minus: 30 | divided_by: mega_menu_has_banner_column }}px, (min-width: 750px) calc((100vw - 130px) / {{ mega_menu_has_banner_column }}),100vw{%- endcapture -%}
+                      {% assign height = block.settings.banner_9_image.width | divided_by: block.settings.banner_9_image.aspect_ratio %}
+                      {{ block.settings.banner_9_image | image_url: width: 1500 | image_tag:
+                        loading: 'lazy',
+                        sizes: sizes,
+                        widths: '165, 360, 535, 750, 1070, 1500, 2000, 3000, 3840',
+                        height: height
+                      }}
+            
+                    </div>
+        
+                   {% if block.settings.promo9_heading != blank or block.settings.promo9_text != blank %}
+                    <div class="mega__menu--promo-content text-center mt-15">
+                        {% if block.settings.promo9_heading != blank %}
+                        <div class="mega__menu--promo-heading">
+                          <span class="promo-heading--label h6 mb-0">{{ block.settings.promo9_heading }}</span>
+                        </div>
+                        {% endif %}
+                       {% if block.settings.promo9_text != blank %}
+                        <div class="mega__menu--promo--subheading">
+                          <span class="promo--subheading--label">{{ block.settings.promo9_text }}</span>
+                        </div>
+                        {% endif %}  
+                    </div>
+                    {% endif %}  
+                  </a>
+              </div>
+        {% endif %}
+        {%- comment -%} 9th banner .\ {%- endcomment -%}
+
+        {%- comment -%} 10th banner {%- endcomment -%}
+          {%- if block.settings.banner_10_image != blank -%}
+            <div class="mega__menu--promo">
+                <a href="{{ block.settings.banner_10_link }}" class="mega__menu--promo-link">
+                  <div class="media--{{ block.settings.height }} media" {% if block.settings.banner_10_height == 'adapt' and block.settings.banner_10_image != blank %}
+                    style="padding-bottom: {{ 1 | divided_by: block.settings.banner_10_image.aspect_ratio | times: 100 }}%;"{% endif %}
+                    >
+                      {%- capture sizes -%}(min-width: {{ settings.container_lg_width }}px) {{ settings.container_lg_width | minus: 30 | divided_by: mega_menu_has_banner_column }}px, (min-width: 750px) calc((100vw - 130px) / {{ mega_menu_has_banner_column }}),100vw{%- endcapture -%}
+                      {% assign height = block.settings.banner_10_image.width | divided_by: block.settings.banner_10_image.aspect_ratio %}
+                      {{ block.settings.banner_10_image | image_url: width: 1500 | image_tag:
+                        loading: 'lazy',
+                        sizes: sizes,
+                        widths: '165, 360, 535, 750, 1070, 1500, 2000, 3000, 3840',
+                        height: height
+                      }}
+                    </div>
+        
+                   {% if block.settings.promo10_heading != blank or block.settings.promo10_text != blank %}
+                    <div class="mega__menu--promo-content text-center mt-15">
+                        {% if block.settings.promo10_heading != blank %}
+                        <div class="mega__menu--promo-heading">
+                          <span class="promo-heading--label h6 mb-0">{{ block.settings.promo10_heading }}</span>
+                        </div>
+                        {% endif %}
+                       {% if block.settings.promo10_text != blank %}
+                        <div class="mega__menu--promo--subheading">
+                          <span class="promo--subheading--label">{{ block.settings.promo10_text }}</span>
+                        </div>
+                        {% endif %}  
+                    </div>
+                    {% endif %}  
+                  </a>
+              </div>
+        {% endif %}
+        {%- comment -%} 10th banner .\ {%- endcomment -%}
+       </div>
+      {% endcapture %}
+    {% when 'products' %}  
+       {% assign mega_menu_column =  block.settings.product_column_width  %}
+       {% capture mega_menu_block %}
+          {%- liquid 
+            assign products_list = block.settings.product_list
+            assign has_mega_products = true
+            assign slider_enable = block.settings.slider_enable
+       -%}
+         <div class="mega__menu--product-column">
+         <h2 class="h5">{{ block.settings.product_heading }}</h2>
+        {%- if slider_enable -%} <mega-menu-slider class="mega__menu--slider {% if block.settings.product_heading == blank %} mega__menu-slider--button-button {% endif %}" data-slide-large-desktop="{{ block.settings.product_column }}" data-slide-small-desktop="{{ block.settings.product_column_laptop }}"> {%- endif -%}
+           <div class="mega__menu--products {% if slider_enable %} mega__menu--products-slider swiper {% else %}mega--menu__product--desktop-column-{{ block.settings.product_column }} mega--menu__product--laptop-column-{{ block.settings.product_column_laptop }}{% endif %}">
+               {%- if slider_enable -%}<div class="swiper-wrapper"> {%- endif -%}
+              {%- for product in products_list -%}
+                <div class="mega--menu__product-card {% if slider_enable %} swiper-slide {% endif %}">
+                  {% render 'product-card',
+                  	  product_card_product: product,
+                        media_size: block.settings.image_ratio,
+                        show_secondary_image: block.settings.show_secondary_image,
+                        show_vendor: block.settings.show_vendor,
+                        show_badge: block.settings.show_badges,
+                        show_cart_button: block.settings.show_cart_button,
+                        show_quick_view: block.settings.show_quick_view_button,
+                        show_quick_compare: block.settings.show_compare_view_button,
+                        show_wishlist: block.settings.show_wishlist_button,
+                        show_countdown: block.settings.show_countdown,
+                        show_title: block.settings.show_title,
+                        show_price: block.settings.show_price,
+                        show_rating: block.settings.show_product_rating,
+                        card_style: block.settings.card_style
+                  %}
+                </div>
+              {% endfor %}
+               {%- if slider_enable -%}</div>{%- endif -%}
+           </div>
+        {%- if slider_enable -%}
+          <div class="swiper-button-next mega--menu-slider-nav-button"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg></div>
+          <div class="swiper-button-prev mega--menu-slider-nav-button"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-left"><polyline points="15 18 9 12 15 6"></polyline></svg> </div>
+          </mega-menu-slider> {%- endif -%}
+    </div>
+       {% endcapture %}
+    {% when 'collection_list' %}
+    {% assign mega_menu_column =  block.settings.mega_menu_column_width  %}  
+    {% capture mega_menu_block %}
+    {%- assign has_mega_collection_list = true -%}  
+    <div class="mega__menu--collection-list">
+      {%- comment -%} collection list {%- endcomment -%}
+       {% if block.settings.collection_1 != blank %}
+       <div class="collection--list-item">
+          <div class="collection--list--thumbnail">
+           {% liquid
+               if  block.settings.collection_1_image != blank
+                 assign cat_image_1 = block.settings.collection_1_image
+               else
+                  assign cat_image_1 = block.settings.collection_1.featured_image
+               endif
+           %}
+            {%- render 'menu-collection-card',
+              image: cat_image_1,
+              collection: block.settings.collection_1,
+              media_aspect_ratio: block.settings.image_ratio,
+              show_product_items: block.settings.product_items,
+              image_width: block.settings.image_width
+            -%}
+          </div>
+        </div>
+        {% endif %}
+      {%- comment -%} collection list .\ {%- endcomment -%}
+
+      {%- comment -%} collection list 2 {%- endcomment -%}
+      {% if block.settings.collection_2 != blank %}
+       <div class="collection--list-item">
+          <div class="collection--list--thumbnail">
+           {% liquid
+               if  block.settings.collection_2_image != blank
+                 assign cat_image_2 = block.settings.collection_2_image
+               else
+                  assign cat_image_2 = block.settings.collection_2.featured_image
+               endif
+           %}
+            {%- render 'menu-collection-card',
+              image: cat_image_2,
+              collection: block.settings.collection_2,
+              media_aspect_ratio: block.settings.image_ratio,
+              show_product_items: block.settings.product_items,
+              image_width: block.settings.image_width
+            -%}
+          </div>
+        </div>
+        {% endif %}
+      {%- comment -%} collection list 2 .\ {%- endcomment -%}
+
+       {%- comment -%} collection list 3 {%- endcomment -%}
+      {% if block.settings.collection_3 != blank %}
+       <div class="collection--list-item">
+          <div class="collection--list--thumbnail">
+           {% liquid
+               if  block.settings.collection_3_image != blank
+                 assign cat_image_3 = block.settings.collection_3_image
+               else
+                  assign cat_image_3 = block.settings.collection_3.featured_image
+               endif
+           %}
+            {%- render 'menu-collection-card',
+              image: cat_image_3,
+              collection: block.settings.collection_3,
+              media_aspect_ratio: block.settings.image_ratio,
+              show_product_items: block.settings.product_items,
+              image_width: block.settings.image_width
+            -%}
+          </div>
+        </div>
+      {% endif %}
+      {%- comment -%} collection list 3 .\ {%- endcomment -%}
+
+      {%- comment -%} collection list 4 {%- endcomment -%}
+      {% if block.settings.collection_4 != blank %}
+       <div class="collection--list-item">
+          <div class="collection--list--thumbnail">
+           {% liquid
+               if  block.settings.collection_4_image != blank
+                 assign cat_image_4 = block.settings.collection_4_image
+               else
+                  assign cat_image_4 = block.settings.collection_4.featured_image
+               endif
+           %}
+            {%- render 'menu-collection-card',
+              image: cat_image_4,
+              collection: block.settings.collection_4,
+              media_aspect_ratio: block.settings.image_ratio,
+              show_product_items: block.settings.product_items,
+              image_width: block.settings.image_width
+            -%}
+          </div>
+        </div>
+        {% endif %}
+      {%- comment -%} collection list 4 .\ {%- endcomment -%}
+
+      {%- comment -%} collection list 5 {%- endcomment -%}
+      {% if block.settings.collection_5 != blank %}
+       <div class="collection--list-item">
+          <div class="collection--list--thumbnail">
+           {% liquid
+               if  block.settings.collection_5_image != blank
+                 assign cat_image_5 = block.settings.collection_5_image
+               else
+                  assign cat_image_5 = block.settings.collection_5.featured_image
+               endif
+           %}
+            {%- render 'menu-collection-card',
+              image: cat_image_5,
+              collection: block.settings.collection_5,
+              media_aspect_ratio: block.settings.image_ratio,
+              show_product_items: block.settings.product_items,
+              image_width: block.settings.image_width
+            -%}
+          </div>
+        </div>
+        {% endif %}
+      {%- comment -%} collection list 5 .\ {%- endcomment -%}
+
+
+      {%- comment -%} collection list 6 {%- endcomment -%}
+      {% if block.settings.collection_6 != blank %}
+       <div class="collection--list-item">
+          <div class="collection--list--thumbnail">
+           {% liquid
+               if  block.settings.collection_6_image != blank
+                 assign cat_image_6 = block.settings.collection_6_image
+               else
+                  assign cat_image_6 = block.settings.collection_6.featured_image
+               endif
+           %}
+            {%- render 'menu-collection-card',
+              image: cat_image_6,
+              collection: block.settings.collection_6,
+              media_aspect_ratio: block.settings.image_ratio,
+              show_product_items: block.settings.product_items,
+              image_width: block.settings.image_width
+            -%}
+          </div>
+        </div>
+        {% endif %}
+      {%- comment -%} collection list 6 .\ {%- endcomment -%}
+      
+    </div>
+    {% endcapture %}
+    {% when 'menu_promo_banner' %}
+     {% capture mega_menu_block %}
+      {%- assign has_mega_promo_banner = true -%}  
+      {%- comment -%} First promo banner {%- endcomment -%}
+      {%- if block.settings.image != blank -%}
+       {% assign promo1 = true %}
+            <div class="mega__menu--promo">
+                <a href="{{ block.settings.promo1_link }}" class="mega__menu--promo-link">
+                  <div class="media--{{ block.settings.height }} media" {% if block.settings.height == 'adapt' and block.settings.image != blank %}
+                    style="padding-bottom: {{ 1 | divided_by: block.settings.image.aspect_ratio | times: 100 }}%;"{% endif %}
+                    >
+                      <img
+                           srcset="{%- if block.settings.image.width >= 375 -%}{{ block.settings.image | img_url: '375x' }} 375w,{%- endif -%}
+                                   {%- if block.settings.image.width >= 550 -%}{{ block.settings.image | img_url: '550x' }} 550w,{%- endif -%}
+                                   {%- if block.settings.image.width >= 750 -%}{{ block.settings.image | img_url: '750x' }} 750w,{%- endif -%}
+                                   {%- if block.settings.image.width >= 1100 -%}{{ block.settings.image | img_url: '1100x' }} 1100w,{%- endif -%}
+                                   {%- if block.settings.image.width >= 1500 -%}{{ block.settings.image | img_url: '1500x' }} 1500w,{%- endif -%}
+                                   {%- if block.settings.image.width >= 1780 -%}{{ block.settings.image | img_url: '1780x' }} 1780w,{%- endif -%}
+                                   {%- if block.settings.image.width >= 2000 -%}{{ block.settings.image | img_url: '2000x' }} 2000w,{%- endif -%}
+                                   {%- if block.settings.image.width >= 3000 -%}{{ block.settings.image | img_url: '3000x' }} 3000w,{%- endif -%}
+                                   {%- if block.settings.image.width >= 3840 -%}{{ block.settings.image | img_url: '3840x' }} 3840w,{%- endif -%}
+                                   {{ block.settings.image | img_url: 'master' }} {{ block.settings.image.width }}w"
+                           sizes="(min-width: 992px) 50rem"
+                           src="{{ block.settings.image | img_url: '1500x' }}"
+                           loading="lazy"
+                           alt="{{ block.settings.image.alt | escape }}"
+                           width="{{ block.settings.image.width }}"
+                           height="{{ block.settings.image.width | divided_by: block.settings.image.aspect_ratio }}"
+                           >
+                    </div>
+
+                   {% if block.settings.promo1_heading != blank or block.settings.promo1_text != blank %}
+                    <div class="mega__menu--promo-content text-center mt-15">
+                        {% if block.settings.promo1_heading != blank %}
+                        <div class="mega__menu--promo-heading">
+                          <span class="promo-heading--label h6 mb-0">{{ block.settings.promo1_heading }}</span>
+                        </div>
+                        {% endif %}
+                       {% if block.settings.promo1_text != blank %}
+                        <div class="mega__menu--promo--subheading">
+                          <span class="promo--subheading--label">{{ block.settings.promo1_text }}</span>
+                    </div>
+                        {% endif %}  
+                    </div>
+                    {% endif %}  
+                  </a>
+              </div>
+        {% endif %}
+       {%- comment -%} First promo banner .\ {%- endcomment -%}
+
+    {%- comment -%} second promo banner {%- endcomment -%}
+      {%- if block.settings.image_2 != blank -%}
+       {% assign promo2 = true %}
+            <div class="mega__menu--promo">
+           <a href="{{ block.settings.promo2_link }}" class="mega__menu--promo-link">
+                <div class="media--{{ block.settings.height_2 }} media" {% if block.settings.height_2 == 'adapt' and block.settings.image_2 != blank %}
+                  style="padding-bottom: {{ 1 | divided_by: block.settings.image_2.aspect_ratio | times: 100 }}%;"{% endif %}
+                  >
+                    <img
+                         srcset="{%- if block.settings.image_2.width >= 375 -%}{{ block.settings.image_2 | img_url: '375x' }} 375w,{%- endif -%}
+                                 {%- if block.settings.image_2.width >= 550 -%}{{ block.settings.image_2 | img_url: '550x' }} 550w,{%- endif -%}
+                                 {%- if block.settings.image_2.width >= 750 -%}{{ block.settings.image_2 | img_url: '750x' }} 750w,{%- endif -%}
+                                 {%- if block.settings.image_2.width >= 1100 -%}{{ block.settings.image_2 | img_url: '1100x' }} 1100w,{%- endif -%}
+                                 {%- if block.settings.image_2.width >= 1500 -%}{{ block.settings.image_2 | img_url: '1500x' }} 1500w,{%- endif -%}
+                                 {%- if block.settings.image_2.width >= 1780 -%}{{ block.settings.image_2 | img_url: '1780x' }} 1780w,{%- endif -%}
+                                 {%- if block.settings.image_2.width >= 2000 -%}{{ block.settings.image_2 | img_url: '2000x' }} 2000w,{%- endif -%}
+                                 {%- if block.settings.image_2.width >= 3000 -%}{{ block.settings.image_2 | img_url: '3000x' }} 3000w,{%- endif -%}
+                                 {%- if block.settings.image_2.width >= 3840 -%}{{ block.settings.image_2 | img_url: '3840x' }} 3840w,{%- endif -%}
+                                 {{ block.settings.image_2 | img_url: 'master' }} {{ block.settings.image_2.width }}w"
+                         sizes="(min-width: 992px) 50rem"
+                         src="{{ block.settings.image_2 | img_url: '1500x' }}"
+                         loading="lazy"
+                         alt="{{ block.settings.image_2.alt | escape }}"
+                         width="{{ block.settings.image_2.width }}"
+                         height="{{ block.settings.image_2.width | divided_by: block.settings.image_2.aspect_ratio }}"
+                         >
+                  </div>
+                 {% if block.settings.promo2_heading != blank or block.settings.promo2_text != blank %}
+                   <div class="mega__menu--promo-content text-center mt-15">
+                        {% if block.settings.promo2_heading != blank %}
+                        <div class="mega__menu--promo-heading">
+                          <span class="promo-heading--label h6 mb-0">{{ block.settings.promo2_heading }}</span>
+                        </div>
+                        {% endif %}
+                       {% if block.settings.promo2_text != blank %}
+                        <div class="mega__menu--promo--subheading">
+                          <span class="promo--subheading--label">{{ block.settings.promo2_text }}</span>
+                        </div>
+                        {% endif %} 
+                    </div>
+                 {% endif %}
+              </a>
+              </div>
+        {% endif %}
+      {%- comment -%} second promo banner .\ {%- endcomment -%}
+       {% endcapture %}
+      {% endcase %}
+    {% endif %}
+  {% endfor %}
+
+   {% if has_children %}  
+      {% if has_mega_item %}
+         {% assign has_children_class = "menu__item_has_children header__menu_li_child_mega_menu" %}
+      {% else %}
+          {% assign has_children_class = "menu__item_has_children header__menu_li_child_sub_menu" %}
+      {% endif %}
+  {% endif %}
+
+  <li class="header__menu_li {{ has_children_class }}  {% if link.current %} header__menu_li--active{% endif %}">
+    {%- if has_children -%}
+      <a href="{{ link.url }}" class="header__menu_item">
+        {{ link.title | escape }}<span class="submenu__icon"> {% render 'icon-caret' %} </span>
+      </a>
+
+      {% if has_mega_item %}
+        {% liquid
+       
+          assign mega_menu_has_column = ""
+          if has_mega_products or has_mega_collection_list or has_mega_banner
+              if mega_menu_column == "third"
+                assign mega_menu_has_column = "mega__menu--one-third-column"
+              elsif mega_menu_column == "half"
+                assign mega_menu_has_column = "mega__menu--half-column"
+              elsif mega_menu_column == "full"
+                assign mega_menu_has_column = "mega__menu--full-column"
+              endif
+          endif
+
+        %}
+        <div class="header__mega_menu mega__menu--wrapper color-{{ section.settings.color_scheme_2 }}">
+          <div class="{{ container }} {% if has_mega_promo_banner %} mega__menu--wrapper--column {% endif %} {{ mega_menu_has_column }}">
+              {% if link.links.size > 0 %}
+              <ul class="header__mega_menu--inner">
+                {%- for childlink in link.links -%}
+                {%- if childlink.links != blank -%}
+                <li class="header__mega_menu_li">
+                  <a href="{{ childlink.url }}" class="header__mega_menu_item">{{ childlink.title | escape }}</a>
+                  <ul class="header__mega_sub_menu">
+                    {%- for grandchildlink in childlink.links -%}
+                    <li class="header__mega_sub_menu_li">
+                      <a class="header__mega_sub_menu_item" href="{{ grandchildlink.url }}">{{ grandchildlink.title | escape }}</a>
+                    </li>
+                    {%- endfor -%}
+                  </ul>
+                </li>
+                {%- else -%}
+                <li class="header__mega_menu_li ">
+                  <a href="{{ childlink.url }}" class="header__mega_menu_item ">{{ childlink.title | escape }}</a>
+                </li>
+                {%- endif -%}
+                {% endfor %}
+            </ul>
+            {% endif %}
+        
+            {{ mega_menu_block }}
+           </div>
+        </div>
+      {% else %}
+        <ul class="header__sub_menu {% if link.levels == 2  %} header__sub--has-children-parent {% endif %} color-{{ section.settings.color_scheme_2 }}">
+          {%- for childlink in link.links -%}
+          {%- if childlink.links != blank -%}
+          <li class="header__sub_menu_li header__sub--has-children">
+            <a href="{{ childlink.url }}" class="header__sub_menu_item">
+               <span> {{ childlink.title | escape }} </span>
+               <span class="header__sub--has-children--icon"> {% render 'left-arrow-icon' %} </span>
+            </a>
+            <ul class="header__sub--children__menu color-{{ section.settings.color_scheme }}">
+              {%- for grandchildlink in childlink.links -%}
+              <li class="header__sub_menu_li">
+                <a class="header__sub_menu_item" href="{{ grandchildlink.url }}">{{ grandchildlink.title | escape }}</a>
+              </li>
+              {%- endfor -%}
+            </ul>
+          </li>
+          {%- else -%}
+          <li class="header__sub_menu_li">
+            <a href="{{ childlink.url }}" class="header__sub_menu_item">{{ childlink.title | escape }}</a>
+          </li>
+          {%- endif -%}
+          {% endfor %}
+      </ul>
+      {% endif %}
+      
+    {%- else -%}
+    <a class="header__menu_item" href="{{ link.url }}"> {{ link.title | escape }}</a>
+    {%- endif -%}
+  </li>
+  {%- endfor -%}
+  
+</ul>

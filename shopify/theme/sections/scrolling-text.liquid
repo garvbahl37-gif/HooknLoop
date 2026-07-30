@@ -1,0 +1,428 @@
+{%- liquid
+  assign theme_rtl = false
+  if settings.enable_rtl and settings.langauges_rtl == blank
+    assign theme_rtl = true
+  endif
+
+  if settings.enable_rtl and settings.langauges_rtl != blank
+    assign rtl_languages = settings.langauges_rtl | split: ','
+    for language in rtl_languages
+      if language == request.locale.iso_code
+        assign theme_rtl = true
+      endif
+    endfor
+  endif
+-%}
+{{ 'scrolling-text.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.mobile_padding_top }}px;
+    padding-bottom: {{ section.settings.mobile_padding_bottom }}px;
+    margin-top: {{ section.settings.mobile_margin_top }}px;
+    margin-bottom: {{ section.settings.mobile_margin_bottom }}px;
+  }
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+      margin-top: {{ section.settings.margin_top }}px;
+      margin-bottom: {{ section.settings.margin_bottom }}px;
+    }
+  }
+  {% if section.settings.custom_colors %}
+    .custom--color-{{ section.id }}{
+      --color-foreground: {{ section.settings.foreground.red }}, {{ section.settings.foreground.green }}, {{ section.settings.foreground.blue }};
+      --color-background: {{ section.settings.background.red }}, {{ section.settings.background.green }}, {{ section.settings.background.blue }};
+    }
+    {% endif %}
+{%- endstyle -%}
+
+{% if theme_rtl %}
+  {{ 'scrolling-text-rtl.css' | asset_url | stylesheet_tag }}
+{% endif %}
+
+<div class="section-{{ section.id }}-padding color-{{ section.settings.color_scheme }} {% if section.settings.custom_colors  %} custom--color-{{ section.id }} {% endif %}">
+  <marquee-scroll
+    class="scrolling--text scrolling--text--{{ section.settings.direction }}"
+    style="--duration: {{ section.settings.speed }}s"
+  >
+    <div class="scrolling--item scrolling--animated">
+      {%- for block in section.blocks -%}
+        {% case block.type %}
+          {% when 'announcement' %}
+            <div
+              class="scrolling--item__inner  {% if section.settings.bullet_style %} scrolling--item-bullet{% endif %} {{ section.settings.text_size }} {% if block.settings.text_stroke %} scrolling--item__text--stroke {% endif %}"
+              {{ block.shopify_attributes }}
+            >
+              <span class="scrolling--text__content"> {{ block.settings.text }}</span>
+            </div>
+          {% when 'image' %}
+            <div
+              class="scrolling--item__inner  {% if section.settings.bullet_style %} scrolling--item-bullet{% endif %}  image--column  {% if block.settings.video %}video--column{% endif %}"
+              style="
+                --scrolling-image-height: {{ block.settings.logo_width }}px;
+                --corner-radius: {{ block.settings.corner_radius }}px;
+                {% if block.settings.video %}
+                --video-height: {{ block.settings.video_height }}px;
+                --video-width: {{ block.settings.video_width }}px;
+                {% endif %}
+              "
+              {{ block.shopify_attributes }}
+            >
+              <div class="{% if block.settings.image == blank and block.settings.video != true %}scrolling-logo--placeholder{% else %}media media--transparent {% endif %}">
+                {%- if block.settings.video -%}
+                  {{ block.settings.video | video_tag: autoplay: true, loop: true, controls: false, muted: true }}
+                {%- elsif block.settings.image != blank -%}
+                  {%- capture sizes -%}100vw{%- endcapture -%}
+                  {{
+                    block.settings.image
+                    | image_url: width: 550
+                    | image_tag:
+                      loading: 'lazy',
+                      sizes: sizes,
+                      widths: '275, 550, 710, 1420',
+                      class: 'promotion__image image--fit'
+                  }}
+                {%- else -%}
+                  {{ 'detailed-apparel-1' | placeholder_svg_tag: 'new-placeholder-svg' }}
+                {%- endif -%}
+              </div>
+            </div>
+        {% endcase %}
+      {%- endfor -%}
+    </div>
+  </marquee-scroll>
+</div>
+
+<script src="{{ 'scrolling-text.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Scrolling text",
+  "class": "section",
+  "settings": [
+    {
+      "type": "range",
+      "id": "speed",
+      "min": 2,
+      "max": 30,
+      "step": 1,
+      "unit": "s",
+      "label": "Speed",
+      "default": 15
+    },
+    {
+      "type": "select",
+      "id": "direction",
+      "label": "Direction",
+      "default": "left",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+     {
+     "type": "select",
+     "id": "text_size",
+     "options": [
+       {
+         "value": "body--text",
+         "label": "Body"
+       },
+       {
+         "value": "h6",
+         "label": "Extra small"
+       },
+       {
+         "value": "h5",
+         "label": "Small"
+       },
+       {
+         "value": "h4",
+         "label": "Medium"
+       },
+       {
+         "value": "h3",
+         "label": "Large"
+       },
+       {
+         "value": "h2",
+         "label": "Extra large"
+       }
+     ],
+     "default": "h2",
+      "label": "Text size"
+    },
+    {
+      "type": "checkbox",
+      "id": "bullet_style",
+      "label": "Enable bullet style",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Section spacing"
+    },
+    {
+      "type": "paragraph",
+      "content": "Desktop"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "label": "Margin top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "label": "Margin bottom",
+      "default": 0
+    },
+    {
+      "type": "paragraph",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "mobile_margin_top",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "label": "Margin top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "mobile_margin_bottom",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "label": "Margin bottom",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "paragraph",
+      "content": "Desktop"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 50
+    },
+    {
+      "type": "paragraph",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_top",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_bottom",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 50
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+
+    {
+        "type": "color_scheme",
+        "id": "color_scheme",
+        "label": "t:sections.all.colors.label",
+        "default": "background-2"
+      },
+    {
+      "type": "checkbox",
+      "id": "custom_colors",
+      "label": "Replace with your custom colors",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "foreground",
+      "default": "#121212",
+      "label": "Foreground color"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "default": "#fff",
+      "label": "Background color"
+    }
+  ],
+  "blocks": [
+     {
+      "type": "announcement",
+      "name": "Announcement",
+      "settings": [
+        {
+            "type": "text",
+            "id": "text",
+            "default": "Welcome to store",
+            "label": "Text"
+        },
+        {
+          "type": "checkbox",
+          "id": "text_stroke",
+          "label": "Text stroke",
+          "default": false
+        }
+      ]
+    },
+       {
+    "type": "image",
+    "name": "Media",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "t:sections.multicolumn.blocks.column.settings.image.label"
+      },
+      {
+         "type": "range",
+         "id": "logo_width",
+         "min": 30,
+         "max": 200,
+         "step": 5,
+         "default": 100,
+         "unit": "px",
+         "label": "Image height"
+       },
+      {
+        "type": "video",
+        "id": "video",
+        "label": "Video"
+      },
+       {
+         "type": "range",
+         "id": "video_width",
+         "min": 20,
+         "max": 200,
+         "step": 2,
+         "default": 100,
+         "unit": "px",
+         "label": "Video width"
+       },
+      {
+         "type": "range",
+         "id": "video_height",
+         "min": 20,
+         "max": 200,
+         "step": 2,
+         "default": 50,
+         "unit": "px",
+         "label": "Video height"
+       },
+      {
+        "type": "url",
+        "id": "image_link",
+        "label": "Link"
+      },
+      {
+         "type": "range",
+         "id": "corner_radius",
+         "min": 0,
+         "max": 50,
+         "step": 1,
+         "default": 5,
+         "unit": "px",
+         "label": "Corener radius"
+       }
+    ]
+  }
+  ],
+  "presets": [
+    {
+      "name": "Scrolling text",
+      "blocks":[
+          {
+            "type": "announcement"
+          },
+          {
+            "type": "announcement",
+             "settings": {
+               "text_stroke": true
+             }
+          },
+         {
+            "type": "announcement"
+         },
+         {
+            "type": "announcement",
+             "settings": {
+               "text_stroke": true
+             }
+         },
+         {
+            "type": "announcement"
+         },
+         {
+            "type": "announcement",
+             "settings": {
+               "text_stroke": true
+             }
+         },
+        {
+            "type": "announcement"
+         },
+        {
+            "type": "announcement",
+             "settings": {
+               "text_stroke": true
+             }
+         }
+      ]
+    }
+  ]
+}
+{% endschema %}

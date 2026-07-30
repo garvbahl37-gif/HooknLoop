@@ -1,0 +1,539 @@
+{%- liquid
+  assign theme_rtl = false
+  if settings.enable_rtl and settings.langauges_rtl == blank
+    assign theme_rtl = true
+  endif
+
+  if settings.enable_rtl and settings.langauges_rtl != blank
+    assign rtl_languages = settings.langauges_rtl | split: ','
+    for language in rtl_languages
+      if language == request.locale.iso_code
+        assign theme_rtl = true
+      endif
+    endfor
+  endif
+-%}
+{{ 'sections-collection-product-banner.css' | asset_url | stylesheet_tag }}
+
+<style>
+
+
+
+
+
+
+  .product__grid--items  .rating {
+      display: inline-block;
+      margin: 0;
+      line-height: 1;
+  }
+
+  .product__grid--items .rating-star {
+    --letter-spacing: 0.8;
+    --font-size: 1.7;
+  }
+
+  .product__grid--items .rating-star {
+    --letter-spacing: 0.7;
+    --font-size: 1.4;
+  }
+
+  .rating-star {
+    --percent: calc(
+      (
+          var(--rating) / var(--rating-max) + var(--rating-decimal) *
+            var(--font-size) /
+            (var(--rating-max) * (var(--letter-spacing) + var(--font-size)))
+        ) * 100%
+    );
+    letter-spacing: calc(var(--letter-spacing) * 1rem);
+    font-size: calc(var(--font-size) * 1rem);
+    line-height: 1;
+    display: inline-block;
+    font-family: Times;
+    margin: 0;
+  }
+
+  .rating-star::before {
+    content: '★★★★★';
+    background: #ffc107;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .rating-text {
+    display: none;
+  }
+
+  .rating-count {
+    display: inline-block;
+    margin: 0;
+  }
+
+  @media (forced-colors: active) {
+    .rating {
+      display: none;
+    }
+
+    .rating-text {
+      display: block;
+    }
+  }
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.mobile_padding_top }}px;
+      padding-bottom: {{ section.settings.mobile_padding_bottom }}px;
+    }
+    @media screen and (min-width: 750px) {
+      .section-{{ section.id }}-padding {
+        padding-top: {{ section.settings.padding_top }}px;
+        padding-bottom: {{ section.settings.padding_bottom }}px;
+      }
+    }
+</style>
+
+{%- liquid
+  assign container = ''
+  if section.settings.container == 'container'
+    assign container = 'container'
+  elsif section.settings.container == 'container-fluid'
+    assign container = 'container-fluid'
+  else
+    assign container = 'container-fluid px-0'
+  endif
+-%}
+
+{% if theme_rtl %}
+  {{ 'sections-collection-product-banner-rtl.css' | asset_url | stylesheet_tag }}
+{% endif %}
+
+<div class="product__section section-{{ section.id }}-padding">
+  <div class="{{ container }}">
+    <div class="row row-cols-lg-4 row-cols-md-2 row-cols-sm-2 row-cols-1 category__product--list">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'collection-proudct' -%}
+            {%- liquid
+              assign featured_product_limit = block.settings.products_to_show
+              assign collection = collections[block.settings.collection]
+            -%}
+
+            <div class="col custom-col" {{ block.shopify_attributes }}>
+              <div class="product__grid--wrapper">
+                <div
+                  class="product__grid--heading"
+                  style="--proudct-title-border-color: {{ block.settings.heading_color }};"
+                >
+                  <h2 class="product__grid--heading__title">{{ block.settings.heading }}</h2>
+                </div>
+                <div class="product__grid--inner">
+                  {%- for product in collection.products limit: featured_product_limit -%}
+                    {%- render 'product-card-small',
+                      product_card_product: product,
+                      show_rating: true,
+                      show_secondary_image: true,
+                      rating_color: block.settings.rating_color
+                    -%}
+                  {%- else -%}
+                    {%- assign a = 1 -%}
+                    {%- for i in (1..3) -%}
+                      {%- liquid
+                        assign product_item = 'product-' | append: a
+                        assign a = a | plus: 1
+                      -%}
+
+                      <div class="product__grid--items d-flex align-items-center mb-20">
+                        <div class="placeholder">
+                          {{ product_item | placeholder_svg_tag: 'placeholder-svg-2' }}
+                        </div>
+                        <div class="placeholder__content">
+                          <span> Product Title </span> <br>
+                          <span>$99.99</span>
+                        </div>
+                      </div>
+
+                      {%- liquid
+                        if a == 3
+                          assign a = 1
+                        endif
+                      -%}
+                    {%- endfor -%}
+                  {%- endfor -%}
+                </div>
+              </div>
+            </div>
+
+          {%- when 'banner' -%}
+            <div class="col custom-col" {{ block.shopify_attributes }}>
+              <div
+                class="product__banner2 position__relative"
+                style="--color-foreground: {{ block.settings.text_color.red }}, {{ block.settings.text_color.green }}, {{ block.settings.text_color.blue }};"
+              >
+                <a
+                  class="product__banner2--thumbnail  banner__items--thumbnail banner__items--media--{{ block.settings.height }} {% if block.settings.image == blank %} placeholder{% endif %} "
+                  href="{{ block.settings.button_link }}"
+                  id="banner_{{ block.id }}"
+                >
+                  {%- if block.settings.image != blank -%}
+                    <div class="text--with__banner--media {% if block.settings.image != blank %}media {% endif %}">
+                      <img
+                        srcset="
+                          bann                          {%- if block.settings.image.width >= 165 -%}{{ block.settings.image | image_url: width: 165 }} 165w,{%- endif -%}
+                          {%- if block.settings.image.width >= 360 -%}{{ block.settings.image | image_url: width: 360 }} 360w,{%- endif -%}
+                          {%- if block.settings.image.width >= 535 -%}{{ block.settings.image | image_url: width: 535 }} 535w,{%- endif -%}
+                          {%- if block.settings.image.width >= 750 -%}{{ block.settings.image | image_url: width: 750 }} 750w,{%- endif -%}
+                          {%- if block.settings.image.width >= 1070 -%}{{ block.settings.image | image_url: width: 1070 }} 1070w,{%- endif -%}
+                          {%- if block.settings.image.width >= 1500 -%}{{ block.settings.image | image_url: width: 1500 }} 1500w,{%- endif -%}
+                          {{ block.settings.image | image_url }} {{ block.settings.image.width }}w
+                        "
+                        src="{{ block.settings.image | image_url: width: 1500 }}"
+                        sizes="(min-width: {{ settings.container_lg_width }}px) {{ settings.container_lg_width | minus: 100 | divided_by: 4 }}px, (min-width: 750px) calc((100vw - 130px) / 2), calc(100vw - 60px)"
+                        alt="{{ block.settings.image.alt | escape }}"
+                        loading="lazy"
+                        width="{{ block.settings.image.width }}"
+                        height="{{ block.settings.image.height }}"
+                      >
+                    </div>
+                    <div class="product__banner2--content">
+                      <div class="product__banner2--content__subtitle h3">{{ block.settings.subheading }}</div>
+                      <h2 class="product__banner2--content__title">{{ block.settings.heading }}</h2>
+                      {% liquid
+                        if block.settings.button_type == 'primary'
+                          assign button_class = 'button button--primary'
+                        elsif block.settings.button_type == 'secondary'
+                          assign button_class = 'button button--secondary'
+                        else
+                          assign button_class = 'link'
+                        endif
+
+                        assign button_size = ''
+                        unless block.settings.button_type == 'link'
+                          assign button_size = block.settings.button_size
+                        endunless
+                      %}
+
+                      {% if block.settings.button_text != blank %}
+                        <span class="{{ button_class }} {% unless block.settings.button_type == 'link' %}button--{{ button_size }} {% if block.settings.button_icon %} button--with-icon{% endif %}{% endunless %}">
+                          {{- block.settings.button_text }}
+
+                          {% if block.settings.button_icon and block.settings.button_type == 'link' %}
+                            <svg
+                              class="banner__items--content__arrow--icon"
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="20.2"
+                              height="12.2"
+                              viewBox="0 0 6.2 6.2"
+                            >
+                              <path d="M7.1,4l-.546.546L8.716,6.713H4v.775H8.716L6.554,9.654,7.1,10.2,9.233,8.067,10.2,7.1Z" transform="translate(-4 -4)" fill="currentColor"></path>
+                            </svg>
+                          {% endif %}
+
+                          {% unless block.settings.button_type == 'link' %}
+                            {% if block.settings.button_icon %}
+                              <span class="button--icon button--icon-right"> {% render 'icon-arrow-right' %} </span>
+                            {% endif %}
+                          {% endunless %}
+                        </span>
+                      {% endif %}
+                    </div>
+                  {% else %}
+                    <div class="product__width--banner--placeholder">
+                      {{ 'image' | placeholder_svg_tag: 'placeholder-svg-2' }}
+                    </div>
+                  {% endif %}
+                </a>
+
+                {%- style -%}
+                  #banner_{{ block.id }}.banner__items--thumbnail:after {
+                  opacity: {{ block.settings.image_overlay_opacity | divided_by: 100.0 }};
+                  }
+                  {%- if block.settings.height == 'adapt' and block.settings.image != blnak  -%}
+                    #banner_{{ block.id }}.banner__items--thumbnail::before {
+                    padding-bottom: {{ 1 | divided_by: block.settings.image.aspect_ratio | times: 100 }}%;
+                    }
+                  {%- endif -%}
+                {%- endstyle -%}
+              </div>
+            </div>
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+ {
+   "name": "Collection product banner",
+   "settings": [
+       {
+        "type": "select",
+        "id": "container",
+        "label": "Page width",
+        "default": "container-fluid",
+        "options": [
+          {
+            "value": "container",
+            "label": "Boxed"
+          },
+          {
+            "value": "container-fluid",
+            "label": "Full width"
+          }
+        ]
+      },
+	{
+     "type": "header",
+     "content": "Section padding"
+   },
+   {
+         "type": "paragraph",
+         "content": "Desktop"
+       },
+       {
+         "type": "range",
+         "id": "padding_top",
+         "min": 0,
+         "max": 150,
+         "step": 5,
+         "unit": "px",
+         "label": "Padding top",
+         "default": 0
+       },
+       {
+         "type": "range",
+         "id": "padding_bottom",
+         "min": 0,
+         "max": 150,
+         "step": 5,
+         "unit": "px",
+         "label": "Padding bottom",
+         "default": 0
+       },
+	{
+         "type": "paragraph",
+         "content": "Mobile"
+       },
+	{
+         "type": "range",
+         "id": "mobile_padding_top",
+         "min": 0,
+         "max": 150,
+         "step": 5,
+         "unit": "px",
+         "label": "Padding top",
+         "default": 0
+       },
+       {
+         "type": "range",
+         "id": "mobile_padding_bottom",
+         "min": 0,
+         "max": 150,
+         "step": 5,
+         "unit": "px",
+         "label": "Padding bottom",
+         "default": 0
+       }
+],
+"blocks": [
+	{
+         "type": "collection-proudct",
+         "name": "Collection product",
+         "settings": [
+		{
+             "type": "text",
+             "id": "heading",
+             "default": "Featured",
+             "label": "Heading"
+           },
+           {
+             "type": "collection",
+             "id": "collection",
+             "label": "t:sections.featured-collection.settings.collection.label"
+           },
+		{
+             "type": "range",
+             "id": "products_to_show",
+             "min": 2,
+             "max": 6,
+             "step": 1,
+             "default": 3,
+             "label": "t:sections.featured-collection.settings.products_to_show.label"
+           },
+		{
+             "type": "color",
+             "id": "heading_color",
+             "default": "#3cb815",
+             "label": "Heading border color"
+           },
+           {
+             "type": "color",
+             "id": "rating_color",
+             "default": "#ffc107",
+             "label": "Rating color"
+           }
+         ]
+       },
+       {
+         "type": "banner",
+         "name": "Banner",
+         "settings": [
+		{
+             "type": "image_picker",
+             "id": "image",
+             "label": "Image"
+           },
+		{
+             "type": "select",
+             "id": "height",
+             "options": [
+               {
+                 "value": "adapt",
+                 "label": "Adapt to image"
+               },
+               {
+                 "value": "small",
+                 "label": "t:sections.image-with-text.settings.height.options__2.label"
+               },
+               {
+                 "value": "medium",
+                 "label": "Medium"
+               },
+               {
+                 "value": "large",
+                 "label": "t:sections.image-with-text.settings.height.options__3.label"
+               }
+             ],
+             "default": "adapt",
+             "label": "t:sections.image-with-text.settings.height.label"
+           },
+		{
+             "type": "range",
+             "id": "image_overlay_opacity",
+             "min": 0,
+             "max": 100,
+             "step": 10,
+             "unit": "%",
+             "label": "Image overlay opacity",
+             "default": 0
+           },
+		{
+             "type": "textarea",
+             "id": "heading",
+             "default": "Heading",
+             "label": "Heading"
+           },
+		{
+             "type": "select",
+             "id": "heading_size",
+             "options": [
+               {
+                 "value": "h4",
+                 "label": "Small"
+               },
+               {
+                 "value": "h3",
+                 "label": "Medium"
+               },
+               {
+                 "value": "h2",
+                 "label": "Large"
+               }
+             ],
+             "default": "h2",
+             "label": "Heading size"
+           },
+		{
+             "type": "textarea",
+             "id": "subheading",
+             "default": "Enjoy up to 50% OFF",
+             "label": "Subheading"
+           },
+		{
+             "type": "text",
+             "id": "button_text",
+             "default": "Shop now",
+             "label": "Button label"
+           },
+           {
+            "type": "select",
+            "id": "button_type",
+            "label": "Button type",
+            "default": "link",
+            "options": [
+              {
+              "value": "primary",
+              "label": "Solid"
+              },
+              {
+              "value": "secondary",
+              "label": "Outline"
+              },
+              {
+              "value": "link",
+              "label": "Link"
+              }
+            ]
+          },
+     {
+             "type": "checkbox",
+             "id": "button_icon",
+             "label": "Use arrow icon",
+             "default": true
+           },
+     {
+      "type": "select",
+      "id": "button_size",
+      "label": "Button size",
+      "default": "small",
+      "options": [
+        {
+          "value": "large",
+          "label": "Large"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "small",
+          "label": "Small"
+        }
+      ]
+    },
+		{
+             "type": "url",
+             "id": "button_link",
+             "label": "Banner url"
+           },
+		{
+             "type": "color",
+             "id": "text_color",
+             "default": "#fff",
+             "label": "Heading color"
+           }
+         ]
+       }
+   ],
+"presets": [
+       {
+         "name": "Collection product banner",
+         "blocks": [
+           {
+             "type": "collection-proudct"
+           },
+           {
+             "type": "banner"
+           },
+           {
+             "type": "collection-proudct"
+           },
+           {
+             "type": "banner"
+           }
+         ]
+       }
+     ],
+   "disabled_on": {
+    "groups": ["header","footer"]
+  }
+ }
+{% endschema %}

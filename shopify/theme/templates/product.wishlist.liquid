@@ -1,0 +1,25 @@
+{% comment %}
+  Shopify Wishlist
+  Usage:
+    - Replace the snippet name ('product__card') with your existing product card snippet
+    - Pass the product object as a snippet variable named 'product'
+{% endcomment %}
+{%- layout none -%}
+{% render 'product-card',
+  className: 'col mb-30',
+  product_card_product: product,
+  media_size: settings.wishlist_image_ratio,
+  show_secondary_image: settings.wishlist_show_secondary_image,
+  show_vendor: settings.wishlist_show_vendor,
+  show_badge: settings.wishlist_show_badges,
+  show_cart_button: settings.wishlist_show_cart_button,
+  show_quick_view: settings.wishlist_show_quick_view_button,
+  show_quick_compare: settings.wishlist_show_compare_view_button,
+  show_wishlist: settings.wishlist_show_wishlist_button,
+  show_countdown: settings.wishlist_show_countdown,
+  show_title: settings.wishlist_show_title,
+  show_price: settings.wishlist_show_price,
+  show_rating: settings.wishlist_show_product_rating,
+  card_style: settings.wishlist_card_style,
+  color_swatches: settings.wishlist_color_swatches
+%}

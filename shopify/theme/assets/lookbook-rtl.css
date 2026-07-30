@@ -1,0 +1,6 @@
+@media only screen and (min-width: 992px) {
+  .lookboo--text__content .image-with-text__text {
+    padding-right: 0;
+    padding-left: 8rem;
+  }
+}

@@ -1,0 +1,457 @@
+<link rel="stylesheet" href="{{ 'component-rte.css' | asset_url }}" media="print" onload="this.media='all'">
+<noscript>{{ 'component-rte.css' | asset_url | stylesheet_tag }}</noscript>
+{{ 'section-google-map.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+    .google__map--media.placeholder {
+    	background: rgba(var(--color-foreground),.35);
+        min-height: 35rem;
+    }
+    @media screen and (min-width: 750px){
+      .google__map--media.placeholder {
+        min-height: 70rem;
+      }
+    }
+  .google__map--media.placeholder .placeholder-svg-2 {
+    max-width: 100%;
+  }
+   .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.mobile_padding_top }}px;
+      padding-bottom: {{ section.settings.mobile_padding_bottom }}px;
+    }
+    @media screen and (min-width: 750px) {
+      .section-{{ section.id }}-padding {
+        padding-top: {{ section.settings.padding_top }}px;
+        padding-bottom: {{ section.settings.padding_bottom }}px;
+      }
+    }
+  {%- if section.settings.image != blank -%}
+    @media screen and (max-width: 749x) {
+      .google__map--media--large {
+        min-height: 39rem;
+      }
+      .google__map--media--medium {
+        min-height: 34rem;
+      }
+      .google__map--media--small {
+        min-height: 28rem;
+      }
+    }
+
+    @media screen and (min-width: 750px){
+      .google__map--media--large {
+        min-height: 72rem;
+      }
+      .google__map--media--medium {
+        min-height: 56rem;
+      }
+      .google__map--media--small {
+        min-height: 42rem;
+      }
+    }
+  {%- endif -%}
+  h2.google__map--placeholder-heading {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #fff;
+  }
+{%- endstyle -%}
+
+{%- liquid
+  assign container = ''
+  if section.settings.container == 'container'
+    assign container = 'container'
+  elsif section.settings.container == 'container-fluid'
+    assign container = 'container-fluid'
+  else
+    assign container = 'container-fluid px-0'
+  endif
+-%}
+
+<div class="google__map--wrapper section-{{ section.id }}-padding">
+  <div class="{{ container }}  {% unless section.settings.show_offset %}p-0{% endunless %}">
+    <div class="map__direction--inner google--map-{{ section.settings.map_height }}">
+      {%- if section.settings.image != blank -%}
+        <div
+          class="google__map--media--{{ section.settings.image_height }} media"
+          {% if section.settings.image_height == 'adapt' and section.settings.image != blank %}
+            style="padding-bottom: {{ 1 | divided_by: section.settings.image.aspect_ratio | times: 100 }}%;"
+          {% endif %}
+        >
+          <img
+            srcset="
+              {%- if section.settings.image.width >= 375 -%}{{ section.settings.image | image_url: width: 375 }} 375w,{%- endif -%}
+              {%- if section.settings.image.width >= 550 -%}{{ section.settings.image | image_url: width: 550 }} 550w,{%- endif -%}
+              {%- if section.settings.image.width >= 750 -%}{{ section.settings.image | image_url: width: 750 }} 750w,{%- endif -%}
+              {%- if section.settings.image.width >= 1100 -%}{{ section.settings.image | image_url: width: 1100 }} 1100w,{%- endif -%}
+              {%- if section.settings.image.width >= 1500 -%}{{ section.settings.image | image_url: width: 1500 }} 1500w,{%- endif -%}
+              {%- if section.settings.image.width >= 1780 -%}{{ section.settings.image | image_url: width: 1780 }} 1780w,{%- endif -%}
+              {%- if section.settings.image.width >= 2000 -%}{{ section.settings.image | image_url: width: 2000 }} 2000w,{%- endif -%}
+              {%- if section.settings.image.width >= 3000 -%}{{ section.settings.image | image_url: width: 3000 }} 3000w,{%- endif -%}
+              {%- if section.settings.image.width >= 3840 -%}{{ section.settings.image | image_url: width: 3840 }} 3840w,{%- endif -%}
+              {{ section.settings.image | image_url }} {{ section.settings.image.width }}w
+            "
+            sizes="100vw"
+            src="{{ section.settings.image | image_url: width: 1500 }}"
+            loading="lazy"
+            alt="{{ section.settings.image.alt | escape }}"
+            width="{{ section.settings.image.width }}"
+            height="{{ section.settings.image.width | divided_by: section.settings.image.aspect_ratio | round }}"
+          >
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.map == blank and section.settings.image == blank -%}
+        <div class="google__map--media placeholder">
+          {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg-2' }}
+          <h2 class="google__map--placeholder-heading h1 text-center">Add Map iframe code or placholder</h2>
+        </div>
+      {%- endif -%}
+
+      {{ section.settings.map }}
+
+      {% if section.blocks.size > 0 %}
+        <div class="map__direcion--content color-{{ section.settings.color_scheme }}">
+          {%- for block in section.blocks -%}
+            {%- case block.type -%}
+              {% when 'heading' %}
+                <h2 class="map__banner--title {{ block.settings.heading_size }}" {{ block.shopify_attributes }}>
+                  {{ block.settings.heading | escape }}
+                </h2>
+              {% when 'subheading' %}
+                <div
+                  class="map__banner--subtitle {% if block.settings.border_show %} subheading--border {% endif %} {{ block.settings.subheading_size }}"
+                  {{ block.shopify_attributes }}
+                >
+                  {{ block.settings.subheading }}
+                </div>
+              {% when 'text' %}
+                <div class="map__banner--text" {{ block.shopify_attributes }}>
+                  {{ block.settings.text }}
+                </div>
+              {% when 'button' %}
+                <div class="map__banner--button" {{ block.shopify_attributes }}>
+                  <a
+                    {% if block.settings.button_link %}
+                      href="{{ block.settings.button_link }}"
+                    {% else %}
+                      role="link" aria-disabled="true"
+                    {% endif %}
+                    class="button button--primary button--full-width"
+                  >
+                    {{ block.settings.button_label | escape }}
+                  </a>
+                </div>
+            {%- endcase -%}
+          {%- endfor -%}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+ {
+   "name": "Google map",
+   "settings": [
+	{
+      "type": "select",
+      "id": "container",
+      "label": "Page width",
+      "default": "container-fluid",
+      "options": [
+        {
+          "value": "container",
+          "label": "Boxed"
+        },
+        {
+          "value": "container-fluid",
+          "label": "Full width"
+        }
+      ]
+    },
+      {
+       "type": "checkbox",
+       "id": "show_offset",
+       "label": "Enable Offset (left & right)",
+       "default": true
+     },
+	{
+         "type": "image_picker",
+         "id": "image",
+         "label": "Map placeholder image"
+       },
+	{
+         "type": "select",
+         "id": "image_height",
+         "options": [
+           {
+             "value": "adapt",
+             "label": "Adapt to image"
+           },
+           {
+             "value": "small",
+             "label": "Small"
+           },
+           {
+             "value": "medium",
+             "label": "Medium"
+           },
+           {
+             "value": "large",
+             "label": "Large"
+           }
+         ],
+         "default": "adapt",
+         "label": "Image height"
+       },
+	{
+         "type": "textarea",
+         "id": "map",
+         "label": "Map iframe code",
+         "info": "To get iframe code, [Click here](https:\/\/www.maps.ie\/create-google-map)"
+       },
+     {
+         "type": "select",
+         "id": "map_height",
+         "options": [
+           {
+             "value": "small",
+             "label": "Small"
+           },
+           {
+             "value": "medium",
+             "label": "Medium"
+           },
+           {
+             "value": "large",
+             "label": "Large"
+           }
+         ],
+         "default": "medium",
+         "label": "Map height"
+       },
+	{
+     "type": "header",
+     "content": "Section padding"
+   },
+   {
+         "type": "paragraph",
+         "content": "Desktop"
+       },
+       {
+         "type": "range",
+         "id": "padding_top",
+         "min": 0,
+         "max": 150,
+         "step": 5,
+         "unit": "px",
+         "label": "Padding top",
+         "default": 50
+       },
+       {
+         "type": "range",
+         "id": "padding_bottom",
+         "min": 0,
+         "max": 150,
+         "step": 5,
+         "unit": "px",
+         "label": "Padding bottom",
+         "default": 50
+       },
+	{
+         "type": "paragraph",
+         "content": "Mobile"
+       },
+	{
+         "type": "range",
+         "id": "mobile_padding_top",
+         "min": 0,
+         "max": 150,
+         "step": 5,
+         "unit": "px",
+         "label": "Padding top",
+         "default": 50
+       },
+       {
+         "type": "range",
+         "id": "mobile_padding_bottom",
+         "min": 0,
+         "max": 150,
+         "step": 5,
+         "unit": "px",
+         "label": "Padding bottom",
+         "default": 50
+         },
+     {
+              "type": "header",
+              "content": "Colors"
+            },
+
+     {
+        "type": "color_scheme",
+        "id": "color_scheme",
+        "label": "t:sections.all.colors.label",
+        "default": "background-1"
+      }
+],
+ "blocks": [
+    {
+      "type": "heading",
+      "name": "t:sections.rich-text.blocks.heading.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "default": "Add your store name",
+          "label": "t:sections.rich-text.blocks.heading.settings.heading.label"
+        },
+        {
+          "type": "select",
+          "id": "heading_size",
+          "options": [
+            {
+              "value": "h4",
+              "label": "t:sections.rich-text.blocks.heading.settings.heading_size.options__1.label"
+            },
+            {
+              "value": "h3",
+              "label": "t:sections.rich-text.blocks.heading.settings.heading_size.options__2.label"
+            },
+            {
+              "value": "h2",
+              "label": "t:sections.rich-text.blocks.heading.settings.heading_size.options__3.label"
+            }
+          ],
+          "default": "h3",
+          "label": "t:sections.rich-text.blocks.heading.settings.heading_size.label"
+        }
+      ]
+    },
+   {
+      "type": "subheading",
+      "name": "Subheading",
+      "settings": [
+        {
+          "type": "text",
+          "id": "subheading",
+          "default": "Add a tagline",
+          "label": "Subheading"
+        },
+        {
+          "type": "select",
+          "id": "subheading_size",
+          "options": [
+            {
+              "value": "h6",
+              "label": "t:sections.rich-text.blocks.heading.settings.heading_size.options__1.label"
+            },
+            {
+              "value": "h5",
+              "label": "t:sections.rich-text.blocks.heading.settings.heading_size.options__2.label"
+            },
+            {
+              "value": "h4",
+              "label": "t:sections.rich-text.blocks.heading.settings.heading_size.options__3.label"
+            }
+          ],
+          "default": "h6",
+          "label": "t:sections.rich-text.blocks.heading.settings.heading_size.label"
+        },
+        {
+           "type": "checkbox",
+           "id": "border_show",
+           "default": false,
+           "label": "Show border bottom"
+         }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "t:sections.rich-text.blocks.text.name",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "default": "<p>Share information about your brand with your customers.</p>",
+          "label": "t:sections.rich-text.blocks.text.settings.text.label"
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "name": "t:sections.rich-text.blocks.button.name",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_label",
+          "default": "GET DIRECTIONS",
+          "label": "t:sections.rich-text.blocks.button.settings.button_label.label"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "t:sections.rich-text.blocks.button.settings.button_link.label"
+        }
+      ]
+    }
+  ],
+"presets": [
+     {
+     	"name": "Google map",
+        "blocks": [
+          {
+                 "type": "heading",
+                "settings": {
+                  "heading": "Add your store name",
+                  "heading_size": "h4"
+                }
+               },
+			{
+                 "type": "subheading",
+                "settings": {
+                  "subheading": "Add a tagline",
+                  "subheading_size": "h6",
+                  "border_show": false
+                }
+             },
+              {
+                "type": "text",
+                "settings": {
+                  "text": "<p>South Street road,<br\/>84457 Powlowski Stream Suite 332<\/p>"
+                }
+             },
+            {
+              "type": "subheading",
+              "settings": {
+                "subheading": "Add a tagline",
+                "subheading_size": "h6",
+                "border_show": true
+              }
+            },
+            {
+              "type": "text",
+              "settings": {
+                "text": "<p>Mon - Fri, 7:30am - 04:30pm<br\/>Saturday, 8:30am - 06:30pm<br\/>Sunday, 10:30am - 10:30pm<\/p>"
+              }
+            },
+          {
+            "type": "button",
+            "settings": {
+              "button_label": "GET DIRECTIONS",
+              "button_link": "https:\/\/www.google.com\/maps\/dir\/\/1+Grafton+Street+Dublin+Ireland\/@53.3432434,-6.2593362,14z\/data=!4m8!4m7!1m0!1m5!1m1!1s0x48670e9b76719607:0x9d13471d963893a7!2m2!1d-6.2593362!2d53.3432434"
+            }
+          }
+        ]
+       }
+   ],
+   "disabled_on": {
+    "groups": ["header","footer"]
+  }
+ }
+{% endschema %}

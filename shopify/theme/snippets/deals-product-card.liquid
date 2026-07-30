@@ -1,0 +1,173 @@
+{%- liquid
+  assign variant = product_card_product.selected_or_first_available_variant
+
+  assign productCountdown = product_card_product.metafields.metaname.countdown_timer.value
+  assign todayDate = 'now' | date: '%s'
+  assign countDownDate = productCountdown | date: '%s'
+
+  assign first_variant_featured_media_check = false
+  if variant.featured_media == null
+    assign first_variant_featured_media_check = true
+  endif
+
+  assign second_img_position = 1
+
+  unless show_secondary_image
+    assign second_image_class = 'second--image__hide'
+  endunless
+
+  case settings.product_content_alignment
+    when 'left'
+      assign price_class = 'product__card__price justify-content-start'
+    when 'right'
+      assign price_class = 'product__card__price justify-content-end'
+    else
+      assign price_class = 'product__card__price justify-content-center'
+  endcase
+
+  assign current_total_stock = 0
+
+  for variant in product_card_product.variants
+    assign current_total_stock = current_total_stock | plus: variant.inventory_quantity
+  endfor
+
+  assign total_inventory_init_value = current_total_stock | plus: 150
+  assign total_item = product_card_product.metafields.metaname.total_stock.value | default: total_inventory_init_value
+
+  assign itemsold = total_item | minus: current_total_stock
+  assign sales_progress = total_item | minus: current_total_stock | times: 100 | divided_by: total_item
+  assign sales_progress_percent = 100 | minus: sales_progress
+
+  assign inventroy_not_tracked = false
+  if current_total_stock > total_item
+    assign sales_progress_percent = 100
+    assign inventroy_not_tracked = true
+  endif
+-%}
+
+<div class="deals--product__card d-flex {% if card_border %} card--border-line{% endif %} {% if corner_radius %} product--corner-radius-true{% endif %} {% if spacing %} product--card-spacing-true{% endif %} color-{{ color_scheme }} card--client-height">
+  <div class="product__card__thumbnail {{ second_image_class }}">
+    {%- if show_badge -%}
+      {%- render 'product-badge', product: product_card_product -%}
+    {%- endif -%}
+
+    {%- if product_card_product.featured_media -%}
+      {%- liquid
+        assign featured_media_aspect_ratio = product_card_product.featured_media.aspect_ratio
+
+        if product_card_product.featured_media.aspect_ratio == null
+          assign featured_media_aspect_ratio = 1
+        endif
+      -%}
+      <a
+        href="{{ product_card_product.url | default: '#' }}"
+        class="d-block product__media_thumbnail product__card--link"
+      >
+        {%- render 'product-card-media',
+          product_card_product: product_card_product,
+          variant: variant,
+          media_size: media_size,
+          featured_media_aspect_ratio: featured_media_aspect_ratio,
+          second_img_position: second_img_position,
+          show_secondary_image: show_secondary_image,
+          first_variant_featured_media_check: first_variant_featured_media_check
+        -%}
+      </a>
+
+    {%- else -%}
+      <div class="card__content">
+        <a href="{{ product_card_product.url | default: '#' }}" class="d-block">
+          <div class="placeholder placeholder_svg_parent" style="padding-bottom: 100%">
+            {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg-2' }}
+          </div>
+        </a>
+      </div>
+    {%- endif -%}
+  </div>
+
+  <div class="deals--product-card--content {% unless spacing %}card-content-spacing-true{% endunless %}">
+    {%- if show_vendor -%}
+      <span class="visually-hidden">{{ 'accessibility.vendor' | t }}</span>
+      <div class="product__vendor">{{ product_card_product.vendor }}</div>
+    {%- endif -%}
+
+    {%- if show_title -%}
+      <h3 class="product__card__title {{ settings.product_title_size }}">
+        <a class="product__card-title--link" href="{{ product_card_product.url | default: '#' }}">
+          {{- product_card_product.title -}}
+        </a>
+      </h3>
+    {%- endif -%}
+
+    {%- if show_price -%}
+      {% render 'price', product: product_card_product %}
+    {%- endif -%}
+
+    {%- if show_rating and product_card_product.metafields.reviews.rating.value != blank -%}
+      <div class="product-card--rating">
+        <div
+          style="{{ jm_style }}"
+          class="jdgm-widget jdgm-preview-badge"
+          data-id="{{ product_card_product.id }}"
+          aria-label="{{ 'accessibility.star_reviews_info' | t: rating_value: product_card_product.metafields.reviews.rating.value, rating_max: product_card_product.metafields.reviews.rating.value.scale_max }}"
+        >
+          {{ product_card_product.metafields.judgeme.badge }}
+        </div>
+      </div>
+    {%- endif -%}
+
+    {%- if inventory_status -%}
+      <div
+        class="product--stock-counter"
+        style=" --progress-bar-foreground: {{ progress_foreground_color }}; --progress-bar-background: {{ progress_background_color }}"
+      >
+        <div class="product__items--sold__stocks d-flex justify-content-between">
+          {% if inventroy_not_tracked %}
+            <span class="product__items--sold__stocks--text">
+              {{ 'products.product.inventory_status.track_label' | t }}
+            </span>
+          {% else %}
+            <span class="product__items--sold__stocks--text">
+              {{ 'products.product.inventory_status.soldout_label' | t }}: {{ itemsold -}}
+            </span>
+            <span class="product__items--sold__stocks--text">
+              {{- 'products.product.inventory_status.available_lable' | t }}: {{ total_item -}}
+            </span>
+          {% endif %}
+        </div>
+        <div class="stock--progressbar">
+          <span class="progressbar-percentage" style="width: {{ sales_progress_percent }}%">
+            <span class="visually-hidden">{{ 'products.product.stock_bar' | t }}</span>
+          </span>
+        </div>
+      </div>
+    {%- endif -%}
+
+    <!-- Product action button -->
+    <div class="deals--product-card-footer">
+      {% comment %} Add To cart button style 1 {% endcomment %}
+      {%- if show_cart_button -%}
+        {% render 'add-to-cart-form-3',
+          product_card_product: product_card_product,
+          variant: variant,
+          tooltip: false,
+          tooltip_position: 'tooltip--top',
+          tooltip_desktop: false,
+          show_preorder_button: show_preorder_button,
+          card_button_type: card_button_type,
+          use_button_icon: use_button_icon
+        %}
+      {%- endif -%}
+      {% comment %} Add To cart button style 1 ./ {% endcomment %}
+
+      {%- if show_countdown -%}
+        {%- if todayDate < countDownDate -%}
+          <countdown-timer class="product__grid_timer">
+            <div class="deals__product--countdown d-flex" data-countdown="{{ productCountdown }}"></div>
+          </countdown-timer>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+    <!-- Product action button ./ -->
+  </div>
+</div>
