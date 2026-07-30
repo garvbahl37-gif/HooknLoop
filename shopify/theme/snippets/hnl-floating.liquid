@@ -14,14 +14,25 @@
   claims to deliver a message that no backend receives. Wire it to a real
   endpoint or a chat app before relying on it.
 
-  This store also has Shopify Inbox and SmartBot installed as app embeds, and
-  both render their own bubble in the same bottom-right corner. Whichever chat
-  you want to keep, only one should be on: Theme settings > HooknLoop redesign.
+  Chat button modes — Theme settings > HooknLoop redesign > Chat button:
+
+    app    the redesign's button opens SmartBot, the real AI chat installed on
+           this store. SmartBot's own orange bubble is hidden so there is one
+           launcher, not two, and the answers come from a bot that actually
+           replies. This is the default.
+    panel  the built-in panel above. Front-end only — it acknowledges a message
+           but delivers it nowhere. Useful for a demo, not for customers.
+    off    no chat button at all.
 {%- endcomment -%}
 
 {%- liquid
   assign hnl_tel = settings.hnl_phone | default: '+61340616287' | replace: ' ', ''
   assign hnl_tel_display = settings.hnl_phone_display | default: '+61 3 4061 6287'
+  assign hnl_chat_mode = settings.hnl_chat_mode | default: 'app'
+  assign hnl_chat_fab = false
+  if hnl_chat_mode == 'app' or hnl_chat_mode == 'panel'
+    assign hnl_chat_fab = true
+  endif
 -%}
 
 {%- if settings.hnl_call_teaser and settings.hnl_call_fab -%}
@@ -42,8 +53,9 @@
 </a>
 {%- endif -%}
 
-{%- if settings.hnl_chat_fab -%}
-<div class="fabchat" data-hnl-fabchat>
+{%- if hnl_chat_fab -%}
+<div class="fabchat" data-hnl-fabchat data-hnl-chat-mode="{{ hnl_chat_mode }}">
+  {%- if hnl_chat_mode == 'panel' -%}
   <div class="chatp" role="dialog" aria-label="Chat with HooknLoop" data-hnl-chat hidden>
     <div class="chatp__head">
       <div class="chatp__id">
@@ -76,6 +88,7 @@
       <button type="submit" class="chatp__send" aria-label="Send"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 12 20 4l-6 16-2.5-6.5L4 12Z"/></svg></button>
     </form>
   </div>
+  {%- endif -%}
 
   <button class="fab fab--chat" data-hnl-chat-toggle aria-expanded="false" aria-label="Chat with us">
     <span data-hnl-chat-icon>
@@ -133,7 +146,103 @@
     if (on) $('.chatp__input input').focus();
   }
 
-  if (toggle) {
+  var mode = fabchat ? fabchat.getAttribute('data-hnl-chat-mode') : null;
+
+  /* ── "app" mode: this button drives SmartBot ────────────────────────────
+     SmartBot renders into #smart-bot-container as a Vue app inside an OPEN
+     shadow root — no iframe — so its launcher can be clicked from here. That is
+     the whole reason this works; a cross-origin iframe widget could not be
+     driven this way and would need the vendor's own JS API.
+
+     Fail-safe by construction: SmartBot's own bubble is only hidden once its
+     launcher has actually been found. If the app is slow, blocked or removed,
+     the shopper keeps SmartBot's bubble and OUR button hides itself — so there
+     is always exactly one working launcher and never a dead one.
+
+     Selector order is deliberate: the ARIA contract first, since the class
+     names are build-hashed (_chat-icon-container_tt440_1) and will change on
+     SmartBot's next release. */
+  if (mode === 'app' && toggle) {
+    var LAUNCHER = '[aria-label="Open chat window"], [role="button"][aria-haspopup="dialog"], [role="button"]';
+    var DEADLINE = 15000, POLL = 400;
+    var waited = 0, hooked = false;
+
+    fabchat.style.visibility = 'hidden';   /* nothing to click until it's wired */
+
+    var poll = setInterval(function () {
+      var host = document.getElementById('smart-bot-container');
+      var root = host && host.shadowRoot;
+      var launcher = root && root.querySelector(LAUNCHER);
+
+      if (launcher) {
+        clearInterval(poll);
+        hooked = true;
+        fabchat.style.visibility = '';
+
+        /* floating.css hides .fabchat below 900px — that is the React design,
+           because phones get the bottom nav instead of floating buttons. So we
+           may only hide SmartBot's launcher where ours is actually on screen;
+           below that breakpoint theirs must stay, or a phone gets no chat at
+           all. Keep 900 in step with the @media rule in floating.css. */
+        var wide = window.matchMedia('(min-width: 901px)');
+        var applyLauncher = function () {
+          launcher.style.display = wide.matches ? 'none' : '';
+        };
+        applyLauncher();
+        (wide.addEventListener ? wide.addEventListener('change', applyLauncher)
+                               : wide.addListener(applyLauncher));
+
+        toggle.addEventListener('click', function () { launcher.click(); });
+
+        /* SmartBot ships a stock stock-photo avatar (agent01.png). Swap it for
+           the HooknLoop mark so the widget reads as ours rather than as a
+           generic bot. The proper place to change this is the SmartBot app's
+           own settings; this is the front-end equivalent, and it survives their
+           re-renders because it is a stylesheet, not a one-time DOM edit.
+           Selectors use class-prefix matching — SmartBot's class names carry a
+           build hash (_avatar-wrap_1xhxj_137) that changes between releases. */
+        var brand = document.createElement('style');
+        brand.textContent =
+          '[class*="_avatar-wrap"],[class*="_chat-icon-icon"]{' +
+            'background-image:url("data:image/svg+xml,' +
+            encodeURIComponent(
+              '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">' +
+              '<rect width="64" height="64" rx="14" fill="#e87722"/>' +
+              '<text x="32" y="41" text-anchor="middle" font-family="DM Sans,Segoe UI,sans-serif"' +
+              ' font-size="26" font-weight="800" fill="#142548">HL</text></svg>'
+            ) + '")!important;' +
+            'background-size:contain!important;background-position:center!important;' +
+            'background-repeat:no-repeat!important;}';
+        root.appendChild(brand);
+
+        /* SmartBot hides its own launcher while the panel is open and shows it
+           again on close. Mirror that: our button steps aside so it never
+           overlaps their panel, and comes back when they close it. */
+        var sync = function () {
+          var isOpen = launcher.getAttribute('aria-expanded') === 'true';
+          fabchat.style.display = isOpen ? 'none' : '';
+          if (isOpen) hideTeaser();
+        };
+        new MutationObserver(sync).observe(launcher, {
+          attributes: true, attributeFilter: ['aria-expanded']
+        });
+        sync();
+        return;
+      }
+
+      waited += POLL;
+      if (waited >= DEADLINE) {
+        clearInterval(poll);
+        if (!hooked) {
+          /* SmartBot never arrived. Leave whatever it does render alone and
+             remove our button rather than leaving one that does nothing. */
+          fabchat.remove();
+        }
+      }
+    }, POLL);
+  }
+
+  if (toggle && mode === 'panel') {
     toggle.addEventListener('click', function () { setChat(!open); });
     $('[data-hnl-chat-close]').addEventListener('click', function () { setChat(false); });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && open) setChat(false); });

@@ -41,11 +41,25 @@
         "info": "Appears once, 3.5 seconds after the page loads, and can be dismissed."
       },
       {
-        "type": "checkbox",
-        "id": "hnl_chat_fab",
-        "label": "Show the redesign's chat panel",
-        "default": true,
-        "info": "Turn this OFF if you keep a chat app (Shopify Inbox, SmartBot) enabled — otherwise two chat bubbles stack in the same corner. The redesign's panel is front-end only: it acknowledges a message but does not deliver it anywhere."
+        "type": "select",
+        "id": "hnl_chat_mode",
+        "label": "Chat button",
+        "default": "app",
+        "info": "\"Open the installed chat app\" hides SmartBot's own bubble and uses the redesign's button to open it — one launcher, real answers. If SmartBot fails to load, its own bubble is left alone and this button hides itself, so you never get a dead button.",
+        "options": [
+          {
+            "value": "app",
+            "label": "Open the installed chat app (SmartBot)"
+          },
+          {
+            "value": "panel",
+            "label": "Open the built-in panel (front-end only)"
+          },
+          {
+            "value": "off",
+            "label": "Hide the chat button"
+          }
+        ]
       }
     ]
   },

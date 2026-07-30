@@ -158,7 +158,7 @@
       },
       "14947870889598929745": {
         "type": "shopify://apps/smartbot/blocks/app-embed/d9407b81-7d3e-4612-91c3-2020086e2073",
-        "disabled": true,
+        "disabled": false,
         "settings": {}
       }
     },
@@ -300,7 +300,8 @@
         }
       }
     },
-    "back_top_enable": false
+    "back_top_enable": false,
+    "hnl_chat_mode": "app"
   },
   "presets": {
     "Default": {
