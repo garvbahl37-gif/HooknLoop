@@ -275,7 +275,16 @@
           <p class="pdp__spec-note">{{ section.settings.spec_note }}</p>
         </section>
 
-        {%- if section.blocks.size > 0 -%}
+        {%- comment -%}
+          The store's real FAQs, per product. Section blocks below act as a
+          fallback for a product that has none of its own — empty by default,
+          because the live store shows nothing for those four products and
+          borrowing another product's answers would put words in its mouth.
+        {%- endcomment -%}
+        {%- capture product_faqs -%}{% render 'hnl-product-faqs', product: product %}{%- endcapture -%}
+        {%- if product_faqs contains 'pdp__faq-item' -%}
+          {{ product_faqs }}
+        {%- elsif section.blocks.size > 0 -%}
           <section class="pdp__block">
             <h2>Questions, answered</h2>
             <div class="pdp__faq">

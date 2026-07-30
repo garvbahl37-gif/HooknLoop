@@ -2,49 +2,16 @@
  * HooknLoop PDP — mirrors ProductPage.jsx in storefront/src/pages.
  * Suruchi's original product template is preserved in git at the pristine
  * backup commit.
+ *
+ * FAQ blocks removed: they were generic questions I wrote, not the store's.
+ * The real per-product FAQs live in snippets/hnl-product-faqs.liquid, scraped
+ * from hooknloop.com.au. Blocks added here still work as a fallback for a
+ * product that has none of its own.
  */
 {
   "sections": {
     "hnl_product": {
       "type": "hnl-product",
-      "blocks": {
-        "f1": {
-          "type": "faq",
-          "settings": {
-            "q": "Do I need the hook side, the loop side, or both?",
-            "a": "Both, unless you already own one side. Hook and loop only stick to each other — a single side on its own has nothing to grip. If you're starting a job from scratch, choose Both."
-          }
-        },
-        "f2": {
-          "type": "faq",
-          "settings": {
-            "q": "Can I cut it to length?",
-            "a": "Yes. Cut it with scissors or a blade to whatever length the job needs. The adhesive and the weave both hold right up to the cut edge."
-          }
-        },
-        "f3": {
-          "type": "faq",
-          "settings": {
-            "q": "Will the adhesive hold outdoors?",
-            "a": "The self-adhesive range handles outdoor use and temperatures from -10°C to 70°C. For rough, dusty or very cold surfaces, sew-on gives a stronger long-term hold."
-          }
-        },
-        "f4": {
-          "type": "faq",
-          "settings": {
-            "q": "How fast will it arrive?",
-            "a": "Orders leave our Australian warehouse in 1–2 business days, and we ship metro and regional Australia-wide. Free shipping applies over $200."
-          }
-        },
-        "f5": {
-          "type": "faq",
-          "settings": {
-            "q": "Do you offer bulk or trade pricing?",
-            "a": "Yes. Volume discounts start at 5 units, and we hold stock for larger commercial orders. Ask us for a bulk quote and we'll price the run for you."
-          }
-        }
-      },
-      "block_order": ["f1", "f2", "f3", "f4", "f5"],
       "settings": {
         "eyebrow": "Australian stock · fast dispatch",
         "stock_flag": "In stock · ships in 1–2 days",
@@ -57,5 +24,7 @@
       }
     }
   },
-  "order": ["hnl_product"]
+  "order": [
+    "hnl_product"
+  ]
 }
