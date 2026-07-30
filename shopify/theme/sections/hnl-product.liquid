@@ -9,6 +9,11 @@
       option "Color"/"Colour" -> .pdp__swatches
       option "Hook or Loop?"  -> .pdp__seg   (Both carries the Recommended flag)
 
+  The "a single side can't fasten on its own" prompt that used to sit under the
+  segmented control is gone. The Recommended flag on Both already carries that
+  point without interrupting a shopper who knows they only want one side —
+  which, for a store selling to trade, is a common and legitimate choice.
+
   Anything else falls back to pills, so a product with a fourth option still
   renders correctly instead of losing a control.
 
@@ -156,10 +161,6 @@
                   {%- endfor -%}
                 </div>
 
-                <p class="pdp__nudge" data-hnl-nudge hidden>
-                  A single side can't fasten on its own.
-                  <button type="button" data-hnl-pick-both>Switch to Both <span data-hnl-both-price></span> &rarr;</button>
-                </p>
 
               {%- else -%}
                 <div class="pdp__pills">
@@ -449,27 +450,6 @@
       history.replaceState({}, '', u);
     }
 
-    updateNudge(opts);
-  }
-
-  /* "A single side can't fasten on its own" — only while a side is chosen and a
-     Both variant genuinely exists at this size/colour. */
-  function updateNudge(opts) {
-    var nudge = root.querySelector('[data-hnl-nudge]');
-    if (!nudge) return;
-    var segGroup = root.querySelector('.pdp__seg');
-    if (!segGroup) return;
-    var idx = optGroups.indexOf(segGroup.closest('[data-hnl-opt]'));
-    var chosen = opts[idx];
-    if (!chosen || chosen.toLowerCase() === 'both') { nudge.hidden = true; return; }
-
-    var probe = opts.slice();
-    probe[idx] = 'Both';
-    var both = findVariant(probe);
-    if (!both) { nudge.hidden = true; return; }
-
-    nudge.hidden = false;
-    nudge.querySelector('[data-hnl-both-price]').textContent = '(' + money(both.price) + ')';
   }
 
   /* Option buttons */
@@ -482,17 +462,6 @@
       render();
     });
   });
-
-  var pickBoth = root.querySelector('[data-hnl-pick-both]');
-  if (pickBoth) {
-    pickBoth.addEventListener('click', function () {
-      var seg = root.querySelector('.pdp__seg');
-      var target = [].filter.call(seg.querySelectorAll('[data-hnl-val]'), function (b) {
-        return b.getAttribute('data-hnl-val').toLowerCase() === 'both';
-      })[0];
-      if (target) target.click();
-    });
-  }
 
   /* Quantity — the two steppers (inline and dock) stay in lockstep. */
   setAll('[data-hnl-qty]', function (b) {
