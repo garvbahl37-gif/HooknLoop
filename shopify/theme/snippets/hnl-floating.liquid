@@ -213,12 +213,10 @@
            _chat-icon-icon the launcher glyph, which is the ONLY chat button on
                            phones (ours is hidden below 900px) -> a chat bubble,
                            the same one our own FAB uses, so the two match. */
-        /* Below 900px the bottom nav owns the bottom of the screen, and
-           SmartBot's launcher sits at bottom:20px — right on top of the
-           Account tab. Lift it clear. */
+        /* The launcher used to be lifted to clear the mobile bottom nav. That
+           nav is gone, so SmartBot's own bottom:20px is correct again and the
+           override would just float it for no reason. */
         var css =
-          '@media (max-width: 900px){[class*="_chat-icon-container"]{bottom:86px!important;}' +
-          '[class*="_notification-card"]{bottom:150px!important;}}' +
           '[class*="_avatar-wrap"]{background-image:' +
             svg('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">' +
                 '<rect width="64" height="64" rx="14" fill="#e87722"/>' +

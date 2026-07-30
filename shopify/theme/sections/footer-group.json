@@ -6,9 +6,10 @@
  * preserved in git at the pristine backup commit; restore this file from there
  * to put the stock footer back.
  *
- * mobile-navigation-bar is KEPT. It is Suruchi's equivalent of the React
- * BottomNav — same five destinations, already wired to the live cart and
- * account routes — so replacing it would be a rewrite with no visible gain.
+ * mobile-navigation-bar is REMOVED. Its five destinations are all reachable
+ * without it: Home, the product menus, Account, Contact and Shipping are in
+ * the hamburger drawer, and search and cart sit in the header bar itself. It
+ * was costing ~70px at the bottom of every phone screen to duplicate them.
  *
  * email-popup is dropped: the redesign's footer already carries the signup,
  * and it was set to "disable" anyway, so nothing is lost.
@@ -66,56 +67,9 @@
         "social_pinterest": "https://www.pinterest.com/hooknloopshop/",
         "social_linkedin": "https://www.linkedin.com/company/hooknloop/"
       }
-    },
-    "mobile-navigation-bar": {
-      "type": "mobile-navigation-bar",
-      "blocks": {
-        "b4ee618f-91b9-432d-ac3c-8ae8426a3c81": {
-          "type": "home",
-          "settings": {
-            "title": "Home"
-          }
-        },
-        "b4266fdf-61ae-4506-8181-af0b645df7d2": {
-          "type": "search",
-          "settings": {
-            "title": "Search"
-          }
-        },
-        "a60d565d-bc06-4c7e-aaad-dd6b7c100cfe": {
-          "type": "link",
-          "settings": {
-            "title": "Shop",
-            "link": "shopify://collections/all"
-          }
-        },
-        "e2d2845d-c7e8-466a-a4d2-12c7d718d200": {
-          "type": "cart",
-          "settings": {
-            "title": "Cart"
-          }
-        },
-        "42c37f7b-e2ef-4572-83af-fdd674fd9866": {
-          "type": "account",
-          "settings": {
-            "title": "Account"
-          }
-        }
-      },
-      "block_order": [
-        "b4ee618f-91b9-432d-ac3c-8ae8426a3c81",
-        "b4266fdf-61ae-4506-8181-af0b645df7d2",
-        "a60d565d-bc06-4c7e-aaad-dd6b7c100cfe",
-        "e2d2845d-c7e8-466a-a4d2-12c7d718d200",
-        "42c37f7b-e2ef-4572-83af-fdd674fd9866"
-      ],
-      "settings": {
-        "color_scheme": "background-1"
-      }
     }
   },
   "order": [
-    "hnl_footer",
-    "mobile-navigation-bar"
+    "hnl_footer"
   ]
 }
