@@ -78,19 +78,27 @@
     {%- endfor -%}
   </div>
 
-  <div class="wrap hs__trust" aria-label="Why shop with us">
-    {%- assign trust = section.settings.trust_items | default: 'Fast Australia-wide delivery|Free shipping over $200|Best price in Australia|5-star rated store' | split: '|' -%}
-    {%- for t in trust -%}
-      <span class="hs__trust-item">
-        {%- if forloop.last -%}
-          <span class="hs__trust-star" aria-hidden="true">★</span>
-        {%- else -%}
-          <svg class="hs__trust-ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>
-        {%- endif -%}
-        {{ t | strip }}
-      </span>
-    {%- endfor -%}
-  </div>
+  {%- comment -%}
+    Trust strip below the banner. Off by default: it repeated the promo bar at
+    the top of the page word for word, so the same four claims appeared twice
+    above the fold. Leave "Trust strip" empty to keep it hidden; fill it in and
+    it comes back.
+  {%- endcomment -%}
+  {%- if section.settings.trust_items != blank -%}
+    <div class="wrap hs__trust" aria-label="Why shop with us">
+      {%- assign trust = section.settings.trust_items | split: '|' -%}
+      {%- for t in trust -%}
+        <span class="hs__trust-item">
+          {%- if forloop.last -%}
+            <span class="hs__trust-star" aria-hidden="true">★</span>
+          {%- else -%}
+            <svg class="hs__trust-ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>
+          {%- endif -%}
+          {{ t | strip }}
+        </span>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
 </section>
 
 <script>
@@ -127,7 +135,7 @@
       "type": "text",
       "id": "trust_items",
       "label": "Trust strip (pipe-separated)",
-      "default": "Fast Australia-wide delivery|Free shipping over $200|Best price in Australia|5-star rated store"
+      "info": "Leave empty to hide the strip below the banner. It duplicated the promo bar at the top of the page."
     },
     {
       "type": "range",
