@@ -6,8 +6,13 @@
 
     - no <source> until the section is near the viewport, so someone who
       bounces off the hero downloads nothing;
-    - phones get the 3.5MB encode, and only after a deliberate tap — a phone on
-      mobile data should never spend megabytes on a video it didn't ask for;
+    - phones get the 3.5MB 854x480 encode, and only after a deliberate tap — a
+      phone on mobile data should never spend megabytes on a video it didn't
+      ask for;
+    - desktop gets hnl-film-desktop.mp4: 1280x720 at 1.44 Mbps, two-pass x264
+      from the 1080p master. Desktop was previously served the MOBILE file,
+      which is 854x480 at 377 kbps and looked exactly as bad as that sounds on
+      a 920px-wide frame;
     - desktop autoplays muted but pauses once scrolled out of view, so we never
       decode frames nobody is looking at;
     - prefers-reduced-motion never autoplays anywhere.
@@ -27,7 +32,7 @@
 
     <div class="film__frame"
          data-hnl-film
-         data-src-desktop="{{ section.settings.video_url | default: '' }}{% if section.settings.video_url == blank %}{{ 'hnl-film-mobile.mp4' | asset_url }}{% endif %}"
+         data-src-desktop="{{ section.settings.video_url | default: '' }}{% if section.settings.video_url == blank %}{{ 'hnl-film-desktop.mp4' | asset_url }}{% endif %}"
          data-src-mobile="{{ 'hnl-film-mobile.mp4' | asset_url }}">
       <video class="film__video"
              muted loop playsinline preload="none"

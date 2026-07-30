@@ -15,7 +15,7 @@
 <section class="hs" aria-roledescription="carousel" aria-label="Featured" data-hnl-hero>
   <div class="hs__glow" aria-hidden="true"></div>
 
-  <div class="wrap hs__stage">
+  <div class="wrap hs__stage" id="hnl-hero-stage">
     {%- for block in section.blocks -%}
       <div class="hs__slide {% if forloop.first %}is-active{% endif %}"
            {% unless forloop.first %}aria-hidden="true"{% endunless %}
@@ -79,6 +79,20 @@
   </div>
 
   {%- comment -%}
+    Prev / next. Not in the React version, which only auto-advanced — a shopper
+    who wanted the offer they just saw scroll past had no way back to it.
+    Rendered only when there is more than one slide.
+  {%- endcomment -%}
+  {%- if section.blocks.size > 1 and section.settings.show_arrows -%}
+    <button class="hs__arrow hs__arrow--prev" data-hnl-hero-prev aria-label="Previous slide" aria-controls="hnl-hero-stage">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+    </button>
+    <button class="hs__arrow hs__arrow--next" data-hnl-hero-next aria-label="Next slide" aria-controls="hnl-hero-stage">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+    </button>
+  {%- endif -%}
+
+  {%- comment -%}
     Trust strip below the banner. Off by default: it repeated the promo bar at
     the top of the page word for word, so the same four claims appeared twice
     above the fold. Leave "Trust strip" empty to keep it hidden; fill it in and
@@ -114,14 +128,53 @@
 
     var i = 0;
     var DUR = {{ section.settings.duration | default: 5000 }};
+    var timer = null;
 
-    setInterval(function () {
+    function show(n) {
       slides[i].classList.remove('is-active');
       slides[i].setAttribute('aria-hidden', 'true');
-      i = (i + 1) % slides.length;
+      i = (n + slides.length) % slides.length;
       slides[i].classList.add('is-active');
       slides[i].removeAttribute('aria-hidden');
-    }, DUR);
+    }
+
+    /* Restart the clock after a manual move, so someone who just clicked to a
+       slide gets the full duration to read it rather than the remainder. */
+    function start() { clearInterval(timer); timer = setInterval(function () { show(i + 1); }, DUR); }
+    function go(n) { show(n); start(); }
+
+    start();
+
+    var prev = root.querySelector('[data-hnl-hero-prev]');
+    var next = root.querySelector('[data-hnl-hero-next]');
+    if (prev) prev.addEventListener('click', function () { go(i - 1); });
+    if (next) next.addEventListener('click', function () { go(i + 1); });
+
+    /* Arrow keys, once the carousel has focus. */
+    root.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowLeft') { e.preventDefault(); go(i - 1); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); go(i + 1); }
+    });
+
+    /* Swipe. Horizontal intent only — a mostly-vertical drag is the shopper
+       scrolling the page, and stealing that would make the hero a trap. */
+    var x0 = null, y0 = null;
+    root.addEventListener('touchstart', function (e) {
+      x0 = e.touches[0].clientX; y0 = e.touches[0].clientY;
+    }, { passive: true });
+    root.addEventListener('touchend', function (e) {
+      if (x0 === null) return;
+      var dx = e.changedTouches[0].clientX - x0;
+      var dy = e.changedTouches[0].clientY - y0;
+      if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) go(dx < 0 ? i + 1 : i - 1);
+      x0 = y0 = null;
+    }, { passive: true });
+
+    /* Stop the timer while the tab is hidden — nobody is watching, and a
+       backgrounded tab that keeps swapping slides just burns battery. */
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) clearInterval(timer); else start();
+    });
   })();
 </script>
 
@@ -136,6 +189,12 @@
       "id": "trust_items",
       "label": "Trust strip (pipe-separated)",
       "info": "Leave empty to hide the strip below the banner. It duplicated the promo bar at the top of the page."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrows",
+      "label": "Show previous / next arrows",
+      "default": true
     },
     {
       "type": "range",
