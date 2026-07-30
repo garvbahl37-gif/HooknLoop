@@ -79,17 +79,30 @@
   </div>
 
   {%- comment -%}
-    Prev / next. Not in the React version, which only auto-advanced — a shopper
-    who wanted the offer they just saw scroll past had no way back to it.
-    Rendered only when there is more than one slide.
+    Slide indicator. slides.css already carries .hs__nav / .hs__dots / .hs__dot
+    / .hs__dot-fill and the hsFill keyframe, but the React component never
+    rendered any of it — orphaned styles for a control that did not exist. This
+    is that control: a dot per slide, the active one widening, and an orange bar
+    filling across it for the length of the slide so the wait is visible rather
+    than a surprise.
+
+    Each dot is a real button, so a shopper can jump straight to a slide instead
+    of stepping through it.
   {%- endcomment -%}
-  {%- if section.blocks.size > 1 and section.settings.show_arrows -%}
-    <button class="hs__arrow hs__arrow--prev" data-hnl-hero-prev aria-label="Previous slide" aria-controls="hnl-hero-stage">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
-    </button>
-    <button class="hs__arrow hs__arrow--next" data-hnl-hero-next aria-label="Next slide" aria-controls="hnl-hero-stage">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
-    </button>
+  {%- if section.blocks.size > 1 and section.settings.show_dots -%}
+    <div class="hs__nav">
+      <div class="hs__dots" role="tablist" aria-label="Choose a slide">
+        {%- for block in section.blocks -%}
+          <button class="hs__dot {% if forloop.first %}is-active{% endif %}"
+                  data-hnl-hero-dot="{{ forloop.index0 }}"
+                  role="tab"
+                  aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+                  aria-label="Slide {{ forloop.index }}{% if block.settings.title != blank %}: {{ block.settings.title | strip_html | escape }}{% endif %}">
+            {%- if forloop.first -%}<i class="hs__dot-fill" data-hnl-hero-fill></i>{%- endif -%}
+          </button>
+        {%- endfor -%}
+      </div>
+    </div>
   {%- endif -%}
 
   {%- comment -%}
@@ -136,6 +149,7 @@
       i = (n + slides.length) % slides.length;
       slides[i].classList.add('is-active');
       slides[i].removeAttribute('aria-hidden');
+      if (typeof paintDots === 'function') paintDots();
     }
 
     /* Restart the clock after a manual move, so someone who just clicked to a
@@ -145,10 +159,34 @@
 
     start();
 
-    var prev = root.querySelector('[data-hnl-hero-prev]');
-    var next = root.querySelector('[data-hnl-hero-next]');
-    if (prev) prev.addEventListener('click', function () { go(i - 1); });
-    if (next) next.addEventListener('click', function () { go(i + 1); });
+    var dots = [].slice.call(root.querySelectorAll('[data-hnl-hero-dot]'));
+
+    /* The fill is re-created rather than restarted, because re-triggering a CSS
+       animation on the same node needs a reflow hack that browsers disagree on.
+       A fresh element always animates from zero. */
+    function paintDots() {
+      dots.forEach(function (d, n) {
+        var on = n === i;
+        d.classList.toggle('is-active', on);
+        d.setAttribute('aria-selected', on ? 'true' : 'false');
+        var fill = d.querySelector('.hs__dot-fill');
+        if (fill) fill.remove();
+        if (on) {
+          fill = document.createElement('i');
+          fill.className = 'hs__dot-fill';
+          fill.style.animationDuration = DUR + 'ms';
+          d.appendChild(fill);
+        }
+      });
+    }
+
+    dots.forEach(function (d, n) {
+      d.addEventListener('click', function () { go(n); });
+    });
+    if (dots.length) {
+      var firstFill = root.querySelector('[data-hnl-hero-fill]');
+      if (firstFill) firstFill.style.animationDuration = DUR + 'ms';
+    }
 
     /* Arrow keys, once the carousel has focus. */
     root.addEventListener('keydown', function (e) {
@@ -192,8 +230,8 @@
     },
     {
       "type": "checkbox",
-      "id": "show_arrows",
-      "label": "Show previous / next arrows",
+      "id": "show_dots",
+      "label": "Show slide dots",
       "default": true
     },
     {

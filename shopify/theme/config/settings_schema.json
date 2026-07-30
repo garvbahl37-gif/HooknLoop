@@ -74,6 +74,36 @@
         "label": "Show the chat app's pop-up greeting",
         "default": false,
         "info": "SmartBot's \"Ready to find the right fastening solution?\" bubble that appears unprompted. Off by default — it covers content and interrupts the shopper. Turning it off here only hides it on this theme; SmartBot's own settings are the permanent home for it."
+      },
+      {
+        "type": "header",
+        "content": "Mobile"
+      },
+      {
+        "type": "checkbox",
+        "id": "hnl_mobile_callbar",
+        "label": "Show the \"Stuck? Call Us\" bar on phones",
+        "default": true,
+        "info": "The floating call button is hidden below 900px by design, so this is the only tap-to-call on a phone. The live store has the same row."
+      },
+      {
+        "type": "text",
+        "id": "hnl_mobile_callbar_text",
+        "label": "Call bar text",
+        "default": "Stuck? Call Us"
+      },
+      {
+        "type": "checkbox",
+        "id": "hnl_mobile_search_icon",
+        "label": "Show the search icon in the mobile header",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "hnl_cart_count_always",
+        "label": "Always show the cart count, even at zero",
+        "default": true,
+        "info": "Matches the live store, which shows a 0 badge."
       }
     ]
   },

@@ -171,56 +171,35 @@
   border-collapse: collapse;
 }
 
-/* ── Hero prev / next ─────────────────────────────────────────────────────
-   New work — the React hero only auto-advanced, so there is nothing to port.
-   Glass-on-navy, matching the .fab treatment rather than inventing a look.
+/* ── Hero slide dots ──────────────────────────────────────────────────────
+   slides.css already styles .hs__nav / .hs__dots / .hs__dot / .hs__dot-fill
+   and defines the hsFill keyframe — the React component just never rendered
+   them, so it was dead CSS. The markup exists now, and these are the few bits
+   the original rules assumed but did not set, because they were written for
+   divs rather than buttons.
 
-   Sits inside the hero's own padding, not over the copy, so it never covers
-   the headline or a CTA at any width. */
-.hs__arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 4;
-  width: 44px;
-  height: 44px;
-  display: grid;
-  place-items: center;
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(6px);
-  color: #fff;
+   The React rule hides .hs__dot-fill under 640px. Kept: on a phone the bar is
+   5px of movement nobody reads, and it repaints every 5 seconds. */
+.hs__nav { position: relative; z-index: 4; }
+.hs__dot {
+  border: 0;
+  padding: 0;
   cursor: pointer;
-  transition: background 0.15s, border-color 0.15s, transform 0.14s;
+  transition: width 0.24s cubic-bezier(0.22, 0.61, 0.24, 1), background 0.2s;
 }
-.hs__arrow:hover {
-  background: var(--orange);
-  border-color: var(--orange);
-  color: var(--navy);
-}
-.hs__arrow:active { transform: translateY(-50%) scale(0.94); }
-.hs__arrow:focus-visible {
+.hs__dot:focus-visible {
   outline: 2px solid #fff;
-  outline-offset: 3px;
+  outline-offset: 4px;
 }
-.hs__arrow--prev { left: 18px; }
-.hs__arrow--next { right: 18px; }
-
-/* The hero is the positioning context for the arrows. */
-.hs { position: relative; }
-
-@media (max-width: 900px) {
-  /* Smaller, tucked to the edges — the copy column runs nearly full width
-     here, and swipe is the primary gesture on a phone anyway. */
-  .hs__arrow { width: 38px; height: 38px; }
-  .hs__arrow--prev { left: 8px; }
-  .hs__arrow--next { right: 8px; }
-  .hs__arrow svg { width: 17px; height: 17px; }
+/* Bigger tap target than the 30x5 bar, without changing how it looks. */
+.hs__dot::after {
+  content: '';
+  position: absolute;
+  inset: -14px -4px;
 }
 @media (prefers-reduced-motion: reduce) {
-  .hs__arrow { transition: none; }
-  .hs__arrow:active { transform: translateY(-50%); }
+  .hs__dot { transition: none; }
+  .hs__dot-fill { animation: none; transform: scaleX(1); }
 }
 
 /* ── Newsletter popup ─────────────────────────────────────────────────────
@@ -641,4 +620,81 @@
 }
 .pc__add[disabled]:hover {
   background: #8b96ab;
+}
+
+/* ── Mobile header, matched to the live store ─────────────────────────────
+   Three differences against hooknloop.com.au on a phone, all of them the
+   React design's deliberate choices rather than bugs — but the live store is
+   the reference here, and one of them cost real function.
+
+   1. header.css line 99 hides .icn--searchlink on mobile ("cart is the only
+      top action; rest live in the tab bar/drawer"). The live store keeps a
+      magnifier in the header, and search is the fastest route into a
+      12-product catalogue. Restored.
+   2. The cart badge only rendered above zero; the live store shows a 0.
+   3. The call bar below. floating.css hides the call FAB below 900px, so
+      before this a phone had no tap-to-call at all on a store whose whole
+      proposition is talking to a real person in Australia. */
+@media (max-width: 900px) {
+  .bar__actions .icn--searchlink { display: grid; }
+}
+
+.callbar {
+  display: none;
+  align-items: center;
+  gap: 11px;
+  padding: 10px var(--sp-5);
+  background: #fff;
+  border-bottom: 1px solid var(--line-card);
+  color: var(--navy);
+  text-decoration: none;
+}
+@media (max-width: 900px) {
+  .callbar { display: flex; }
+}
+.callbar__icn {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(232, 119, 34, 0.12);
+  color: var(--orange-ink);
+}
+.callbar__txt {
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 15.2px;
+  letter-spacing: -0.01em;
+}
+.callbar__num {
+  margin-left: auto;
+  font-size: 13.6px;
+  font-weight: 700;
+  color: var(--orange-ink);
+  white-space: nowrap;
+}
+/* Under 380px the number and the label fight for the same row. */
+@media (max-width: 380px) {
+  .callbar__num { display: none; }
+}
+
+/* ── Chat stays reachable at the footer ───────────────────────────────────
+   floating.css parks BOTH FABs once the footer is in view (.is-parked), which
+   was right in React: the chat panel there was a decorative front-end mock, so
+   losing it cost nothing. Here the chat button is the launcher for SmartBot,
+   a real bot — and SmartBot's own bubble is hidden on desktop because we drive
+   it. Parking therefore removed chat entirely at the bottom of the page, which
+   is exactly where a shopper who has read everything and is still unsure would
+   reach for it. Measured on desktop: visible at every scroll position until the
+   footer, then visibility:hidden with nothing to replace it.
+
+   The call FAB still parks — the footer prints the phone number in full, so
+   nothing is lost there. */
+.fabchat.is-parked {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: none;
 }
