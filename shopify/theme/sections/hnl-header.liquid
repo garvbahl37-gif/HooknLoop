@@ -237,20 +237,29 @@
   var section = document.querySelector('.hnl-header-section');
   if (!section) return;
 
-  /* Which bar pins depends on the breakpoint: the blue mega-nav on desktop,
-     the compact app bar below 900px. Keep 900 in step with the media query in
+  /* Which row pins depends on the breakpoint, and it is NOT the whole header:
+     the nav on desktop, and below 900px the compact logo/cart bar. Measured on
+     hooknloop.com.au, that bar is what its own sticky header pins (60px), not
+     the promo strip and call row above it. Pinning all 154px made a third of a
+     phone screen slide about. Keep 900 in step with the media query in
      hnl-shopify-overrides.css and with header.css. */
   var wide = window.matchMedia('(min-width: 901px)');
   var spacer = document.createElement('div');
   spacer.className = 'hnl-nav-spacer';
-  var bar = null, barTop = 0, lastY = window.pageYOffset, pinned = false;
+  var bar = null, barTop = 0, pinned = false, ticking = false;
+
+  /* Pin a little AFTER the bar's natural position rather than exactly at it.
+     At the threshold the two states are one pixel apart, and momentum scroll
+     on a phone crosses that boundary repeatedly — which is what made the
+     header flicker in and out. */
+  var HYSTERESIS = 24;
 
   function pick() {
-    return wide.matches ? section.querySelector('.nav') : section.querySelector('.hdr');
+    return wide.matches ? section.querySelector('.nav') : section.querySelector('.bar');
   }
 
   function reset() {
-    if (bar) { bar.classList.remove('is-pinned', 'is-shown'); }
+    if (bar) bar.classList.remove('is-pinned');
     spacer.classList.remove('is-on');
     spacer.style.height = '';
     pinned = false;
@@ -260,44 +269,45 @@
     if (spacer.parentNode !== bar.parentNode || spacer.nextSibling !== bar) {
       bar.parentNode.insertBefore(spacer, bar);
     }
-    /* Distance from the top of the document to where the bar naturally sits.
-       Measured with the bar in flow, so it must be read while unpinned. */
+    /* Read while unpinned — once fixed, the bar is out of flow and this
+       measurement would collapse to the viewport position. */
     barTop = bar.getBoundingClientRect().top + window.pageYOffset;
   }
 
-  function onScroll() {
+  /* Once pinned it STAYS pinned. An earlier version hid the bar on scroll down
+     and revealed it on scroll up; that flipped on every few pixels of direction
+     change, and it also meant the bar was missing exactly when someone scrolling
+     down wanted to reach the nav. */
+  function apply() {
+    ticking = false;
     if (!bar) return;
     var y = window.pageYOffset;
 
-    if (y > barTop) {
-      if (!pinned) {
-        pinned = true;
-        spacer.style.height = bar.offsetHeight + 'px';
-        spacer.classList.add('is-on');
-        bar.classList.add('is-pinned');
-        /* Next frame, so the browser paints the -100% start position before
-           the transition to 0 — otherwise it snaps in with no animation. */
-        requestAnimationFrame(function () {
-          if (pinned && y < lastY) bar.classList.add('is-shown');
-        });
-      } else {
-        /* Down hides it, up brings it back — the live store's behaviour. */
-        bar.classList.toggle('is-shown', y < lastY);
-      }
-    } else if (pinned) {
+    if (!pinned && y > barTop + HYSTERESIS) {
+      pinned = true;
+      spacer.style.height = bar.offsetHeight + 'px';
+      spacer.classList.add('is-on');
+      bar.classList.add('is-pinned');
+    } else if (pinned && y <= barTop) {
       pinned = false;
-      bar.classList.remove('is-pinned', 'is-shown');
+      bar.classList.remove('is-pinned');
       spacer.classList.remove('is-on');
       spacer.style.height = '';
     }
+  }
 
-    lastY = y;
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(apply);
   }
 
   reset();
+  apply();
   window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', function () { reset(); onScroll(); }, { passive: true });
-  (wide.addEventListener ? wide.addEventListener('change', reset) : wide.addListener(reset));
+  window.addEventListener('resize', function () { reset(); apply(); }, { passive: true });
+  (wide.addEventListener ? wide.addEventListener('change', function () { reset(); apply(); })
+                         : wide.addListener(function () { reset(); apply(); }));
 })();
 </script>
 

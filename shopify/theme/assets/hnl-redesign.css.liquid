@@ -2778,63 +2778,54 @@ body.drawer-open { overflow: hidden; }
    header.css gives .nav `position: sticky; top: 0`, and in the React app that
    works because .nav's ancestors run to <body>. Shopify wraps every section in
    its own <div id="shopify-section-…">, and a sticky element can only travel
-   inside its own parent's box — that wrapper is 179px tall, so the nav slid
-   away with the header and was off-screen by the first scroll. Measured: after
-   scrolling 1400px the nav sat at top: -1275.
+   inside its parent's box — that wrapper is 179px tall, so the nav slid away
+   with the header. Measured: after scrolling 1400px it sat at top: -1275,
+   completely off screen. So it was never sticky here at all.
 
-   So the pinning is driven from JS instead, which also gets the behaviour the
-   live store has: scrolling DOWN lets the bar go, scrolling UP brings it
-   straight back. A spacer takes over the nav's height while it is fixed, so
-   nothing under it jumps.
+   Driven from JS instead. Once pinned it stays pinned: no hide-on-scroll-down,
+   which is both what was asked for and the only way to stop a phone's momentum
+   scroll flipping it in and out.
+
+   Below 900px it is the compact .bar that pins, not the whole .hdr — the live
+   store pins the equivalent 60px row, and sliding all 154px around was a third
+   of a phone screen in motion.
 
    .hnl-header-section is the wrapper class declared in the section schema. */
-.hnl-header-section .nav {
+.hnl-header-section .nav,
+.hnl-header-section .bar {
   position: relative;
   top: auto;
 }
-.hnl-nav-spacer {
-  display: none;
-}
-.hnl-nav-spacer.is-on {
-  display: block;
-}
+.hnl-nav-spacer { display: none; }
+.hnl-nav-spacer.is-on { display: block; }
 
-.hnl-header-section .nav.is-pinned {
+.hnl-header-section .nav.is-pinned,
+.hnl-header-section .bar.is-pinned {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 100;
-  transform: translateY(-100%);
-  transition: transform 0.28s cubic-bezier(0.22, 0.61, 0.24, 1);
+  animation: hnlPinIn 0.22s cubic-bezier(0.22, 0.61, 0.24, 1);
 }
-.hnl-header-section .nav.is-pinned.is-shown {
-  transform: none;
+/* The bar carries no background of its own in flow — over content it needs one,
+   plus a shadow to lift it off whatever it is covering. */
+.hnl-header-section .bar.is-pinned {
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(12, 30, 80, 0.14);
 }
-@media (prefers-reduced-motion: reduce) {
-  .hnl-header-section .nav.is-pinned { transition: none; }
+.hnl-header-section .nav.is-pinned {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 10px 28px rgba(12, 30, 80, 0.24);
 }
 
-/* Below 900px the blue mega-nav is replaced by the compact app bar, so it is
-   .hdr that pins — same mechanism, same classes. */
-@media (max-width: 900px) {
-  .hnl-header-section .hdr {
-    position: relative;
-    top: auto;
-  }
-  .hnl-header-section .hdr.is-pinned {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 100;
-    transform: translateY(-100%);
-    transition: transform 0.28s cubic-bezier(0.22, 0.61, 0.24, 1);
-    box-shadow: 0 8px 24px rgba(12, 30, 80, 0.18);
-  }
-  .hnl-header-section .hdr.is-pinned.is-shown {
-    transform: none;
-  }
+/* Slides down once, when it pins — not on every scroll tick. */
+@keyframes hnlPinIn {
+  from { transform: translateY(-100%); }
+  to   { transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hnl-header-section .nav.is-pinned,
+  .hnl-header-section .bar.is-pinned { animation: none; }
 }
 
 /* ── Real page copy (.policy2__rte, .page__prose) ─────────────────────────
