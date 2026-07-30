@@ -1,0 +1,168 @@
+{%- comment -%}
+  HooknLoop hero — port of storefront/src/components/HeroSlides.jsx
+
+  Same markup and class names as the React version, so hnl-redesign.css
+  (which is slides.css verbatim) styles it without modification.
+
+  The React version auto-advances with a useEffect interval; here that's ~20
+  lines of vanilla JS at the bottom. Behaviour is identical: rotate every 5s,
+  never pauses, reduced-motion gets a fade rather than a slide (handled in CSS).
+
+  Slides are editable in the theme editor via blocks, so this isn't hardcoded
+  the way the React data array was.
+{%- endcomment -%}
+
+<section class="hs" aria-roledescription="carousel" aria-label="Featured" data-hnl-hero>
+  <div class="hs__glow" aria-hidden="true"></div>
+
+  <div class="wrap hs__stage">
+    {%- for block in section.blocks -%}
+      <div class="hs__slide {% if forloop.first %}is-active{% endif %}"
+           {% unless forloop.first %}aria-hidden="true"{% endunless %}
+           {{ block.shopify_attributes }}>
+        <div class="hs__copy">
+          {%- if block.settings.eyebrow != blank -%}
+            <span class="hs__eyebrow"><i class="hs__eyebrow-line" aria-hidden="true"></i>{{ block.settings.eyebrow }}</span>
+          {%- endif -%}
+
+          {%- comment -%} Exactly one H1 on the page, same as the React version. {%- endcomment -%}
+          {%- if forloop.first -%}
+            <h1 class="hs__title">{{ block.settings.title }}<br><span class="hs__accent">{{ block.settings.accent }}</span></h1>
+          {%- else -%}
+            <p class="hs__title">{{ block.settings.title }}<br><span class="hs__accent">{{ block.settings.accent }}</span></p>
+          {%- endif -%}
+
+          {%- if block.settings.bullets != blank -%}
+            <ul class="hs__bullets">
+              {%- assign bullets = block.settings.bullets | split: '|' -%}
+              {%- for b in bullets -%}
+                <li class="hs__bullet">
+                  <span class="hs__check" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg></span>{{ b | strip }}
+                </li>
+              {%- endfor -%}
+            </ul>
+          {%- else -%}
+            {%- if block.settings.sub != blank -%}<p class="hs__sub">{{ block.settings.sub }}</p>{%- endif -%}
+            {%- if block.settings.spec != blank -%}
+              <div class="hs__spec" aria-hidden="true">
+                {%- assign specs = block.settings.spec | split: '|' -%}
+                {%- for s in specs -%}
+                  <span class="hs__spec-part">{% unless forloop.first %}<span class="hs__spec-div">/</span>{% endunless %}{{ s | strip }}</span>
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
+          {%- endif -%}
+
+          <div class="hs__cta">
+            <a href="{{ block.settings.cta_link | default: routes.all_products_collection_url }}" class="btn btn--primary">{{ block.settings.cta_label }}<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            {%- if block.settings.cta2_label != blank -%}
+              <a href="{{ block.settings.cta2_link | default: routes.all_products_collection_url }}" class="btn btn--ghost">{{ block.settings.cta2_label }}</a>
+            {%- endif -%}
+          </div>
+        </div>
+
+        <div class="hs__figure">
+          <div class="hs__card {% if block.settings.is_photo %}hs__card--photo{% endif %}">
+            {%- if block.settings.tag != blank -%}<span class="hs__tag">{{ block.settings.tag }}</span>{%- endif -%}
+            {%- if block.settings.image != blank -%}
+              {{ block.settings.image | image_url: width: 900 | image_tag: alt: '', draggable: 'false', loading: forloop.first | default: 'lazy' }}
+            {%- else -%}
+              <img src="{{ block.settings.asset_image | default: 'hnl-self-adhesive-roll-1.jpg' | asset_url }}" alt="" draggable="false" {% unless forloop.first %}loading="lazy"{% endunless %}>
+            {%- endif -%}
+          </div>
+          {%- if block.settings.price_from != blank -%}
+            <div class="hs__price"><span class="hs__price-from">FROM</span><span class="hs__price-amt">${{ block.settings.price_from }}</span></div>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+
+  <div class="wrap hs__trust" aria-label="Why shop with us">
+    {%- assign trust = section.settings.trust_items | default: 'Fast Australia-wide delivery|Free shipping over $200|Best price in Australia|5-star rated store' | split: '|' -%}
+    {%- for t in trust -%}
+      <span class="hs__trust-item">
+        {%- if forloop.last -%}
+          <span class="hs__trust-star" aria-hidden="true">★</span>
+        {%- else -%}
+          <svg class="hs__trust-ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>
+        {%- endif -%}
+        {{ t | strip }}
+      </span>
+    {%- endfor -%}
+  </div>
+</section>
+
+<script>
+  (function () {
+    var root = document.currentScript.previousElementSibling;
+    if (!root || !root.hasAttribute('data-hnl-hero')) {
+      root = document.querySelector('[data-hnl-hero]');
+    }
+    if (!root) return;
+
+    var slides = root.querySelectorAll('.hs__slide');
+    if (slides.length < 2) return;
+
+    var i = 0;
+    var DUR = {{ section.settings.duration | default: 5000 }};
+
+    setInterval(function () {
+      slides[i].classList.remove('is-active');
+      slides[i].setAttribute('aria-hidden', 'true');
+      i = (i + 1) % slides.length;
+      slides[i].classList.add('is-active');
+      slides[i].removeAttribute('aria-hidden');
+    }, DUR);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "HooknLoop hero",
+  "tag": "section",
+  "class": "hnl-hero-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "trust_items",
+      "label": "Trust strip (pipe-separated)",
+      "default": "Fast Australia-wide delivery|Free shipping over $200|Best price in Australia|5-star rated store"
+    },
+    {
+      "type": "range",
+      "id": "duration",
+      "min": 3000,
+      "max": 9500,
+      "step": 500,
+      "unit": "ms",
+      "label": "Seconds per slide",
+      "default": 5000
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+        { "type": "text", "id": "title", "label": "Title (first line)" },
+        { "type": "text", "id": "accent", "label": "Title (orange second line)" },
+        { "type": "textarea", "id": "bullets", "label": "Bullets (pipe-separated)", "info": "Use for the first slide. Leave blank to use the subheading + spec instead." },
+        { "type": "textarea", "id": "sub", "label": "Subheading" },
+        { "type": "text", "id": "spec", "label": "Spec chips (pipe-separated)" },
+        { "type": "text", "id": "cta_label", "label": "Primary button" },
+        { "type": "url", "id": "cta_link", "label": "Primary button link" },
+        { "type": "text", "id": "cta2_label", "label": "Secondary button" },
+        { "type": "url", "id": "cta2_link", "label": "Secondary button link" },
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "asset_image", "label": "Fallback theme asset", "info": "Used only when no image is picked above." },
+        { "type": "text", "id": "tag", "label": "Corner tag" },
+        { "type": "text", "id": "price_from", "label": "From price", "info": "Number only, e.g. 24.46" },
+        { "type": "checkbox", "id": "is_photo", "label": "Photo style card", "default": false }
+      ]
+    }
+  ],
+  "presets": [{ "name": "HooknLoop hero" }]
+}
+{% endschema %}

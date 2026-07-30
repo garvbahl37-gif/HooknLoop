@@ -1,0 +1,72 @@
+{%- comment -%}
+  One-Stop Shop bento — port of OneStop() from storefront/src/sections/Basic.jsx
+  Each tile deep-links to a real product page rather than a collection listing,
+  which is what the React version did.
+{%- endcomment -%}
+
+<section class="os" aria-labelledby="os-h">
+  <div class="wrap">
+    <div class="sec-head">
+      {%- if section.settings.eyebrow != blank -%}<span class="sec-eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
+      <h2 id="os-h" class="sec-h2">{{ section.settings.heading }}</h2>
+      {%- if section.settings.sub != blank -%}<p class="sec-sub">{{ section.settings.sub }}</p>{%- endif -%}
+    </div>
+
+    <div class="os__grid">
+      {%- for block in section.blocks -%}
+        {%- assign pos = forloop.index0 -%}
+        {%- case pos -%}
+          {%- when 0 -%}{%- assign cls = 'os__tile--a' -%}
+          {%- when 1 -%}{%- assign cls = 'os__tile--b' -%}
+          {%- when 2 -%}{%- assign cls = 'os__tile--c' -%}
+          {%- else -%}{%- assign cls = 'os__tile--d' -%}
+        {%- endcase -%}
+
+        {%- assign prod = all_products[block.settings.product_handle] -%}
+        {%- if prod != blank and prod.handle -%}
+          {%- assign link = prod.url -%}
+        {%- else -%}
+          {%- assign link = block.settings.fallback_link | default: routes.all_products_collection_url -%}
+        {%- endif -%}
+
+        <a href="{{ link }}" class="os__tile {{ cls }}" aria-label="Shop {{ block.settings.title }}" {{ block.shopify_attributes }}>
+          <span class="os__media">
+            {%- if block.settings.image != blank -%}
+              {{ block.settings.image | image_url: width: 900 | image_tag: alt: block.settings.title, loading: 'lazy' }}
+            {%- else -%}
+              <img src="{{ block.settings.asset_image | asset_url }}" alt="{{ block.settings.title | escape }}" loading="lazy">
+            {%- endif -%}
+          </span>
+          <span class="os__name">{{ block.settings.title }}</span>
+          <span class="os__shop">Shop now<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "HooknLoop one-stop",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Shop by category" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Australia's One-Stop Shop for Hook and Loop Tapes" },
+    { "type": "textarea", "id": "sub", "label": "Intro", "default": "Welcome to HooknLoop.com.au, your trusted Australian destination for premium hook and loop tape solutions. We specialise exclusively in this fastening system, making it simple to find the right product for home, commercial, industrial, and DIY use." }
+  ],
+  "blocks": [
+    {
+      "type": "tile",
+      "name": "Tile",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "text", "id": "product_handle", "label": "Product handle", "info": "Links straight to this product. Falls back to the link below if the handle doesn't exist." },
+        { "type": "url", "id": "fallback_link", "label": "Fallback link" },
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "asset_image", "label": "Fallback theme asset" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "HooknLoop one-stop" }]
+}
+{% endschema %}

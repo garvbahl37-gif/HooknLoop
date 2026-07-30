@@ -1,0 +1,53 @@
+{%- comment -%}
+  Trust bar — port of TrustBar() from sections/Basic.jsx.
+  Shipping / payment / returns reassurance, sits above the footer.
+{%- endcomment -%}
+
+{%- capture icon_truck -%}<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6h11v11H2zM13 9h4l3 3v5h-7"/><circle cx="6" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg>{%- endcapture -%}
+{%- capture icon_shield -%}<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3Z"/><path d="m9 12 2 2 4-4"/></svg>{%- endcapture -%}
+{%- capture icon_returns -%}<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8m0-5v5h5"/></svg>{%- endcapture -%}
+
+<section class="trust" aria-label="Shipping, payment and returns">
+  <div class="wrap">
+    <div class="trust__bar">
+      {%- for block in section.blocks -%}
+        <div class="trust__item" {{ block.shopify_attributes }}>
+          <span class="trust__icn">
+            {%- case block.settings.icon -%}
+              {%- when 'shield' -%}{{ icon_shield }}
+              {%- when 'returns' -%}{{ icon_returns }}
+              {%- else -%}{{ icon_truck }}
+            {%- endcase -%}
+          </span>
+          <div class="trust__copy"><b>{{ block.settings.title }}</b><span>{{ block.settings.sub }}</span></div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "HooknLoop trust bar",
+  "tag": "section",
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Item",
+      "settings": [
+        {
+          "type": "select", "id": "icon", "label": "Icon", "default": "truck",
+          "options": [
+            { "value": "truck", "label": "Delivery" },
+            { "value": "shield", "label": "Secure payment" },
+            { "value": "returns", "label": "Returns" }
+          ]
+        },
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "text", "id": "sub", "label": "Subtitle" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "HooknLoop trust bar" }]
+}
+{% endschema %}

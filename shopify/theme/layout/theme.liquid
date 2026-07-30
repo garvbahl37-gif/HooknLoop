@@ -76,6 +76,12 @@
     {{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}
     {{ 'glightbox.min.css' | asset_url | stylesheet_tag }}
     {{ 'theme.css' | asset_url | stylesheet_tag }}
+    {%- comment -%}
+      HooknLoop redesign. Loaded AFTER theme.css so its tokens and section
+      styles win over Suruchi's defaults. Only affects markup using the hnl-*
+      sections; every stock Suruchi section renders exactly as before.
+    {%- endcomment -%}
+    {{ 'hnl-redesign.css' | asset_url | stylesheet_tag }}
     {%- if theme_rtl -%}
       {{ 'rtl.css' | asset_url | stylesheet_tag }}
     {%- endif -%}
