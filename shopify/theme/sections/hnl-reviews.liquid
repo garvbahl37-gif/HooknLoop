@@ -1,0 +1,107 @@
+{%- comment -%}
+  Reviews — port of storefront/src/sections/TrustReviews.jsx
+
+  The React version hardcodes the six testimonials. Here each one is a block, so
+  a new review is an editor action rather than a code change — and the header
+  rating is a setting, since 4.87 / 15 will drift.
+
+  The header stars render a partial fill (4.87 of 5 lights 87% of the last star)
+  using the same inline linearGradient the React Stars component builds. Liquid
+  has no per-iteration state, so the fill percentage is computed from the index.
+{%- endcomment -%}
+
+{%- liquid
+  assign score = section.settings.score | default: 4.87
+  assign full = score | floor
+  assign frac = score | minus: full | times: 100 | round
+-%}
+
+<section class="rv" aria-labelledby="rv-h">
+  <div class="wrap">
+    <div class="sec-head rv__head">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="sec-eyebrow">{{ section.settings.eyebrow }}</span>
+      {%- endif -%}
+      <h2 id="rv-h" class="sec-h2">{{ section.settings.heading }}</h2>
+
+      <div class="rv__rating">
+        <span class="rv__stars" role="img" aria-label="Rated {{ score }} out of 5">
+          {%- for i in (0..4) -%}
+            {%- liquid
+              assign pct = 0
+              if i < full
+                assign pct = 100
+              elsif i == full
+                assign pct = frac
+              endif
+            -%}
+            <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+              {%- if pct < 100 -%}
+                <defs><linearGradient id="rvstar{{ section.id }}{{ i }}"><stop offset="{{ pct }}%" stop-color="#b8460a"/><stop offset="0%" stop-color="#d7deea"/></linearGradient></defs>
+              {%- endif -%}
+              <path d="M12 2l3 6.5 7 .6-5.3 4.6 1.6 6.8L12 17.5 5.7 20.5l1.6-6.8L2 9.1l7-.6L12 2Z" fill="{% if pct >= 100 %}#b8460a{% else %}url(#rvstar{{ section.id }}{{ i }}){% endif %}"/>
+            </svg>
+          {%- endfor -%}
+        </span>
+        <span class="rv__rating-txt"><b>{{ score }}</b> / 5 &middot; <b>{{ section.settings.count }} verified reviews</b> across Australia</span>
+      </div>
+    </div>
+
+    <div class="rv__grid">
+      {%- for block in section.blocks -%}
+        <figure class="rv__card" {{ block.shopify_attributes }}>
+          <span class="rv__stars" role="img" aria-label="Rated 5 out of 5">
+            {%- for i in (1..5) -%}
+              <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.5 7 .6-5.3 4.6 1.6 6.8L12 17.5 5.7 20.5l1.6-6.8L2 9.1l7-.6L12 2Z" fill="#b8460a"/></svg>
+            {%- endfor -%}
+          </span>
+          <blockquote class="rv__quote">&ldquo;{{ block.settings.quote }}&rdquo;</blockquote>
+          <figcaption class="rv__by">
+            {%- comment -%} Initials, the way the React `initials()` helper builds them. {%- endcomment -%}
+            {%- assign parts = block.settings.name | split: ' ' -%}
+            <span class="rv__avatar" aria-hidden="true">{%- for p in parts limit: 2 -%}{{ p | slice: 0 | upcase }}{%- endfor -%}</span>
+            <span class="rv__who"><b>{{ block.settings.name }}</b><span class="rv__loc">{{ block.settings.location }}</span></span>
+            <span class="rv__verified">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg>
+              Verified
+            </span>
+          </figcaption>
+        </figure>
+      {%- endfor -%}
+    </div>
+
+    {%- if section.settings.all_link != blank -%}
+      <div class="rv__foot">
+        <a href="{{ section.settings.all_link }}" class="rv__all">{{ section.settings.all_label }} &rarr;</a>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "HooknLoop reviews",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Reviews" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "What our customers say" },
+    { "type": "text", "id": "score", "label": "Average rating", "default": "4.87", "info": "Out of 5. The last star fills proportionally." },
+    { "type": "text", "id": "count", "label": "Number of reviews", "default": "15" },
+    { "type": "text", "id": "all_label", "label": "Footer link label", "default": "Read all reviews" },
+    { "type": "url", "id": "all_link", "label": "Footer link" }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Name" },
+        { "type": "text", "id": "location", "label": "Location" },
+        { "type": "textarea", "id": "quote", "label": "Quote" }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [{ "name": "HooknLoop reviews" }]
+}
+{% endschema %}

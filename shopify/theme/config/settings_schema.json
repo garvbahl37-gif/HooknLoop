@@ -8,6 +8,48 @@
     "theme_support_url": "https://help.risingtheme.com/"
   },
   {
+    "name": "HooknLoop redesign",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Global settings for the redesigned storefront. These drive the floating call button, the \"Stuck? Call us\" bubble and the chat panel rendered on every page."
+      },
+      {
+        "type": "text",
+        "id": "hnl_phone",
+        "label": "Phone number (dialled)",
+        "default": "1300183481",
+        "info": "No spaces — this goes into the tel: link."
+      },
+      {
+        "type": "text",
+        "id": "hnl_phone_display",
+        "label": "Phone number (shown)",
+        "default": "1300 183 481"
+      },
+      {
+        "type": "checkbox",
+        "id": "hnl_call_fab",
+        "label": "Show the floating call button",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "hnl_call_teaser",
+        "label": "Show the \"Stuck? Call us\" bubble",
+        "default": true,
+        "info": "Appears once, 3.5 seconds after the page loads, and can be dismissed."
+      },
+      {
+        "type": "checkbox",
+        "id": "hnl_chat_fab",
+        "label": "Show the redesign's chat panel",
+        "default": true,
+        "info": "Turn this OFF if you keep a chat app (Shopify Inbox, SmartBot) enabled — otherwise two chat bubbles stack in the same corner. The redesign's panel is front-end only: it acknowledges a message but does not deliver it anywhere."
+      }
+    ]
+  },
+  {
     "name": "Purchase code verification",
     "settings": [
       {

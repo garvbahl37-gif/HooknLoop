@@ -1,78 +1,62 @@
 /*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
+ * HooknLoop redesign — Suruchi's `footer` section replaced by `hnl-footer`,
+ * the port of storefront/src/sections/Footer.jsx.
  *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
+ * Suruchi's own footer, its five link_list blocks and the email-popup are
+ * preserved in git at the pristine backup commit; restore this file from there
+ * to put the stock footer back.
+ *
+ * mobile-navigation-bar is KEPT. It is Suruchi's equivalent of the React
+ * BottomNav — same five destinations, already wired to the live cart and
+ * account routes — so replacing it would be a rewrite with no visible gain.
+ *
+ * email-popup is dropped: the redesign's footer already carries the signup,
+ * and it was set to "disable" anyway, so nothing is lost.
  */
 {
   "type": "footer",
   "name": "Footer",
   "sections": {
-    "footer": {
-      "type": "footer",
+    "hnl_footer": {
+      "type": "hnl-footer",
       "blocks": {
-        "0023984e-906b-47ad-ad7a-af594238863e": {
-          "type": "about_us",
+        "c1": {
+          "type": "column",
           "settings": {
-            "heading": "",
-            "about_information": "<p></p><p>Australia's trusted supplier of premium hook and loop fastening solutions for businesses and consumers.</p>",
-            "social_media": false
+            "heading": "Shop tape",
+            "links": "Self-Adhesive Roll | /products/self-adhesive-hook-and-loop-roll\nHeavy-Duty Adhesive | /products/heavy-duty-adhesive-hook-and-loop\nVELCRO® Brand Roll | /products/velcro-self-adhesive-hook-and-loop-roll\nSew-On Hook & Loop | /products/sew-on-hook-and-loop-fastener\nHook & Loop Dots | /products/hook-and-loop-dots\nReusable Cable Straps | /products/hook-and-loop-adjustable-strap"
           }
         },
-        "6c12f5ad-1f2b-4d5d-a59e-5931a27ed7cc": {
-          "type": "link_list",
+        "c2": {
+          "type": "column",
           "settings": {
-            "heading": "Product",
-            "menu": "foo-product"
+            "heading": "More products",
+            "links": "Fire Retardant Adhesive | /products/fire-retardant-adhesive-hook-and-loop\nFire Retardant Sew-On | /products/fire-retardant-sew-on-hook-and-loop\nDouble-Sided Hook & Loop | /products/double-sided-hook-and-loop\nHeavy-Duty Strap | /products/heavy-duty-hook-and-loop-strap\nHook & Loop for Fabric | /products/hook-and-loop-for-fabric\nBrowse all products | /collections/all"
           }
         },
-        "3d7e2d8c-1b8e-4e2d-be90-97680e4c4ac5": {
-          "type": "link_list",
+        "c3": {
+          "type": "column",
           "settings": {
-            "heading": "Menu",
-            "menu": "home-menu"
-          }
-        },
-        "link_list_cw4P3Q": {
-          "type": "link_list",
-          "settings": {
-            "heading": "Information",
-            "menu": "foo-support"
-          }
-        },
-        "link_list_ypehdY": {
-          "type": "link_list",
-          "settings": {
-            "heading": "My Account",
-            "menu": "my-account"
+            "heading": "Help",
+            "links": "Bulk & trade quotes | /pages/bulk-orders\nShipping & delivery | /pages/shipping-delivery\nReturns & exchanges | /pages/return-policy\nCustomer service | /pages/customer-service\nContact us | /pages/contact\nBlog | /pages/blog"
           }
         }
       },
-      "block_order": [
-        "0023984e-906b-47ad-ad7a-af594238863e",
-        "6c12f5ad-1f2b-4d5d-a59e-5931a27ed7cc",
-        "3d7e2d8c-1b8e-4e2d-be90-97680e4c4ac5",
-        "link_list_cw4P3Q",
-        "link_list_ypehdY"
-      ],
+      "block_order": ["c1", "c2", "c3"],
       "settings": {
-        "snow_fall": false,
-        "container": "container",
-        "color_scheme": "accent-1",
-        "column": "5",
-        "powered_by": "<p>HooknLoop © 2026 | All Rights Reserved | ABN:93878995217</p>",
-        "enable_follow_on_shop": true,
-        "enable_country_selector": true,
-        "enable_language_selector": false,
-        "payment_icons_type": "manual",
-        "payment_icons": "visa,master,american_express,paypal,discover,shopify_pay",
-        "padding_top": 60,
-        "padding_bottom": 35,
-        "mobile_padding_top": 40,
-        "mobile_padding_bottom": 30
+        "tagline": "Industrial hook & loop, dispatched fast across Australia.",
+        "phone": "1300 183 481",
+        "phone_sub": "Call our Australian team",
+        "email": "info@hooknloop.com.au",
+        "abn": "ABN 93 878 995 217",
+        "signup_heading": "Stay in touch",
+        "signup_blurb": "Trade tips & bulk price drops. No spam — unsubscribe any time.",
+        "signup_placeholder": "you@company.com.au",
+        "signup_button": "Notify me",
+        "signup_ok": "You're on the list — check your inbox.",
+        "legal_name": "HooknLoop Australia · All rights reserved",
+        "legal_links": "Privacy | /pages/privacy-policy\nTerms | /pages/terms-conditions\nShipping | /pages/shipping-delivery\nReturns | /pages/return-policy",
+        "trademark": "VELCRO® is a registered trademark of Velcro IP Holdings LLC. HooknLoop stocks genuine VELCRO® Brand product; other products are our own brand."
       }
     },
     "mobile-navigation-bar": {
@@ -100,13 +84,13 @@
         "e2d2845d-c7e8-466a-a4d2-12c7d718d200": {
           "type": "cart",
           "settings": {
-            "title": "cart"
+            "title": "Cart"
           }
         },
         "42c37f7b-e2ef-4572-83af-fdd674fd9866": {
           "type": "account",
           "settings": {
-            "title": "account"
+            "title": "Account"
           }
         }
       },
@@ -120,58 +104,10 @@
       "settings": {
         "color_scheme": "background-1"
       }
-    },
-    "email-popup": {
-      "type": "email-popup",
-      "blocks": {
-        "6bff7e32-a1c3-40e7-b7b0-b6f2828a5441": {
-          "type": "heading",
-          "settings": {
-            "heading": "Exclusive benefits",
-            "heading_size": "h3"
-          }
-        },
-        "f8c0bbcb-d708-4cc1-ab84-cd1caa700308": {
-          "type": "text",
-          "settings": {
-            "richtext": "<p>Sign up for our newsletter to be the first to learn about new arrivals, special promotions, and online exclusives.</p>"
-          }
-        },
-        "77395d1d-95ba-4bd1-af42-79086a37cfed": {
-          "type": "email_form",
-          "settings": {
-            "richtext": "<p>*By submitting this form, you agree to receive our emails and may unsubscribe at any time.</p>",
-            "button_full": false
-          }
-        }
-      },
-      "block_order": [
-        "6bff7e32-a1c3-40e7-b7b0-b6f2828a5441",
-        "f8c0bbcb-d708-4cc1-ab84-cd1caa700308",
-        "77395d1d-95ba-4bd1-af42-79086a37cfed"
-      ],
-      "settings": {
-        "display": "disable",
-        "show_home_page": true,
-        "show_visitors": true,
-        "delay": 5,
-        "dont_show": true,
-        "dont_show_button_label": "No Thanks!",
-        "expire": 7,
-        "popup_position": "center",
-        "popup_width": "medium",
-        "alignment": "left",
-        "corner_radius": false,
-        "image_position": "left",
-        "full--bg-image": false,
-        "image_overlay_opacity": 0,
-        "color_scheme": ""
-      }
     }
   },
   "order": [
-    "footer",
-    "mobile-navigation-bar",
-    "email-popup"
+    "hnl_footer",
+    "mobile-navigation-bar"
   ]
 }

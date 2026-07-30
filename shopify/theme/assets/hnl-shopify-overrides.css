@@ -1,0 +1,65 @@
+/* ============================================================================
+   Shopify-only overrides — appended LAST to hnl-redesign.css.liquid.
+
+   Nothing here belongs in storefront/src/styles. These rules exist purely
+   because Shopify's Liquid output differs structurally from the React JSX, or
+   because Suruchi's theme.css reaches into markup the redesign also uses.
+
+   Every rule must say which of those two it is and why. If a rule would be
+   correct in the React app too, fix it there and re-run build-css.sh instead.
+   ========================================================================= */
+
+
+/* ── Product-card button: full width, like React ──────────────────────────
+   React renders <button class="pc__add"> as a direct child of the flex-column
+   .pc__body, so `align-items: stretch` makes it card-width. Liquid's product
+   form tag wraps it in a <form>, so the FORM becomes the flex child and the
+   inline-flex button shrinks to its text — which is why "Add to cart" came out
+   narrower than "Choose options".
+
+   Handing the form the button's layout role restores the React result. Not
+   using `display: contents` on the <form>: it removes the element from the
+   box tree, and forms carry semantics some assistive tech still reads off it.
+
+   NOTE: this file is inlined into a .liquid asset, so it must never contain a
+   literal Liquid tag — even inside a comment, Liquid parses it and the whole
+   stylesheet fails to render. */
+.pc__addform {
+  margin-top: auto;
+  display: flex;
+  width: 100%;
+}
+.pc__addform .pc__add {
+  width: 100%;
+  margin-top: 0;
+}
+
+/* Both variants now share one baseline: pin the "Choose options" link too, so
+   a card with a form and a card with a link line their buttons up exactly. */
+.pc__body > .pc__add {
+  width: 100%;
+}
+
+/* Suruchi's theme.css styles bare `button` and `a.button` globally (its own
+   border-radius, uppercase transform and letter-spacing). Those leak onto the
+   redesign's buttons wherever the class names collide. Restate the redesign's
+   own values at equal specificity so the card button is not half-Suruchi. */
+.pc__add,
+.pc__addform .pc__add {
+  border: 0;
+  text-transform: none;
+  letter-spacing: normal;
+  line-height: 1.2;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* Sold-out cards: Suruchi disables the submit button but leaves it navy, which
+   reads as tappable. Match the muted treatment the rest of the redesign uses. */
+.pc__add[disabled] {
+  background: #8b96ab;
+  cursor: not-allowed;
+}
+.pc__add[disabled]:hover {
+  background: #8b96ab;
+}

@@ -13,22 +13,36 @@
   the message rather than sending it anywhere. Kept deliberately, so nothing
   claims to deliver a message that no backend receives. Wire it to a real
   endpoint or a chat app before relying on it.
+
+  This store also has Shopify Inbox and SmartBot installed as app embeds, and
+  both render their own bubble in the same bottom-right corner. Whichever chat
+  you want to keep, only one should be on: Theme settings > HooknLoop redesign.
 {%- endcomment -%}
 
+{%- liquid
+  assign hnl_tel = settings.hnl_phone | default: '1300183481' | replace: ' ', ''
+  assign hnl_tel_display = settings.hnl_phone_display | default: '1300 183 481'
+-%}
+
+{%- if settings.hnl_call_teaser and settings.hnl_call_fab -%}
 <div class="calltease" data-hnl-teaser hidden>
-  <a href="tel:{{ settings.hnl_phone | default: '1300183481' | replace: ' ', '' }}" class="calltease__link">
+  <a href="tel:{{ hnl_tel }}" class="calltease__link">
     <span class="calltease__text"><strong>Stuck?</strong> Call us</span>
   </a>
   <button class="calltease__close" data-hnl-teaser-close aria-label="Dismiss">
     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6 6 18"/></svg>
   </button>
 </div>
+{%- endif -%}
 
-<a class="fab fab--call" data-hnl-fab-call href="tel:{{ settings.hnl_phone | default: '1300183481' | replace: ' ', '' }}" aria-label="Call us">
+{%- if settings.hnl_call_fab -%}
+<a class="fab fab--call" data-hnl-fab-call href="tel:{{ hnl_tel }}" aria-label="Call us">
   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 12l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 2 6a2 2 0 0 1 2-2Z"/></svg>
-  <span class="fab__tip fab__tip--left">Call {{ settings.hnl_phone_display | default: '1300 183 481' }}</span>
+  <span class="fab__tip fab__tip--left">Call {{ hnl_tel_display }}</span>
 </a>
+{%- endif -%}
 
+{%- if settings.hnl_chat_fab -%}
 <div class="fabchat" data-hnl-fabchat>
   <div class="chatp" role="dialog" aria-label="Chat with HooknLoop" data-hnl-chat hidden>
     <div class="chatp__head">
@@ -53,7 +67,7 @@
         <a class="chatp__chip" href="/pages/contact">Fire-retardant specs</a>
       </div>
       <div class="chatp__msg chatp__msg--ok" data-hnl-chat-ok hidden>
-        Thanks — we've got your message. A real person in Australia will reply shortly. In a hurry? Call <a href="tel:{{ settings.hnl_phone | default: '1300183481' | replace: ' ', '' }}">{{ settings.hnl_phone_display | default: '1300 183 481' }}</a>.
+        Thanks — we've got your message. A real person in Australia will reply shortly. In a hurry? Call <a href="tel:{{ hnl_tel }}">{{ hnl_tel_display }}</a>.
       </div>
     </div>
 
@@ -71,68 +85,81 @@
     <span class="fab__tip fab__tip--right" data-hnl-chat-tip>Chat with us</span>
   </button>
 </div>
+{%- endif -%}
 
 <script>
 (function () {
-  var teaser  = document.querySelector('[data-hnl-teaser]');
-  var chat    = document.querySelector('[data-hnl-chat]');
-  var toggle  = document.querySelector('[data-hnl-chat-toggle]');
-  var callFab = document.querySelector('[data-hnl-fab-call]');
-  var fabchat = document.querySelector('[data-hnl-fabchat]');
-  if (!toggle) return;
+  /* Each piece is independently switchable in Theme settings > HooknLoop
+     redesign, so nothing here may assume another piece rendered. */
+  var $ = function (s) { return document.querySelector(s); };
+
+  var teaser  = $('[data-hnl-teaser]');
+  var chat    = $('[data-hnl-chat]');
+  var toggle  = $('[data-hnl-chat-toggle]');
+  var callFab = $('[data-hnl-fab-call]');
+  var fabchat = $('[data-hnl-fabchat]');
+  if (!teaser && !toggle && !callFab) return;
 
   var ICON_CHAT  = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.5 7.2L4 20l1-4.5A8 8 0 1 1 21 12Z"/></svg>';
   var ICON_CLOSE = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 6l12 12M18 6 6 18"/></svg>';
 
-  var dismissed = false, open = false;
+  var dismissed = false, open = false, teaseTimer = null;
 
-  /* One-time proactive teaser, 3.5s after load — same timing as the React version. */
-  var teaseTimer = setTimeout(function () {
-    if (!dismissed && !open) teaser.removeAttribute('hidden');
-  }, 3500);
+  function hideTeaser() { if (teaser) teaser.setAttribute('hidden', ''); }
 
-  document.querySelector('[data-hnl-teaser-close]').addEventListener('click', function (e) {
-    e.preventDefault();
-    dismissed = true;
-    teaser.setAttribute('hidden', '');
-  });
+  if (teaser) {
+    /* One-time proactive bubble, 3.5s after load — same timing as React. */
+    teaseTimer = setTimeout(function () {
+      if (!dismissed && !open) teaser.removeAttribute('hidden');
+    }, 3500);
+
+    $('[data-hnl-teaser-close]').addEventListener('click', function (e) {
+      e.preventDefault();
+      dismissed = true;
+      hideTeaser();
+    });
+  }
 
   function setChat(on) {
     open = on;
-    if (on) { chat.removeAttribute('hidden'); teaser.setAttribute('hidden',''); clearTimeout(teaseTimer); }
-    else    { chat.setAttribute('hidden',''); }
+    if (on) { chat.removeAttribute('hidden'); hideTeaser(); clearTimeout(teaseTimer); }
+    else    { chat.setAttribute('hidden', ''); }
     toggle.classList.toggle('is-open', on);
     toggle.setAttribute('aria-expanded', on ? 'true' : 'false');
     toggle.setAttribute('aria-label', on ? 'Close chat' : 'Chat with us');
-    document.querySelector('[data-hnl-chat-icon]').innerHTML = on ? ICON_CLOSE : ICON_CHAT;
-    document.querySelector('[data-hnl-chat-online]').style.display = on ? 'none' : '';
-    document.querySelector('[data-hnl-chat-tip]').style.display = on ? 'none' : '';
+    $('[data-hnl-chat-icon]').innerHTML = on ? ICON_CLOSE : ICON_CHAT;
+    $('[data-hnl-chat-online]').style.display = on ? 'none' : '';
+    $('[data-hnl-chat-tip]').style.display = on ? 'none' : '';
+    if (on) $('.chatp__input input').focus();
   }
 
-  toggle.addEventListener('click', function () { setChat(!open); });
-  document.querySelector('[data-hnl-chat-close]').addEventListener('click', function () { setChat(false); });
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && open) setChat(false); });
+  if (toggle) {
+    toggle.addEventListener('click', function () { setChat(!open); });
+    $('[data-hnl-chat-close]').addEventListener('click', function () { setChat(false); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && open) setChat(false); });
 
-  /* Front-end acknowledgement only — see the comment at the top of this file. */
-  document.querySelector('[data-hnl-chat-form]').addEventListener('submit', function (e) {
-    e.preventDefault();
-    var input = this.querySelector('input');
-    if (!input.value.trim()) return;
-    input.value = '';
-    document.querySelector('[data-hnl-chat-quick]').setAttribute('hidden','');
-    document.querySelector('[data-hnl-chat-ok]').removeAttribute('hidden');
-  });
+    /* Front-end acknowledgement only — see the comment at the top of this file. */
+    $('[data-hnl-chat-form]').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var input = this.querySelector('input');
+      if (!input.value.trim()) return;
+      input.value = '';
+      $('[data-hnl-chat-quick]').setAttribute('hidden', '');
+      $('[data-hnl-chat-ok]').removeAttribute('hidden');
+    });
+  }
 
-  /* Park both FABs once the footer is on screen so they never cover it. */
-  var footer = document.querySelector('.ft') || document.querySelector('footer');
+  /* Park the FABs once the footer is on screen so they never cover it. */
+  var footer = $('.ft') || $('footer');
   if (footer && 'IntersectionObserver' in window) {
     new IntersectionObserver(function (entries) {
-      var atFooter = entries[0].isIntersecting;
-      var parked = atFooter && !open;
-      callFab.classList.toggle('is-parked', parked);
-      fabchat.classList.toggle('is-parked', parked);
-      callFab.setAttribute('tabindex', parked ? '-1' : '0');
-      if (parked) teaser.setAttribute('hidden','');
+      var parked = entries[0].isIntersecting && !open;
+      if (callFab) {
+        callFab.classList.toggle('is-parked', parked);
+        callFab.setAttribute('tabindex', parked ? '-1' : '0');
+      }
+      if (fabchat) fabchat.classList.toggle('is-parked', parked);
+      if (parked) hideTeaser();
     }, { threshold: 0.05 }).observe(footer);
   }
 })();

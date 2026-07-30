@@ -51,7 +51,7 @@
             "cta_label": "Shop the Range",
             "cta_link": "/collections/all",
             "cta2_label": "Why Choose Us",
-            "cta2_link": "/pages/about-us",
+            "cta2_link": "/pages/customer-service",
             "asset_image": "hnl-hook-and-loop-dots-1.jpg",
             "tag": "PREMIUM GRADE",
             "price_from": "66.74"
@@ -173,7 +173,7 @@
         "h2": "Wholesale, Bulk & Discounted Hook and Loop Supplies",
         "p2": "With a large range of fasteners, tapes, straps and accessories held in stock, we offer competitive pricing for retail, trade and commercial buyers. Buy hook and loop tape by the roll, in bulk, or at wholesale rates - with volume discounts on larger orders.",
         "cta_label": "Read more",
-        "cta_link": "/pages/about-us",
+        "cta_link": "/pages/customer-service",
         "image_alt": "Hook-and-loop tape beside a map of Australia and HooknLoop delivery boxes on a pallet",
         "proof_score": "4.87 / 5",
         "proof_text": "Serving B2C & B2B across Australia"
@@ -244,39 +244,74 @@
         "heading": "Six reasons trade buyers reorder"
       }
     },
-    "hnl_trustbar": {
-      "type": "hnl-trustbar",
+    "hnl_reviews": {
+      "type": "hnl-reviews",
       "blocks": {
-        "b1": {
-          "type": "item",
+        "r1": {
+          "type": "review",
           "settings": {
-            "icon": "truck",
-            "title": "Fast Australian Shipping",
-            "sub": "Speedy delivery Australia-wide"
+            "name": "Sarah M.",
+            "location": "Melbourne, VIC",
+            "quote": "Better than what we were getting from our previous supplier, and it turns up fast."
           }
         },
-        "b2": {
-          "type": "item",
+        "r2": {
+          "type": "review",
           "settings": {
-            "icon": "shield",
-            "title": "Secured Payment",
-            "sub": "Safe transactions with SSL encryption"
+            "name": "Rachel K.",
+            "location": "Perth, WA",
+            "quote": "Quality is spot on — exactly what we needed for our aged-care fit-out."
           }
         },
-        "b3": {
-          "type": "item",
+        "r3": {
+          "type": "review",
           "settings": {
-            "icon": "returns",
-            "title": "Easy Returns",
-            "sub": "30-day returns & free exchanges"
+            "name": "Jessica L.",
+            "location": "Sydney, NSW",
+            "quote": "Consistent every order, and cutting to length means almost no offcut waste for us."
+          }
+        },
+        "r4": {
+          "type": "review",
+          "settings": {
+            "name": "Tom W.",
+            "location": "Hobart, TAS",
+            "quote": "Repaired a boat cover with it — eight months out in the weather and it's still going strong."
+          }
+        },
+        "r5": {
+          "type": "review",
+          "settings": {
+            "name": "Dave T.",
+            "location": "Brisbane, QLD",
+            "quote": "The cable straps still grip like new after six months of daily on-and-off."
+          }
+        },
+        "r6": {
+          "type": "review",
+          "settings": {
+            "name": "Linda P.",
+            "location": "Canberra, ACT",
+            "quote": "The self-adhesive rolls are great — the kids can cut exactly what they need for their projects."
           }
         }
       },
       "block_order": [
-        "b1",
-        "b2",
-        "b3"
-      ]
+        "r1",
+        "r2",
+        "r3",
+        "r4",
+        "r5",
+        "r6"
+      ],
+      "settings": {
+        "eyebrow": "Reviews",
+        "heading": "What our customers say",
+        "score": "4.87",
+        "count": "15",
+        "all_label": "Read all 15 reviews",
+        "all_link": "/collections/all"
+      }
     },
     "hnl_film": {
       "type": "hnl-film",
@@ -297,7 +332,7 @@
     "hnl_bestsellers",
     "hnl_trusted",
     "hnl_why",
-    "hnl_trustbar",
+    "hnl_reviews",
     "hnl_film"
   ]
 }
