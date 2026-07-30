@@ -304,5 +304,11 @@ document.addEventListener("DOMContentLoaded", function() {
     {%- if settings.back_top_enable -%}
       {%- render 'back-to-top' -%}
     {%- endif -%}
+
+    {%- comment -%}
+      HooknLoop floating actions — call FAB, chat panel and the "Stuck? Call us"
+      teaser, ported from the React FloatingActions component.
+    {%- endcomment -%}
+    {%- render 'hnl-floating' -%}
   </body>
 </html>

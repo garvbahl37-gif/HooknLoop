@@ -1,0 +1,139 @@
+{%- comment -%}
+  Floating actions — port of storefront/src/components/FloatingActions.jsx
+
+  Call FAB bottom-left, chat FAB bottom-right, plus the one-time "Stuck? Call us"
+  teaser that appears 3.5s after load. Class names match floating.css exactly,
+  so the chatIn keyframe and the fab tooltips animate as they do in React.
+
+  Both FABs retire once the footer is on screen (`is-parked`) so they never sit
+  over it — the React version used a useInView hook on `.ft`; this uses an
+  IntersectionObserver on the footer element.
+
+  The chat panel is a front-end only form, same as the React one: it acknowledges
+  the message rather than sending it anywhere. Kept deliberately, so nothing
+  claims to deliver a message that no backend receives. Wire it to a real
+  endpoint or a chat app before relying on it.
+{%- endcomment -%}
+
+<div class="calltease" data-hnl-teaser hidden>
+  <a href="tel:{{ settings.hnl_phone | default: '1300183481' | replace: ' ', '' }}" class="calltease__link">
+    <span class="calltease__text"><strong>Stuck?</strong> Call us</span>
+  </a>
+  <button class="calltease__close" data-hnl-teaser-close aria-label="Dismiss">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6 6 18"/></svg>
+  </button>
+</div>
+
+<a class="fab fab--call" data-hnl-fab-call href="tel:{{ settings.hnl_phone | default: '1300183481' | replace: ' ', '' }}" aria-label="Call us">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 12l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 2 6a2 2 0 0 1 2-2Z"/></svg>
+  <span class="fab__tip fab__tip--left">Call {{ settings.hnl_phone_display | default: '1300 183 481' }}</span>
+</a>
+
+<div class="fabchat" data-hnl-fabchat>
+  <div class="chatp" role="dialog" aria-label="Chat with HooknLoop" data-hnl-chat hidden>
+    <div class="chatp__head">
+      <div class="chatp__id">
+        <span class="chatp__logo">HL</span>
+        <div>
+          <span class="chatp__name">HooknLoop Support</span>
+          <span class="chatp__status"><span class="chatp__dot" aria-hidden="true"></span> Online · replies in minutes</span>
+        </div>
+      </div>
+      <button class="chatp__close" data-hnl-chat-close aria-label="Close chat">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+
+    <div class="chatp__body">
+      <div class="chatp__msg">G'day! Not sure which hook &amp; loop you need, or after bulk pricing? Ask us — we hold stock and ship Australia-wide.</div>
+      <div class="chatp__quick" data-hnl-chat-quick>
+        <a class="chatp__chip" href="{{ routes.all_products_collection_url }}">Which tape do I need?</a>
+        <a class="chatp__chip" href="/pages/bulk-orders">Bulk &amp; trade pricing</a>
+        <a class="chatp__chip" href="{{ routes.account_url }}">Track my order</a>
+        <a class="chatp__chip" href="/pages/contact">Fire-retardant specs</a>
+      </div>
+      <div class="chatp__msg chatp__msg--ok" data-hnl-chat-ok hidden>
+        Thanks — we've got your message. A real person in Australia will reply shortly. In a hurry? Call <a href="tel:{{ settings.hnl_phone | default: '1300183481' | replace: ' ', '' }}">{{ settings.hnl_phone_display | default: '1300 183 481' }}</a>.
+      </div>
+    </div>
+
+    <form class="chatp__input" data-hnl-chat-form>
+      <input type="text" placeholder="Type your message…" aria-label="Type your message">
+      <button type="submit" class="chatp__send" aria-label="Send"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 12 20 4l-6 16-2.5-6.5L4 12Z"/></svg></button>
+    </form>
+  </div>
+
+  <button class="fab fab--chat" data-hnl-chat-toggle aria-expanded="false" aria-label="Chat with us">
+    <span data-hnl-chat-icon>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.5 7.2L4 20l1-4.5A8 8 0 1 1 21 12Z"/></svg>
+    </span>
+    <span class="fab__online" aria-hidden="true" data-hnl-chat-online></span>
+    <span class="fab__tip fab__tip--right" data-hnl-chat-tip>Chat with us</span>
+  </button>
+</div>
+
+<script>
+(function () {
+  var teaser  = document.querySelector('[data-hnl-teaser]');
+  var chat    = document.querySelector('[data-hnl-chat]');
+  var toggle  = document.querySelector('[data-hnl-chat-toggle]');
+  var callFab = document.querySelector('[data-hnl-fab-call]');
+  var fabchat = document.querySelector('[data-hnl-fabchat]');
+  if (!toggle) return;
+
+  var ICON_CHAT  = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.5 7.2L4 20l1-4.5A8 8 0 1 1 21 12Z"/></svg>';
+  var ICON_CLOSE = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 6l12 12M18 6 6 18"/></svg>';
+
+  var dismissed = false, open = false;
+
+  /* One-time proactive teaser, 3.5s after load — same timing as the React version. */
+  var teaseTimer = setTimeout(function () {
+    if (!dismissed && !open) teaser.removeAttribute('hidden');
+  }, 3500);
+
+  document.querySelector('[data-hnl-teaser-close]').addEventListener('click', function (e) {
+    e.preventDefault();
+    dismissed = true;
+    teaser.setAttribute('hidden', '');
+  });
+
+  function setChat(on) {
+    open = on;
+    if (on) { chat.removeAttribute('hidden'); teaser.setAttribute('hidden',''); clearTimeout(teaseTimer); }
+    else    { chat.setAttribute('hidden',''); }
+    toggle.classList.toggle('is-open', on);
+    toggle.setAttribute('aria-expanded', on ? 'true' : 'false');
+    toggle.setAttribute('aria-label', on ? 'Close chat' : 'Chat with us');
+    document.querySelector('[data-hnl-chat-icon]').innerHTML = on ? ICON_CLOSE : ICON_CHAT;
+    document.querySelector('[data-hnl-chat-online]').style.display = on ? 'none' : '';
+    document.querySelector('[data-hnl-chat-tip]').style.display = on ? 'none' : '';
+  }
+
+  toggle.addEventListener('click', function () { setChat(!open); });
+  document.querySelector('[data-hnl-chat-close]').addEventListener('click', function () { setChat(false); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && open) setChat(false); });
+
+  /* Front-end acknowledgement only — see the comment at the top of this file. */
+  document.querySelector('[data-hnl-chat-form]').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var input = this.querySelector('input');
+    if (!input.value.trim()) return;
+    input.value = '';
+    document.querySelector('[data-hnl-chat-quick]').setAttribute('hidden','');
+    document.querySelector('[data-hnl-chat-ok]').removeAttribute('hidden');
+  });
+
+  /* Park both FABs once the footer is on screen so they never cover it. */
+  var footer = document.querySelector('.ft') || document.querySelector('footer');
+  if (footer && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (entries) {
+      var atFooter = entries[0].isIntersecting;
+      var parked = atFooter && !open;
+      callFab.classList.toggle('is-parked', parked);
+      fabchat.classList.toggle('is-parked', parked);
+      callFab.setAttribute('tabindex', parked ? '-1' : '0');
+      if (parked) teaser.setAttribute('hidden','');
+    }, { threshold: 0.05 }).observe(footer);
+  }
+})();
+</script>

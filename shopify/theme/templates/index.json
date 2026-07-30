@@ -1,10 +1,6 @@
 /*
- * HooknLoop homepage — rebuilt to match the React redesign in storefront/.
- * Section order mirrors Landing() in storefront/src/App.jsx:
- *   HeroSlides -> OneStop -> BestSellers -> TrustedSupplier -> WhyUs -> TrustBar
- *
- * The original Suruchi homepage is preserved in git at the pristine backup
- * commit (branch shopify-theme) if any of this needs reverting.
+ * HooknLoop homepage — mirrors Landing() in storefront/src/App.jsx.
+ * Original Suruchi homepage preserved in git at the pristine backup commit.
  */
 {
   "sections": {
@@ -96,29 +92,70 @@
           }
         }
       },
-      "block_order": ["s1", "s2", "s3", "s4", "s5"],
+      "block_order": [
+        "s1",
+        "s2",
+        "s3",
+        "s4",
+        "s5"
+      ],
       "settings": {
         "trust_items": "Fast Australia-wide delivery|Free shipping over $200|Best price in Australia|5-star rated store",
         "duration": 5000
       }
     },
-
     "hnl_onestop": {
       "type": "hnl-onestop",
       "blocks": {
-        "t1": { "type": "tile", "settings": { "title": "Dots & Coins", "product_handle": "hook-and-loop-dots", "asset_image": "hnl-ls-dots.webp", "fallback_link": "/collections/all" } },
-        "t2": { "type": "tile", "settings": { "title": "Self-Adhesive", "product_handle": "self-adhesive-hook-and-loop-roll", "asset_image": "hnl-ls-adhesive.webp", "fallback_link": "/collections/all" } },
-        "t3": { "type": "tile", "settings": { "title": "Sew-On", "product_handle": "sew-on-hook-and-loop-fastener", "asset_image": "hnl-ls-sew-on.webp", "fallback_link": "/collections/all" } },
-        "t4": { "type": "tile", "settings": { "title": "Straps & Cable Ties", "product_handle": "hook-and-loop-adjustable-strap", "asset_image": "hnl-ls-straps.webp", "fallback_link": "/collections/all" } }
+        "t1": {
+          "type": "tile",
+          "settings": {
+            "title": "Dots & Coins",
+            "product_handle": "hook-and-loop-dots",
+            "asset_image": "hnl-ls-dots.webp",
+            "fallback_link": "/collections/all"
+          }
+        },
+        "t2": {
+          "type": "tile",
+          "settings": {
+            "title": "Self-Adhesive",
+            "product_handle": "self-adhesive-hook-and-loop-roll",
+            "asset_image": "hnl-ls-adhesive.webp",
+            "fallback_link": "/collections/all"
+          }
+        },
+        "t3": {
+          "type": "tile",
+          "settings": {
+            "title": "Sew-On",
+            "product_handle": "sew-on-hook-and-loop-fastener",
+            "asset_image": "hnl-ls-sew-on.webp",
+            "fallback_link": "/collections/all"
+          }
+        },
+        "t4": {
+          "type": "tile",
+          "settings": {
+            "title": "Straps & Cable Ties",
+            "product_handle": "hook-and-loop-adjustable-strap",
+            "asset_image": "hnl-ls-straps.webp",
+            "fallback_link": "/collections/all"
+          }
+        }
       },
-      "block_order": ["t1", "t2", "t3", "t4"],
+      "block_order": [
+        "t1",
+        "t2",
+        "t3",
+        "t4"
+      ],
       "settings": {
         "eyebrow": "Shop by category",
         "heading": "Australia's One-Stop Shop for Hook and Loop Tapes",
         "sub": "Welcome to HooknLoop.com.au, your trusted Australian destination for premium hook and loop tape solutions. We specialise exclusively in this fastening system, making it simple to find the right product for home, commercial, industrial, and DIY use."
       }
     },
-
     "hnl_bestsellers": {
       "type": "hnl-bestsellers",
       "settings": {
@@ -127,7 +164,6 @@
         "count": 12
       }
     },
-
     "hnl_trusted": {
       "type": "hnl-trusted",
       "settings": {
@@ -143,32 +179,116 @@
         "proof_text": "Serving B2C & B2B across Australia"
       }
     },
-
     "hnl_why": {
       "type": "hnl-why",
       "blocks": {
-        "w1": { "type": "tile", "settings": { "icon": "truck", "title": "Fast Australian shipping", "body": "Speedy delivery Australia-wide, dispatched in 1-2 business days." } },
-        "w2": { "type": "tile", "settings": { "icon": "lock", "title": "Secure payment", "body": "Safe checkout with SSL encryption - Shop Pay, PayPal, Visa & Amex." } },
-        "w3": { "type": "tile", "settings": { "icon": "trade", "title": "Bulk & trade pricing", "body": "Volume breaks and account terms for tradies and OEMs." } },
-        "w4": { "type": "tile", "settings": { "icon": "stock", "title": "Huge range in stock", "body": "Twelve product ranges held in our Australian warehouse - self-adhesive, sew-on, dots, straps, double-sided and genuine VELCRO Brand." } },
-        "w5": { "type": "tile", "settings": { "icon": "invoice", "title": "GST tax invoice", "body": "A compliant Australian tax invoice on every order." } },
-        "w6": { "type": "tile", "settings": { "icon": "pin", "title": "Australian owned", "body": "Australian warehouse, dispatched Australia-wide in 1-2 business days." } }
+        "w1": {
+          "type": "tile",
+          "settings": {
+            "icon": "truck",
+            "title": "Fast Australian shipping",
+            "body": "Speedy delivery Australia-wide, dispatched in 1-2 business days."
+          }
+        },
+        "w2": {
+          "type": "tile",
+          "settings": {
+            "icon": "lock",
+            "title": "Secure payment",
+            "body": "Safe checkout with SSL encryption - Shop Pay, PayPal, Visa & Amex."
+          }
+        },
+        "w3": {
+          "type": "tile",
+          "settings": {
+            "icon": "trade",
+            "title": "Bulk & trade pricing",
+            "body": "Volume breaks and account terms for tradies and OEMs."
+          }
+        },
+        "w4": {
+          "type": "tile",
+          "settings": {
+            "icon": "stock",
+            "title": "Huge range in stock",
+            "body": "Twelve product ranges held in our Australian warehouse - self-adhesive, sew-on, dots, straps, double-sided and genuine VELCRO Brand."
+          }
+        },
+        "w5": {
+          "type": "tile",
+          "settings": {
+            "icon": "invoice",
+            "title": "GST tax invoice",
+            "body": "A compliant Australian tax invoice on every order."
+          }
+        },
+        "w6": {
+          "type": "tile",
+          "settings": {
+            "icon": "pin",
+            "title": "Australian owned",
+            "body": "Australian warehouse, dispatched Australia-wide in 1-2 business days."
+          }
+        }
       },
-      "block_order": ["w1", "w2", "w3", "w4", "w5", "w6"],
+      "block_order": [
+        "w1",
+        "w2",
+        "w3",
+        "w4",
+        "w5",
+        "w6"
+      ],
       "settings": {
         "eyebrow": "Why HooknLoop",
         "heading": "Six reasons trade buyers reorder"
       }
     },
-
     "hnl_trustbar": {
       "type": "hnl-trustbar",
       "blocks": {
-        "b1": { "type": "item", "settings": { "icon": "truck", "title": "Fast Australian Shipping", "sub": "Speedy delivery Australia-wide" } },
-        "b2": { "type": "item", "settings": { "icon": "shield", "title": "Secured Payment", "sub": "Safe transactions with SSL encryption" } },
-        "b3": { "type": "item", "settings": { "icon": "returns", "title": "Easy Returns", "sub": "30-day returns & free exchanges" } }
+        "b1": {
+          "type": "item",
+          "settings": {
+            "icon": "truck",
+            "title": "Fast Australian Shipping",
+            "sub": "Speedy delivery Australia-wide"
+          }
+        },
+        "b2": {
+          "type": "item",
+          "settings": {
+            "icon": "shield",
+            "title": "Secured Payment",
+            "sub": "Safe transactions with SSL encryption"
+          }
+        },
+        "b3": {
+          "type": "item",
+          "settings": {
+            "icon": "returns",
+            "title": "Easy Returns",
+            "sub": "30-day returns & free exchanges"
+          }
+        }
       },
-      "block_order": ["b1", "b2", "b3"]
+      "block_order": [
+        "b1",
+        "b2",
+        "b3"
+      ]
+    },
+    "hnl_film": {
+      "type": "hnl-film",
+      "settings": {
+        "eyebrow": "Our story · 60 seconds",
+        "heading": "Turns out the smallest connections hold the most.",
+        "video_label": "HooknLoop brand film — Made to connect",
+        "story": "<p>Four years ago, HooknLoop began in a single garage warehouse with one simple promise: to make sourcing hook and loop tape effortless.</p><p>Since then, every order, every project and every customer relationship has helped shape who we are today. We're proud to supply premium hook and loop solutions across Australia, supporting more than 26 industries—from construction to education—across both the public and private sectors, from small retail orders to large-scale wholesale requirements.</p><p>No matter the size of the connection, we believe it matters. Thank you for trusting us to be part of yours.</p>",
+        "story_by": "Founder, HooknLoop",
+        "tag_lead": "HooknLoop.",
+        "tag_accent": "Made to connect."
+      }
     }
   },
   "order": [
@@ -177,6 +297,7 @@
     "hnl_bestsellers",
     "hnl_trusted",
     "hnl_why",
-    "hnl_trustbar"
+    "hnl_trustbar",
+    "hnl_film"
   ]
 }

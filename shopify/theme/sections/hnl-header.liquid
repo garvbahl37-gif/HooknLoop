@@ -1,0 +1,251 @@
+{%- comment -%}
+  HooknLoop header — port of storefront/src/components/Header.jsx
+
+  Structure, class names and icons match the React version exactly, so
+  header.css (bundled verbatim into hnl-redesign.css) styles it unchanged:
+
+    .promo   blue promo strip
+    .bar     white row: burger / logo / search / account-wish-cart
+    .nav     navy nav with hover+focus dropdowns, sticks on scroll
+    .mdrawer mobile drawer, opened by the burger
+
+  The React version read menus from catalog.js; here the dropdowns are theme
+  blocks pointing at real Shopify product handles, so a renamed product shows
+  up as an editable setting rather than a dead link.
+
+  Cart and wishlist counts come from Shopify's cart object. Wishlist has no
+  Shopify equivalent, so it reads 0 unless a wishlist app sets it — the markup
+  is kept so the layout matches.
+{%- endcomment -%}
+
+<header class="hdr">
+  <div class="promo">
+    <div class="wrap promo__row">
+      <span class="promo__lead">{{ section.settings.promo_lead }}</span>
+      <span class="promo__sep promo__sep--lead" aria-hidden="true">•</span>
+      <span class="promo__hl">{{ section.settings.promo_hl1 }}</span>
+      <span class="promo__sep" aria-hidden="true">•</span>
+      <span class="promo__opt">{{ section.settings.promo_opt }}</span>
+      <span class="promo__sep promo__sep--opt" aria-hidden="true">•</span>
+      <span class="promo__hl">{{ section.settings.promo_hl2 }}</span>
+    </div>
+  </div>
+
+  <div class="bar">
+    <div class="wrap bar__row">
+      <button class="bar__burger" aria-label="Open menu" aria-expanded="false" data-hnl-burger>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+
+      <a href="{{ routes.root_url }}" class="logo" aria-label="HooknLoop home">
+        <img class="logo__img" src="{{ 'hnl-logo-header.svg' | asset_url }}" alt="HooknLoop" width="389" height="69">
+      </a>
+
+      <form class="search" role="search" action="{{ routes.search_url }}" method="get">
+        <input class="search__input" type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ section.settings.search_placeholder }}" aria-label="Search products">
+        <button class="search__btn" type="submit" aria-label="Search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></button>
+      </form>
+
+      <div class="bar__actions">
+        <a class="icn icn--searchlink" href="{{ routes.search_url }}" aria-label="Search"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></a>
+
+        <a class="icn icn--account" href="{{ routes.account_url }}" aria-label="Account and orders"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></a>
+
+        <a class="icn icn--wish" href="{{ section.settings.wishlist_url | default: routes.root_url }}" aria-label="Wishlist">
+          <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 21s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.5-7 10-7 10Z"/></svg>
+          <span class="icn__count" data-hnl-wishcount>0</span>
+        </a>
+
+        <a class="icn icn--cart" href="{{ routes.cart_url }}" aria-label="Cart, {{ cart.item_count }} items">
+          <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M6 6 5 3H2"/></svg>
+          <span class="icn__count {% if cart.item_count > 0 %}is-on{% endif %}">{{ cart.item_count }}</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<nav class="nav" aria-label="Primary" data-hnl-nav>
+  <div class="wrap nav__row">
+    <ul class="nav__list">
+      <li class="nav__item"><a href="{{ routes.root_url }}" class="nav__link">Home</a></li>
+
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'menu' -%}
+          <li class="nav__item nav__item--has" {{ block.shopify_attributes }}>
+            <button class="nav__link" aria-expanded="false" aria-haspopup="true">
+              {{ block.settings.label }}<svg class="nav__chev" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+            <div class="nav__drop">
+              {%- assign labels  = block.settings.item_labels  | split: '|' -%}
+              {%- assign handles = block.settings.item_handles | split: '|' -%}
+              {%- for l in labels -%}
+                {%- assign h = handles[forloop.index0] | strip -%}
+                {%- assign prod = all_products[h] -%}
+                {%- if prod != blank and prod.handle -%}
+                  <a href="{{ prod.url }}">{{ l | strip }}</a>
+                {%- else -%}
+                  <a href="{{ routes.all_products_collection_url }}">{{ l | strip }}</a>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          </li>
+        {%- elsif block.type == 'link' -%}
+          <li class="nav__item" {{ block.shopify_attributes }}><a href="{{ block.settings.url }}" class="nav__link">{{ block.settings.label }}</a></li>
+        {%- endif -%}
+      {%- endfor -%}
+    </ul>
+  </div>
+</nav>
+
+{%- comment -%} Mobile drawer — same markup as the React createPortal drawer. {%- endcomment -%}
+<div class="mdrawer" role="dialog" aria-modal="true" aria-label="Menu" data-hnl-drawer hidden>
+  <div class="mdrawer__scrim" data-hnl-drawer-close></div>
+  <aside class="mdrawer__panel">
+    <div class="mdrawer__head">
+      <img class="mdrawer__logo" src="{{ 'hnl-logo-header.svg' | asset_url }}" alt="HooknLoop" width="389" height="69">
+      <button class="mdrawer__close" aria-label="Close menu" data-hnl-drawer-close>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+
+    <form class="mdrawer__search" role="search" action="{{ routes.search_url }}" method="get">
+      <input type="search" name="q" placeholder="{{ section.settings.search_placeholder }}" aria-label="Search products">
+      <button type="submit" aria-label="Search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></button>
+    </form>
+
+    <nav class="mdrawer__nav" aria-label="Mobile">
+      <a href="{{ routes.root_url }}" class="mdrawer__link">Home</a>
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'menu' -%}
+          <div class="mdrawer__group">
+            <button class="mdrawer__acc" aria-expanded="false">
+              {{ block.settings.label }}<svg class="mdrawer__chev" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+            <div class="mdrawer__sub">
+              {%- assign labels  = block.settings.item_labels  | split: '|' -%}
+              {%- assign handles = block.settings.item_handles | split: '|' -%}
+              {%- for l in labels -%}
+                {%- assign h = handles[forloop.index0] | strip -%}
+                {%- assign prod = all_products[h] -%}
+                <a href="{% if prod != blank and prod.handle %}{{ prod.url }}{% else %}{{ routes.all_products_collection_url }}{% endif %}">{{ l | strip }}</a>
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- elsif block.type == 'link' -%}
+          <a href="{{ block.settings.url }}" class="mdrawer__link">{{ block.settings.label }}</a>
+        {%- endif -%}
+      {%- endfor -%}
+    </nav>
+
+    <div class="mdrawer__foot">
+      <a href="{{ routes.account_url }}">Account</a>
+      <a href="/pages/contact">Contact</a>
+      <a href="/pages/about-us">About us</a>
+      <a href="/pages/shipping-delivery">Shipping</a>
+    </div>
+  </aside>
+</div>
+
+<script>
+(function () {
+  /* Dropdowns. React gated hover on (hover: hover) because a tap emits a
+     synthetic mouseenter before the click — without the gate, the tap opens
+     the menu and its own click closes it again. Same gate here. */
+  var canHover = function () { return window.matchMedia('(hover: hover)').matches; };
+  var items = document.querySelectorAll('.nav__item--has');
+
+  function close(el) { el.classList.remove('is-open'); var b = el.querySelector('.nav__link'); if (b) b.setAttribute('aria-expanded','false'); }
+  function open(el)  { el.classList.add('is-open');    var b = el.querySelector('.nav__link'); if (b) b.setAttribute('aria-expanded','true'); }
+  function closeAll(){ items.forEach(close); }
+
+  items.forEach(function (el) {
+    var btn = el.querySelector('.nav__link');
+    el.addEventListener('mouseenter', function () { if (canHover()) { closeAll(); open(el); } });
+    el.addEventListener('mouseleave', function () { if (canHover()) close(el); });
+    if (btn) {
+      var wasOpen = false;
+      btn.addEventListener('pointerdown', function () { wasOpen = el.classList.contains('is-open'); });
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (canHover()) { closeAll(); open(el); }
+        else if (wasOpen) { close(el); }
+        else { closeAll(); open(el); }
+      });
+    }
+  });
+
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeAll(); });
+  document.addEventListener('pointerdown', function (e) { if (!e.target.closest('.nav__item--has')) closeAll(); });
+
+  /* Nav pins to the top once the promo + logo rows scroll away. */
+  var nav = document.querySelector('[data-hnl-nav]');
+  if (nav) {
+    var onScroll = function () {
+      var t = nav.getBoundingClientRect().top;
+      nav.classList.toggle('is-stuck', t <= 0);
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+
+  /* Mobile drawer + body scroll lock. */
+  var drawer = document.querySelector('[data-hnl-drawer]');
+  var burger = document.querySelector('[data-hnl-burger]');
+  if (drawer && burger) {
+    var prevOverflow = '';
+    var setDrawer = function (on) {
+      if (on) { drawer.removeAttribute('hidden'); prevOverflow = document.body.style.overflow; document.body.style.overflow = 'hidden'; }
+      else    { drawer.setAttribute('hidden',''); document.body.style.overflow = prevOverflow; }
+      burger.setAttribute('aria-expanded', on ? 'true' : 'false');
+    };
+    burger.addEventListener('click', function () { setDrawer(true); });
+    drawer.querySelectorAll('[data-hnl-drawer-close]').forEach(function (b) {
+      b.addEventListener('click', function () { setDrawer(false); });
+    });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setDrawer(false); });
+
+    drawer.querySelectorAll('.mdrawer__acc').forEach(function (acc) {
+      acc.addEventListener('click', function () {
+        var g = acc.closest('.mdrawer__group');
+        var on = g.classList.toggle('is-open');
+        acc.setAttribute('aria-expanded', on ? 'true' : 'false');
+      });
+    });
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "HooknLoop header",
+  "tag": "header",
+  "settings": [
+    { "type": "text", "id": "promo_lead", "label": "Promo lead", "default": "Fast Australia-wide delivery" },
+    { "type": "text", "id": "promo_hl1", "label": "Promo highlight 1", "default": "Free shipping over $200" },
+    { "type": "text", "id": "promo_opt", "label": "Promo middle", "default": "Best price in Australia" },
+    { "type": "text", "id": "promo_hl2", "label": "Promo highlight 2", "default": "★ 5-star rated store" },
+    { "type": "text", "id": "search_placeholder", "label": "Search placeholder", "default": "Search our store" },
+    { "type": "url", "id": "wishlist_url", "label": "Wishlist link" }
+  ],
+  "blocks": [
+    {
+      "type": "menu",
+      "name": "Dropdown",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label" },
+        { "type": "textarea", "id": "item_labels", "label": "Item labels (pipe-separated)" },
+        { "type": "textarea", "id": "item_handles", "label": "Product handles (pipe-separated)", "info": "Same order as the labels. Unknown handles fall back to the all-products collection." }
+      ]
+    },
+    {
+      "type": "link",
+      "name": "Link",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label" },
+        { "type": "url", "id": "url", "label": "Link" }
+      ]
+    }
+  ]
+}
+{% endschema %}
