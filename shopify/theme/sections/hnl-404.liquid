@@ -1,0 +1,45 @@
+{%- comment -%}
+  404 — the React app had no 404 (its router fell through to the landing page),
+  so this follows the redesign's page shell rather than porting anything.
+
+  It offers a search box and the range, because a dead link on a 12-product
+  catalogue almost always means a renamed product.
+{%- endcomment -%}
+
+<main id="main" class="page">
+  <div class="page__hero page__hero--center">
+    <div class="wrap">
+      <span class="sec-eyebrow sec-eyebrow--orange">{{ section.settings.eyebrow }}</span>
+      <h1 class="page__hero-h1">{{ section.settings.title }}</h1>
+      <p class="page__hero-lead">{{ section.settings.lead }}</p>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <form class="search__big" action="{{ routes.search_url }}" method="get" role="search">
+      <input type="search" name="q" placeholder="Search by product, width, or type…" aria-label="Search">
+    </form>
+
+    <div class="page__cta" style="text-align:center">
+      <a href="{{ routes.all_products_collection_url }}" class="btn btn--primary">Shop all products &rarr;</a>
+    </div>
+
+    <div class="coll__grid coll__grid--full" style="margin-top:40px">
+      {%- for product in collections.all.products limit: 4 -%}
+        {% render 'hnl-product-card', product: product %}
+      {%- endfor -%}
+    </div>
+  </div>
+</main>
+
+{% schema %}
+{
+  "name": "HooknLoop 404",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Page not found" },
+    { "type": "text", "id": "title", "label": "Heading", "default": "That page has moved on" },
+    { "type": "textarea", "id": "lead", "label": "Lead", "default": "The link is dead, but the tape isn't. Search below or browse the full range." }
+  ]
+}
+{% endschema %}

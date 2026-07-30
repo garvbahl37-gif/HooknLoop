@@ -1,0 +1,191 @@
+{%- comment -%}
+  Collection page — port of storefront/src/pages/CollectionPage.jsx
+
+  React filtered a hardcoded array in the browser. Here the sort and the filters
+  are Shopify's own — `sort_by` on the URL and the storefront filter API — so
+  they work on the full catalogue, survive a page refresh, produce shareable
+  URLs, and stay correct once the catalogue outgrows one page.
+
+  The React "Category" list becomes Shopify's collection list, and its hardcoded
+  colour list becomes whatever filters the merchant enables under
+  Online Store > Navigation > Filters. If no filters are configured the sidebar
+  falls back to the collection list alone rather than rendering an empty rail.
+{%- endcomment -%}
+
+{%- paginate collection.products by section.settings.per_page -%}
+
+<main id="main" class="page coll">
+  <div class="wrap coll__head">
+    <div>
+      <span class="sec-eyebrow">Shop</span>
+      {%- comment -%}
+        Shopify names the catch-all collection "All", which reads as an unfinished
+        heading. React called this view "All hook & loop"; keep that, and let
+        every real collection use its own title.
+      {%- endcomment -%}
+      <h1 class="page__h1">
+        {%- if collection.handle == 'all' or collection.handle == blank -%}
+          {{ section.settings.all_title }}
+        {%- else -%}
+          {{ collection.title }}
+        {%- endif -%}
+      </h1>
+      <p class="page__lead">
+        {{ collection.products_count }} product{% if collection.products_count != 1 %}s{% endif %}
+        &middot; {{ section.settings.dispatch_note }}
+      </p>
+      {%- if collection.description != blank -%}
+        <div class="coll__desc">{{ collection.description }}</div>
+      {%- endif -%}
+    </div>
+
+    <label class="coll__sort">
+      <span>Sort</span>
+      {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+      <select data-hnl-sort aria-label="Sort products">
+        {%- for option in collection.sort_options -%}
+          <option value="{{ option.value }}" {% if option.value == sort_by %}selected{% endif %}>{{ option.name }}</option>
+        {%- endfor -%}
+      </select>
+    </label>
+  </div>
+
+  <div class="wrap coll__body">
+    <aside class="coll__filters">
+      <div class="coll__filter">
+        <h3>Category</h3>
+        <a class="coll__fbtn {% if collection.handle == 'all' or collection.handle == blank %}is-on{% endif %}"
+           href="{{ routes.all_products_collection_url }}">
+          All products <em>{{ collections.all.products_count }}</em>
+        </a>
+        {%- comment -%}
+          Some collections exist to feed an app or the homepage, not to be
+          browsed — "related-product" and "frontpage" are both on this store and
+          were showing to customers as if they were categories.
+        {%- endcomment -%}
+        {%- assign hidden = section.settings.exclude_handles | replace: ' ', '' | split: ',' -%}
+        {%- for c in collections -%}
+          {%- unless c.handle == 'all' or c.products_count == 0 or hidden contains c.handle -%}
+            <a class="coll__fbtn {% if c.handle == collection.handle %}is-on{% endif %}" href="{{ c.url }}">
+              {{ c.title }} <em>{{ c.products_count }}</em>
+            </a>
+          {%- endunless -%}
+        {%- endfor -%}
+      </div>
+
+      {%- comment -%}
+        Storefront filters. Each change submits the form, so the URL always
+        describes exactly what is on screen — back/forward and sharing work.
+      {%- endcomment -%}
+      {%- if collection.filters.size > 0 -%}
+        <form data-hnl-filter-form>
+          <input type="hidden" name="sort_by" value="{{ sort_by }}">
+          {%- for filter in collection.filters -%}
+            {%- if filter.type == 'list' -%}
+              <div class="coll__filter">
+                <h3>{{ filter.label }}</h3>
+                {%- for value in filter.values -%}
+                  <label class="coll__fbtn {% if value.active %}is-on{% endif %} {% if value.count == 0 and value.active == false %}is-out{% endif %}">
+                    <input type="checkbox"
+                           name="{{ value.param_name }}"
+                           value="{{ value.value }}"
+                           {% if value.active %}checked{% endif %}
+                           {% if value.count == 0 and value.active == false %}disabled{% endif %}>
+                    {{ value.label }} <em>{{ value.count }}</em>
+                  </label>
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+          <noscript><button type="submit" class="btn btn--ghost-dark">Apply filters</button></noscript>
+        </form>
+      {%- endif -%}
+
+      {%- if section.settings.help_heading != blank -%}
+        <div class="coll__help">
+          <b>{{ section.settings.help_heading }}</b>
+          <p>{{ section.settings.help_body }}</p>
+          <a href="{{ section.settings.help_link }}" class="btn btn--ghost-dark">{{ section.settings.help_cta }}</a>
+        </div>
+      {%- endif -%}
+    </aside>
+
+    <div class="coll__grid">
+      {%- for product in collection.products -%}
+        {% render 'hnl-product-card', product: product %}
+      {%- else -%}
+        <p class="coll__empty">
+          No products match those filters.
+          <a href="{{ collection.url }}">Clear filters</a>
+        </p>
+      {%- endfor -%}
+    </div>
+  </div>
+
+  {%- if paginate.pages > 1 -%}
+    <nav class="wrap coll__pager" aria-label="Pagination">
+      {%- if paginate.previous -%}
+        <a class="coll__page coll__page--prev" href="{{ paginate.previous.url }}">&larr; Previous</a>
+      {%- endif -%}
+      {%- for part in paginate.parts -%}
+        {%- if part.is_link -%}
+          <a class="coll__page" href="{{ part.url }}">{{ part.title }}</a>
+        {%- else -%}
+          <span class="coll__page {% if part.title == paginate.current_page %}is-on{% endif %}">{{ part.title }}</span>
+        {%- endif -%}
+      {%- endfor -%}
+      {%- if paginate.next -%}
+        <a class="coll__page coll__page--next" href="{{ paginate.next.url }}">Next &rarr;</a>
+      {%- endif -%}
+    </nav>
+  {%- endif -%}
+</main>
+
+{%- endpaginate -%}
+
+<script>
+(function () {
+  var sort = document.querySelector('[data-hnl-sort]');
+  if (sort) {
+    sort.addEventListener('change', function () {
+      var u = new URL(window.location.href);
+      u.searchParams.set('sort_by', sort.value);
+      u.searchParams.delete('page');   /* a new sort invalidates the page number */
+      window.location.href = u.toString();
+    });
+  }
+
+  var form = document.querySelector('[data-hnl-filter-form]');
+  if (form) {
+    form.addEventListener('change', function () {
+      /* Build the query from the checked boxes rather than submitting the form,
+         so unchecked filters drop out of the URL instead of lingering as empty
+         params. */
+      var params = new URLSearchParams();
+      params.set('sort_by', form.querySelector('[name=sort_by]').value);
+      [].forEach.call(form.querySelectorAll('input[type=checkbox]:checked'), function (i) {
+        params.append(i.name, i.value);
+      });
+      window.location.href = window.location.pathname + '?' + params.toString();
+    });
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "HooknLoop collection",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "all_title", "label": "Title for the all-products page", "default": "All hook & loop", "info": "Shopify names that collection \"All\", which reads as an unfinished heading." },
+    { "type": "text", "id": "dispatch_note", "label": "Dispatch note", "default": "dispatched 1–2 days Australia-wide" },
+    { "type": "range", "id": "per_page", "min": 8, "max": 48, "step": 4, "label": "Products per page", "default": 24 },
+    { "type": "text", "id": "exclude_handles", "label": "Hide these collections", "default": "related-product,frontpage", "info": "Comma-separated handles. For collections that feed an app or the homepage rather than being browsed." },
+    { "type": "header", "content": "Help card" },
+    { "type": "text", "id": "help_heading", "label": "Heading", "default": "Not sure which?" },
+    { "type": "textarea", "id": "help_body", "label": "Body", "default": "Tell us about the job and we'll match the right fastener." },
+    { "type": "text", "id": "help_cta", "label": "Button", "default": "Ask our team" },
+    { "type": "url", "id": "help_link", "label": "Button link" }
+  ]
+}
+{% endschema %}

@@ -2421,6 +2421,123 @@ body.drawer-open { overflow: hidden; }
   font-family: inherit;
 }
 
+/* ── Blockquotes: no left rule ────────────────────────────────────────────
+   Suruchi's theme.css styles bare `blockquote` with
+       border-left: 3.2px solid ...; padding-left: 16px
+   which drew a vertical line down the left of the brand-film founder story and
+   every review quote. The React app has no such rule, so those are the theme's
+   own decoration bleeding into ported markup, not part of the design.
+
+   Scoped to the redesign's own blockquotes so Suruchi's product descriptions
+   and blog posts keep the styling they were written against. */
+.film__story-text,
+.rv__quote {
+  border-left: 0;
+  padding-left: 0;
+}
+
+/* ── Product description (.pdp__rte) ──────────────────────────────────────
+   React built the PDP body from a hardcoded object and gave each list its own
+   class (.pdp__features, .pdp__apps) carrying the orange tick bullet. Here the
+   body is product.description — real merchant HTML with bare <ul>/<li> and no
+   classes to hook onto. base.css sets `ul { list-style: none }`, so every
+   feature and application list rendered as unmarked lines.
+
+   These rules give the description's own lists the same tick the React classes
+   had, so the rendered result matches the design without asking the merchant to
+   write class names into their product copy. */
+.pdp__rte ul {
+  display: grid;
+  gap: 11px;
+  margin: 12px 0 18px;
+  padding: 0;
+  list-style: none;
+}
+.pdp__rte li {
+  position: relative;
+  padding-left: 30px;
+  color: var(--muted-ink);
+  line-height: 1.5;
+}
+.pdp__rte li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 1px;
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  background: rgba(232, 119, 34, 0.14);
+}
+.pdp__rte li::after {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 7px;
+  width: 7px;
+  height: 4px;
+  border-left: 2px solid var(--orange-ink);
+  border-bottom: 2px solid var(--orange-ink);
+  transform: rotate(-45deg);
+}
+/* Ordered lists keep their numbers — a tick would misrepresent a sequence. */
+.pdp__rte ol {
+  display: grid;
+  gap: 11px;
+  margin: 12px 0 18px;
+  padding-left: 22px;
+  list-style: decimal;
+}
+.pdp__rte ol li {
+  padding-left: 0;
+}
+.pdp__rte ol li::before,
+.pdp__rte ol li::after {
+  content: none;
+}
+
+/* Merchant copy uses h2–h4 inconsistently inside one description. Pin them all
+   below the section's own <h2> so "key features:" cannot outrank "Description". */
+.pdp__rte h1,
+.pdp__rte h2,
+.pdp__rte h3,
+.pdp__rte h4 {
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 16.8px;
+  color: var(--navy);
+  line-height: 1.3;
+  margin: 22px 0 8px;
+}
+.pdp__rte > :first-child {
+  margin-top: 0;
+}
+.pdp__rte p {
+  color: var(--muted-ink);
+  line-height: 1.65;
+}
+.pdp__rte p + p {
+  margin-top: 12px;
+}
+.pdp__rte a {
+  color: var(--orange-ink);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.pdp__rte img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--r-ctrl);
+}
+/* Wide spec tables in merchant copy must scroll themselves, never the page. */
+.pdp__rte table {
+  width: 100%;
+  display: block;
+  overflow-x: auto;
+  border-collapse: collapse;
+}
+
 /* Sold-out cards: Suruchi disables the submit button but leaves it navy, which
    reads as tappable. Match the muted treatment the rest of the redesign uses. */
 .pc__add[disabled] {

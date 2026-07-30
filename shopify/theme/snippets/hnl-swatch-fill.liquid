@@ -1,0 +1,18 @@
+{%- comment -%}
+  Colour swatch fill — port of swatchFill() in ProductPage.jsx.
+
+  A value containing "/" is ONE two-tone SKU (Heavy-Duty Straps ship as
+  Orange/Black), not two choices, so it renders as a single split circle rather
+  than two solid buttons.
+
+  Usage: style="background: {% render 'hnl-swatch-fill', value: value %}"
+{%- endcomment -%}
+
+{%- if value contains '/' -%}
+  {%- assign halves = value | split: '/' -%}
+  {%- capture a %}{% render 'hnl-swatch-colour', value: halves[0] %}{% endcapture -%}
+  {%- capture b %}{% render 'hnl-swatch-colour', value: halves[1] %}{% endcapture -%}
+  linear-gradient(90deg, {{ a | strip }} 50%, {{ b | strip }} 50%)
+{%- else -%}
+  {%- render 'hnl-swatch-colour', value: value -%}
+{%- endif -%}

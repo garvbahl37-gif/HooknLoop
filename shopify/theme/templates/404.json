@@ -1,26 +1,19 @@
 /*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
+ * HooknLoop 404. The React router had no 404 route; this follows the
+ * redesign's page shell.
  */
 {
   "sections": {
-    "main": {
-      "type": "404-template",
+    "hnl_404": {
+      "type": "hnl-404",
       "settings": {
-        "color_scheme": "background-1",
-        "padding_top": 0,
-        "padding_bottom": 0,
-        "mobile_padding_top": 0,
-        "mobile_padding_bottom": 0
+        "eyebrow": "Page not found",
+        "title": "That page has moved on",
+        "lead": "The link is dead, but the tape isn't. Search below or browse the full range."
       }
     }
   },
   "order": [
-    "main"
+    "hnl_404"
   ]
 }

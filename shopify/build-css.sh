@@ -84,7 +84,17 @@ for name in order:
     pieces.append(f'\n/* ================= {name}.css ================= */\n')
     pieces.append(rem_to_px(css))
 
-pieces.append('\n' + pathlib.Path(overrides).read_text(encoding='utf-8'))
+# The overrides file is appended verbatim — it is hand-written against this
+# theme, not ported — so the rem->px pass above never touches it. That makes a
+# stray rem here silently render at 62.5% of its intended size, which is exactly
+# the bug this whole script exists to prevent. Fail loudly instead.
+ov = pathlib.Path(overrides).read_text(encoding='utf-8')
+ov_rem = re.findall(r'(?<![\w.-])-?\d*\.?\d+rem\b', re.sub(r'@media[^{]*\{', '', ov))
+if ov_rem:
+    sys.exit(f'rem in {overrides}: {ov_rem}\n'
+             'That file is not unit-converted. Use px (1rem = 16px).')
+
+pieces.append('\n' + ov)
 text = ''.join(pieces)
 
 # The output is served as .liquid, so Liquid parses the whole file — including

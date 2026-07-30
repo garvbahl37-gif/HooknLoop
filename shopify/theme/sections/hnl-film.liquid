@@ -51,7 +51,9 @@
       </figure>
     {%- endif -%}
 
-    <p class="film__tag">{{ section.settings.tag_lead }} <span>{{ section.settings.tag_accent }}</span></p>
+    {%- if section.settings.tag_lead != blank or section.settings.tag_accent != blank -%}
+      <p class="film__tag">{{ section.settings.tag_lead }} <span>{{ section.settings.tag_accent }}</span></p>
+    {%- endif -%}
   </div>
 </section>
 
@@ -127,8 +129,8 @@
     { "type": "text", "id": "video_label", "label": "Video aria-label", "default": "HooknLoop brand film — Made to connect" },
     { "type": "richtext", "id": "story", "label": "Founder story" },
     { "type": "text", "id": "story_by", "label": "Story attribution", "default": "Founder, HooknLoop" },
-    { "type": "text", "id": "tag_lead", "label": "Tagline", "default": "HooknLoop." },
-    { "type": "text", "id": "tag_accent", "label": "Tagline accent", "default": "Made to connect." }
+    { "type": "text", "id": "tag_lead", "label": "Tagline" },
+    { "type": "text", "id": "tag_accent", "label": "Tagline accent", "info": "Leave both tagline fields empty to hide the line entirely." }
   ],
   "presets": [{ "name": "HooknLoop film" }]
 }

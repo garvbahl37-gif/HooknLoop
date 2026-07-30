@@ -1,0 +1,92 @@
+{%- comment -%}
+  Search — port of SearchPage() in storefront/src/pages/ContentPages.jsx
+
+  React filtered a 12-item array with String.includes. This uses Shopify's real
+  search, so it matches descriptions, tags, SKUs and pages too, and keeps working
+  as the catalogue grows. Results are paginated for the same reason.
+{%- endcomment -%}
+
+{%- paginate search.results by section.settings.per_page -%}
+
+<main id="main" class="page">
+  <div class="page__hero page__hero--center">
+    <div class="wrap">
+      <h1 class="page__hero-h1">{{ section.settings.title }}</h1>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <form class="search__big" action="{{ routes.search_url }}" method="get" role="search">
+      <input type="search"
+             name="q"
+             value="{{ search.terms | escape }}"
+             placeholder="{{ section.settings.placeholder }}"
+             aria-label="Search">
+      <input type="hidden" name="options[prefix]" value="last">
+    </form>
+
+    {%- if search.performed -%}
+      <p class="page__lead" style="margin-bottom:24px">
+        {{ search.results_count }} result{% if search.results_count != 1 %}s{% endif %}
+        {%- if search.terms != blank %} for &ldquo;{{ search.terms | escape }}&rdquo;{% endif -%}
+      </p>
+
+      {%- if search.results_count > 0 -%}
+        <div class="coll__grid coll__grid--full">
+          {%- for item in search.results -%}
+            {%- if item.object_type == 'product' -%}
+              {% render 'hnl-product-card', product: item %}
+            {%- else -%}
+              <a class="coll__result" href="{{ item.url }}">
+                <span class="coll__result-kind">{{ item.object_type }}</span>
+                <b>{{ item.title }}</b>
+                <span>{{ item.content | strip_html | truncatewords: 24 }}</span>
+              </a>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- else -%}
+        <p class="coll__empty">
+          Nothing matched that. Try a width (25mm), a type (sew-on, dots, straps),
+          or <a href="{{ routes.all_products_collection_url }}">browse everything</a>.
+        </p>
+      {%- endif -%}
+    {%- else -%}
+      <p class="page__lead" style="margin-bottom:24px">{{ section.settings.prompt }}</p>
+      <div class="coll__grid coll__grid--full">
+        {%- for product in collections.all.products limit: section.settings.per_page -%}
+          {% render 'hnl-product-card', product: product %}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    {%- if paginate.pages > 1 -%}
+      <nav class="coll__pager" aria-label="Pagination">
+        {%- if paginate.previous -%}<a class="coll__page" href="{{ paginate.previous.url }}">&larr; Previous</a>{%- endif -%}
+        {%- for part in paginate.parts -%}
+          {%- if part.is_link -%}
+            <a class="coll__page" href="{{ part.url }}">{{ part.title }}</a>
+          {%- else -%}
+            <span class="coll__page {% if part.title == paginate.current_page %}is-on{% endif %}">{{ part.title }}</span>
+          {%- endif -%}
+        {%- endfor -%}
+        {%- if paginate.next -%}<a class="coll__page" href="{{ paginate.next.url }}">Next &rarr;</a>{%- endif -%}
+      </nav>
+    {%- endif -%}
+  </div>
+</main>
+
+{%- endpaginate -%}
+
+{% schema %}
+{
+  "name": "HooknLoop search",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Heading", "default": "Search products" },
+    { "type": "text", "id": "placeholder", "label": "Placeholder", "default": "Search by product, width, or type…" },
+    { "type": "text", "id": "prompt", "label": "Empty-state lead", "default": "Search the full range, or browse everything below." },
+    { "type": "range", "id": "per_page", "min": 8, "max": 48, "step": 4, "label": "Results per page", "default": 24 }
+  ]
+}
+{% endschema %}

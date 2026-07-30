@@ -1,0 +1,21 @@
+/*
+ * Blog landing — mirrors BlogPage() in ContentPages.jsx.
+ */
+{
+  "sections": {
+    "hnl_page": {
+      "type": "hnl-page",
+      "settings": {
+        "eyebrow": "Guides & how-tos",
+        "title": "The HooknLoop blog",
+        "lead": "Practical guides for choosing and using hook & loop.",
+        "center": true,
+        "narrow": true,
+        "body": "<h2>On the way</h2><ul><li>Velcro vs hook &amp; loop: what's the difference?</li><li>Hook side vs loop side — which goes where</li><li>Sew-on vs self-adhesive</li><li>Fire-retardant hook &amp; loop standards in Australia</li></ul><p>Want these in your inbox as they land? Subscribe in the footer.</p>"
+      }
+    }
+  },
+  "order": [
+    "hnl_page"
+  ]
+}

@@ -1,0 +1,56 @@
+{%- comment -%}
+  Product card — port of storefront/src/components/ProductCard.jsx
+
+  Extracted from hnl-bestsellers so the homepage, collection page and PDP
+  "Related products" all render the same card. One copy, one place to fix.
+
+  Usage: {% render 'hnl-product-card', product: product %}
+
+  Single-variant products post straight to /cart/add; multi-variant ones link to
+  the PDP to choose, because a card cannot honestly represent 18 variants.
+{%- endcomment -%}
+
+<article class="pc">
+  <a href="{{ product.url }}" class="pc__media" aria-label="View {{ product.title | escape }}">
+    {%- if product.compare_at_price > product.price -%}
+      <span class="pc__badge">Sale</span>
+    {%- endif -%}
+    {%- if product.featured_image -%}
+      {{ product.featured_image | image_url: width: 640 | image_tag: class: 'pc__img', alt: product.title, loading: 'lazy' }}
+    {%- endif -%}
+    {%- if product.images[1] -%}
+      {{ product.images[1] | image_url: width: 640 | image_tag: class: 'pc__img pc__img--alt', alt: '', aria-hidden: 'true', loading: 'lazy' }}
+    {%- endif -%}
+  </a>
+
+  <div class="pc__body">
+    <h3 class="pc__name"><a href="{{ product.url }}">{{ product.title }}</a></h3>
+
+    <div class="pc__rating pc__rating--none"><span>No reviews yet</span></div>
+
+    {%- if product.type != blank -%}
+      <p class="pc__spec">{{ product.type }}</p>
+    {%- elsif product.variants.size > 1 -%}
+      <p class="pc__spec">{{ product.variants.size }} options available</p>
+    {%- endif -%}
+
+    <div class="pc__price">
+      <span class="pc__set">From <b>{{ product.price_min | money }}</b> <span class="pc__gst">incl. GST</span></span>
+    </div>
+
+    {%- if product.variants.size == 1 and product.available -%}
+      {%- form 'product', product, class: 'pc__addform' -%}
+        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+        <button type="submit" class="pc__add">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M6 6 5 3H2"/></svg>
+          Add to cart
+        </button>
+      {%- endform -%}
+    {%- else -%}
+      <a href="{{ product.url }}" class="pc__add">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M6 6 5 3H2"/></svg>
+        {% if product.available %}Choose options{% else %}Sold out{% endif %}
+      </a>
+    {%- endif -%}
+  </div>
+</article>

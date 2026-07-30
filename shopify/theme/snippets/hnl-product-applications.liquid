@@ -1,0 +1,97 @@
+{%- comment -%}
+  Key applications — port of the "Key applications" block in ProductPage.jsx,
+  including the in-use photography from data/applicationShots.js.
+
+  The React app keyed this off its own catalog handles, which differ from the
+  store's. The `when` clauses below are the real Shopify product handles; the
+  comment on each names the React handle it came from so the two stay traceable.
+
+  Why a snippet and not metafields: creating metafield definitions needs the
+  Admin API, and the Theme Access token this theme is deployed with is
+  theme-scoped only. Moving this to metafields later is a clean swap — the
+  markup below is the only thing that would change.
+
+  A product with no entry renders nothing at all, rather than an empty heading.
+{%- endcomment -%}
+
+{%- liquid
+  assign app_list = ''
+  assign app_shots = ''
+  case product.handle
+    # self-adhesive-roll
+    when 'self-adhesive-hook-and-loop-roll'
+      assign app_list = 'Securing mats, rugs & lightweight panels|Office, home & DIY projects|Craft, display & signage|Temporary mounting & organisation|Displays & exhibitions'
+      assign app_shots = 'hnl-app-self-adhesive-roll-1.webp~Mounting a wall panel on site — peel the liner, press, done|hnl-app-self-adhesive-roll-2.webp~A garage tool board with no hooks, screws or drilling'
+    # heavy-duty-adhesive
+    when 'heavy-duty-adhesive-hook-and-loop'
+      assign app_list = 'Construction — wall panels, access doors, signage|Automotive & transport — trims, caravan/RV, dash|Manufacturing — machine covers, insulation, panels|Home & DIY — frame mounting, tool boards, garage'
+      assign app_shots = 'hnl-app-heavy-duty-adhesive-1.webp~A removable trim panel in a caravan interior|hnl-app-heavy-duty-adhesive-2.webp~A machine cover that lifts straight off'
+    # velcro-brand-roll
+    when 'velcro-self-adhesive-hook-and-loop-roll'
+      assign app_list = 'Cable & wire management|Securing lightweight panels, signs & displays|Organising tools, remotes & accessories|Craft, DIY & temporary mounting|Office, retail & home organisation'
+      assign app_shots = 'hnl-app-velcro-brand-roll-1.webp~Fabric panels onto an exhibition stand frame|hnl-app-velcro-brand-roll-2.webp~Acoustic panels onto an office wall — removable, no fixings'
+    # sew-on
+    when 'sew-on-hook-and-loop-fastener'
+      assign app_list = 'Clothing & garments|Upholstery & soft furnishings|Bags, backpacks & accessories|Curtains, cushions & covers|Craft, tailoring & DIY sewing'
+      assign app_shots = 'hnl-app-sew-on-1.webp~Stitched onto workwear on an industrial machine|hnl-app-sew-on-2.webp~A hidden closure inside a linen cushion cover'
+    # hook-and-loop-for-fabric
+    when 'hook-and-loop-for-fabric'
+      assign app_list = 'Clothing & work uniforms|Jackets & safety wear|School bags & backpacks|Upholstery & soft furnishings|Curtains & drapery|Sports & protective gear'
+      assign app_shots = 'hnl-app-hook-and-loop-for-fabric-1.webp~The adjustable cuff on a hi-vis work jacket|hnl-app-hook-and-loop-for-fabric-2.webp~A school backpack closure built to survive the term'
+    # hook-and-loop-dots
+    when 'hook-and-loop-dots'
+      assign app_list = 'Craft & DIY projects|Mounting lightweight signs, posters & displays|Securing stationery, photos & teaching aids|Home, office & classroom organisation|Temporary mounting & fastening'
+      assign app_shots = 'hnl-app-hook-and-loop-dots-1.webp~Classroom schedule cards that move in a second|hnl-app-hook-and-loop-dots-2.webp~Mounting control gear inside an electrical cabinet'
+    # velcoin-dots
+    when 'velcoin-hook-and-loop-sticky-dots'
+      assign app_list = 'Crafts & decorative projects|Display setups & signage|Cable management|Lightweight mounting|Office & school organisation'
+      assign app_shots = 'hnl-app-velcoin-dots-1.webp~A shelf-edge sign holder, fixed in seconds|hnl-app-velcoin-dots-2.webp~Artwork onto a display board, straight off the liner'
+    # reusable-cable-straps
+    when 'hook-and-loop-adjustable-strap'
+      assign app_list = 'Organising electrical & data cables|Home, office & workstation cable management|IT, AV & networking installations|Bundling power cords, leads & chargers|Workshops, studios & DIY'
+      assign app_shots = 'hnl-app-reusable-cable-straps-1.webp~Patch leads bundled in a network cabinet|hnl-app-reusable-cable-straps-2.webp~Under-desk cabling, tidied and still re-openable'
+    # heavy-duty-straps
+    when 'heavy-duty-hook-and-loop-strap'
+      assign app_list = 'Securing cartons & boxes on pallets|Bundling goods for warehouse storage|Stabilising loads for internal transport|Load restraint for picking & packing|Reusable pallet strapping in logistics'
+      assign app_shots = 'hnl-app-heavy-duty-straps-1.webp~Securing a wrapped pallet load in the warehouse|hnl-app-heavy-duty-straps-2.webp~Bundling timber on the loading dock'
+    # double-sided
+    when 'double-sided-hook-and-loop'
+      assign app_list = 'Bundling hoses, cords & ropes|Securing tools, equipment & accessories|Home, office, workshop & IT organisation|Temporary fastening & adjustable securing'
+      assign app_shots = 'hnl-app-double-sided-1.webp~An air hose cinched to the workshop wall|hnl-app-double-sided-2.webp~Leads and rope bundled — it grips itself, no adhesive'
+    # fire-retardant-adhesive
+    when 'fire-retardant-adhesive-hook-and-loop'
+      assign app_list = 'Securing acoustic & insulation panels|Cable management in data centres & electrical|Exhibition stands & display systems|Public transport interiors|Temporary mounting in offices & public buildings'
+      assign app_shots = 'hnl-app-fire-retardant-adhesive-1.webp~A lining panel refitted in a transit interior|hnl-app-fire-retardant-adhesive-2.webp~Cable runs secured in a building services riser|hnl-app-fire-retardant-adhesive-3.webp~Acoustic insulation onto plant-room ductwork'
+    # fire-retardant-sew-on
+    when 'fire-retardant-sew-on-hook-and-loop'
+      assign app_list = 'Protective & flame-resistant clothing|Industrial curtains & partitions|Transport seating & interiors|Military & tactical gear|Exhibition & stage installations|Equipment covers & insulation wraps'
+      assign app_shots = 'hnl-app-fire-retardant-sew-on-1.webp~The storm flap on a flame-resistant jacket|hnl-app-fire-retardant-sew-on-2.webp~Joining welding curtain panels in a fabrication shop'
+  endcase
+-%}
+
+{%- if app_list != blank -%}
+  <section class="pdp__block">
+    <h2>Key applications</h2>
+    <ul class="pdp__apps">
+      {%- assign items = app_list | split: '|' -%}
+      {%- for item in items -%}
+        <li>{{ item }}</li>
+      {%- endfor -%}
+    </ul>
+
+    {%- if app_shots != blank -%}
+      {%- assign pairs = app_shots | split: '|' -%}
+      <figure class="pdp__inuse pdp__inuse--{{ pairs.size }}">
+        {%- for pair in pairs -%}
+          {%- assign bits = pair | split: '~' -%}
+          <span class="pdp__inuse-item">
+            <img src="{{ bits[0] | asset_url }}"
+                 alt="{{ bits[1] | escape }}"
+                 loading="lazy" width="1100" height="1100">
+            <span class="pdp__inuse-cap">{{ bits[1] }}</span>
+          </span>
+        {%- endfor -%}
+      </figure>
+    {%- endif -%}
+  </section>
+{%- endif -%}

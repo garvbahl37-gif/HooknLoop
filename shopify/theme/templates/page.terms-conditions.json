@@ -1,0 +1,89 @@
+/*
+ * Terms & conditions — copy lifted verbatim from POLICIES in ContentPages.jsx.
+ * Each clause is a block, so legal wording is edited in the theme editor.
+ */
+{
+  "sections": {
+    "hnl_policy": {
+      "type": "hnl-policy",
+      "settings": {
+        "eyebrow": "The fine print",
+        "title": "Terms & conditions",
+        "lead": "By ordering on our site and placing an order, you accept the following terms and conditions.",
+        "highlights": "AUD | All prices quoted\nSecure | Payments processed\nVictoria | Governing law",
+        "help_heading": "Need a hand?",
+        "help_body": "Talk to a real person in Australia about your order, delivery or a return.",
+        "help_email": "info@hooknloop.com.au",
+        "help_phone": "+61 3 4061 6287",
+        "other_links": "Shipping & delivery | /pages/shipping-delivery\nReturns & exchanges | /pages/return-policy\nPrivacy policy | /pages/privacy-policy\nTerms & conditions | /pages/terms-conditions"
+      },
+      "blocks": {
+        "c1": {
+          "type": "clause",
+          "settings": {
+            "icon": "doc",
+            "heading": "General",
+            "body": "",
+            "bullets": "Every price is quoted in Australian Dollars (AUD).\nPrices and the availability of products might vary without prior notice.\nWe may deny service to anyone at our own discretion."
+          }
+        },
+        "c2": {
+          "type": "clause",
+          "settings": {
+            "icon": "box",
+            "heading": "Product information",
+            "body": "We attempt to be precise in product descriptions and images. There might, however, be slight differences because of manufacturing or display differences.",
+            "bullets": ""
+          }
+        },
+        "c3": {
+          "type": "clause",
+          "settings": {
+            "icon": "card",
+            "heading": "Orders & payments",
+            "body": "",
+            "bullets": "When payment is made successfully, the orders are confirmed.\nThe payments are safely processed through reliable payment services."
+          }
+        },
+        "c4": {
+          "type": "clause",
+          "settings": {
+            "icon": "truck",
+            "heading": "Shipping & delivery",
+            "body": "Delivery times are approximations. HooknLoop.com.au does not deal with courier delays or external delays.",
+            "bullets": ""
+          }
+        },
+        "c5": {
+          "type": "clause",
+          "settings": {
+            "icon": "shield",
+            "heading": "Limitation of liability",
+            "body": "HooknLoop.com.au does not have to incur indirect or consequential losses caused by the usage of our products or website.",
+            "bullets": ""
+          }
+        },
+        "c6": {
+          "type": "clause",
+          "settings": {
+            "icon": "pin",
+            "heading": "Governing law",
+            "body": "Such terms are governed by the laws of Victoria, Australia.",
+            "bullets": ""
+          }
+        }
+      },
+      "block_order": [
+        "c1",
+        "c2",
+        "c3",
+        "c4",
+        "c5",
+        "c6"
+      ]
+    }
+  },
+  "order": [
+    "hnl_policy"
+  ]
+}

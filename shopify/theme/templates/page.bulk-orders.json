@@ -1,0 +1,67 @@
+/*
+ * Bulk & trade — mirrors BulkPage() + BulkTrade.jsx. React's quote form
+ * discarded the request; this one emails the store.
+ */
+{
+  "sections": {
+    "hnl_bulk": {
+      "type": "hnl-bulk",
+      "settings": {
+        "pill": "For trade & bulk buyers",
+        "heading": "Buy by the box. Priced for trade.",
+        "sub": "Industrial hook & loop, dispatched from our Australian warehouse. Volume pricing, a proper GST tax invoice, and one point of contact for repeat orders.",
+        "form_heading": "Request a trade quote",
+        "phone": "+61 3 4061 6287",
+        "legal": "GST tax invoice supplied · ABN 93 878 995 217",
+        "show_ladder": true,
+        "ladder_eyebrow": "Bundle & save",
+        "ladder_heading": "The more you order, the more you save",
+        "ladder_sub": "Volume discounts scale with your order — no code needed. Large and recurring runs go further again, confirmed on your quote.",
+        "tiers": "5+ rolls | 5\n10+ rolls | 10\n20+ rolls | 20\n50+ rolls | 30",
+        "strip": "Free shipping over $200\nGST tax invoice + PO\nAny width, no minimums\n1–2 day dispatch",
+        "hero_eyebrow": "For trade & bulk buyers",
+        "hero_title": "Bulk & trade pricing",
+        "hero_lead": "Industrial hook & loop at volume pricing, with a GST tax invoice and one contact for repeat orders."
+      },
+      "blocks": {
+        "v1": {
+          "type": "value",
+          "settings": {
+            "title": "Volume breaks up to 30%",
+            "body": "The more rolls, the lower the per-roll price."
+          }
+        },
+        "v2": {
+          "type": "value",
+          "settings": {
+            "title": "Any width, no minimums",
+            "body": "Order the exact quantity your job needs."
+          }
+        },
+        "v3": {
+          "type": "value",
+          "settings": {
+            "title": "GST tax invoice + PO",
+            "body": "Compliant invoicing for accounts and procurement."
+          }
+        },
+        "v4": {
+          "type": "value",
+          "settings": {
+            "title": "1–2 business day dispatch",
+            "body": "100,000m+ in stock, ready to ship."
+          }
+        }
+      },
+      "block_order": [
+        "v1",
+        "v2",
+        "v3",
+        "v4"
+      ]
+    }
+  },
+  "order": [
+    "hnl_bulk"
+  ]
+}

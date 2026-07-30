@@ -1,178 +1,66 @@
 /*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
+ * Contact — mirrors ContactPage() in ContentPages.jsx, with React's
+ * no-op form replaced by Shopify's real contact form.
  */
 {
   "sections": {
-    "breadcrumbs": {
-      "type": "breadcrumbs",
+    "hnl_contact": {
+      "type": "hnl-contact",
       "settings": {
-        "container": "container",
-        "image_overlay_opacity": 0,
-        "show_page_title": true,
-        "heading_size": "h1",
-        "show_breadcrumb_navigation": true,
-        "text_center": "center",
-        "padding_top": 60,
-        "padding_bottom": 60,
-        "mobile_padding_top": 40,
-        "mobile_padding_bottom": 40,
-        "color_scheme": "background-2",
-        "custom_colors": false,
-        "foreground": "#121212",
-        "background": "#f7f8fc"
-      }
-    },
-    "main": {
-      "type": "main-page",
-      "disabled": true,
-      "settings": {
-        "heading": true,
-        "container": "container-fluid",
-        "padding_top": 0,
-        "padding_bottom": 0,
-        "mobile_padding_top": 0,
-        "mobile_padding_bottom": 0,
-        "color_scheme": "background-1"
-      }
-    },
-    "1661515112aed97da9": {
-      "type": "contact-form",
+        "eyebrow": "We're here to help",
+        "title": "Contact HooknLoop",
+        "lead": "Talk to a real person in Australia about products, bulk pricing or an existing order.",
+        "phone": "+61 3 4061 6287",
+        "phone_note": "Mon–Fri, Australian business hours",
+        "email": "info@hooknloop.com.au",
+        "email_note": "Replies within 1 business day",
+        "address": "Level 5, 111 Cecil St",
+        "address_sub": "South Melbourne VIC 3205",
+        "abn": "ABN 93 878 995 217",
+        "abn_note": "GST tax invoice on every order",
+        "form_heading": "Send us a message",
+        "success_note": "We'll get back to you within 1 business day.",
+        "map_query": "Level 5, 111 Cecil St, South Melbourne VIC 3205"
+      },
       "blocks": {
-        "1661515112c1890be1-0": {
-          "type": "contact_list",
+        "s1": {
+          "type": "social",
           "settings": {
-            "heading": "Phone",
-            "icon": "phone",
-            "text": "<p><a href=\"tel:0340616287\" title=\"tel:0340616287\"><strong>0340 616 287</strong></a></p>"
+            "network": "facebook",
+            "url": "https://www.facebook.com/profile.php?id=61587201524181"
           }
         },
-        "9616bdd2-2e00-4c58-93cc-b62f5a399c5f": {
-          "type": "contact_list",
+        "s2": {
+          "type": "social",
           "settings": {
-            "heading": "Email",
-            "icon": "email",
-            "text": "<p><a href=\"mailto:info@hooknloop.com.au\" title=\"mailto:info@hooknloop.com.au\"><strong>info@hooknloop.com.au</strong></a></p>"
+            "network": "instagram",
+            "url": "https://www.instagram.com/hooknloopshop"
           }
         },
-        "2fbb877d-d7b6-4bc6-b148-36e1c70cb0b7": {
-          "type": "contact_list",
+        "s3": {
+          "type": "social",
           "settings": {
-            "heading": "Address",
-            "icon": "address",
-            "text": "<p><strong>111 Cecil St, South Melbourne VIC 3205</strong></p>"
+            "network": "pinterest",
+            "url": "https://www.pinterest.com/hooknloopshop/"
           }
         },
-        "1661515112c1890be1-1": {
-          "type": "scoial_media",
+        "s4": {
+          "type": "social",
           "settings": {
-            "heading": "Follow us"
+            "network": "linkedin",
+            "url": "https://www.linkedin.com/company/hooknloop/"
           }
         }
       },
       "block_order": [
-        "1661515112c1890be1-0",
-        "9616bdd2-2e00-4c58-93cc-b62f5a399c5f",
-        "2fbb877d-d7b6-4bc6-b148-36e1c70cb0b7",
-        "1661515112c1890be1-1"
-      ],
-      "settings": {
-        "container": "container",
-        "subtitle": "",
-        "heading": "Get in touch",
-        "heading_position": "bottom",
-        "text_center": "center",
-        "border_line": false,
-        "color_scheme": "background-1",
-        "padding_top": 90,
-        "padding_bottom": 90,
-        "mobile_padding_top": 65,
-        "mobile_padding_bottom": 65
-      }
-    },
-    "166151521152fb0065": {
-      "type": "google-map",
-      "blocks": {
-        "dfc382df-a9ef-46ef-b3be-4ce165f9aab0": {
-          "type": "heading",
-          "disabled": true,
-          "settings": {
-            "heading": "",
-            "heading_size": "h4"
-          }
-        },
-        "4466e402-da0d-45e6-8359-122c7bd7366d": {
-          "type": "subheading",
-          "disabled": true,
-          "settings": {
-            "subheading": "",
-            "subheading_size": "h6",
-            "border_show": false
-          }
-        },
-        "ef727e9f-c2d9-4efa-bcb6-41be6c2528d3": {
-          "type": "text",
-          "disabled": true,
-          "settings": {
-            "text": ""
-          }
-        },
-        "284aea1d-f396-4b91-bfdd-d89c4a0f4d4a": {
-          "type": "subheading",
-          "disabled": true,
-          "settings": {
-            "subheading": "",
-            "subheading_size": "h6",
-            "border_show": true
-          }
-        },
-        "482058da-ffea-42c4-8373-72efa133f311": {
-          "type": "text",
-          "disabled": true,
-          "settings": {
-            "text": ""
-          }
-        },
-        "6bae387f-33e7-4adb-b60e-c426232d210c": {
-          "type": "button",
-          "disabled": true,
-          "settings": {
-            "button_label": "GET DIRECTION",
-            "button_link": "https://www.google.com/maps/dir//1+Grafton+Street+Dublin+Ireland/@53.3432434,-6.2593362,14z/data=!4m8!4m7!1m0!1m5!1m1!1s0x48670e9b76719607:0x9d13471d963893a7!2m2!1d-6.2593362!2d53.3432434"
-          }
-        }
-      },
-      "block_order": [
-        "dfc382df-a9ef-46ef-b3be-4ce165f9aab0",
-        "4466e402-da0d-45e6-8359-122c7bd7366d",
-        "ef727e9f-c2d9-4efa-bcb6-41be6c2528d3",
-        "284aea1d-f396-4b91-bfdd-d89c4a0f4d4a",
-        "482058da-ffea-42c4-8373-72efa133f311",
-        "6bae387f-33e7-4adb-b60e-c426232d210c"
-      ],
-      "settings": {
-        "container": "container",
-        "show_offset": true,
-        "image_height": "adapt",
-        "map": "<div style=\"width: 100%\"><iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.272718346891!2d144.95452037569564!3d-37.830500871971246!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad667ff156563f7%3A0x1cc22bf03290ebd3!2sLevel%2F5%2F111%20Cecil%20St%2C%20South%20Melbourne%20VIC%203205!5e0!3m2!1sen!2sau!4v1771228027626!5m2!1sen!2sau\" width=\"100%\" height=\"350\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe></div>",
-        "map_height": "small",
-        "padding_top": 0,
-        "padding_bottom": 90,
-        "mobile_padding_top": 0,
-        "mobile_padding_bottom": 65,
-        "color_scheme": ""
-      }
+        "s1",
+        "s2",
+        "s3",
+        "s4"
+      ]
     }
   },
   "order": [
-    "breadcrumbs",
-    "main",
-    "1661515112aed97da9",
-    "166151521152fb0065"
+    "hnl_contact"
   ]
 }

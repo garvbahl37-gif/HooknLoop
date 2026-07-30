@@ -1,0 +1,23 @@
+{%- comment -%}
+  Policy clause icons — the PIcon set from ContentPages.jsx, one for one.
+  Usage: {% render 'hnl-policy-icon', icon: 'truck' %}
+{%- endcomment -%}
+
+{%- capture attrs -%}width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"{%- endcapture -%}
+
+{%- case icon -%}
+  {%- when 'truck' -%}<svg {{ attrs }}><path d="M2 6h11v11H2zM13 9h4l3 3v5h-7"/><circle cx="6" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg>
+  {%- when 'pin' -%}<svg {{ attrs }}><path d="M12 22s7-6 7-12a7 7 0 0 0-14 0c0 6 7 12 7 12Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+  {%- when 'box' -%}<svg {{ attrs }}><path d="M3 7l9-4 9 4-9 4-9-4Z"/><path d="M3 7v10l9 4 9-4V7"/></svg>
+  {%- when 'clock' -%}<svg {{ attrs }}><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+  {%- when 'route' -%}<svg {{ attrs }}><circle cx="6" cy="19" r="2"/><circle cx="18" cy="5" r="2"/><path d="M8 19h7a4 4 0 0 0 0-8H9a4 4 0 0 1 0-8h7"/></svg>
+  {%- when 'trade' -%}<svg {{ attrs }}><path d="M3 3h18v4H3zM5 7v14h14V7M9 11h6"/></svg>
+  {%- when 'check' -%}<svg {{ attrs }}><path d="M9 11l3 3 8-8"/><path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9"/></svg>
+  {%- when 'x' -%}<svg {{ attrs }}><circle cx="12" cy="12" r="9"/><path d="m9 9 6 6M15 9l-6 6"/></svg>
+  {%- when 'mail' -%}<svg {{ attrs }}><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+  {%- when 'card' -%}<svg {{ attrs }}><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+  {%- when 'alert' -%}<svg {{ attrs }}><path d="M12 3 2 20h20L12 3Z"/><path d="M12 10v4M12 17h.01"/></svg>
+  {%- when 'lock' -%}<svg {{ attrs }}><rect x="4.5" y="10.5" width="15" height="10" rx="2"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/></svg>
+  {%- when 'shield' -%}<svg {{ attrs }}><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3Z"/><path d="m9 12 2 2 4-4"/></svg>
+  {%- else -%}<svg {{ attrs }}><path d="M6 2h9l3 3v17H6V2Z"/><path d="M9 9h6M9 13h6M9 17h4"/></svg>
+{%- endcase -%}

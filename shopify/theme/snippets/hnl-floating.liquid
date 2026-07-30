@@ -20,8 +20,8 @@
 {%- endcomment -%}
 
 {%- liquid
-  assign hnl_tel = settings.hnl_phone | default: '1300183481' | replace: ' ', ''
-  assign hnl_tel_display = settings.hnl_phone_display | default: '1300 183 481'
+  assign hnl_tel = settings.hnl_phone | default: '+61340616287' | replace: ' ', ''
+  assign hnl_tel_display = settings.hnl_phone_display | default: '+61 3 4061 6287'
 -%}
 
 {%- if settings.hnl_call_teaser and settings.hnl_call_fab -%}

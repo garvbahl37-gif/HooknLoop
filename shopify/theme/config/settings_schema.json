@@ -18,14 +18,14 @@
         "type": "text",
         "id": "hnl_phone",
         "label": "Phone number (dialled)",
-        "default": "1300183481",
+        "default": "+61340616287",
         "info": "No spaces — this goes into the tel: link."
       },
       {
         "type": "text",
         "id": "hnl_phone_display",
         "label": "Phone number (shown)",
-        "default": "1300 183 481"
+        "default": "+61 3 4061 6287"
       },
       {
         "type": "checkbox",

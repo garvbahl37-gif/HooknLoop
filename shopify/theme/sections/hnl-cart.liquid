@@ -1,0 +1,213 @@
+{%- comment -%}
+  Cart page — port of storefront/src/pages/CartPage.jsx
+
+  The React version says it plainly in its own header: "Checkout is a mock
+  (needs Shopify to be real)". Everything it faked is real here:
+
+    - line items come from the Shopify cart, not localStorage
+    - Checkout posts to /checkout, so it actually completes a purchase
+    - the discount field uses Shopify's cart discount code, so the total updates
+      instead of only promising to apply "at checkout"
+    - payment marks come from shop.enabled_payment_types rather than three
+      hand-drawn logos
+
+  The free-shipping progress bar and the trust list carry over unchanged; the
+  threshold is a setting because $200 will change before this file does.
+
+  Dropped: React's ShippingEstimator. Shopify calculates real rates at checkout
+  from the customer's address, and a second estimator that guesses beforehand
+  can only ever disagree with the number that actually gets charged.
+{%- endcomment -%}
+
+{%- liquid
+  assign threshold = section.settings.free_ship_threshold | times: 100
+  assign remaining = threshold | minus: cart.total_price
+  assign pct = 0
+  if threshold > 0
+    assign pct = cart.total_price | times: 100.0 | divided_by: threshold
+    if pct > 100
+      assign pct = 100
+    endif
+  endif
+-%}
+
+<main id="main" class="page">
+  {%- if cart.item_count == 0 -%}
+    <div class="wrap cart__empty">
+      <div class="cart__empty-icn" aria-hidden="true">
+        <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M6 6 5 3H2"/></svg>
+      </div>
+      <h1 class="page__h1">Your cart is empty</h1>
+      <p class="page__lead">Add some hook &amp; loop and it'll show up here.</p>
+      <a href="{{ routes.all_products_collection_url }}" class="btn btn--primary">Shop all products &rarr;</a>
+    </div>
+
+  {%- else -%}
+    <div class="wrap cart">
+      <div class="cart__items">
+        <h1 class="page__h1">Your cart</h1>
+
+        <form action="{{ routes.cart_url }}" method="post" novalidate data-hnl-cart-form>
+          {%- for item in cart.items -%}
+            <div class="cart__row" data-hnl-line="{{ forloop.index }}">
+              <div class="cart__media">
+                <a href="{{ item.url }}">
+                  {%- if item.image -%}
+                    <img src="{{ item.image | image_url: width: 200 }}" alt="{{ item.title | escape }}" width="200" height="200" loading="lazy">
+                  {%- endif -%}
+                </a>
+              </div>
+
+              <div class="cart__info">
+                <h3><a href="{{ item.url }}">{{ item.product.title }}</a></h3>
+                {%- unless item.variant.title contains 'Default' -%}
+                  <span class="cart__variant">{{ item.variant.title }}</span>
+                {%- endunless -%}
+                {%- if item.selling_plan_allocation -%}
+                  <span class="cart__variant">{{ item.selling_plan_allocation.selling_plan.name }}</span>
+                {%- endif -%}
+                {%- if item.line_level_discount_allocations.size > 0 -%}
+                  {%- for d in item.line_level_discount_allocations -%}
+                    <span class="cart__variant">{{ d.discount_application.title }} (&minus;{{ d.amount | money }})</span>
+                  {%- endfor -%}
+                {%- endif -%}
+                <button type="button" class="cart__remove" data-hnl-remove="{{ forloop.index }}">Remove</button>
+              </div>
+
+              <div class="cart__qty">
+                <button type="button" data-hnl-line-qty="{{ forloop.index }}" data-delta="-1" aria-label="Decrease">&minus;</button>
+                <span>{{ item.quantity }}</span>
+                <button type="button" data-hnl-line-qty="{{ forloop.index }}" data-delta="1" aria-label="Increase">+</button>
+              </div>
+
+              <div class="cart__line">{{ item.final_line_price | money }}</div>
+            </div>
+          {%- endfor -%}
+        </form>
+
+        <div class="cart__tools">
+          {%- comment -%}
+            Shopify applies discount codes at checkout, and the cart API has no
+            endpoint to add one. Sending the shopper through /discount/CODE
+            registers it and returns them here with the total already reduced —
+            so the number they see is the number they pay.
+          {%- endcomment -%}
+          <form class="cart__disc" data-hnl-discount>
+            <label class="cart__disc-lbl" for="disc-code">Apply a discount code</label>
+            <div class="cart__disc-row">
+              <input id="disc-code" class="cart__disc-input" placeholder="Enter discount code here" aria-label="Discount code">
+              <button class="cart__disc-btn" type="submit">Apply</button>
+            </div>
+            {%- if cart.cart_level_discount_applications.size > 0 -%}
+              {%- for d in cart.cart_level_discount_applications -%}
+                <span class="cart__disc-msg">{{ d.title }} applied &mdash; &minus;{{ d.total_allocated_amount | money }}</span>
+              {%- endfor -%}
+            {%- endif -%}
+          </form>
+        </div>
+      </div>
+
+      <aside class="cart__summary">
+        {%- if threshold > 0 -%}
+          <div class="cart__ship">
+            {%- if remaining > 0 -%}
+              <span><b>{{ remaining | money }} AUD</b> away from <b>Free Standard Shipping</b>.</span>
+            {%- else -%}
+              <span>You've unlocked <b>Free Standard Shipping</b>.</span>
+            {%- endif -%}
+            <div class="cart__ship-bar" role="progressbar" aria-valuenow="{{ pct | round }}" aria-valuemin="0" aria-valuemax="100">
+              <span style="width: {{ pct }}%"></span>
+              <i class="cart__ship-truck" style="left: {{ pct }}%" aria-hidden="true">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6h11v11H2zM13 9h4l3 3v5h-7"/><circle cx="6" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg>
+              </i>
+            </div>
+          </div>
+        {%- endif -%}
+
+        <div class="cart__sumrow cart__sumrow--total"><span>Subtotal</span><b>{{ cart.total_price | money }} AUD</b></div>
+        <p class="cart__taxnote">Tax included. Shipping calculated at checkout.</p>
+
+        <button type="submit" name="checkout" form="hnl-cart-checkout" class="btn btn--primary cart__checkout">Checkout</button>
+        <form action="{{ routes.cart_url }}" method="post" id="hnl-cart-checkout" hidden></form>
+
+        {%- if shop.enabled_payment_types.size > 0 -%}
+          <div class="cart__pay" aria-label="Accepted payment methods">
+            {%- for type in shop.enabled_payment_types -%}
+              {{ type | payment_type_svg_tag: class: 'ft__paymark' }}
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+
+        <a href="{{ routes.all_products_collection_url }}" class="cart__cont">&larr; Continue shopping</a>
+
+        <ul class="cart__trust">
+          {%- assign trust = section.settings.trust | newline_to_br | split: '<br />' -%}
+          {%- for t in trust -%}
+            {%- assign line = t | strip -%}
+            {%- if line != blank -%}<li>{{ line }}</li>{%- endif -%}
+          {%- endfor -%}
+        </ul>
+      </aside>
+    </div>
+  {%- endif -%}
+</main>
+
+<script>
+(function () {
+  var form = document.querySelector('[data-hnl-cart-form]');
+
+  /* Change a line's quantity through the cart API, then repaint from the
+     server's response rather than guessing — stock limits and automatic
+     discounts can both make the result differ from what was asked for. */
+  function change(line, quantity) {
+    document.body.setAttribute('aria-busy', 'true');
+    fetch('{{ routes.cart_change_url }}', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ line: line, quantity: quantity })
+    })
+      .then(function (r) { return r.json(); })
+      .then(function () { window.location.reload(); })
+      .catch(function () { document.body.removeAttribute('aria-busy'); });
+  }
+
+  if (form) {
+    form.addEventListener('click', function (e) {
+      var step = e.target.closest('[data-hnl-line-qty]');
+      if (step) {
+        var row = step.closest('.cart__row');
+        var current = parseInt(row.querySelector('.cart__qty span').textContent, 10);
+        var next = current + parseInt(step.getAttribute('data-delta'), 10);
+        change(parseInt(step.getAttribute('data-hnl-line-qty'), 10), Math.max(0, next));
+        return;
+      }
+      var rm = e.target.closest('[data-hnl-remove]');
+      if (rm) change(parseInt(rm.getAttribute('data-hnl-remove'), 10), 0);
+    });
+  }
+
+  /* /discount/CODE registers the code against the session and redirects back,
+     so the subtotal on screen already reflects it. */
+  var disc = document.querySelector('[data-hnl-discount]');
+  if (disc) {
+    disc.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var code = disc.querySelector('input').value.trim();
+      if (!code) return;
+      window.location.href = '/discount/' + encodeURIComponent(code)
+        + '?redirect=' + encodeURIComponent('{{ routes.cart_url }}');
+    });
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "HooknLoop cart",
+  "tag": "section",
+  "settings": [
+    { "type": "number", "id": "free_ship_threshold", "label": "Free shipping over ($)", "default": 200, "info": "Set to 0 to hide the progress bar. This only displays the goal — set the actual free-shipping rate in Settings > Shipping." },
+    { "type": "textarea", "id": "trust", "label": "Trust list", "info": "One per line.", "default": "✓ GST tax invoice on every order\n✓ Dispatched 1–2 business days Australia-wide\n✓ Ordered the wrong side? We'll sort it" }
+  ]
+}
+{% endschema %}

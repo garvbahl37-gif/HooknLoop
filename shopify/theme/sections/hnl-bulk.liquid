@@ -1,0 +1,239 @@
+{%- comment -%}
+  Bulk & trade — port of BulkTrade.jsx, used as the Bulk Order page body.
+
+  React's quote form flipped a `sent` flag and discarded the request. This one
+  is Shopify's {% form 'contact' %}, so a quote request actually arrives in the
+  store's inbox. The fields are folded into the message body because Shopify's
+  contact form only carries name / email / phone / body — sending them as one
+  readable block beats losing them.
+
+  The product dropdown is built from the real catalogue rather than a hardcoded
+  price list, so it can never quote a price the store no longer charges.
+{%- endcomment -%}
+
+{%- comment -%}
+  Handle gate. The Theme Access token cannot assign template suffixes (that is
+  Admin API territory), so every page on this store uses the default `page`
+  template. templates/page.json therefore lists ALL the page sections, and each
+  renders only for the handle it belongs to. Leave `page_handle` empty to make a
+  section render on any page — which is what the generic fallback does.
+
+  If you later assign a real template suffix in Shopify admin, clear this
+  setting and the section renders unconditionally, as Shopify intends.
+{%- endcomment -%}
+{%- assign hnl_gate = section.settings.page_handle | strip -%}
+{%- if hnl_gate == blank or hnl_gate == page.handle -%}
+{%- comment -%}
+  React's BulkPage wrapped BulkTrade in a PageHero. Without it the page has no
+  <h1> at all — bad for search, and worse for a screen reader landing here.
+{%- endcomment -%}
+{%- if section.settings.hero_title != blank -%}
+  <div class="page__hero page__hero--center">
+    <div class="wrap">
+      {%- if section.settings.hero_eyebrow != blank -%}
+        <span class="sec-eyebrow sec-eyebrow--orange">{{ section.settings.hero_eyebrow }}</span>
+      {%- endif -%}
+      <h1 class="page__hero-h1">{{ section.settings.hero_title }}</h1>
+      {%- if section.settings.hero_lead != blank -%}
+        <p class="page__hero-lead">{{ section.settings.hero_lead }}</p>
+      {%- endif -%}
+    </div>
+  </div>
+{%- endif -%}
+
+<section class="bt" aria-labelledby="bt-h">
+  <div class="wrap bt__inner">
+    <div class="bt__copy">
+      <span class="pill-blue">{{ section.settings.pill }}</span>
+      <h2 id="bt-h" class="bt__h2">{{ section.settings.heading }}</h2>
+      <p class="bt__sub">{{ section.settings.sub }}</p>
+
+      <div class="bt__vals">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'value' -%}
+            <div class="bt__val" {{ block.shopify_attributes }}>
+              <span class="bt__val-dot" aria-hidden="true"></span>
+              <span><b>{{ block.settings.title }}</b><span class="bt__val-d">{{ block.settings.body }}</span></span>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+
+    <div class="bt__form">
+      {%- form 'contact', id: 'hnl-bulk-form' -%}
+        {%- if form.posted_successfully? -%}
+          <div class="bt__success" role="status">
+            <span class="bt__success-icn">&#10003;</span>
+            <h3>Quote request received</h3>
+            <p>
+              We'll reply within 1 business day. For anything urgent, call
+              <a href="tel:{{ section.settings.phone | replace: ' ', '' }}">{{ section.settings.phone }}</a>.
+            </p>
+          </div>
+        {%- else -%}
+          <h3 class="bt__form-h">{{ section.settings.form_heading }}</h3>
+          <p class="bt__form-sub">We'll reply within 1 business day.</p>
+
+          {%- if form.errors -%}
+            <p class="fld__err" role="alert">{{ form.errors | default_errors }}</p>
+          {%- endif -%}
+
+          <label class="fld"><span>Company name</span>
+            <input type="text" name="contact[name]" required placeholder="e.g. Coastal Signage Pty Ltd" value="{{ form.name }}">
+          </label>
+
+          <div class="fld-row">
+            <label class="fld"><span>ABN (optional)</span>
+              <input type="text" data-hnl-q="ABN" placeholder="Helps set up trade terms">
+            </label>
+            <label class="fld"><span>Quantity</span>
+              <input type="text" data-hnl-q="Quantity" required placeholder="e.g. 20 rolls">
+            </label>
+          </div>
+
+          <label class="fld"><span>Product</span>
+            <select data-hnl-q="Product" required>
+              <option value="" disabled selected>Choose a product…</option>
+              {%- assign source = collections[section.settings.collection] | default: collections.all -%}
+              {%- for product in source.products limit: 20 -%}
+                <option>{{ product.title }} — from {{ product.price_min | money }}</option>
+              {%- endfor -%}
+              <option>Not sure / multiple products</option>
+            </select>
+          </label>
+
+          <div class="fld-row">
+            <label class="fld"><span>Work email</span>
+              <input type="email" name="contact[email]" required placeholder="you@company.com.au" value="{{ form.email }}">
+            </label>
+            <label class="fld"><span>Phone</span>
+              <input type="tel" name="contact[phone]" placeholder="Optional" value="{{ form.phone }}">
+            </label>
+          </div>
+
+          {%- comment -%}
+            Shopify's contact form has no custom fields, so the extras above are
+            gathered into the message body on submit. Without this the ABN,
+            quantity and product choice would be silently dropped.
+          {%- endcomment -%}
+          <textarea name="contact[body]" data-hnl-bulk-body hidden></textarea>
+
+          <button type="submit" class="btn btn--primary bt__submit">
+            Request my quote
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+          <p class="bt__form-legal">{{ section.settings.legal }}</p>
+        {%- endif -%}
+      {%- endform -%}
+    </div>
+  </div>
+
+  {%- if section.settings.show_ladder -%}
+    <div class="wrap bt__save">
+      <div class="bt__save-head">
+        <span class="bt__save-eyebrow">{{ section.settings.ladder_eyebrow }}</span>
+        <h3 class="bt__save-h">{{ section.settings.ladder_heading }}</h3>
+        <p class="bt__save-sub">{{ section.settings.ladder_sub }}</p>
+      </div>
+
+      {%- assign tiers = section.settings.tiers | newline_to_br | split: '<br />' -%}
+      {%- assign best = 0 -%}
+      {%- for t in tiers -%}
+        {%- assign bits = t | strip | split: '|' -%}
+        {%- assign n = bits[1] | strip | plus: 0 -%}
+        {%- if n > best -%}{%- assign best = n -%}{%- endif -%}
+      {%- endfor -%}
+
+      <div class="bt__ladder">
+        {%- for t in tiers -%}
+          {%- assign bits = t | strip | split: '|' -%}
+          {%- if bits.size >= 2 -%}
+            {%- assign pct = bits[1] | strip | plus: 0 -%}
+            {%- assign meter = 0 -%}
+            {%- if best > 0 -%}{%- assign meter = pct | times: 100 | divided_by: best -%}{%- endif -%}
+            <div class="bt__tier {% if forloop.last %}is-best{% endif %}">
+              {%- if forloop.last -%}<span class="bt__tier-tag">Best value</span>{%- endif -%}
+              <span class="bt__tier-qty">{{ bits[0] | strip }}</span>
+              <span class="bt__tier-pct">{{ pct }}<i>%</i></span>
+              <span class="bt__tier-lbl">off per roll</span>
+              <span class="bt__tier-meter" aria-hidden="true"><i style="width: {{ meter }}%"></i></span>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+      <ul class="bt__save-strip">
+        {%- assign strip = section.settings.strip | newline_to_br | split: '<br />' -%}
+        {%- for s in strip -%}
+          {%- assign line = s | strip -%}
+          {%- if line != blank -%}<li>{{ line }}</li>{%- endif -%}
+        {%- endfor -%}
+      </ul>
+    </div>
+  {%- endif -%}
+</section>
+
+<script>
+(function () {
+  var form = document.querySelector('#hnl-bulk-form');
+  if (!form) return;
+  var body = form.querySelector('[data-hnl-bulk-body]');
+  if (!body) return;
+
+  form.addEventListener('submit', function () {
+    var lines = ['Trade quote request', ''];
+    [].forEach.call(form.querySelectorAll('[data-hnl-q]'), function (f) {
+      var v = (f.value || '').trim();
+      if (v) lines.push(f.getAttribute('data-hnl-q') + ': ' + v);
+    });
+    body.value = lines.join('\n');
+  });
+})();
+</script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "HooknLoop bulk",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "page_handle", "label": "Only show on page handle", "info": "Leave empty to show on every page using this template." },
+    { "type": "header", "content": "Page hero" },
+    { "type": "text", "id": "hero_eyebrow", "label": "Eyebrow", "default": "For trade & bulk buyers" },
+    { "type": "text", "id": "hero_title", "label": "Heading", "default": "Bulk & trade pricing", "info": "Leave empty to hide the hero. This is the page's only H1." },
+    { "type": "textarea", "id": "hero_lead", "label": "Lead", "default": "Industrial hook & loop at volume pricing, with a GST tax invoice and one contact for repeat orders." },
+
+    { "type": "header", "content": "Band" },
+    { "type": "text", "id": "pill", "label": "Pill", "default": "For trade & bulk buyers" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Buy by the box. Priced for trade." },
+    { "type": "textarea", "id": "sub", "label": "Subheading", "default": "Industrial hook & loop, dispatched from our Australian warehouse. Volume pricing, a proper GST tax invoice, and one point of contact for repeat orders." },
+
+    { "type": "header", "content": "Form" },
+    { "type": "text", "id": "form_heading", "label": "Form heading", "default": "Request a trade quote" },
+    { "type": "collection", "id": "collection", "label": "Products to offer", "info": "Defaults to all products." },
+    { "type": "text", "id": "phone", "label": "Phone", "default": "+61 3 4061 6287" },
+    { "type": "text", "id": "legal", "label": "Legal note", "default": "GST tax invoice supplied · ABN 93 878 995 217" },
+
+    { "type": "header", "content": "Volume ladder" },
+    { "type": "checkbox", "id": "show_ladder", "label": "Show the ladder", "default": true },
+    { "type": "text", "id": "ladder_eyebrow", "label": "Eyebrow", "default": "Bundle & save" },
+    { "type": "text", "id": "ladder_heading", "label": "Heading", "default": "The more you order, the more you save" },
+    { "type": "textarea", "id": "ladder_sub", "label": "Subheading", "default": "Volume discounts scale with your order — no code needed. Large and recurring runs go further again, confirmed on your quote." },
+    { "type": "textarea", "id": "tiers", "label": "Tiers", "info": "One per line: Quantity | percent. Set the matching discounts in Shopify Discounts — this only displays them.", "default": "5+ rolls | 5\n10+ rolls | 10\n20+ rolls | 20\n50+ rolls | 30" },
+    { "type": "textarea", "id": "strip", "label": "Strip", "info": "One per line.", "default": "Free shipping over $200\nGST tax invoice + PO\nAny width, no minimums\n1–2 day dispatch" }
+  ],
+  "blocks": [
+    {
+      "type": "value",
+      "name": "Value",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "textarea", "id": "body", "label": "Body" }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [{ "name": "HooknLoop bulk" }]
+}
+{% endschema %}
