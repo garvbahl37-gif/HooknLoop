@@ -315,5 +315,11 @@ document.addEventListener("DOMContentLoaded", function() {
       Quick Add popup, rendered once and opened by any product card.
     {%- endcomment -%}
     {%- render 'hnl-quick-add' -%}
+
+    {%- comment -%}
+      Newsletter popup. Self-gating: waits, remembers a dismissal, and stands
+      down on cart/checkout/account.
+    {%- endcomment -%}
+    {%- render 'hnl-signup-popup' -%}
   </body>
 </html>

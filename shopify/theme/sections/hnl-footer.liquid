@@ -89,19 +89,31 @@
         {%- endif -%}
       {%- endform -%}
 
-      {%- assign has_social = false -%}
-      {%- if section.settings.facebook != blank or section.settings.instagram != blank or section.settings.linkedin != blank -%}{%- assign has_social = true -%}{%- endif -%}
-      {%- if has_social -%}
+      {%- comment -%}
+        Social row. Networks are listed here rather than hardcoded so adding
+        one is an editor change; each renders only when it has a URL, so an
+        empty setting never leaves a dead icon linking to "#" — which is what
+        the React footer did.
+      {%- endcomment -%}
+      {%- assign networks = 'facebook,instagram,pinterest,linkedin,youtube' | split: ',' -%}
+      {%- assign social_count = 0 -%}
+      {%- for net in networks -%}
+        {%- assign key = 'social_' | append: net -%}
+        {%- if section.settings[key] != blank -%}{%- assign social_count = social_count | plus: 1 -%}{%- endif -%}
+      {%- endfor -%}
+
+      {%- if social_count > 0 -%}
         <div class="ft__social" aria-label="Social links">
-          {%- if section.settings.facebook != blank -%}
-            <a href="{{ section.settings.facebook }}" class="ft__soc" aria-label="Facebook" rel="noopener" target="_blank"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M14 9h3V6h-3c-1.9 0-3 1.4-3 3.2V11H9v3h2v6h3v-6h2.5l.5-3H14V9.4c0-.3.2-.4.5-.4Z"/></svg></a>
-          {%- endif -%}
-          {%- if section.settings.instagram != blank -%}
-            <a href="{{ section.settings.instagram }}" class="ft__soc" aria-label="Instagram" rel="noopener" target="_blank"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
-          {%- endif -%}
-          {%- if section.settings.linkedin != blank -%}
-            <a href="{{ section.settings.linkedin }}" class="ft__soc" aria-label="LinkedIn" rel="noopener" target="_blank"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M6.5 8.5A1.5 1.5 0 1 0 6.5 5.5a1.5 1.5 0 0 0 0 3ZM5 10h3v9H5v-9Zm5 0h2.8v1.3c.4-.8 1.4-1.5 2.7-1.5 2.3 0 3.5 1.4 3.5 4V19h-3v-4.6c0-1.2-.5-1.9-1.5-1.9s-1.5.7-1.5 1.9V19h-3v-9Z"/></svg></a>
-          {%- endif -%}
+          {%- for net in networks -%}
+            {%- assign key = 'social_' | append: net -%}
+            {%- assign url = section.settings[key] -%}
+            {%- if url != blank -%}
+              <a href="{{ url }}" class="ft__soc" rel="noopener noreferrer" target="_blank"
+                 aria-label="{% render 'hnl-social-name', network: net %}">
+                {% render 'hnl-social-icon', network: net %}
+              </a>
+            {%- endif -%}
+          {%- endfor -%}
         </div>
       {%- endif -%}
     </div>
@@ -156,9 +168,11 @@
     { "type": "text", "id": "signup_ok", "label": "Success message", "default": "You're on the list — check your inbox." },
 
     { "type": "header", "content": "Social" },
-    { "type": "url", "id": "facebook", "label": "Facebook" },
-    { "type": "url", "id": "instagram", "label": "Instagram" },
-    { "type": "url", "id": "linkedin", "label": "LinkedIn" },
+    { "type": "url", "id": "social_facebook", "label": "Facebook" },
+    { "type": "url", "id": "social_instagram", "label": "Instagram" },
+    { "type": "url", "id": "social_pinterest", "label": "Pinterest" },
+    { "type": "url", "id": "social_linkedin", "label": "LinkedIn" },
+    { "type": "url", "id": "social_youtube", "label": "YouTube" },
 
     { "type": "header", "content": "Legal bar" },
     { "type": "text", "id": "legal_name", "label": "Copyright line", "default": "HooknLoop Australia · All rights reserved" },

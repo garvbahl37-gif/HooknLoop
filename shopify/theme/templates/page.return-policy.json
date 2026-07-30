@@ -7,70 +7,14 @@
     "hnl_policy": {
       "type": "hnl-policy",
       "settings": {
-        "eyebrow": "Returns & exchanges",
-        "title": "Returns & exchanges",
-        "lead": "Not right for the job? Here's exactly how returns, refunds and faulty items work.",
+        "eyebrow": "Returns & Exchanges",
         "highlights": "14 days | Return window\nFaulty | Always covered\n2 steps | Simple process",
         "help_heading": "Need a hand?",
         "help_body": "Talk to a real person in Australia about your order, delivery or a return.",
         "help_email": "info@hooknloop.com.au",
         "help_phone": "+61 3 4061 6287",
-        "other_links": "Shipping & delivery | /pages/shipping-delivery\nReturns & exchanges | /pages/return-policy\nPrivacy policy | /pages/privacy-policy\nTerms & conditions | /pages/terms-conditions"
-      },
-      "blocks": {
-        "c1": {
-          "type": "clause",
-          "settings": {
-            "icon": "check",
-            "heading": "Returns eligibility",
-            "body": "You are eligible to ask for a return if:",
-            "bullets": "The item is unused and in its original packaging\nYou request a return within 14 days of delivery\nYou received a faulty, damaged or incorrect item"
-          }
-        },
-        "c2": {
-          "type": "clause",
-          "settings": {
-            "icon": "x",
-            "heading": "Non-returnable items",
-            "body": "We can't accept returns on:",
-            "bullets": "Used or cut products\nClearance or custom orders (unless faulty)"
-          }
-        },
-        "c3": {
-          "type": "clause",
-          "settings": {
-            "icon": "mail",
-            "heading": "How to request a return",
-            "body": "",
-            "bullets": "Email info@hooknloop.com.au with your order number\nOur team will review your request and provide return instructions"
-          }
-        },
-        "c4": {
-          "type": "clause",
-          "settings": {
-            "icon": "card",
-            "heading": "Refunds",
-            "body": "",
-            "bullets": "After approval, refunds are processed back to the original payment method\nShipping fees are non-refundable unless the item is faulty"
-          }
-        },
-        "c5": {
-          "type": "clause",
-          "settings": {
-            "icon": "alert",
-            "heading": "Damaged or incorrect items",
-            "body": "If your order is damaged or wrong, please contact us within 48 hours of delivery with photos for a fast solution.",
-            "bullets": ""
-          }
-        }
-      },
-      "block_order": [
-        "c1",
-        "c2",
-        "c3",
-        "c4",
-        "c5"
-      ]
+        "other_links": "Shipping & Delivery | /pages/shipping-delivery\nReturns & Exchanges | /pages/return-policy\nPrivacy Policy | /pages/privacy-policy\nTerms & Conditions | /pages/terms-conditions"
+      }
     }
   },
   "order": [

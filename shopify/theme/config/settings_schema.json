@@ -78,6 +78,121 @@
     ]
   },
   {
+    "name": "HooknLoop signup popup",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "A newsletter popup that waits before appearing, is never shown twice to the same person, and never interrupts the cart or checkout. Signups go to Shopify customers with the \"newsletter\" tag — the same route the footer form uses, which is what feeds Klaviyo."
+      },
+      {
+        "type": "checkbox",
+        "id": "hnl_popup_enabled",
+        "label": "Show the signup popup",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "hnl_popup_delay",
+        "min": 5,
+        "max": 60,
+        "step": 5,
+        "unit": "s",
+        "label": "Wait before showing",
+        "default": 20
+      },
+      {
+        "type": "range",
+        "id": "hnl_popup_remember",
+        "min": 1,
+        "max": 90,
+        "step": 1,
+        "unit": "d",
+        "label": "Don't ask again for",
+        "default": 30,
+        "info": "After someone closes or submits it."
+      },
+      {
+        "type": "header",
+        "content": "Brand panel"
+      },
+      {
+        "type": "text",
+        "id": "hnl_popup_kicker",
+        "label": "Headline",
+        "default": "Trade prices, straight to your inbox."
+      },
+      {
+        "type": "textarea",
+        "id": "hnl_popup_points",
+        "label": "Points",
+        "info": "One per line.",
+        "default": "Bulk price drops before anyone else\nPractical guides for choosing the right fastener\nFree shipping on orders over $200\nNo spam — unsubscribe any time"
+      },
+      {
+        "type": "header",
+        "content": "Form panel"
+      },
+      {
+        "type": "text",
+        "id": "hnl_popup_eyebrow",
+        "label": "Eyebrow",
+        "default": "Join the list"
+      },
+      {
+        "type": "text",
+        "id": "hnl_popup_heading",
+        "label": "Heading",
+        "default": "Get the trade list"
+      },
+      {
+        "type": "textarea",
+        "id": "hnl_popup_sub",
+        "label": "Subheading",
+        "default": "One email when prices drop or something new lands. That's it."
+      },
+      {
+        "type": "text",
+        "id": "hnl_popup_placeholder",
+        "label": "Placeholder",
+        "default": "you@company.com.au"
+      },
+      {
+        "type": "text",
+        "id": "hnl_popup_button",
+        "label": "Button",
+        "default": "Sign me up"
+      },
+      {
+        "type": "text",
+        "id": "hnl_popup_decline",
+        "label": "Decline link",
+        "default": "No thanks, I'll browse"
+      },
+      {
+        "type": "textarea",
+        "id": "hnl_popup_legal",
+        "label": "Legal note",
+        "default": "By signing up you agree to receive marketing emails from HooknLoop. Unsubscribe any time."
+      },
+      {
+        "type": "header",
+        "content": "After signup"
+      },
+      {
+        "type": "text",
+        "id": "hnl_popup_ok_heading",
+        "label": "Heading",
+        "default": "You're on the list"
+      },
+      {
+        "type": "textarea",
+        "id": "hnl_popup_ok_body",
+        "label": "Body",
+        "default": "Check your inbox — the welcome email is on its way."
+      }
+    ]
+  },
+  {
     "name": "Purchase code verification",
     "settings": [
       {

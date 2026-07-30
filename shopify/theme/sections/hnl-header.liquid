@@ -216,10 +216,80 @@
 })();
 </script>
 
+<script>
+(function () {
+  var section = document.querySelector('.hnl-header-section');
+  if (!section) return;
+
+  /* Which bar pins depends on the breakpoint: the blue mega-nav on desktop,
+     the compact app bar below 900px. Keep 900 in step with the media query in
+     hnl-shopify-overrides.css and with header.css. */
+  var wide = window.matchMedia('(min-width: 901px)');
+  var spacer = document.createElement('div');
+  spacer.className = 'hnl-nav-spacer';
+  var bar = null, barTop = 0, lastY = window.pageYOffset, pinned = false;
+
+  function pick() {
+    return wide.matches ? section.querySelector('.nav') : section.querySelector('.hdr');
+  }
+
+  function reset() {
+    if (bar) { bar.classList.remove('is-pinned', 'is-shown'); }
+    spacer.classList.remove('is-on');
+    spacer.style.height = '';
+    pinned = false;
+
+    bar = pick();
+    if (!bar) return;
+    if (spacer.parentNode !== bar.parentNode || spacer.nextSibling !== bar) {
+      bar.parentNode.insertBefore(spacer, bar);
+    }
+    /* Distance from the top of the document to where the bar naturally sits.
+       Measured with the bar in flow, so it must be read while unpinned. */
+    barTop = bar.getBoundingClientRect().top + window.pageYOffset;
+  }
+
+  function onScroll() {
+    if (!bar) return;
+    var y = window.pageYOffset;
+
+    if (y > barTop) {
+      if (!pinned) {
+        pinned = true;
+        spacer.style.height = bar.offsetHeight + 'px';
+        spacer.classList.add('is-on');
+        bar.classList.add('is-pinned');
+        /* Next frame, so the browser paints the -100% start position before
+           the transition to 0 — otherwise it snaps in with no animation. */
+        requestAnimationFrame(function () {
+          if (pinned && y < lastY) bar.classList.add('is-shown');
+        });
+      } else {
+        /* Down hides it, up brings it back — the live store's behaviour. */
+        bar.classList.toggle('is-shown', y < lastY);
+      }
+    } else if (pinned) {
+      pinned = false;
+      bar.classList.remove('is-pinned', 'is-shown');
+      spacer.classList.remove('is-on');
+      spacer.style.height = '';
+    }
+
+    lastY = y;
+  }
+
+  reset();
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', function () { reset(); onScroll(); }, { passive: true });
+  (wide.addEventListener ? wide.addEventListener('change', reset) : wide.addListener(reset));
+})();
+</script>
+
 {% schema %}
 {
   "name": "HooknLoop header",
   "tag": "header",
+  "class": "hnl-header-section",
   "settings": [
     { "type": "text", "id": "promo_lead", "label": "Promo lead", "default": "Fast Australia-wide delivery" },
     { "type": "text", "id": "promo_hl1", "label": "Promo highlight 1", "default": "Free shipping over $200" },

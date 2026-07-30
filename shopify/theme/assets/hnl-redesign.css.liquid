@@ -2538,6 +2538,353 @@ body.drawer-open { overflow: hidden; }
   border-collapse: collapse;
 }
 
+/* ── Newsletter popup ─────────────────────────────────────────────────────
+   Not ported from React — new work, so it is built from the same tokens the
+   rest of the redesign uses: navy brand panel with the hero's ember glow, one
+   orange flare on the submit, machined radii, DM Sans.
+
+   px throughout, like everything else in this file — see the note in
+   build-css.sh about Suruchi's 62.5% root. */
+.nlp {
+  position: fixed;
+  inset: 0;
+  z-index: 210;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(10, 18, 38, 0.62);
+  backdrop-filter: blur(3px);
+  animation: qaFade 0.24s ease;
+}
+.nlp[hidden] { display: none; }
+
+.nlp__panel {
+  position: relative;
+  width: 100%;
+  max-width: 880px;
+  max-height: 92vh;
+  overflow: auto;
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 40px 100px rgba(4, 10, 26, 0.55);
+  animation: qaPop 0.28s cubic-bezier(0.22, 0.61, 0.24, 1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .nlp, .nlp__panel { animation: none; }
+}
+
+/* Focus is moved to the panel so the dialog is announced and Tab is trapped,
+   but the panel is not itself an interactive control — a focus ring around the
+   whole popup reads as a rendering fault. */
+.nlp__panel:focus { outline: none; }
+
+/* The close sits over the WHITE form column, so it has to be dark. An earlier
+   white-on-white version was invisible. */
+.nlp__close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 3;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(20, 37, 72, 0.07);
+  color: var(--navy);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, transform 0.12s;
+}
+.nlp__close:hover {
+  background: var(--navy);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+/* Brand side */
+.nlp__brand {
+  position: relative;
+  overflow: hidden;
+  padding: 44px 38px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+  background:
+    radial-gradient(90% 120% at 85% 8%, #1d345f 0%, rgba(29, 52, 95, 0) 52%),
+    linear-gradient(180deg, #16264a 0%, #0f1d3a 100%);
+  color: #fff;
+}
+.nlp__glow {
+  position: absolute;
+  width: 420px;
+  height: 420px;
+  top: -22%;
+  right: -26%;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(232, 119, 34, 0.26) 0%, rgba(232, 119, 34, 0) 62%);
+}
+.nlp__logo { position: relative; height: 34px; width: auto; }
+.nlp__kicker {
+  position: relative;
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 27.2px;
+  line-height: 1.16;
+  letter-spacing: -0.01em;
+}
+.nlp__points { position: relative; display: grid; gap: 11px; padding: 0; list-style: none; }
+.nlp__points li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14.4px;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.82);
+}
+.nlp__points svg { flex: none; margin-top: 2px; color: var(--orange); }
+
+/* Form side */
+.nlp__form { padding: 44px 38px; display: flex; flex-direction: column; justify-content: center; }
+.nlp__eyebrow {
+  display: block;
+  font-size: 11.2px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--orange-ink);
+  margin-bottom: 10px;
+}
+.nlp__h {
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 25.6px;
+  line-height: 1.15;
+  color: var(--navy);
+}
+.nlp__sub { margin: 10px 0 22px; color: var(--muted-ink); font-size: 15.2px; line-height: 1.55; }
+
+.nlp__field { display: block; }
+.nlp__field input {
+  width: 100%;
+  min-height: 52px;
+  padding: 0 16px;
+  font-size: 15.2px;
+  font-family: inherit;
+  color: var(--navy);
+  background: #fff;
+  border: 1.5px solid var(--line-card);
+  border-radius: var(--r-ctrl);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.nlp__field input::placeholder { color: #8b96ab; }
+.nlp__field input:focus {
+  outline: none;
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(46, 106, 224, 0.18);
+}
+
+.nlp__submit { width: 100%; min-height: 52px; margin-top: 12px; gap: 8px; }
+
+.nlp__decline {
+  margin-top: 14px;
+  background: none;
+  border: 0;
+  color: var(--muted-ink);
+  font-size: 13.6px;
+  font-family: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.nlp__decline:hover { color: var(--navy); }
+.nlp__legal { margin-top: 16px; font-size: 12px; line-height: 1.5; color: #8b96ab; }
+.nlp__err { margin-bottom: 12px; color: #b3261e; font-size: 13.6px; }
+
+.nlp__ok { text-align: center; }
+.nlp__ok-icn {
+  display: grid;
+  place-items: center;
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 18px;
+  border-radius: 50%;
+  background: rgba(31, 157, 85, 0.12);
+  color: #1f9d55;
+}
+.nlp__ok h2 { font-family: var(--font-head); font-weight: 800; font-size: 24px; color: var(--navy); }
+.nlp__ok p { margin-top: 10px; color: var(--muted-ink); line-height: 1.6; }
+
+@media (max-width: 760px) {
+  .nlp__panel { grid-template-columns: 1fr; max-height: 94vh; }
+  .nlp__brand { padding: 34px 26px 28px; gap: 16px; }
+  .nlp__kicker { font-size: 22.4px; }
+  /* Two of four points is enough on a phone; the rest is scroll for no gain. */
+  .nlp__points li:nth-child(n + 3) { display: none; }
+  .nlp__form { padding: 28px 26px 34px; }
+  /* Stacked layout puts the close over the navy brand panel instead. */
+  .nlp__close { background: rgba(255, 255, 255, 0.18); color: #fff; }
+  .nlp__close:hover { background: rgba(255, 255, 255, 0.32); color: #fff; }
+}
+
+/* ── Sticky nav ───────────────────────────────────────────────────────────
+   header.css gives .nav `position: sticky; top: 0`, and in the React app that
+   works because .nav's ancestors run to <body>. Shopify wraps every section in
+   its own <div id="shopify-section-…">, and a sticky element can only travel
+   inside its own parent's box — that wrapper is 179px tall, so the nav slid
+   away with the header and was off-screen by the first scroll. Measured: after
+   scrolling 1400px the nav sat at top: -1275.
+
+   So the pinning is driven from JS instead, which also gets the behaviour the
+   live store has: scrolling DOWN lets the bar go, scrolling UP brings it
+   straight back. A spacer takes over the nav's height while it is fixed, so
+   nothing under it jumps.
+
+   .hnl-header-section is the wrapper class declared in the section schema. */
+.hnl-header-section .nav {
+  position: relative;
+  top: auto;
+}
+.hnl-nav-spacer {
+  display: none;
+}
+.hnl-nav-spacer.is-on {
+  display: block;
+}
+
+.hnl-header-section .nav.is-pinned {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  transform: translateY(-100%);
+  transition: transform 0.28s cubic-bezier(0.22, 0.61, 0.24, 1);
+}
+.hnl-header-section .nav.is-pinned.is-shown {
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hnl-header-section .nav.is-pinned { transition: none; }
+}
+
+/* Below 900px the blue mega-nav is replaced by the compact app bar, so it is
+   .hdr that pins — same mechanism, same classes. */
+@media (max-width: 900px) {
+  .hnl-header-section .hdr {
+    position: relative;
+    top: auto;
+  }
+  .hnl-header-section .hdr.is-pinned {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    transform: translateY(-100%);
+    transition: transform 0.28s cubic-bezier(0.22, 0.61, 0.24, 1);
+    box-shadow: 0 8px 24px rgba(12, 30, 80, 0.18);
+  }
+  .hnl-header-section .hdr.is-pinned.is-shown {
+    transform: none;
+  }
+}
+
+/* ── Real page copy (.policy2__rte, .page__prose) ─────────────────────────
+   The policy and content pages originally rendered hardcoded clause blocks
+   ported from ContentPages.jsx AND the store's own page.content — the same
+   text twice. The blocks are gone; page.content is now the single source, so
+   these pages read exactly what hooknloop.com.au reads and cannot drift from
+   it when someone edits a policy in Shopify admin.
+
+   That makes merchant HTML responsible for the whole page, so it needs the
+   typography the clause cards used to provide. Same reasoning as .pdp__rte:
+   base.css strips list markers, and the copy uses h2-h4 inconsistently. */
+.policy2__rte,
+.page__prose {
+  color: var(--muted-ink);
+  line-height: 1.7;
+}
+.policy2__rte h1, .policy2__rte h2, .policy2__rte h3, .policy2__rte h4,
+.page__prose h1, .page__prose h2, .page__prose h3, .page__prose h4 {
+  font-family: var(--font-head);
+  font-weight: 800;
+  color: var(--navy);
+  line-height: 1.25;
+  margin: 30px 0 12px;
+}
+.policy2__rte h2, .page__prose h2 { font-size: 20.8px; }
+.policy2__rte h3, .policy2__rte h4,
+.page__prose h3, .page__prose h4 { font-size: 17.6px; }
+.policy2__rte > :first-child,
+.page__prose > :first-child { margin-top: 0; }
+
+.policy2__rte p, .page__prose p { margin-bottom: 14px; }
+
+.policy2__rte ul, .page__prose ul {
+  display: grid;
+  gap: 10px;
+  margin: 12px 0 20px;
+  padding: 0;
+  list-style: none;
+}
+.policy2__rte li, .page__prose li {
+  position: relative;
+  padding-left: 28px;
+}
+.policy2__rte ul li::before, .page__prose ul li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 6px;
+  background: rgba(232, 119, 34, 0.14);
+}
+.policy2__rte ul li::after, .page__prose ul li::after {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 7px;
+  width: 7px;
+  height: 4px;
+  border-left: 2px solid var(--orange-ink);
+  border-bottom: 2px solid var(--orange-ink);
+  transform: rotate(-45deg);
+}
+.policy2__rte ol, .page__prose ol {
+  margin: 12px 0 20px;
+  padding-left: 22px;
+  list-style: decimal;
+}
+.policy2__rte ol li, .page__prose ol li { padding-left: 0; }
+.policy2__rte ol li::before, .policy2__rte ol li::after,
+.page__prose ol li::before, .page__prose ol li::after { content: none; }
+
+.policy2__rte a, .page__prose a {
+  color: var(--orange-ink);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.policy2__rte strong, .page__prose strong { color: var(--navy); }
+.policy2__rte table, .page__prose table {
+  width: 100%;
+  display: block;
+  overflow-x: auto;
+  border-collapse: collapse;
+}
+.policy2__rte img, .page__prose img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--r-ctrl);
+}
+
 /* ── Quick Add popup: states React never needed ───────────────────────────
    React's QuickAdd read a catalog where every size/colour combination existed,
    so it had no unavailable state and no error state. Driving it from real

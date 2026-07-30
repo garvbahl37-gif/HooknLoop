@@ -16,8 +16,6 @@
       "type": "hnl-contact",
       "settings": {
         "eyebrow": "We're here to help",
-        "title": "Contact HooknLoop",
-        "lead": "Talk to a real person in Australia about products, bulk pricing or an existing order.",
         "phone": "+61 3 4061 6287",
         "phone_note": "Mon–Fri, Australian business hours",
         "email": "info@hooknloop.com.au",
@@ -129,284 +127,58 @@
       "type": "hnl-policy",
       "settings": {
         "eyebrow": "Delivery",
-        "title": "Shipping & delivery",
-        "lead": "Dispatched from our Australian warehouse and delivered Australia-wide by trusted couriers.",
         "highlights": "1–2 days | Dispatch time\nFree | Shipping over $200\n2–5 days | Metro delivery\n3–7 days | Regional delivery",
         "help_heading": "Need a hand?",
         "help_body": "Talk to a real person in Australia about your order, delivery or a return.",
         "help_email": "info@hooknloop.com.au",
         "help_phone": "+61 3 4061 6287",
-        "other_links": "Shipping & delivery | /pages/shipping-delivery\nReturns & exchanges | /pages/return-policy\nPrivacy policy | /pages/privacy-policy\nTerms & conditions | /pages/terms-conditions",
+        "other_links": "Shipping & Delivery | /pages/shipping-delivery\nReturns & Exchanges | /pages/return-policy\nPrivacy Policy | /pages/privacy-policy\nTerms & Conditions | /pages/terms-conditions",
         "page_handle": "shipping-delivery"
-      },
-      "blocks": {
-        "c1": {
-          "type": "clause",
-          "settings": {
-            "icon": "truck",
-            "heading": "Order processing",
-            "body": "Orders take 1–2 business days to be processed. Orders made during weekends or on holidays are handled the following working day. Order confirmation and tracking details are sent after your order is dispatched.",
-            "bullets": ""
-          }
-        },
-        "c2": {
-          "type": "clause",
-          "settings": {
-            "icon": "pin",
-            "heading": "Delivery locations",
-            "body": "We ship Australia-wide, covering metro areas plus regional and rural locations.",
-            "bullets": ""
-          }
-        },
-        "c3": {
-          "type": "clause",
-          "settings": {
-            "icon": "box",
-            "heading": "Shipping methods",
-            "body": "Calculation of shipping methods and costs is done at checkout, depending on the delivery address and the parcel's weight and size.",
-            "bullets": ""
-          }
-        },
-        "c4": {
-          "type": "clause",
-          "settings": {
-            "icon": "clock",
-            "heading": "Estimated delivery time",
-            "body": "Metro areas: within 2–5 business days. Regional areas: within 3–7 business days. This is only an estimate and may change due to courier delays or during peak times.",
-            "bullets": ""
-          }
-        },
-        "c5": {
-          "type": "clause",
-          "settings": {
-            "icon": "route",
-            "heading": "Tracking your order",
-            "body": "A tracking number is sent via email so you can monitor your delivery once your order is dispatched.",
-            "bullets": ""
-          }
-        },
-        "c6": {
-          "type": "clause",
-          "settings": {
-            "icon": "trade",
-            "heading": "Bulk & wholesale orders",
-            "body": "Large or bulk orders may be shipped separately or via freight. For any special arrangements, our team will contact you.",
-            "bullets": ""
-          }
-        }
-      },
-      "block_order": [
-        "c1",
-        "c2",
-        "c3",
-        "c4",
-        "c5",
-        "c6"
-      ]
+      }
     },
     "hnl_returns": {
       "type": "hnl-policy",
       "settings": {
-        "eyebrow": "Returns & exchanges",
-        "title": "Returns & exchanges",
-        "lead": "Not right for the job? Here's exactly how returns, refunds and faulty items work.",
+        "eyebrow": "Returns & Exchanges",
         "highlights": "14 days | Return window\nFaulty | Always covered\n2 steps | Simple process",
         "help_heading": "Need a hand?",
         "help_body": "Talk to a real person in Australia about your order, delivery or a return.",
         "help_email": "info@hooknloop.com.au",
         "help_phone": "+61 3 4061 6287",
-        "other_links": "Shipping & delivery | /pages/shipping-delivery\nReturns & exchanges | /pages/return-policy\nPrivacy policy | /pages/privacy-policy\nTerms & conditions | /pages/terms-conditions",
+        "other_links": "Shipping & Delivery | /pages/shipping-delivery\nReturns & Exchanges | /pages/return-policy\nPrivacy Policy | /pages/privacy-policy\nTerms & Conditions | /pages/terms-conditions",
         "page_handle": "return-policy"
-      },
-      "blocks": {
-        "c1": {
-          "type": "clause",
-          "settings": {
-            "icon": "check",
-            "heading": "Returns eligibility",
-            "body": "You are eligible to ask for a return if:",
-            "bullets": "The item is unused and in its original packaging\nYou request a return within 14 days of delivery\nYou received a faulty, damaged or incorrect item"
-          }
-        },
-        "c2": {
-          "type": "clause",
-          "settings": {
-            "icon": "x",
-            "heading": "Non-returnable items",
-            "body": "We can't accept returns on:",
-            "bullets": "Used or cut products\nClearance or custom orders (unless faulty)"
-          }
-        },
-        "c3": {
-          "type": "clause",
-          "settings": {
-            "icon": "mail",
-            "heading": "How to request a return",
-            "body": "",
-            "bullets": "Email info@hooknloop.com.au with your order number\nOur team will review your request and provide return instructions"
-          }
-        },
-        "c4": {
-          "type": "clause",
-          "settings": {
-            "icon": "card",
-            "heading": "Refunds",
-            "body": "",
-            "bullets": "After approval, refunds are processed back to the original payment method\nShipping fees are non-refundable unless the item is faulty"
-          }
-        },
-        "c5": {
-          "type": "clause",
-          "settings": {
-            "icon": "alert",
-            "heading": "Damaged or incorrect items",
-            "body": "If your order is damaged or wrong, please contact us within 48 hours of delivery with photos for a fast solution.",
-            "bullets": ""
-          }
-        }
-      },
-      "block_order": [
-        "c1",
-        "c2",
-        "c3",
-        "c4",
-        "c5"
-      ]
+      }
     },
     "hnl_privacy": {
       "type": "hnl-policy",
       "settings": {
         "eyebrow": "Your data",
-        "title": "Privacy policy",
-        "lead": "What we collect, how we use it, and the control you have over it.",
         "highlights": "",
         "help_heading": "Need a hand?",
         "help_body": "Talk to a real person in Australia about your order, delivery or a return.",
         "help_email": "info@hooknloop.com.au",
         "help_phone": "+61 3 4061 6287",
-        "other_links": "Shipping & delivery | /pages/shipping-delivery\nReturns & exchanges | /pages/return-policy\nPrivacy policy | /pages/privacy-policy\nTerms & conditions | /pages/terms-conditions",
+        "other_links": "Shipping & Delivery | /pages/shipping-delivery\nReturns & Exchanges | /pages/return-policy\nPrivacy Policy | /pages/privacy-policy\nTerms & Conditions | /pages/terms-conditions",
         "page_handle": "privacy-policy"
-      },
-      "blocks": {
-        "c1": {
-          "type": "clause",
-          "settings": {
-            "icon": "lock",
-            "heading": "What we collect",
-            "body": "Only what we need to process your order and provide support — your name, contact details, and delivery and payment information.",
-            "bullets": ""
-          }
-        },
-        "c2": {
-          "type": "clause",
-          "settings": {
-            "icon": "shield",
-            "heading": "How we use it",
-            "body": "To fulfil your orders, provide support, and — if you opt in — send occasional updates. We don't sell your data.",
-            "bullets": ""
-          }
-        },
-        "c3": {
-          "type": "clause",
-          "settings": {
-            "icon": "check",
-            "heading": "Your rights",
-            "body": "Contact us any time to access or delete the information we hold about you.",
-            "bullets": ""
-          }
-        }
-      },
-      "block_order": [
-        "c1",
-        "c2",
-        "c3"
-      ]
+      }
     },
     "hnl_terms": {
       "type": "hnl-policy",
       "settings": {
         "eyebrow": "The fine print",
-        "title": "Terms & conditions",
-        "lead": "By ordering on our site and placing an order, you accept the following terms and conditions.",
         "highlights": "AUD | All prices quoted\nSecure | Payments processed\nVictoria | Governing law",
         "help_heading": "Need a hand?",
         "help_body": "Talk to a real person in Australia about your order, delivery or a return.",
         "help_email": "info@hooknloop.com.au",
         "help_phone": "+61 3 4061 6287",
-        "other_links": "Shipping & delivery | /pages/shipping-delivery\nReturns & exchanges | /pages/return-policy\nPrivacy policy | /pages/privacy-policy\nTerms & conditions | /pages/terms-conditions",
+        "other_links": "Shipping & Delivery | /pages/shipping-delivery\nReturns & Exchanges | /pages/return-policy\nPrivacy Policy | /pages/privacy-policy\nTerms & Conditions | /pages/terms-conditions",
         "page_handle": "terms-conditions"
-      },
-      "blocks": {
-        "c1": {
-          "type": "clause",
-          "settings": {
-            "icon": "doc",
-            "heading": "General",
-            "body": "",
-            "bullets": "Every price is quoted in Australian Dollars (AUD).\nPrices and the availability of products might vary without prior notice.\nWe may deny service to anyone at our own discretion."
-          }
-        },
-        "c2": {
-          "type": "clause",
-          "settings": {
-            "icon": "box",
-            "heading": "Product information",
-            "body": "We attempt to be precise in product descriptions and images. There might, however, be slight differences because of manufacturing or display differences.",
-            "bullets": ""
-          }
-        },
-        "c3": {
-          "type": "clause",
-          "settings": {
-            "icon": "card",
-            "heading": "Orders & payments",
-            "body": "",
-            "bullets": "When payment is made successfully, the orders are confirmed.\nThe payments are safely processed through reliable payment services."
-          }
-        },
-        "c4": {
-          "type": "clause",
-          "settings": {
-            "icon": "truck",
-            "heading": "Shipping & delivery",
-            "body": "Delivery times are approximations. HooknLoop.com.au does not deal with courier delays or external delays.",
-            "bullets": ""
-          }
-        },
-        "c5": {
-          "type": "clause",
-          "settings": {
-            "icon": "shield",
-            "heading": "Limitation of liability",
-            "body": "HooknLoop.com.au does not have to incur indirect or consequential losses caused by the usage of our products or website.",
-            "bullets": ""
-          }
-        },
-        "c6": {
-          "type": "clause",
-          "settings": {
-            "icon": "pin",
-            "heading": "Governing law",
-            "body": "Such terms are governed by the laws of Victoria, Australia.",
-            "bullets": ""
-          }
-        }
-      },
-      "block_order": [
-        "c1",
-        "c2",
-        "c3",
-        "c4",
-        "c5",
-        "c6"
-      ]
+      }
     },
     "hnl_about": {
       "type": "hnl-page",
       "settings": {
         "eyebrow": "Australian owned",
-        "title": "A real supplier, not a drop-shipper",
-        "lead": "HooknLoop is an ABN-registered Australian business holding genuine hook & loop stock in Australia — held on the shelf and dispatched fast.",
         "center": true,
         "narrow": true,
         "cta_label": "Shop the range",
@@ -418,12 +190,9 @@
       "type": "hnl-page",
       "settings": {
         "eyebrow": "Guides & how-tos",
-        "title": "The HooknLoop blog",
-        "lead": "Practical guides for choosing and using hook & loop.",
         "center": true,
         "narrow": true,
-        "page_handle": "blog",
-        "body": "<h2>On the way</h2><ul><li>Velcro vs hook &amp; loop: what's the difference?</li><li>Hook side vs loop side — which goes where</li><li>Sew-on vs self-adhesive</li><li>Fire-retardant hook &amp; loop standards in Australia</li></ul><p>Want these in your inbox as they land? Subscribe in the footer.</p>"
+        "page_handle": "blog"
       }
     },
     "hnl_page": {

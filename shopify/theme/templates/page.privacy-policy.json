@@ -8,49 +8,13 @@
       "type": "hnl-policy",
       "settings": {
         "eyebrow": "Your data",
-        "title": "Privacy policy",
-        "lead": "What we collect, how we use it, and the control you have over it.",
         "highlights": "",
         "help_heading": "Need a hand?",
         "help_body": "Talk to a real person in Australia about your order, delivery or a return.",
         "help_email": "info@hooknloop.com.au",
         "help_phone": "+61 3 4061 6287",
-        "other_links": "Shipping & delivery | /pages/shipping-delivery\nReturns & exchanges | /pages/return-policy\nPrivacy policy | /pages/privacy-policy\nTerms & conditions | /pages/terms-conditions"
-      },
-      "blocks": {
-        "c1": {
-          "type": "clause",
-          "settings": {
-            "icon": "lock",
-            "heading": "What we collect",
-            "body": "Only what we need to process your order and provide support — your name, contact details, and delivery and payment information.",
-            "bullets": ""
-          }
-        },
-        "c2": {
-          "type": "clause",
-          "settings": {
-            "icon": "shield",
-            "heading": "How we use it",
-            "body": "To fulfil your orders, provide support, and — if you opt in — send occasional updates. We don't sell your data.",
-            "bullets": ""
-          }
-        },
-        "c3": {
-          "type": "clause",
-          "settings": {
-            "icon": "check",
-            "heading": "Your rights",
-            "body": "Contact us any time to access or delete the information we hold about you.",
-            "bullets": ""
-          }
-        }
-      },
-      "block_order": [
-        "c1",
-        "c2",
-        "c3"
-      ]
+        "other_links": "Shipping & Delivery | /pages/shipping-delivery\nReturns & Exchanges | /pages/return-policy\nPrivacy Policy | /pages/privacy-policy\nTerms & Conditions | /pages/terms-conditions"
+      }
     }
   },
   "order": [

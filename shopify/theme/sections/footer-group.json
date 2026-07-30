@@ -31,18 +31,22 @@
           "type": "column",
           "settings": {
             "heading": "More products",
-            "links": "Fire Retardant Adhesive | /products/fire-retardant-adhesive-hook-and-loop\nFire Retardant Sew-On | /products/fire-retardant-sew-on-hook-and-loop\nDouble-Sided Hook & Loop | /products/double-sided-hook-and-loop\nHeavy-Duty Strap | /products/heavy-duty-hook-and-loop-strap\nHook & Loop for Fabric | /products/hook-and-loop-for-fabric\nBrowse all products | /collections/all"
+            "links": "Fire Retardant Adhesive | /products/fire-retardant-adhesive-hook-and-loop\nFire Retardant Sew-On | /products/fire-retardant-sew-on-hook-and-loop\nDouble-Sided Hook & Loop | /products/double-sided-hook-and-loop\nHeavy-Duty Strap | /products/heavy-duty-hook-and-loop-strap\nHook & Loop for Fabric | /products/hook-and-loop-for-fabric\nBrowse All Products | /collections/all"
           }
         },
         "c3": {
           "type": "column",
           "settings": {
             "heading": "Help",
-            "links": "Bulk & trade quotes | /pages/bulk-orders\nShipping & delivery | /pages/shipping-delivery\nReturns & exchanges | /pages/return-policy\nCustomer service | /pages/customer-service\nContact us | /pages/contact\nBlog | /pages/blog"
+            "links": "Bulk & Trade Quotes | /pages/bulk-orders\nShipping & Delivery | /pages/shipping-delivery\nReturns & Exchanges | /pages/return-policy\nCustomer Service | /pages/customer-service\nContact Us | /pages/contact\nBlog | /pages/blog"
           }
         }
       },
-      "block_order": ["c1", "c2", "c3"],
+      "block_order": [
+        "c1",
+        "c2",
+        "c3"
+      ],
       "settings": {
         "tagline": "Industrial hook & loop, dispatched fast across Australia.",
         "phone": "+61 3 4061 6287",
@@ -56,7 +60,11 @@
         "signup_ok": "You're on the list — check your inbox.",
         "legal_name": "HooknLoop Australia · All rights reserved",
         "legal_links": "Privacy | /pages/privacy-policy\nTerms | /pages/terms-conditions\nShipping | /pages/shipping-delivery\nReturns | /pages/return-policy",
-        "trademark": "VELCRO® is a registered trademark of Velcro IP Holdings LLC. HooknLoop stocks genuine VELCRO® Brand product; other products are our own brand."
+        "trademark": "VELCRO® is a registered trademark of Velcro IP Holdings LLC. HooknLoop stocks genuine VELCRO® Brand product; other products are our own brand.",
+        "social_facebook": "https://www.facebook.com/profile.php?id=61587201524181",
+        "social_instagram": "https://www.instagram.com/hooknloopshop",
+        "social_pinterest": "https://www.pinterest.com/hooknloopshop/",
+        "social_linkedin": "https://www.linkedin.com/company/hooknloop/"
       }
     },
     "mobile-navigation-bar": {
