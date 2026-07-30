@@ -201,8 +201,7 @@
            re-renders because it is a stylesheet, not a one-time DOM edit.
            Selectors use class-prefix matching — SmartBot's class names carry a
            build hash (_avatar-wrap_1xhxj_137) that changes between releases. */
-        var brand = document.createElement('style');
-        brand.textContent =
+        var css =
           '[class*="_avatar-wrap"],[class*="_chat-icon-icon"]{' +
             'background-image:url("data:image/svg+xml,' +
             encodeURIComponent(
@@ -213,6 +212,18 @@
             ) + '")!important;' +
             'background-size:contain!important;background-position:center!important;' +
             'background-repeat:no-repeat!important;}';
+
+        {%- unless settings.hnl_chat_nudge -%}
+        /* SmartBot's unprompted "Ready to find the right fastening solution?"
+           bubble. It sits over the page, follows the shopper from page to page
+           and covered the product cards. Hidden here; Theme settings >
+           HooknLoop redesign > "Show the chat app's pop-up greeting" turns it
+           back on, and SmartBot's own settings are its permanent home. */
+        css += '[class*="_notification-card"]{display:none!important;}';
+        {%- endunless -%}
+
+        var brand = document.createElement('style');
+        brand.textContent = css;
         root.appendChild(brand);
 
         /* SmartBot hides its own launcher while the panel is open and shows it

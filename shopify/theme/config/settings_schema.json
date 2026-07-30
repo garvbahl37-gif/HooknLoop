@@ -60,6 +60,13 @@
             "label": "Hide the chat button"
           }
         ]
+      },
+      {
+        "type": "checkbox",
+        "id": "hnl_chat_nudge",
+        "label": "Show the chat app's pop-up greeting",
+        "default": false,
+        "info": "SmartBot's \"Ready to find the right fastening solution?\" bubble that appears unprompted. Off by default — it covers content and interrupts the shopper. Turning it off here only hides it on this theme; SmartBot's own settings are the permanent home for it."
       }
     ]
   },
