@@ -6,8 +6,13 @@
 
   Usage: {% render 'hnl-product-card', product: product %}
 
-  Single-variant products post straight to /cart/add; multi-variant ones link to
-  the PDP to choose, because a card cannot honestly represent 18 variants.
+  Every card carries the SAME call to action, which is how the live store works —
+  it has no "Choose options" anywhere. The button opens the Quick Add popup so
+  the shopper picks size, colour and side without leaving the page.
+
+  It is an <a> to the product page, not a <button>: the popup is a JS upgrade,
+  so without JS (or if the product fetch fails) the link still takes the shopper
+  somewhere they can buy. It also keeps the card crawlable.
 {%- endcomment -%}
 
 <article class="pc">
@@ -38,18 +43,15 @@
       <span class="pc__set">From <b>{{ product.price_min | money }}</b> <span class="pc__gst">incl. GST</span></span>
     </div>
 
-    {%- if product.variants.size == 1 and product.available -%}
-      {%- form 'product', product, class: 'pc__addform' -%}
-        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-        <button type="submit" class="pc__add">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M6 6 5 3H2"/></svg>
-          Add to cart
-        </button>
-      {%- endform -%}
-    {%- else -%}
-      <a href="{{ product.url }}" class="pc__add">
+    {%- if product.available -%}
+      <a href="{{ product.url }}" class="pc__add" data-hnl-quick-add="{{ product.handle }}">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M6 6 5 3H2"/></svg>
-        {% if product.available %}Choose options{% else %}Sold out{% endif %}
+        {{ settings.hnl_card_cta | default: 'Add to cart' }}
+      </a>
+    {%- else -%}
+      <a href="{{ product.url }}" class="pc__add" aria-disabled="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M6 6 5 3H2"/></svg>
+        Sold out
       </a>
     {%- endif -%}
   </div>

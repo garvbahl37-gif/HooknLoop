@@ -6,9 +6,8 @@
   never drift from the catalogue. The React version hardcoded an array of 12
   handles against a static catalog.js.
 
-  "Quick Add" is a plain add-to-cart form here. The React QuickAdd popup drove
-  a localStorage cart; Shopify owns the cart, so single-variant products post
-  straight to /cart/add and multi-variant ones go to the product page to choose.
+  The card itself lives in snippets/hnl-product-card so the homepage, the
+  collection page and the PDP cross-sell all render the same thing.
 {%- endcomment -%}
 
 {%- assign coll = collections[section.settings.collection] -%}
@@ -26,50 +25,7 @@
 
     <div class="bs__grid">
       {%- for product in coll.products limit: section.settings.count -%}
-        <article class="pc">
-          <a href="{{ product.url }}" class="pc__media" aria-label="View {{ product.title | escape }}">
-            {%- if product.compare_at_price > product.price -%}
-              <span class="pc__badge">Sale</span>
-            {%- endif -%}
-            {%- if product.featured_image -%}
-              {{ product.featured_image | image_url: width: 640 | image_tag: class: 'pc__img', alt: product.title, loading: 'lazy' }}
-            {%- endif -%}
-            {%- if product.images[1] -%}
-              {{ product.images[1] | image_url: width: 640 | image_tag: class: 'pc__img pc__img--alt', alt: '', aria-hidden: 'true', loading: 'lazy' }}
-            {%- endif -%}
-          </a>
-
-          <div class="pc__body">
-            <h3 class="pc__name"><a href="{{ product.url }}">{{ product.title }}</a></h3>
-
-            <div class="pc__rating pc__rating--none"><span>No reviews yet</span></div>
-
-            {%- if product.type != blank -%}
-              <p class="pc__spec">{{ product.type }}</p>
-            {%- elsif product.variants.size > 1 -%}
-              <p class="pc__spec">{{ product.variants.size }} options available</p>
-            {%- endif -%}
-
-            <div class="pc__price">
-              <span class="pc__set">From <b>{{ product.price_min | money }}</b> <span class="pc__gst">incl. GST</span></span>
-            </div>
-
-            {%- if product.variants.size == 1 and product.available -%}
-              {%- form 'product', product, class: 'pc__addform' -%}
-                <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-                <button type="submit" class="pc__add">
-                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M6 6 5 3H2"/></svg>
-                  Add to cart
-                </button>
-              {%- endform -%}
-            {%- else -%}
-              <a href="{{ product.url }}" class="pc__add">
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M6 6 5 3H2"/></svg>
-                {% if product.available %}Choose options{% else %}Sold out{% endif %}
-              </a>
-            {%- endif -%}
-          </div>
-        </article>
+        {% render 'hnl-product-card', product: product %}
       {%- endfor -%}
     </div>
   </div>

@@ -16,6 +16,13 @@
       },
       {
         "type": "text",
+        "id": "hnl_card_cta",
+        "label": "Product card button",
+        "default": "Add to cart",
+        "info": "The label on every product card. The live hooknloop.com.au uses \"Quick Add\", since the button opens a popup to choose options rather than adding straight to the cart — change it here if you prefer that wording."
+      },
+      {
+        "type": "text",
         "id": "hnl_phone",
         "label": "Phone number (dialled)",
         "default": "+61340616287",

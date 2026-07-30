@@ -171,6 +171,57 @@
   border-collapse: collapse;
 }
 
+/* ── Quick Add popup: states React never needed ───────────────────────────
+   React's QuickAdd read a catalog where every size/colour combination existed,
+   so it had no unavailable state and no error state. Driving it from real
+   Shopify variants means both are reachable: a colour can be sold out in one
+   size only, and /cart/add can reject an add if stock ran out mid-session.
+
+   Unavailable combinations are dimmed rather than removed, so the shopper can
+   see the size exists and is simply not stocked in that colour. */
+.qa__pill[disabled],
+.qa__swatch[disabled] {
+  opacity: 0.32;
+  cursor: not-allowed;
+  position: relative;
+}
+.qa__pill[disabled]:hover {
+  border-color: var(--line-card);
+}
+.qa__swatch[disabled]::after {
+  content: '';
+  position: absolute;
+  inset: 40% -4px auto -4px;
+  height: 2px;
+  background: var(--muted-ink);
+  transform: rotate(-45deg);
+}
+.qa__err {
+  margin-top: 12px;
+  color: #b3261e;
+  font-size: 13.6px;
+  line-height: 1.45;
+}
+/* The "View cart" link reuses .qa__shoppay's shape but is not a Shop Pay
+   button, so it takes the redesign's navy rather than Shop Pay purple. */
+.qa__shoppay[data-hnl-qa-view] {
+  background: var(--navy);
+  text-decoration: none;
+}
+.qa__shoppay[data-hnl-qa-view]:hover {
+  background: #1d3866;
+}
+
+/* A card CTA is an <a> now, not a <button>, so it needs the button's own
+   centring back — an anchor does not inherit it. */
+.pc__add {
+  text-decoration: none;
+}
+.pc__add[aria-disabled='true'] {
+  background: #8b96ab;
+  pointer-events: none;
+}
+
 /* Sold-out cards: Suruchi disables the submit button but leaves it navy, which
    reads as tappable. Match the muted treatment the rest of the redesign uses. */
 .pc__add[disabled] {

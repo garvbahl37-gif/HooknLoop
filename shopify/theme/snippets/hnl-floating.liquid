@@ -201,17 +201,33 @@
            re-renders because it is a stylesheet, not a one-time DOM edit.
            Selectors use class-prefix matching — SmartBot's class names carry a
            build hash (_avatar-wrap_1xhxj_137) that changes between releases. */
+        var svg = function (markup) {
+          return 'url("data:image/svg+xml,' + encodeURIComponent(markup) + '")';
+        };
+
+        /* Two different elements, two different jobs — an earlier version
+           targeted both with the same image, which put an "HL" badge where the
+           chat bubble belongs on mobile.
+
+           _avatar-wrap    the agent portrait in the panel header -> brand mark
+           _chat-icon-icon the launcher glyph, which is the ONLY chat button on
+                           phones (ours is hidden below 900px) -> a chat bubble,
+                           the same one our own FAB uses, so the two match. */
         var css =
-          '[class*="_avatar-wrap"],[class*="_chat-icon-icon"]{' +
-            'background-image:url("data:image/svg+xml,' +
-            encodeURIComponent(
-              '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">' +
-              '<rect width="64" height="64" rx="14" fill="#e87722"/>' +
-              '<text x="32" y="41" text-anchor="middle" font-family="DM Sans,Segoe UI,sans-serif"' +
-              ' font-size="26" font-weight="800" fill="#142548">HL</text></svg>'
-            ) + '")!important;' +
-            'background-size:contain!important;background-position:center!important;' +
-            'background-repeat:no-repeat!important;}';
+          '[class*="_avatar-wrap"]{background-image:' +
+            svg('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">' +
+                '<rect width="64" height="64" rx="14" fill="#e87722"/>' +
+                '<text x="32" y="41" text-anchor="middle" font-family="DM Sans,Segoe UI,sans-serif"' +
+                ' font-size="26" font-weight="800" fill="#142548">HL</text></svg>') +
+            '!important;background-size:contain!important;' +
+            'background-position:center!important;background-repeat:no-repeat!important;}' +
+
+          '[class*="_chat-icon-icon"]{background-image:' +
+            svg('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"' +
+                ' stroke="#142548" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">' +
+                '<path d="M21 12a8 8 0 0 1-11.5 7.2L4 20l1-4.5A8 8 0 1 1 21 12Z"/></svg>') +
+            '!important;background-size:58%!important;' +
+            'background-position:center!important;background-repeat:no-repeat!important;}';
 
         {%- unless settings.hnl_chat_nudge -%}
         /* SmartBot's unprompted "Ready to find the right fastening solution?"
