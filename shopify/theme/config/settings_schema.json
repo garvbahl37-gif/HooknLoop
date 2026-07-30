@@ -119,14 +119,14 @@
         "type": "text",
         "id": "hnl_popup_kicker",
         "label": "Headline",
-        "default": "Trade prices, straight to your inbox."
+        "default": "Offers and discounts, straight to your inbox."
       },
       {
         "type": "textarea",
         "id": "hnl_popup_points",
         "label": "Points",
         "info": "One per line.",
-        "default": "Bulk price drops before anyone else\nPractical guides for choosing the right fastener\nFree shipping on orders over $200\nNo spam — unsubscribe any time"
+        "default": "Discounts and bulk price drops first\nTrade pricing on volume orders\nFree shipping on orders over $200\nNo spam — unsubscribe any time"
       },
       {
         "type": "header",
@@ -142,13 +142,13 @@
         "type": "text",
         "id": "hnl_popup_heading",
         "label": "Heading",
-        "default": "Get the trade list"
+        "default": "Get Offers & Discounts"
       },
       {
         "type": "textarea",
         "id": "hnl_popup_sub",
         "label": "Subheading",
-        "default": "One email when prices drop or something new lands. That's it."
+        "default": "Price drops, bulk deals and new stock — one email, only when there's something worth telling you."
       },
       {
         "type": "text",

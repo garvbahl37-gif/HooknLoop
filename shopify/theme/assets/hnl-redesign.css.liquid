@@ -2566,7 +2566,7 @@ body.drawer-open { overflow: hidden; }
   max-height: 92vh;
   overflow: auto;
   display: grid;
-  grid-template-columns: 1.05fr 1fr;
+  grid-template-columns: 0.88fr 1fr;
   background: #fff;
   border-radius: 18px;
   box-shadow: 0 40px 100px rgba(4, 10, 26, 0.55);
@@ -2609,7 +2609,7 @@ body.drawer-open { overflow: hidden; }
 .nlp__brand {
   position: relative;
   overflow: hidden;
-  padding: 44px 38px;
+  padding: 40px 34px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -2628,7 +2628,19 @@ body.drawer-open { overflow: hidden; }
   pointer-events: none;
   background: radial-gradient(circle, rgba(232, 119, 34, 0.26) 0%, rgba(232, 119, 34, 0) 62%);
 }
-.nlp__logo { position: relative; height: 34px; width: auto; }
+/* .nlp__brand is a flex column, and a flex column stretches its children on
+   the cross axis — which is horizontal. That beat `width: auto` and pulled the
+   wordmark to the full column width while the height stayed pinned, so it
+   rendered at ratio 11.0 against a natural 5.64: near enough double-wide.
+   align-self opts this one child out of the stretch. */
+.nlp__logo {
+  position: relative;
+  align-self: flex-start;
+  height: 34px;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+}
 .nlp__kicker {
   position: relative;
   font-family: var(--font-head);
