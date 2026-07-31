@@ -31,7 +31,16 @@
   <div class="pc__body">
     <h3 class="pc__name"><a href="{{ product.url }}">{{ product.title }}</a></h3>
 
-    <div class="pc__rating pc__rating--none"><span>No reviews yet</span></div>
+    {%- comment -%}
+      Judge.me holds this store's real ratings — the live site shows 4.0, 4.5
+      and 5.0 on these same cards. This is its badge hook; the fallback below is
+      only what shows before the widget paints, or for a product with no reviews
+      yet. Hardcoding "No reviews yet" hid ratings the store had earned.
+    {%- endcomment -%}
+    <div class="pc__rating">
+      <div class="jdgm-widget jdgm-preview-badge" data-id="{{ product.id }}"></div>
+      <span class="pc__rating-fallback">No reviews yet</span>
+    </div>
 
     {%- if product.type != blank -%}
       <p class="pc__spec">{{ product.type }}</p>

@@ -177,7 +177,8 @@
         "cta_link": "/pages/customer-service",
         "image_alt": "Hook-and-loop tape beside a map of Australia and HooknLoop delivery boxes on a pallet",
         "proof_score": "4.87 / 5",
-        "proof_text": "Serving B2C & B2B across Australia"
+        "proof_text": "Serving B2C & B2B across Australia",
+        "more_copy": "<p>We stock a complete range of fastening products, providing both globally recognised and cost-effective options in one place. From regular and temporary use to heavy-duty fastening, our solutions perform across a wide range of applications.</p><p>Our range includes adhesive-backed tape, sew-on rolls, sticky dots, self-gripping hook and loop fasteners, and straps. For mounting items, organising cables, securing signage, arranging displays, and accomplishing textile or upholstery projects with finesse, our products are perfect buy.</p><p>For premium fastening products that stick securely and stay in place for a long time, hooknloop.com.au is your destination. Our adhesive fasteners are suitable for fabric, walls, plastic, metal, wood, and other common surfaces. We have adhesive hook and loop fasteners in varied strengths, widths, and lengths to match your needs for various surfaces and settings.</p><p>We also have our sew-on options that deliver durability and flexibility for textile use without relying on adhesives.</p><p>The selection of the right fastener depends on the factor- how and where it will be used. At HooknLoop.com.au, we help customers make informed decisions by matching the correct product to the intended application.</p>"
       }
     },
     "hnl_why": {
@@ -251,49 +252,49 @@
         "r1": {
           "type": "review",
           "settings": {
-            "name": "Sarah M.",
-            "location": "Melbourne, VIC",
-            "quote": "Better than what we were getting from our previous supplier, and it turns up fast."
+            "name": "Tom W.",
+            "location": "Hobart, TAS",
+            "quote": "I'm a high school design tech teacher and we order from HooknLoop for student projects. The self-adhesive rolls are great because kids can cut exactly what they need. Pricing is reasonable for our budget and they don't mind doing tax invoices for the school which makes purchasing easy. The quality means student projects actually work properly instead of falling apart!"
           }
         },
         "r2": {
           "type": "review",
           "settings": {
-            "name": "Rachel K.",
-            "location": "Perth, WA",
-            "quote": "Quality is spot on — exactly what we needed for our aged-care fit-out."
+            "name": "Sarah M.",
+            "location": "Melbourne, VIC",
+            "quote": "Bought some of the VELCRO brand stuff from HooknLoop for a boat cover repair. Wasn't sure if it'd handle the salt and UV but it's been 8 months and still going strong. Bit more expensive than the generic but worth it for marine use. Arrived in 3 days which saved me missing a weekend trip. Cheers!"
           }
         },
         "r3": {
           "type": "review",
           "settings": {
-            "name": "Jessica L.",
-            "location": "Sydney, NSW",
-            "quote": "Consistent every order, and cutting to length means almost no offcut waste for us."
+            "name": "Dave T.",
+            "location": "Brisbane, QLD",
+            "quote": "Been using HooknLoop for our upholstery business for about 18 months now. The adhesive backed stuff is honestly better than what we were getting from our previous supplier at nearly double the price. Sticks properly and the hook side doesn't wear out after a few uses like the cheap rubbish. Fast delivery too which helps when we're in a rush on projects."
           }
         },
         "r4": {
           "type": "review",
           "settings": {
-            "name": "Tom W.",
-            "location": "Hobart, TAS",
-            "quote": "Repaired a boat cover with it — eight months out in the weather and it's still going strong."
+            "name": "Jessica L.",
+            "location": "Sydney, NSW",
+            "quote": "Ordered the heavy duty straps for cable management in our server room. Absolute game changer! We've tried a few different brands over the years but these HooknLoop ones are genuinely reusable - been opening and closing them for 6 months and they still grip like new. Will definitely be back for more."
           }
         },
         "r5": {
           "type": "review",
           "settings": {
-            "name": "Dave T.",
-            "location": "Brisbane, QLD",
-            "quote": "The cable straps still grip like new after six months of daily on-and-off."
+            "name": "Mark R.",
+            "location": "Adelaide, SA",
+            "quote": "I make baby carriers and bibs as a small home business, so I go through a fair bit of sew-on hook and loop. HooknLoop's quality is consistent which is really important when you're selling to customers. The 25mm width is perfect for what I need and it washes well without pilling. Customer service helped me work out bulk pricing too which was appreciated."
           }
         },
         "r6": {
           "type": "review",
           "settings": {
-            "name": "Linda P.",
-            "location": "Canberra, ACT",
-            "quote": "The self-adhesive rolls are great — the kids can cut exactly what they need for their projects."
+            "name": "Rachel K.",
+            "location": "Perth, WA",
+            "quote": "Needed some for a DIY camper van conversion project. Bought the adhesive dots for cupboard doors and the back-to-back tape for securing things while driving. Six months of rough Aussie roads and it's all still holding strong. Even the adhesive in the summer heat hasn't failed. Really impressed with HooknLoop's gear."
           }
         }
       },

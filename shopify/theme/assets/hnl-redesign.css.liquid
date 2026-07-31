@@ -3132,3 +3132,33 @@ body.drawer-open { overflow: hidden; }
   .ind-art__body { animation: none; }
   .ind-idx__item > summary em svg { transition: none; }
 }
+
+/* ── Brand line + real ratings ────────────────────────────────────────────
+   New markup, so nothing to port. */
+.pdp__brandline {
+  display: block;
+  margin-top: 6px;
+  font-size: 14.4px;
+  color: var(--muted-ink);
+}
+.pdp__brandline b { color: var(--navy); font-weight: 700; }
+/* VELCRO Brand is a licensed mark and a genuine one costs more than a generic —
+   worth being the thing the eye lands on in that line. */
+.pdp__brandline-mark { color: var(--orange-ink) !important; font-weight: 800 !important; }
+.pdp__brandline-sep { margin: 0 4px; color: #c9d3e6; }
+
+/* The fallback hides itself as soon as Judge.me paints a real badge, so a
+   product with reviews never shows "No reviews yet" underneath them. */
+.pc__rating .jdgm-preview-badge:not(:empty) + .pc__rating-fallback { display: none; }
+.pc__rating .jdgm-preview-badge:empty { display: none; }
+.pc__rating-fallback { font-size: 12.48px; color: var(--muted-ink); font-weight: 500; opacity: 0.7; }
+
+/* Homepage read-more block */
+.ts__more { margin: 14px 0 18px; animation: qaFade 0.22s ease; }
+.ts__more p { color: var(--muted-ink); line-height: 1.7; margin-bottom: 12px; }
+[data-hnl-more-toggle] svg { transition: transform 0.18s var(--ease); }
+[data-hnl-more-toggle].is-open svg { transform: rotate(180deg); }
+@media (prefers-reduced-motion: reduce) {
+  .ts__more { animation: none; }
+  [data-hnl-more-toggle] svg { transition: none; }
+}

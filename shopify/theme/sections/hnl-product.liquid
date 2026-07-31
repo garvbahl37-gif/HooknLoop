@@ -73,6 +73,28 @@
         <span class="pdp__brand-sku">&middot; SKU <b data-hnl-sku>{{ product_variant.sku }}</b></span>
       </span>
 
+      {%- comment -%}
+        Brand line. VELCRO is a registered trademark and a genuine VELCRO Brand
+        product is worth more than a generic equivalent — so it is called out
+        explicitly rather than left to the title. Detected from the product
+        title/type, since product.vendor is "HooknLoop" on every product.
+      {%- endcomment -%}
+      {%- liquid
+        assign is_velcro = false
+        assign hay = product.title | append: ' ' | append: product.type | append: ' ' | append: product.tags | downcase
+        if hay contains 'velcro' or hay contains 'velcoin'
+          assign is_velcro = true
+        endif
+      -%}
+      <span class="pdp__brandline">
+        Brand:&nbsp;
+        {%- if is_velcro -%}
+          <b class="pdp__brandline-mark">VELCRO&reg; Brand</b> <span class="pdp__brandline-sep">|</span> <b>HooknLoop</b>
+        {%- else -%}
+          <b>HooknLoop</b>
+        {%- endif -%}
+      </span>
+
       <div class="pdp__rating">
         {%- comment -%}
           Judge.me is installed on this store; its badge injects into this hook.
@@ -251,14 +273,14 @@
           <section class="pdp__block">
             <h2>Description</h2>
             <div class="pdp__rte">{% render 'hnl-copy-rules', html: product.description, handle: product.handle %}</div>
+            {%- comment -%}
+              In-use photography sits with the description's own "Common
+              Applications" copy rather than in a section of its own — see the
+              note in the snippet.
+            {%- endcomment -%}
+            {% render 'hnl-product-applications', product: product %}
           </section>
         {%- endif -%}
-
-        {%- comment -%}
-          Key applications + the in-use photography, sitting between the
-          description and the specs exactly as in ProductPage.jsx.
-        {%- endcomment -%}
-        {% render 'hnl-product-applications', product: product %}
 
         <section class="pdp__block">
           <h2>Specifications</h2>

@@ -28,7 +28,23 @@
       </div>
 
       {%- if section.settings.cta_label != blank -%}
-        <a href="{{ section.settings.cta_link | default: '/pages/customer-service' }}" class="btn btn--primary ts__cta">{{ section.settings.cta_label }}<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        {%- comment -%}
+      The live store hides several paragraphs of category copy behind a
+      "Read more" on the homepage. It is there for search as much as for
+      shoppers, so it ships in the markup and the toggle only controls height —
+      a crawler sees all of it whether or not anyone clicks.
+    {%- endcomment -%}
+    {%- if section.settings.more_copy != blank -%}
+      <div class="ts__more" data-hnl-more hidden>
+        {{ section.settings.more_copy }}
+      </div>
+      <button type="button" class="btn btn--primary ts__cta" data-hnl-more-toggle aria-expanded="false">
+        <span data-hnl-more-label>{{ section.settings.cta_label | default: 'Read more' }}</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="m6 9 6 6 6-6"/></svg>
+      </button>
+    {%- else -%}
+      <a href="{{ section.settings.cta_link | default: '/pages/customer-service' }}" class="btn btn--primary ts__cta">{{ section.settings.cta_label }}<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    {%- endif -%}
       {%- endif -%}
     </div>
 
@@ -50,6 +66,21 @@
   </div>
 </section>
 
+<script>
+(function () {
+  var t = document.querySelector('[data-hnl-more-toggle]');
+  var box = document.querySelector('[data-hnl-more]');
+  if (!t || !box) return;
+  t.addEventListener('click', function () {
+    var open = box.hasAttribute('hidden');
+    if (open) box.removeAttribute('hidden'); else box.setAttribute('hidden', '');
+    t.setAttribute('aria-expanded', open ? 'true' : 'false');
+    t.querySelector('[data-hnl-more-label]').textContent = open ? 'Read less' : 'Read more';
+    t.classList.toggle('is-open', open);
+  });
+})();
+</script>
+
 {% schema %}
 {
   "name": "HooknLoop supplier",
@@ -60,6 +91,7 @@
     { "type": "textarea", "id": "p1", "label": "Paragraph 1", "default": "Proudly serving both B2C and B2B customers across Australia, we focus on quality products that work in real-world conditions. Every product offered at HooknLoop.com.au is carefully selected based on material quality, performance testing, and long-term reliability." },
     { "type": "text", "id": "h2", "label": "Heading 2", "default": "Wholesale, Bulk & Discounted Hook and Loop Supplies" },
     { "type": "textarea", "id": "p2", "label": "Paragraph 2", "default": "With a large range of fasteners, tapes, straps and accessories held in stock, we offer competitive pricing for retail, trade and commercial buyers. Buy by the roll, in bulk, or at wholesale rates — with volume discounts on larger orders." },
+    { "type": "richtext", "id": "more_copy", "label": "Read-more copy", "info": "Category copy from the live homepage. Present in the HTML for search whether or not it is expanded." },
     { "type": "text", "id": "cta_label", "label": "Button", "default": "Read more" },
     { "type": "url", "id": "cta_link", "label": "Button link" },
     { "type": "image_picker", "id": "image", "label": "Image" },
