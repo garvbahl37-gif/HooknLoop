@@ -73,7 +73,7 @@
         : '';
       var variant = (it.variant_title && it.variant_title !== 'Default Title') ? esc(it.variant_title) : '';
       return '' +
-        '<div class="cd__row" data-line="' + (i + 1) + '">' +
+        '<div class="cd__row" data-key="' + esc(it.key) + '">' +
           '<div class="cd__media">' + img + '</div>' +
           '<div class="cd__info">' +
             '<h3>' + esc(it.product_title) + '</h3>' +
@@ -190,15 +190,76 @@
     var next = {};
     for (var k2 in cart) { if (Object.prototype.hasOwnProperty.call(cart, k2)) next[k2] = cart[k2]; }
     next.items = items;
+    var removed = items.length !== cart.items.length;
     cart = recalc(next);
-    render(cart);
+
+    /* A full re-render replaces the panel's innerHTML, which destroys the very
+       button being pressed — press again quickly and mousedown and mouseup
+       land on different elements, so the click is swallowed. That is the other
+       half of why +/- felt buggy.
+
+       A quantity change patches the row in place, so the button under the
+       cursor survives. Only a removal changes the structure enough to need a
+       real re-render. */
+    if (removed) { render(cart); return true; }
+    patch(cart, key);
     return true;
   }
+
+  function patch(c, key) {
+    var it = null;
+    for (var i = 0; i < c.items.length; i++) { if (c.items[i].key === key) { it = c.items[i]; break; } }
+    var row = body.querySelector('.cd__row[data-key="' + (window.CSS && CSS.escape ? CSS.escape(key) : key) + '"]');
+    if (it && row) {
+      var num = row.querySelector('.cd__qty span');
+      if (num) num.textContent = it.quantity;
+      var btns = row.querySelectorAll('.cd__qty button');
+      if (btns.length === 2) {
+        btns[0].setAttribute('data-hnl-cd-qty', it.quantity - 1);
+        btns[1].setAttribute('data-hnl-cd-qty', it.quantity + 1);
+      }
+      var lp = row.querySelector('.cd__line');
+      if (lp) lp.textContent = money(it.line_price);
+    }
+
+    var sub = body.querySelector('.cd__sumrow b');
+    if (sub) sub.textContent = money(c.total_price) + ' AUD';
+
+    var vc = body.querySelector('.cd__viewcart');
+    if (vc) vc.textContent = 'View cart (' + c.item_count + ')';
+
+    /* Shipping bar tracks the new subtotal. */
+    var wrap = body.querySelector('.cd__ship');
+    if (wrap && FREE_SHIP > 0) {
+      var remaining = FREE_SHIP - c.total_price;
+      var pct = Math.min(100, (c.total_price / FREE_SHIP) * 100);
+      var msg = wrap.querySelector('span');
+      if (msg) {
+        msg.innerHTML = remaining > 0
+          ? '<b>' + money(remaining) + ' AUD</b> away from <b>Free Standard Shipping</b>.'
+          : 'You&rsquo;ve unlocked <b>Free Standard Shipping</b>.';
+      }
+      var bar = wrap.querySelector('.cart__ship-bar');
+      if (bar) bar.setAttribute('aria-valuenow', Math.round(pct));
+      var fill = wrap.querySelector('.cart__ship-bar > span');
+      if (fill) fill.style.width = pct + '%';
+      var truck = wrap.querySelector('.cart__ship-truck');
+      if (truck) truck.style.left = pct + '%';
+    }
+
+    [].forEach.call(document.querySelectorAll('[data-hnl-cart-count]'), function (el) {
+      el.textContent = c.item_count;
+      el.classList.toggle('is-on', c.item_count > 0);
+    });
+  }
+
+  var seq = 0;
 
   function flush() {
     var updates = pending;
     pending = {};
     if (!Object.keys(updates).length) return;
+    var mine = ++seq;
     fetch('/cart/update.js', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
@@ -206,10 +267,20 @@
       body: JSON.stringify({ updates: updates })
     })
       .then(function (r) { return r.ok ? r.json() : Promise.reject(r); })
-      .then(function (server) { cart = server; render(server); })
+      .then(function (server) {
+        /* Only the newest write may repaint. Without this a slow response
+           from an earlier press lands after a later one and snaps the
+           quantity back to a stale number — which is what made + and - feel
+           buggy when pressed quickly. A press queued while this was in
+           flight owns the screen, so leave its optimistic view alone. */
+        if (mine !== seq) return;
+        if (Object.keys(pending).length) return;
+        cart = server;
+        render(server);
+      })
       /* Server is the authority: if the write failed, show what is really
          there rather than leaving the optimistic view standing. */
-      .catch(function () { refresh(); });
+      .catch(function () { if (mine === seq) refresh(); });
   }
 
   root.addEventListener('click', function (e) {

@@ -619,8 +619,21 @@
       if (!window.fetch) return;                 /* let the browser post it */
       e.preventDefault();
 
-      var busy = root.querySelectorAll('[data-hnl-add]');
-      [].forEach.call(busy, function (b) { b.disabled = true; });
+      {%- comment -%}
+        This used to run three round trips before anything happened —
+        /cart/add.js, then /cart.js for the badge, then the drawer's own
+        /cart.js — with every add button disabled for the whole sequence. That
+        is why it felt like the press did nothing.
+
+        The confirmation is now shown on the press itself, before the network
+        is touched, and the redundant /cart.js is gone: the drawer already
+        updates the header badge when it renders. Two round trips became one,
+        and the feedback is immediate.
+
+        Buttons are no longer disabled. The green state is the feedback, and
+        disabling was what made a slow connection feel broken.
+      {%- endcomment -%}
+      setAdded(true);
 
       fetch('/cart/add.js', {
         method: 'POST',
@@ -629,24 +642,15 @@
         credentials: 'same-origin'
       })
         .then(function (r) { return r.ok ? r.json() : r.json().then(function (j) { throw new Error(j.description || 'Could not add to cart'); }); })
-        .then(function () { return fetch('/cart.js', { credentials: 'same-origin' }).then(function (r) { return r.json(); }); })
-        .then(function (cart) {
-          [].forEach.call(busy, function (b) { b.disabled = false; });
-          setAdded(true);
-          /* Keep the header badge honest without a reload. */
-          [].forEach.call(document.querySelectorAll('[data-hnl-cart-count]'), function (el) {
-            el.textContent = cart.item_count;
-            el.classList.add('is-on');
-          });
-          document.dispatchEvent(new CustomEvent('hnl:cart:updated', { detail: cart }));
-          /* Slide the drawer in, the way the React prototype did straight
-             after an add. It re-reads /cart.js itself, so it cannot disagree
-             with the badge we just set. */
+        .then(function () {
+          /* The drawer reads /cart.js itself and refreshes the badge from the
+             same payload, so the two cannot disagree. */
           document.dispatchEvent(new CustomEvent('hnl:cart:open'));
         })
         .catch(function (err) {
-          /* Never strand the shopper: fall back to the real form post. */
-          [].forEach.call(busy, function (b) { b.disabled = false; });
+          /* Never strand the shopper: undo the optimistic confirmation and
+             fall back to a real form post. */
+          setAdded(false);
           console.warn('[hnl] add to cart failed, posting form', err);
           form.submit();
         });

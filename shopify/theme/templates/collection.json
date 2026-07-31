@@ -9,12 +9,14 @@
       "settings": {
         "dispatch_note": "dispatched 1–2 days Australia-wide",
         "per_page": 24,
-        "help_heading": "Not sure which?",
-        "help_body": "Tell us about the job and we'll match the right fastener.",
-        "help_cta": "Ask our team",
+        "help_heading": "",
+        "help_body": "",
+        "help_cta": "",
         "help_link": "/pages/contact"
       }
     }
   },
-  "order": ["hnl_collection"]
+  "order": [
+    "hnl_collection"
+  ]
 }
