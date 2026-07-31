@@ -235,8 +235,13 @@
         var still = c.items.some(function (it) { return it.key === k; });
         if (!still) row.remove();
       });
-      if (!c.items.length) window.location.reload();   /* empty cart has its own layout */
     }
+    /* Deliberately NOT reloading here when the cart empties. paint() also runs
+       optimistically, before the write has been sent — reloading at that point
+       navigated away and killed the queued flush, so Shopify never heard about
+       the removal and the item was still in the cart on the way back. The
+       empty-cart layout is swapped in only once the server confirms it, in
+       flush(). */
 
     [].forEach.call(document.querySelectorAll('[data-hnl-cart-count]'), function (el) {
       el.textContent = c.item_count;
@@ -304,6 +309,10 @@
       .then(function (server) {
         if (mine !== seq) return;                    /* a newer press owns the screen */
         if (Object.keys(pending).length) return;
+        /* Now that the server agrees the cart is empty, swap in the empty
+           layout — which is a different template branch, so a reload is the
+           honest way to get it. */
+        if (!server.item_count) { window.location.reload(); return; }
         paint(server);
       })
       .catch(function () { window.location.reload(); });   /* fall back to the truth */
@@ -311,8 +320,12 @@
 
   function queue(key, qty) {
     pending[key] = qty;
-    if (!optimistic(key, qty)) { flush(); return; }
+    var applied = optimistic(key, qty);
     clearTimeout(flushTimer);
+    /* Emptying the cart flushes at once rather than waiting out the debounce:
+       there is nothing left to coalesce with, and the sooner the write lands
+       the sooner the empty layout is real. */
+    if (!applied || (cart && !cart.item_count)) { flush(); return; }
     flushTimer = setTimeout(flush, 220);
   }
 
@@ -370,18 +383,46 @@
             + '&shipping_address[province]=' + encodeURIComponent(seState.value)
             + '&shipping_address[zip]=' + encodeURIComponent(seZip.value);
 
-      fetch('/cart/shipping_rates.json?' + q, {
-        headers: { 'Accept': 'application/json' }, credentials: 'same-origin'
-      })
-        .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+      /* Shopify answers 202 while it is still working out carrier rates, and
+         expects the same request again — without this the first reply looks
+         like "no rates". */
+      function ask(triesLeft) {
+        return fetch('/cart/shipping_rates.json?' + q, {
+          headers: { 'Accept': 'application/json' }, credentials: 'same-origin'
+        }).then(function (r) {
+          if (r.status === 202 && triesLeft > 0) {
+            return new Promise(function (res) { setTimeout(res, 750); })
+              .then(function () { return ask(triesLeft - 1); });
+          }
+          return r.json().then(function (d) { return { ok: r.ok, status: r.status, d: d }; });
+        });
+      }
+
+      ask(4)
         .then(function (out) {
           seBtn.disabled = false;
           seBtn.textContent = was;
           var rates = out.ok && out.d && out.d.shipping_rates;
           if (!rates || !rates.length) {
-            /* No rate for this address is a real answer, not an error state —
-               it means nothing in the rate table covers this cart. */
-            seErr.textContent = 'No shipping rates found for that address. Contact us and we will sort it.';
+            /* Shopify returns field-keyed validation errors — {"zip":["is not
+               valid for Northern Territory"]}. Printing them tells the shopper
+               what to change; the old catch-all "no rates for that address"
+               sent people to the contact form over a typo'd postcode. */
+            var msgs = [];
+            if (out.d && typeof out.d === 'object') {
+              Object.keys(out.d).forEach(function (k) {
+                if (k === 'shipping_rates') return;
+                var v = out.d[k];
+                (Array.isArray(v) ? v : [v]).forEach(function (m) {
+                  if (typeof m === 'string') {
+                    msgs.push((k === 'zip' ? 'Postcode ' : k === 'province' ? 'State ' : '') + m);
+                  }
+                });
+              });
+            }
+            seErr.textContent = msgs.length
+              ? msgs.join(' ')
+              : 'No shipping rates cover this order yet. Contact us and we will sort it.';
             seErr.hidden = false;
             return;
           }

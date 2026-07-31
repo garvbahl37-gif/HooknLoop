@@ -1574,3 +1574,15 @@ body.drawer-open {
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
 }
+
+/* ── PDP: a long thumbnail strip must not widen the grid ──────────────────
+   .pdp__grid uses 1.05fr / 0.95fr, and an `fr` track will not shrink below
+   its content's min-content width. .pdp__thumbs is a nowrap flex row of 76px
+   thumbs, so Hook & Loop Dots — which has 8 images — forced a 552px strip,
+   which pushed the grid column to 520px inside a 390px phone. Products with
+   four images stayed at 358px, which is why only that one page looked cut off.
+
+   min-width: 0 lets the tracks actually shrink, and wrapping the strip means
+   the fix holds for a product with twenty images too. */
+.pdp__grid > * { min-width: 0; }
+.pdp__thumbs { flex-wrap: wrap; }
