@@ -49,7 +49,7 @@
 
         <form action="{{ routes.cart_url }}" method="post" novalidate data-hnl-cart-form>
           {%- for item in cart.items -%}
-            <div class="cart__row" data-hnl-line="{{ forloop.index }}">
+            <div class="cart__row" data-hnl-line="{{ forloop.index }}" data-key="{{ item.key }}">
               <div class="cart__media">
                 <a href="{{ item.url }}">
                   {%- if item.image -%}
@@ -71,13 +71,13 @@
                     <span class="cart__variant">{{ d.discount_application.title }} (&minus;{{ d.amount | money }})</span>
                   {%- endfor -%}
                 {%- endif -%}
-                <button type="button" class="cart__remove" data-hnl-remove="{{ forloop.index }}">Remove</button>
+                <button type="button" class="cart__remove" data-hnl-remove="{{ item.key }}">Remove</button>
               </div>
 
               <div class="cart__qty">
-                <button type="button" data-hnl-line-qty="{{ forloop.index }}" data-delta="-1" aria-label="Decrease">&minus;</button>
+                <button type="button" data-hnl-line-qty="{{ item.key }}" data-delta="-1" aria-label="Decrease">&minus;</button>
                 <span>{{ item.quantity }}</span>
-                <button type="button" data-hnl-line-qty="{{ forloop.index }}" data-delta="1" aria-label="Increase">+</button>
+                <button type="button" data-hnl-line-qty="{{ item.key }}" data-delta="1" aria-label="Increase">+</button>
               </div>
 
               <div class="cart__line">{{ item.final_line_price | money }}</div>
@@ -156,33 +156,144 @@
 (function () {
   var form = document.querySelector('[data-hnl-cart-form]');
 
-  /* Change a line's quantity through the cart API, then repaint from the
-     server's response rather than guessing — stock limits and automatic
-     discounts can both make the result differ from what was asked for. */
-  function change(line, quantity) {
-    document.body.setAttribute('aria-busy', 'true');
-    fetch('{{ routes.cart_change_url }}', {
+  {%- comment -%}
+    Every press used to POST and then window.location.reload() — a full page
+    load to change one number, which is why the cart felt like it was
+    restarting itself. It now repaints in place and writes in the background,
+    the same way the drawer does.
+
+    Lines are addressed by key rather than index: a removal renumbers every
+    line after it, so a queued change could otherwise hit the wrong row.
+
+    The server still has the last word. Stock limits and automatic discounts
+    can both make the result differ from what was asked for, so its response
+    is applied when it lands — unless a newer press is already on screen.
+  {%- endcomment -%}
+  var THRESHOLD = {{ section.settings.free_ship_threshold | default: 300 | times: 100 }};
+  var cart = null;
+  var pending = {};
+  var flushTimer = null;
+  var seq = 0;
+
+  function money(c) { return '$' + (c / 100).toFixed(2); }
+
+  function paint(c) {
+    cart = c;
+    c.items.forEach(function (it) {
+      var row = form && form.querySelector('.cart__row[data-key="' + (window.CSS && CSS.escape ? CSS.escape(it.key) : it.key) + '"]');
+      if (!row) return;
+      var n = row.querySelector('.cart__qty span');
+      if (n) n.textContent = it.quantity;
+      var lp = row.querySelector('.cart__line');
+      if (lp) lp.textContent = money(it.final_line_price != null ? it.final_line_price : it.line_price);
+    });
+
+    /* Rows the server no longer knows about are gone. */
+    if (form) {
+      [].forEach.call(form.querySelectorAll('.cart__row'), function (row) {
+        var k = row.getAttribute('data-key');
+        var still = c.items.some(function (it) { return it.key === k; });
+        if (!still) row.remove();
+      });
+      if (!c.items.length) window.location.reload();   /* empty cart has its own layout */
+    }
+
+    [].forEach.call(document.querySelectorAll('[data-hnl-cart-count]'), function (el) {
+      el.textContent = c.item_count;
+      el.classList.toggle('is-on', c.item_count > 0);
+    });
+
+    var sub = document.querySelector('.cart__sumrow--total b');
+    if (sub) sub.textContent = money(c.total_price) + ' AUD';
+
+    var ship = document.querySelector('.cart__ship');
+    if (ship && THRESHOLD > 0) {
+      var remaining = THRESHOLD - c.total_price;
+      var pct = Math.min(100, (c.total_price / THRESHOLD) * 100);
+      var msg = ship.querySelector('span');
+      if (msg) {
+        msg.innerHTML = remaining > 0
+          ? '<b>' + money(remaining) + ' AUD</b> away from <b>Free Standard Shipping</b>.'
+          : 'You&rsquo;ve unlocked <b>Free Standard Shipping</b>.';
+      }
+      var bar = ship.querySelector('.cart__ship-bar');
+      if (bar) bar.setAttribute('aria-valuenow', Math.round(pct));
+      var fill = ship.querySelector('.cart__ship-bar > span');
+      if (fill) fill.style.width = pct + '%';
+      var truck = ship.querySelector('.cart__ship-truck');
+      if (truck) truck.style.left = pct + '%';
+    }
+  }
+
+  function optimistic(key, qty) {
+    if (!cart) return false;
+    var items = [], found = false;
+    cart.items.forEach(function (it) {
+      if (it.key !== key) { items.push(it); return; }
+      found = true;
+      if (qty <= 0) return;
+      var unit = it.quantity ? ((it.final_line_price != null ? it.final_line_price : it.line_price) / it.quantity) : it.price;
+      var copy = {};
+      for (var k in it) { if (Object.prototype.hasOwnProperty.call(it, k)) copy[k] = it[k]; }
+      copy.quantity = qty;
+      copy.final_line_price = Math.round(unit * qty);
+      copy.line_price = copy.final_line_price;
+      items.push(copy);
+    });
+    if (!found) return false;
+    paint({
+      items: items,
+      item_count: items.reduce(function (n, x) { return n + x.quantity; }, 0),
+      total_price: items.reduce(function (n, x) { return n + (x.final_line_price != null ? x.final_line_price : x.line_price); }, 0)
+    });
+    return true;
+  }
+
+  function flush() {
+    var updates = pending;
+    pending = {};
+    if (!Object.keys(updates).length) return;
+    var mine = ++seq;
+    fetch('/cart/update.js', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify({ line: line, quantity: quantity })
+      credentials: 'same-origin',
+      body: JSON.stringify({ updates: updates })
     })
-      .then(function (r) { return r.json(); })
-      .then(function () { window.location.reload(); })
-      .catch(function () { document.body.removeAttribute('aria-busy'); });
+      .then(function (r) { return r.ok ? r.json() : Promise.reject(r); })
+      .then(function (server) {
+        if (mine !== seq) return;                    /* a newer press owns the screen */
+        if (Object.keys(pending).length) return;
+        paint(server);
+      })
+      .catch(function () { window.location.reload(); });   /* fall back to the truth */
+  }
+
+  function queue(key, qty) {
+    pending[key] = qty;
+    if (!optimistic(key, qty)) { flush(); return; }
+    clearTimeout(flushTimer);
+    flushTimer = setTimeout(flush, 220);
   }
 
   if (form) {
+    /* Seed from the server so the optimistic path has something to copy. */
+    fetch('/cart.js', { credentials: 'same-origin' })
+      .then(function (r) { return r.json(); })
+      .then(function (c) { cart = c; })
+      .catch(function () {});
+
     form.addEventListener('click', function (e) {
       var step = e.target.closest('[data-hnl-line-qty]');
       if (step) {
         var row = step.closest('.cart__row');
         var current = parseInt(row.querySelector('.cart__qty span').textContent, 10);
         var next = current + parseInt(step.getAttribute('data-delta'), 10);
-        change(parseInt(step.getAttribute('data-hnl-line-qty'), 10), Math.max(0, next));
+        queue(step.getAttribute('data-hnl-line-qty'), Math.max(0, next));
         return;
       }
       var rm = e.target.closest('[data-hnl-remove]');
-      if (rm) change(parseInt(rm.getAttribute('data-hnl-remove'), 10), 0);
+      if (rm) queue(rm.getAttribute('data-hnl-remove'), 0);
     });
   }
 
