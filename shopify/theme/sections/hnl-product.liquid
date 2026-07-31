@@ -312,19 +312,6 @@
   <div class="pdp__lower">
     <div class="wrap pdp__cols pdp__cols--single">
       <div class="pdp__main-col">
-        {%- if product.description != blank -%}
-          <section class="pdp__block">
-            <h2>Description</h2>
-            <div class="pdp__rte">{% render 'hnl-copy-rules', html: product.description, handle: product.handle %}</div>
-            {%- comment -%}
-              In-use photography sits with the description's own "Common
-              Applications" copy rather than in a section of its own — see the
-              note in the snippet.
-            {%- endcomment -%}
-            {% render 'hnl-product-applications', product: product %}
-          </section>
-        {%- endif -%}
-
         <section class="pdp__block">
           <h2>Specifications</h2>
           <table class="pdp__spec">
@@ -340,6 +327,26 @@
           </table>
           <p class="pdp__spec-note">{{ section.settings.spec_note }}</p>
         </section>
+
+        {%- if product.description != blank -%}
+          <section class="pdp__block">
+            <h2>Description</h2>
+            <div class="pdp__rte">{% render 'hnl-copy-rules', html: product.description, handle: product.handle %}</div>
+            {%- comment -%}
+              In-use photography sits with the description's own "Common
+              Applications" copy rather than in a section of its own — see the
+              note in the snippet.
+
+              Specifications now precedes this block. With Description first,
+              the photos landed directly above the "Specifications" heading and
+              read as though they illustrated the spec table. Ending the block
+              with them, followed by the FAQs, keeps them attached to the
+              applications copy they belong to.
+            {%- endcomment -%}
+            {% render 'hnl-product-applications', product: product %}
+          </section>
+        {%- endif -%}
+
 
         {%- comment -%}
           The store's real FAQs, per product. Section blocks below act as a
