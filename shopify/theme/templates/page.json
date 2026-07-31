@@ -201,13 +201,24 @@
         "page_handle": "",
         "center": true,
         "narrow": true,
-        "skip_handles": "contact,bulk-orders,shipping-delivery,return-policy,privacy-policy,terms-conditions,customer-service,blog,industries"
+        "skip_handles": "about-us,blog,bulk-orders,contact,customer-service,industries,privacy-policy,return-policy,shipping-delivery,terms-conditions"
       }
     },
     "hnl_industries": {
       "type": "hnl-industries",
       "settings": {
         "page_handle": "industries"
+      }
+    },
+    "hnl_aboutus": {
+      "type": "hnl-page",
+      "settings": {
+        "page_handle": "about-us",
+        "eyebrow": "About HooknLoop",
+        "center": true,
+        "narrow": true,
+        "cta_label": "Shop the range",
+        "cta_link": "/collections/all"
       }
     }
   },
@@ -221,6 +232,7 @@
     "hnl_about",
     "hnl_blog",
     "hnl_industries",
+    "hnl_aboutus",
     "hnl_page"
   ]
 }
