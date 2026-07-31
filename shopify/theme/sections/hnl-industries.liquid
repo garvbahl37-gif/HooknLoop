@@ -8,7 +8,7 @@
 {%- endcomment -%}
 {%- assign hnl_gate = section.settings.page_handle | strip -%}
 {%- if hnl_gate == blank or hnl_gate == page.handle -%}
-<main id="main" class="page">
+<div id="main" class="page">
   <div class="wrap ind-art ind-idx">
     <span class="ind-art__eyebrow">{{ section.settings.eyebrow }}</span>
     <h1 class="ind-art__h1">{{ section.settings.heading }}</h1>
@@ -72,7 +72,7 @@
       </li>
     </ul>
   </div>
-</main>
+</div>
 {%- endif -%}
 
 {% schema %}

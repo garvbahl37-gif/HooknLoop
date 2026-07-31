@@ -30,7 +30,7 @@
 -%}
 
 {%- if hnl_show -%}
-<main id="main" class="page abt">
+<div id="main" class="page abt">
   <header class="abt__hero{% if section.settings.image == blank %} abt__hero--noimg{% endif %}">
     {%- if section.settings.image != blank -%}
       {{ section.settings.image
@@ -127,7 +127,7 @@
       {%- endif -%}
     </div>
   {%- endif -%}
-</main>
+</div>
 {%- endif -%}
 
 {% schema %}

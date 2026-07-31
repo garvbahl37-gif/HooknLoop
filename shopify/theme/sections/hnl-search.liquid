@@ -8,7 +8,7 @@
 
 {%- paginate search.results by section.settings.per_page -%}
 
-<main id="main" class="page">
+<div id="main" class="page">
   <div class="page__hero page__hero--center">
     <div class="wrap">
       <h1 class="page__hero-h1">{{ section.settings.title }}</h1>
@@ -74,7 +74,7 @@
       </nav>
     {%- endif -%}
   </div>
-</main>
+</div>
 
 {%- endpaginate -%}
 

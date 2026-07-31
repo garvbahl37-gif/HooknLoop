@@ -36,7 +36,7 @@
   endif
 -%}
 {%- if hnl_show -%}
-<main id="main" class="page">
+<div id="main" class="page">
   <div class="page__hero {% if section.settings.center %}page__hero--center{% endif %}">
     <div class="wrap">
       {%- if section.settings.eyebrow != blank -%}
@@ -63,7 +63,7 @@
       {%- endif -%}
     </div>
   {%- endif -%}
-</main>
+</div>
 {%- endif -%}
 
 {% schema %}

@@ -22,7 +22,7 @@
 {%- endcomment -%}
 {%- assign hnl_gate = section.settings.page_handle | strip -%}
 {%- if hnl_gate == blank or hnl_gate == page.handle -%}
-<main id="main" class="page">
+<div id="main" class="page">
   <div class="page__hero page__hero--center">
     <div class="wrap">
       {%- if section.settings.eyebrow != blank -%}
@@ -104,7 +104,7 @@
       {%- endif -%}
     </aside>
   </div>
-</main>
+</div>
 {%- endif -%}
 
 {% schema %}
