@@ -251,6 +251,11 @@
                 {%- endif -%}
               </span>
             </button>
+            {%- comment -%}
+              The add now happens without a page load, so nothing announces it.
+              This says so once, for screen readers only.
+            {%- endcomment -%}
+            <p id="hnl-cart-live" class="visually-hidden" role="status" aria-live="polite"></p>
           </div>
 
           {%- comment -%}
@@ -534,7 +539,9 @@
     setAll('[data-hnl-add]', function (b) {
       b.disabled = !v.available;
       var lbl = b.querySelector('[data-hnl-add-label]');
-      if (lbl) {
+      /* While the button is showing the green "View cart" confirmation, leave
+         its label alone — a price re-render here would silently wipe it. */
+      if (lbl && !added) {
         lbl.innerHTML = v.available
           ? 'Add to cart &mdash; <span data-hnl-total>' + money(v.price * qty) + '</span>'
           : 'Sold out';
@@ -555,6 +562,79 @@
 
   }
 
+  /* Add to cart — stay on the page, then offer the cart.
+
+     The form still POSTs natively without JS, so the no-script path keeps
+     working; this only upgrades it. On success both buttons (inline and the
+     sticky dock) turn green and read "View cart", and the next click goes to
+     the cart instead of adding a second one — which is the mistake the old
+     behaviour invited, since it navigated away and people came back and
+     clicked again.
+
+     Picking a different size, colour or side resets them: at that point the
+     shopper is looking at a variant they have not added, so a green "View
+     cart" would be lying about what is in the basket. */
+  var added = false;
+
+  function setAdded(on) {
+    added = on;
+    setAll('[data-hnl-add]', function (b) {
+      b.classList.toggle('is-added', on);
+      var lbl = b.querySelector('[data-hnl-add-label]');
+      if (on) {
+        if (!b.hasAttribute('data-hnl-add-restore') && lbl) {
+          b.setAttribute('data-hnl-add-restore', lbl.innerHTML);
+        }
+        if (lbl) lbl.innerHTML = '&#10003; View cart';
+        else b.innerHTML = '&#10003; View cart';
+      } else if (b.hasAttribute('data-hnl-add-restore')) {
+        if (lbl) lbl.innerHTML = b.getAttribute('data-hnl-add-restore');
+        b.removeAttribute('data-hnl-add-restore');
+      }
+    });
+    if (on) {
+      var live = document.getElementById('hnl-cart-live');
+      if (live) live.textContent = 'Added to cart. Activate again to view your cart.';
+    }
+  }
+
+  if (form) {
+    form.addEventListener('submit', function (e) {
+      /* Second press: honour the label and go to the cart. */
+      if (added) { e.preventDefault(); window.location.href = '/cart'; return; }
+      if (!window.fetch) return;                 /* let the browser post it */
+      e.preventDefault();
+
+      var busy = root.querySelectorAll('[data-hnl-add]');
+      [].forEach.call(busy, function (b) { b.disabled = true; });
+
+      fetch('/cart/add.js', {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' },
+        credentials: 'same-origin'
+      })
+        .then(function (r) { return r.ok ? r.json() : r.json().then(function (j) { throw new Error(j.description || 'Could not add to cart'); }); })
+        .then(function () { return fetch('/cart.js', { credentials: 'same-origin' }).then(function (r) { return r.json(); }); })
+        .then(function (cart) {
+          [].forEach.call(busy, function (b) { b.disabled = false; });
+          setAdded(true);
+          /* Keep the header badge honest without a reload. */
+          [].forEach.call(document.querySelectorAll('[data-hnl-cart-count]'), function (el) {
+            el.textContent = cart.item_count;
+            el.classList.add('is-on');
+          });
+          document.dispatchEvent(new CustomEvent('hnl:cart:updated', { detail: cart }));
+        })
+        .catch(function (err) {
+          /* Never strand the shopper: fall back to the real form post. */
+          [].forEach.call(busy, function (b) { b.disabled = false; });
+          console.warn('[hnl] add to cart failed, posting form', err);
+          form.submit();
+        });
+    });
+  }
+
   /* Option buttons */
   optGroups.forEach(function (g) {
     g.addEventListener('click', function (e) {
@@ -563,6 +643,7 @@
       [].forEach.call(g.querySelectorAll('[data-hnl-val]'), function (b) { b.classList.remove('is-on'); });
       btn.classList.add('is-on');
       userPicked = true;
+      if (added) setAdded(false);
       render();
     });
   });

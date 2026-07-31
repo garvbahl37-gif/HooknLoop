@@ -3620,3 +3620,35 @@ body.drawer-open { overflow: hidden; }
   .ft__col ul { gap: 8px; }
   .ft__legal { padding: 12px 0 14px; }
 }
+
+/* ── Add to cart: confirm in place ────────────────────────────────────────
+   The button used to post the form and land the shopper on /cart, away from
+   the product. Now it adds in the background and turns into a green "View
+   cart", so the next click is a deliberate trip to the basket rather than an
+   accidental second add.
+
+   #146c43 is the green the Verified review badge already uses — one success
+   colour, not two. White on it measures 6.45:1, past AA. */
+.pdp__add.is-added,
+.pdp__dock-add.is-added {
+  background: #146c43;
+  color: #fff;
+  box-shadow: 0 8px 22px rgba(20, 108, 67, 0.30);
+}
+.pdp__add.is-added:hover,
+.pdp__dock-add.is-added:hover { background: #0f5c39; }
+.pdp__add.is-added svg,
+.pdp__dock-add.is-added svg { display: none; }
+
+/* Screen-reader-only announcement target — the add no longer reloads the
+   page, so without this nothing tells a non-visual user it worked. */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
