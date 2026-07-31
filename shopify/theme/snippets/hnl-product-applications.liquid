@@ -69,29 +69,28 @@
   endcase
 -%}
 
-{%- if app_list != blank -%}
+{%- comment -%}
+  Only the photography renders here now. The bullet list this block used to
+  carry repeated the "Common Applications" list already inside
+  product.description word for word — the same content twice on one page. The
+  description keeps the words; this keeps the pictures, under the same heading
+  the description uses so the two read as one thought.
+{%- endcomment -%}
+{%- if app_shots != blank -%}
   <section class="pdp__block">
-    <h2>Key applications</h2>
-    <ul class="pdp__apps">
-      {%- assign items = app_list | split: '|' -%}
-      {%- for item in items -%}
-        <li>{{ item }}</li>
-      {%- endfor -%}
-    </ul>
+    <h2>Common Applications</h2>
 
-    {%- if app_shots != blank -%}
-      {%- assign pairs = app_shots | split: '|' -%}
-      <figure class="pdp__inuse pdp__inuse--{{ pairs.size }}">
-        {%- for pair in pairs -%}
-          {%- assign bits = pair | split: '~' -%}
-          <span class="pdp__inuse-item">
-            <img src="{{ bits[0] | asset_url }}"
-                 alt="{{ bits[1] | escape }}"
-                 loading="lazy" width="1100" height="1100">
-            <span class="pdp__inuse-cap">{{ bits[1] }}</span>
-          </span>
-        {%- endfor -%}
-      </figure>
-    {%- endif -%}
+    {%- assign pairs = app_shots | split: '|' -%}
+    <figure class="pdp__inuse pdp__inuse--{{ pairs.size }}">
+      {%- for pair in pairs -%}
+        {%- assign bits = pair | split: '~' -%}
+        <span class="pdp__inuse-item">
+          <img src="{{ bits[0] | asset_url }}"
+               alt="{{ bits[1] | escape }}"
+               loading="lazy" width="1100" height="1100">
+          <span class="pdp__inuse-cap">{{ bits[1] }}</span>
+        </span>
+      {%- endfor -%}
+    </figure>
   </section>
 {%- endif -%}

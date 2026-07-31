@@ -47,5 +47,14 @@
     assign out = out | replace: 'Black and White.', 'Black.'
   endif
 
+  # Hook and Loop for Fabric: sells 25/50/100mm in Black and White, but the copy
+  # listed eight colours and six widths — most with no variant behind them.
+  if handle == 'hook-and-loop-for-fabric'
+    assign out = out | replace: '– Black, Beige, Fawn, White, Navy, Olive Green, Charcoal Grey, Light Grey', '– Black, White'
+    assign out = out | replace: 'Black, Beige, Fawn, White, Navy, Olive Green, Charcoal Grey, Light Grey', 'Black, White'
+    assign out = out | replace: 'We also offer a complete range of widths to suit your project: 12, 20, 25, 38, 50, and 100 mm.', 'Available in 25, 50 and 100 mm.'
+    assign out = out | replace: '12, 20, 25, 38, 50, and 100 mm.', '25, 50 and 100 mm.'
+  endif
+
   echo out
 -%}
