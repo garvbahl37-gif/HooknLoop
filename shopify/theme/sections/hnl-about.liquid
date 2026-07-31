@@ -31,7 +31,18 @@
 
 {%- if hnl_show -%}
 <div id="main" class="page abt">
-  <header class="abt__hero{% if section.settings.image == blank %} abt__hero--noimg{% endif %}">
+  {%- comment -%}
+    The warehouse shot ships as a theme asset so it travels with the theme and
+    survives a publish — a Files pick would live in theme settings, which is
+    easy to lose track of. The image_picker still wins if one is chosen, so the
+    photo can be swapped in the editor without a deploy.
+
+    Only the picked image gets a srcset: image_url/widths work on Shopify-hosted
+    image objects, not on a theme asset, so the bundled fallback is served at
+    its native 1672px. It is 352KB, which is why it is the one image on the page
+    that loads eagerly.
+  {%- endcomment -%}
+  <header class="abt__hero">
     {%- if section.settings.image != blank -%}
       {{ section.settings.image
          | image_url: width: 2400
@@ -42,6 +53,12 @@
              alt: section.settings.image.alt | default: shop.name,
              loading: 'eager',
              fetchpriority: 'high' }}
+    {%- else -%}
+      <img class="abt__hero-img"
+           src="{{ 'hnl-about-hero.jpg' | asset_url }}"
+           alt="The HooknLoop warehouse at dawn, with a HooknLoop truck at the loading docks"
+           width="1672" height="941"
+           loading="eager" fetchpriority="high">
     {%- endif -%}
 
     <div class="wrap abt__hero-inner">

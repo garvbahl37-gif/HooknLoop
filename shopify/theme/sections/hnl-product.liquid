@@ -56,6 +56,7 @@
           {%- for image in product.images -%}
             <button class="pdp__thumb {% if forloop.first %}is-on{% endif %}"
                     data-hnl-thumb
+                    data-image-id="{{ image.id }}"
                     data-full="{{ image | image_url: width: 1200 }}"
                     aria-label="Image {{ forloop.index }}">
               <img src="{{ image | image_url: width: 200 }}" alt="" width="200" height="200" loading="lazy">
@@ -201,11 +202,19 @@
                   {%- for value in option.values -%}
                     {%- assign v = value | downcase -%}
                     {%- unless v == 'both' -%}
+                      {%- comment -%}
+                        "Look" is a typo for "Loop" in the option values on
+                        Fire Retardant Adhesive. Corrected on screen only —
+                        data-hnl-val keeps the real value, because that is what
+                        the variant lookup matches on and what Shopify expects
+                        back at add-to-cart. Fixing the option value in admin
+                        would retire this branch.
+                      {%- endcomment -%}
                       <button type="button" class="pdp__seg-btn {% if value == option.selected_value %}is-on{% endif %}"
                               role="radio" aria-checked="{% if value == option.selected_value %}true{% else %}false{% endif %}"
                               data-hnl-val="{{ value | escape }}">
-                        <span class="pdp__seg-t">{{ value }}</span>
-                        <span class="pdp__seg-s">{% if v == 'hook' %}Stiff side{% elsif v == 'loop' %}Soft side{% endif %}</span>
+                        <span class="pdp__seg-t">{% if v == 'look' %}Loop{% else %}{{ value }}{% endif %}</span>
+                        <span class="pdp__seg-s">{% if v == 'hook' %}Stiff side{% elsif v == 'loop' or v == 'look' %}Soft side{% endif %}</span>
                       </button>
                     {%- endunless -%}
                   {%- endfor -%}
@@ -519,6 +528,8 @@
     var dockVar = root.querySelector('[data-hnl-dock-variant]');
     if (dockVar) dockVar.textContent = v.title;
 
+    syncVariantImage(v);
+
     setAll('[data-hnl-add]', function (b) {
       b.disabled = !v.available;
       var lbl = b.querySelector('[data-hnl-add-label]');
@@ -565,7 +576,7 @@
     });
   });
 
-  /* Gallery: click a thumb, and auto-advance until the shopper takes over. */
+  /* Gallery: the shopper clicks a thumb, or picks a colour. */
   var main = root.querySelector('[data-hnl-main]');
   var thumbs = [].slice.call(root.querySelectorAll('[data-hnl-thumb]'));
   var gi = 0, touched = false;
@@ -581,15 +592,28 @@
     t.addEventListener('click', function () { touched = true; showImage(n); });
   });
 
-  if (thumbs.length > 1 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    var stage = root.querySelector('[data-hnl-stage]'), paused = false;
-    stage.addEventListener('mouseenter', function () { paused = true; });
-    stage.addEventListener('mouseleave', function () { paused = false; });
-    setInterval(function () {
-      if (paused || touched) return;
-      showImage((gi + 1) % thumbs.length);
-    }, 3500);
+  /* Picking Black or White should show that colour. Shopify assigns an image
+     per variant, so the variant's own featured_image is the source of truth —
+     matched to a thumb by image id rather than by URL, because the thumb URL is
+     a resized derivative and would never compare equal to the variant's.
+
+     Variants without their own image leave the gallery alone: on a product
+     photographed once, changing size or hook/loop should not reset what the
+     shopper is looking at. */
+  function syncVariantImage(v) {
+    if (!v || !v.featured_image || !main) return;
+    var id = String(v.featured_image.id);
+    for (var i = 0; i < thumbs.length; i++) {
+      if (thumbs[i].getAttribute('data-image-id') === id) { showImage(i); return; }
+    }
   }
+
+  /* The gallery used to auto-advance every 3.5s until the shopper clicked a
+     thumb. Removed: on a product page the image is something you study, and
+     swapping it out from under someone mid-look is the opposite of helpful —
+     it also fought the variant sync below, which changes the image on purpose.
+     The image now only ever changes when the shopper asks it to, by clicking a
+     thumb or picking a colour. */
 
   /* FAQ accordion */
   setAll('[data-hnl-faq]', function (b) {
