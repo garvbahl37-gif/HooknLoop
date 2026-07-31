@@ -13,7 +13,7 @@
   wording. Editing the twelve product descriptions in admin is the real fix;
   after that this snippet can be deleted.
 
-  Usage: {% render 'hnl-copy-rules', html: product.description %}
+  Usage: {% render 'hnl-copy-rules', html: product.description, handle: product.handle %}
 {%- endcomment -%}
 
 {%- liquid
@@ -32,6 +32,20 @@
   assign out = out | replace: '100 % Nylon', 'Premium Nylon'
   assign out = out | replace: '100%nylon', 'premium nylon'
   assign out = out | replace: '100%Nylon', 'Premium Nylon'
+
+  # ── Per-product corrections ────────────────────────────────────────────
+  # Descriptions that advertise a size or colour the product does not sell.
+  # Scoped by handle: "Colour - Black and White." is correct on other products,
+  # so an unscoped replace would make those wrong instead.
+
+  # Double Sided (Self-Gripping Back to Back): sells 12/15/25mm in Black only,
+  # but the copy offered a 50mm and a White that have no variant behind them.
+  if handle == 'double-sided-hook-and-loop'
+    assign out = out | replace: 'Width - Comes in 12mm,15mm, 25mm, 50mm', 'Width - Comes in 12mm, 15mm and 25mm'
+    assign out = out | replace: '12mm,15mm, 25mm, 50mm', '12mm, 15mm and 25mm'
+    assign out = out | replace: 'Colour - Black and White.', 'Colour - Black.'
+    assign out = out | replace: 'Black and White.', 'Black.'
+  endif
 
   echo out
 -%}

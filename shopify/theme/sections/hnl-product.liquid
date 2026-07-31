@@ -250,7 +250,7 @@
         {%- if product.description != blank -%}
           <section class="pdp__block">
             <h2>Description</h2>
-            <div class="pdp__rte">{% render 'hnl-copy-rules', html: product.description %}</div>
+            <div class="pdp__rte">{% render 'hnl-copy-rules', html: product.description, handle: product.handle %}</div>
           </section>
         {%- endif -%}
 
