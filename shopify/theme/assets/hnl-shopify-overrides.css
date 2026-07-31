@@ -1287,3 +1287,10 @@
   min-height: 0;
 }
 .cd__items { min-height: 0; }
+
+/* The drawer reuses the cart page's .cart__ship progress bar rather than a
+   second design. Only the spacing differs: inside the drawer foot it sits
+   directly above the subtotal, so it needs less room beneath it than it does
+   on the cart page. */
+.cd__ship { margin-bottom: 12px; text-align: center; }
+.cd__ship .cart__ship-bar { margin-top: 12px; }

@@ -91,15 +91,29 @@
         '</div>';
     }).join('');
 
+    /* The same .cart__ship bar the cart page uses, so the drawer and /cart
+       show one progress indicator, not two different ones. The bare sentence
+       that used to sit here gave no sense of how close the shopper was. */
     var remaining = FREE_SHIP - cart.total_price;
+    var pct = FREE_SHIP > 0 ? Math.min(100, (cart.total_price / FREE_SHIP) * 100) : 100;
     var shipMsg = remaining > 0
-      ? 'You&rsquo;re <b>' + money(remaining) + '</b> away from free shipping.'
-      : '&#127881; You&rsquo;ve unlocked free shipping.';
+      ? '<span><b>' + money(remaining) + ' AUD</b> away from <b>Free Standard Shipping</b>.</span>'
+      : '<span>You&rsquo;ve unlocked <b>Free Standard Shipping</b>.</span>';
+    var shipBar = FREE_SHIP > 0
+      ? '<div class="cd__ship cart__ship">' + shipMsg +
+          '<div class="cart__ship-bar" role="progressbar" aria-valuenow="' + Math.round(pct) + '" aria-valuemin="0" aria-valuemax="100">' +
+            '<span style="width: ' + pct + '%"></span>' +
+            '<i class="cart__ship-truck" style="left: ' + pct + '%" aria-hidden="true">' +
+              '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6h11v11H2zM13 9h4l3 3v5h-7"/><circle cx="6" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg>' +
+            '</i>' +
+          '</div>' +
+        '</div>'
+      : '';
 
     body.innerHTML =
       '<div class="cd__items">' + rows + '</div>' +
       '<div class="cd__foot">' +
-        '<p class="cd__ship-msg">' + shipMsg + '</p>' +
+        shipBar +
         '<div class="cd__sumrow"><span>Subtotal</span><b>' + money(cart.total_price) + ' AUD</b></div>' +
         '<p class="cd__taxnote">Tax included. Shipping calculated at checkout.</p>' +
         '<a class="btn btn--primary cd__checkout" href="/checkout">Checkout</a>' +

@@ -574,7 +574,14 @@
      Picking a different size, colour or side resets them: at that point the
      shopper is looking at a variant they have not added, so a green "View
      cart" would be lying about what is in the basket. */
+  /* The confirmation is a flash, not a mode: green "Added to cart" for a beat,
+     then straight back to "Add to cart". It used to latch into a "View cart"
+     button, which meant the primary action on the page stopped being "add" —
+     and the drawer that opens alongside already offers the cart and checkout,
+     so the button never needed to carry that job. */
   var added = false;
+  var addedTimer = null;
+  var ADDED_MS = 2200;
 
   function setAdded(on) {
     added = on;
@@ -585,29 +592,30 @@
         if (!b.hasAttribute('data-hnl-add-restore') && lbl) {
           b.setAttribute('data-hnl-add-restore', lbl.innerHTML);
         }
-        if (lbl) lbl.innerHTML = '&#10003; View cart';
-        else b.innerHTML = '&#10003; View cart';
+        if (lbl) lbl.innerHTML = '&#10003; Added to cart';
+        else b.innerHTML = '&#10003; Added to cart';
       } else if (b.hasAttribute('data-hnl-add-restore')) {
         if (lbl) lbl.innerHTML = b.getAttribute('data-hnl-add-restore');
         b.removeAttribute('data-hnl-add-restore');
       }
     });
+
+    clearTimeout(addedTimer);
     if (on) {
       var live = document.getElementById('hnl-cart-live');
-      if (live) live.textContent = 'Added to cart. Activate again to view your cart.';
+      if (live) live.textContent = 'Added to cart.';
+      /* Re-render after reverting so the label picks up the current variant
+         price, in case the shopper changed quantity while it was green. */
+      addedTimer = setTimeout(function () { setAdded(false); render(); }, ADDED_MS);
     }
   }
 
   if (form) {
     form.addEventListener('submit', function (e) {
       /* Second press: honour the label and go to the cart. */
-      /* Second press re-opens the drawer rather than navigating: the drawer is
-         where both paths live — Checkout, and View cart. */
-      if (added) {
-        e.preventDefault();
-        document.dispatchEvent(new CustomEvent('hnl:cart:open'));
-        return;
-      }
+      /* No special case while the confirmation is showing — pressing again
+         adds another one, which is what a button reading "Add to cart" should
+         do. The drawer is where the cart and checkout live. */
       if (!window.fetch) return;                 /* let the browser post it */
       e.preventDefault();
 
