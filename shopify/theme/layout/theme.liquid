@@ -242,6 +242,14 @@
 
     {%- sections 'header-group' -%}
 
+    {%- comment -%}
+      Rendered here rather than inside each section so every template gets the
+      trail from one place — the redesign has eleven content sections and they
+      would drift. The snippet decides for itself when to stay quiet (homepage,
+      cart).
+    {%- endcomment -%}
+    {% render 'hnl-breadcrumbs' %}
+
     <main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">
       {{ content_for_layout }}
     </main>

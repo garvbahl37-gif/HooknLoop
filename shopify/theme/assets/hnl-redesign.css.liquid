@@ -3818,3 +3818,70 @@ body.drawer-open { overflow: hidden; }
   .acct__num { text-align: left; }
   .acct__row2 { grid-template-columns: 1fr; }
 }
+
+/* Quick Add confirms with the same green the product page uses — one success
+   colour across both add paths, not two. Matches .pdp__add.is-added. */
+.qa__add.is-added {
+  background: #1a8449;
+  color: #fff;
+  box-shadow: 0 8px 22px rgba(26, 132, 73, 0.28);
+}
+
+/* ── Breadcrumbs ──────────────────────────────────────────────────────────
+   New work. Suruchi's own breadcrumb renders in #194cbf, a blue that appears
+   nowhere else in this palette; these use the store's muted ink with the
+   burnt-orange link colour, so the trail reads as part of the page rather
+   than as a leftover from the old theme.
+
+   A thin rule under the nav rather than a filled bar: the trail is wayfinding,
+   not a section, and a solid band would compete with the hero beneath it. */
+.bc {
+  border-bottom: 1px solid var(--line-card);
+  background: #fff;
+}
+.bc__list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 8px;
+  margin: 0;
+  padding: 11px 0;
+  list-style: none;
+  font-size: 13.5px;
+  line-height: 1.4;
+}
+.bc__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted-ink);
+  min-width: 0;
+}
+/* The separator is generated, so it can never be selected or read aloud as
+   part of a page name — a literal "/" in the markup is announced by some
+   screen readers on every crumb. */
+.bc__item + .bc__item::before {
+  content: '/';
+  color: var(--sky-edge);
+  font-size: 13px;
+}
+.bc__item a {
+  color: var(--muted-ink);
+  text-decoration: none;
+  transition: color 0.14s var(--ease);
+}
+.bc__item a:hover { color: var(--orange-ink); text-decoration: underline; text-underline-offset: 2px; }
+.bc__item[aria-current='page'] {
+  color: var(--navy);
+  font-weight: 700;
+  /* Long product names truncate rather than wrapping the bar onto three
+     lines on a phone. */
+  max-width: 60ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+@media (max-width: 560px) {
+  .bc__list { font-size: 12.5px; padding: 9px 0; }
+  .bc__item[aria-current='page'] { max-width: 22ch; }
+}

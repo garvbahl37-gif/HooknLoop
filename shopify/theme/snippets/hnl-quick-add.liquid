@@ -242,8 +242,26 @@
   addBtn.addEventListener('click', function () {
     var v = variantFor(chosen);
     if (!v) return;
-    addBtn.disabled = true;
-    addBtn.textContent = 'Adding…';
+
+    {%- comment -%}
+      This had the same three round trips the product page did — /cart/add.js,
+      then /cart.js for the badge, then the drawer's own /cart.js on open —
+      while the button sat disabled reading "Adding…". Nothing acknowledged the
+      press until all three finished, which is what made Quick Add feel slow.
+
+      The confirmation is now shown on the press, before the network is
+      touched, and the redundant /cart.js is gone: the drawer refreshes the
+      header badge from the payload it already fetches. Three round trips
+      became one.
+
+      The button is not disabled. A second press while the first is in flight
+      simply adds another, which is what the label says it does; the failure
+      path below puts the label back and surfaces the reason.
+    {%- endcomment -%}
+    var restore = addBtn.textContent;
+    addBtn.textContent = '✓ Added to cart';
+    addBtn.classList.add('is-added');
+    errEl.hidden = true;
 
     fetch('{{ routes.cart_add_url }}.js', {
       method: 'POST',
@@ -253,15 +271,6 @@
       .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
       .then(function (res) {
         if (!res.ok) throw new Error(res.d.description || res.d.message || 'Could not add to cart');
-        addBtn.textContent = '✓ Added to cart';
-        viewEl.hidden = false;
-        return fetch('{{ routes.cart_url }}.js').then(function (r) { return r.json(); });
-      })
-      .then(function (cart) {
-        /* Keep the header count honest without a reload. */
-        document.querySelectorAll('[data-hnl-cart-count], .hdr__count, .cart-count').forEach(function (el) {
-          el.textContent = cart.item_count;
-        });
         /* Same drawer the product page opens, so adding from a card on the
            homepage or a collection confirms the same way. Closing this popup
            first stops two overlays stacking. */
@@ -269,10 +278,10 @@
         document.dispatchEvent(new CustomEvent('hnl:cart:open'));
       })
       .catch(function (err) {
+        addBtn.classList.remove('is-added');
+        addBtn.textContent = restore;
         errEl.textContent = err.message;
         errEl.hidden = false;
-        addBtn.disabled = false;
-        addBtn.textContent = 'Add to cart';
       });
   });
 
