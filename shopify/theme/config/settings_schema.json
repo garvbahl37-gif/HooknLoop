@@ -128,7 +128,7 @@
         "step": 5,
         "unit": "s",
         "label": "Wait before showing",
-        "default": 20
+        "default": 10
       },
       {
         "type": "range",
