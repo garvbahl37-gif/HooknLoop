@@ -51,7 +51,7 @@
             "cta_label": "Shop the Range",
             "cta_link": "/collections/all",
             "cta2_label": "Why Choose Us",
-            "cta2_link": "/pages/customer-service",
+            "cta2_link": "/pages/about-us",
             "asset_image": "hnl-hook-and-loop-dots-1.jpg",
             "tag": "PREMIUM GRADE",
             "price_from": "66.74"
@@ -101,7 +101,8 @@
       ],
       "settings": {
         "trust_items": "",
-        "duration": 5000
+        "duration": 5000,
+        "cta_fallback": "/pages/customer-service"
       }
     },
     "hnl_onestop": {
@@ -319,7 +320,7 @@
         "eyebrow": "Our story · 60 seconds",
         "heading": "Turns out the smallest connections hold the most.",
         "video_label": "HooknLoop brand film — Made to connect",
-        "story": "<p>Four years ago, HooknLoop began in a single garage warehouse with one simple promise: to make sourcing hook and loop tape effortless.</p><p>Since then, every order, every project and every customer relationship has helped shape who we are today. We're proud to supply premium hook and loop solutions across Australia, supporting more than 26 industries—from construction to education—across both the public and private sectors, from small retail orders to large-scale wholesale requirements.</p><p>No matter the size of the connection, we believe it matters. Thank you for trusting us to be part of yours.</p>",
+        "story": "<p>Six years ago, HooknLoop began in a single garage warehouse with one simple promise: to make sourcing hook and loop tape effortless.</p><p>Since then, every order, every project and every customer relationship has helped shape who we are today. We're proud to supply premium hook and loop solutions across Australia, supporting more than 26 industries—from construction to education—across both the public and private sectors, from small retail orders to large-scale wholesale requirements.</p><p>No matter the size of the connection, we believe it matters. Thank you for trusting us to be part of yours.</p>",
         "story_by": "Founder, HooknLoop",
         "tag_lead": "",
         "tag_accent": ""

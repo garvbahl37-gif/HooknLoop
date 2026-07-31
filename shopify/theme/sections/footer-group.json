@@ -39,7 +39,7 @@
           "type": "column",
           "settings": {
             "heading": "Help",
-            "links": "Bulk & Trade Quotes | /pages/bulk-orders\nShipping & Delivery | /pages/shipping-delivery\nReturns & Exchanges | /pages/return-policy\nCustomer Service | /pages/customer-service\nContact Us | /pages/contact\nBlog | /pages/blog"
+            "links": "Bulk & Trade Quotes | /pages/bulk-orders\nShipping & Delivery | /pages/shipping-delivery\nReturns & Exchanges | /pages/return-policy\nCustomer Service | /pages/customer-service\nContact Us | /pages/contact\nIndustries | /pages/industries\nBlog | /pages/blog"
           }
         }
       },

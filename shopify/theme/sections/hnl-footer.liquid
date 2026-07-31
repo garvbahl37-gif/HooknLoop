@@ -55,8 +55,20 @@
             {%- assign lines = block.settings.links | newline_to_br | split: '<br />' -%}
             {%- for line in lines -%}
               {%- assign bits = line | strip | split: '|' -%}
-              {%- if bits.size >= 2 -%}
-                <li><a href="{{ bits[1] | strip }}">{{ bits[0] | strip }}</a></li>
+              {%- liquid
+                assign target = bits[1] | strip
+                assign ok = true
+                # A /pages/… line whose page has not been created yet would be a
+                # dead footer link. Skip it rather than ship a 404.
+                if target contains '/pages/'
+                  assign ph = target | split: '/pages/' | last | split: '?' | first
+                  unless pages[ph] != blank and pages[ph].handle
+                    assign ok = false
+                  endunless
+                endif
+              -%}
+              {%- if bits.size >= 2 and ok -%}
+                <li><a href="{{ target }}">{{ bits[0] | strip }}</a></li>
               {%- endif -%}
             {%- endfor -%}
           </ul>

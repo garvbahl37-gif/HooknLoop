@@ -53,10 +53,27 @@
             {%- endif -%}
           {%- endif -%}
 
+          {%- comment -%}
+            A /pages/… target that has not been created in Shopify yet would be
+            a 404 in the hero, which is the worst place on the site for one. If
+            the page is missing the button falls back to the fallback setting,
+            so the link is always live and starts working the moment the page
+            exists — no redeploy.
+          {%- endcomment -%}
+          {%- capture cta2_href -%}
+            {%- assign c2 = block.settings.cta2_link | default: '' -%}
+            {%- if c2 contains '/pages/' -%}
+              {%- assign c2h = c2 | split: '/pages/' | last | split: '?' | first | split: '#' | first -%}
+              {%- if pages[c2h] != blank and pages[c2h].handle -%}{{ c2 }}{%- else -%}{{ section.settings.cta_fallback | default: routes.all_products_collection_url }}{%- endif -%}
+            {%- else -%}
+              {{ c2 | default: routes.all_products_collection_url }}
+            {%- endif -%}
+          {%- endcapture -%}
+
           <div class="hs__cta">
             <a href="{{ block.settings.cta_link | default: routes.all_products_collection_url }}" class="btn btn--primary">{{ block.settings.cta_label }}<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
             {%- if block.settings.cta2_label != blank -%}
-              <a href="{{ block.settings.cta2_link | default: routes.all_products_collection_url }}" class="btn btn--ghost">{{ block.settings.cta2_label }}</a>
+              <a href="{{ cta2_href | strip }}" class="btn btn--ghost">{{ block.settings.cta2_label }}</a>
             {%- endif -%}
           </div>
         </div>
@@ -233,6 +250,12 @@
       "id": "show_dots",
       "label": "Show slide dots",
       "default": true
+    },
+    {
+      "type": "url",
+      "id": "cta_fallback",
+      "label": "Secondary button fallback",
+      "info": "Used when a secondary button points at a /pages/… page that does not exist yet."
     },
     {
       "type": "range",

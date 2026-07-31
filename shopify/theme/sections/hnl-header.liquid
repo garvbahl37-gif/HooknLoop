@@ -110,6 +110,15 @@
           <li class="nav__item" {{ block.shopify_attributes }}><a href="{{ block.settings.url }}" class="nav__link">{{ block.settings.label }}</a></li>
         {%- endif -%}
       {%- endfor -%}
+
+      {%- comment -%}
+        Industries. Rendered only once the page exists in Shopify — a theme
+        cannot create pages (Admin API only), and a nav item pointing at a 404
+        is worse than no nav item.
+      {%- endcomment -%}
+      {%- if pages['industries'] != blank and pages['industries'].handle -%}
+        <li class="nav__item"><a href="/pages/industries" class="nav__link">Industries</a></li>
+      {%- endif -%}
     </ul>
   </div>
 </nav>
@@ -152,6 +161,9 @@
           <a href="{{ block.settings.url }}" class="mdrawer__link">{{ block.settings.label }}</a>
         {%- endif -%}
       {%- endfor -%}
+      {%- if pages['industries'] != blank and pages['industries'].handle -%}
+        <a href="/pages/industries" class="mdrawer__link">Industries</a>
+      {%- endif -%}
     </nav>
 
     <div class="mdrawer__foot">

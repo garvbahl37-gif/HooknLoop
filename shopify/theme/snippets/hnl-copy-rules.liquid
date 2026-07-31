@@ -1,0 +1,37 @@
+{%- comment -%}
+  Store wording rules, applied to merchant HTML at render time.
+
+  Why this exists rather than a find-and-replace on the products themselves:
+  the phrases live in product.description, which is Shopify data. Editing it
+  needs the Admin API, and this theme deploys with a Theme Access token that is
+  theme-files-only (verified: the Admin API returns 401 for it). So the change
+  is made where the copy is displayed.
+
+  IMPORTANT — this is a display layer, not a data fix. The product record still
+  says "100% nylon", so Shopify admin, the products.json feed, Google Shopping,
+  Klaviyo emails and any app reading the description will all still show the old
+  wording. Editing the twelve product descriptions in admin is the real fix;
+  after that this snippet can be deleted.
+
+  Usage: {% render 'hnl-copy-rules', html: product.description %}
+{%- endcomment -%}
+
+{%- liquid
+  assign out = html
+
+  # Longest first — "100% premium nylon" must not be left as "premium premium
+  # nylon" by an earlier, shorter rule firing on the same text.
+  assign out = out | replace: '100% premium nylon', 'premium nylon'
+  assign out = out | replace: '100% Premium Nylon', 'Premium Nylon'
+  assign out = out | replace: '100% premium Nylon', 'Premium Nylon'
+  assign out = out | replace: '100 % premium nylon', 'premium nylon'
+
+  assign out = out | replace: '100% nylon', 'premium nylon'
+  assign out = out | replace: '100% Nylon', 'Premium Nylon'
+  assign out = out | replace: '100 % nylon', 'premium nylon'
+  assign out = out | replace: '100 % Nylon', 'Premium Nylon'
+  assign out = out | replace: '100%nylon', 'premium nylon'
+  assign out = out | replace: '100%Nylon', 'Premium Nylon'
+
+  echo out
+-%}

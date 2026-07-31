@@ -1,0 +1,610 @@
+{%- comment -%}
+  Industries & applications — port of storefront/src/pages/IndustryPages.jsx and
+  data/industries.js, whose own header says the content was "supplied verbatim
+  by the store".
+
+  ONE page carries all eight. React had an index plus eight detail routes; that
+  would need nine Shopify pages, and pages can only be created through the Admin
+  API, which the Theme Access token this theme deploys with cannot reach. So
+  each industry is an <details> panel that opens in place: same content, same
+  headings, one page to create.
+
+  Product links resolve through all_products at render time, so a renamed or
+  unpublished product degrades to the catalogue rather than a dead link.
+{%- endcomment -%}
+
+{%- comment -%}
+  Handle gate — see snippets/hnl-page for the full explanation: pages on this
+  store all render through templates/page.json, so each section declares which
+  handle it belongs to.
+{%- endcomment -%}
+{%- assign hnl_gate = section.settings.page_handle | strip -%}
+{%- if hnl_gate == blank or hnl_gate == page.handle -%}
+<main id="main" class="page">
+  <div class="wrap ind-art ind-idx">
+    <span class="ind-art__eyebrow">{{ section.settings.eyebrow }}</span>
+    <h1 class="ind-art__h1">{{ section.settings.heading }}</h1>
+    <p class="ind-art__intro">{{ section.settings.intro }}</p>
+
+    <ul class="ind-idx__list">
+      <li>
+        <details class="ind-idx__item" id="clothing-garments">
+          <summary>
+            <b>Clothing &amp; Garments</b>
+            <span>Hook and loop fasteners for clothing &amp; garments have always been a trusted choice of tailor, costume designer, or clothing manufacturer, as it brings in the cleanest and most suitable alternative to buttons, zips, and snaps for you.</span>
+            <em>Read guide <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></em>
+          </summary>
+
+          <div class="ind-art__body">
+            <h2 class="ind-art__h2">Hook and Loop for Clothing &amp; Garments</h2>
+            <p class="ind-art__intro">Hook and loop fasteners for clothing &amp; garments have always been a trusted choice of tailor, costume designer, or clothing manufacturer, as it brings in the cleanest and most suitable alternative to buttons, zips, and snaps for you. Designed to work across a wide range of fabrics, these are suitable for lightweight cotton as well as heavier woven textiles. Available in different types like sew-on formats specifically suited to textile use, these are the handy choices for the cloth industry. With the right hook and loop products from HooknLoop, garments can be made adjustable, easier to put on and take off, and durable across repeated wash cycles.</p>
+
+            <h3 class="ind-art__h2">Common use cases in Clothing &amp; Garments</h3>
+            <div class="ind-art__block">
+              <h4 class="ind-art__h3">Costume and Theatrical Wear</h4>
+              <p>Performers have to change clothes quickly between the scenes. Hook and loop closures let their costumes be fastened and removed in seconds. No more fumbling with buttons or zippers. They are a standard choice in stage, film, and cosplay garment making.</p>
+            </div>
+            <div class="ind-art__block">
+              <h4 class="ind-art__h3">Children’s Clothing</h4>
+              <p>Young children love easy to wear and simple to manage clothing styles, possible with this fastener. Hook and loop closures on shoes, jackets, and waistbands decrease frustration and boost self-dressing skills.</p>
+            </div>
+            <div class="ind-art__block">
+              <h4 class="ind-art__h3">Adaptive and Accessible Clothing</h4>
+              <p>Hook and loop fasteners make dressing and undressing significantly easier for people with limited hand mobility or dexterity, including elderly individuals and those with certain disabilities, highly used in adaptive fashion design.</p>
+            </div>
+            <div class="ind-art__block">
+              <h4 class="ind-art__h3">Waistband and Belt Adjusters</h4>
+              <p>Hook and loop tape sewn inside waistbands allows for a range of fit adjustments without visible external hardware. This is common in school uniforms, work trousers, and maternity wear.</p>
+            </div>
+            <div class="ind-art__block">
+              <h4 class="ind-art__h3">Hem and Alteration Work</h4>
+              <p>Tailors and home sewers use narrow hook and loop strips as temporary or permanent hem solutions, particularly for trousers and skirts that need to hang cleanly without visible stitching.</p>
+            </div>
+
+            <h3 class="ind-art__h2">Key characteristics to look for</h3>
+            <ul class="ind-art__list">
+              <li>Soft, non-abrasive loop side suitable for skin contact</li>
+              <li>Machine washable, retains grip through regular laundering</li>
+              <li>Available in sew-on format for permanent fabric attachment</li>
+              <li>Multiple widths from 20mm to 50mm</li>
+              <li>Available in black and white to suit garment colour schemes</li>
+              <li>Nylon construction for flexibility and durability</li>
+            </ul>
+
+            <h3 class="ind-art__h2">Recommended products for this application</h3>
+            <p class="ind-art__p">The Sew On Hook and Loop (Non Adhesive) is the most suitable option for clothing and garment work. It is designed to be stitched directly to fabric, comes in 25mm, 50mm, and 100mm widths, and is available in both black and white. Its fabric-safe backing makes it appropriate for a wide range of textile applications including costumes, adaptive clothing, and uniform alterations.</p>
+            <p class="ind-art__p">For applications where a quick attachment to a fabric surface is needed without sewing, the Self Adhesive Hook and Loop Roll can be used on interfacing or stiffer fabric components such as hat brims or bag panels.</p>
+            <ul class="ind-art__plinks">
+              {%- assign p = all_products['sew-on-hook-and-loop-fastener'] -%}
+              {%- if p != blank and p.handle -%}
+                <li><a href="{{ p.url }}">{{ p.title }}</a><span> &mdash; from {{ p.price_min | money }}</span></li>
+              {%- endif -%}
+              {%- assign p = all_products['self-adhesive-hook-and-loop-roll'] -%}
+              {%- if p != blank and p.handle -%}
+                <li><a href="{{ p.url }}">{{ p.title }}</a><span> &mdash; from {{ p.price_min | money }}</span></li>
+              {%- endif -%}
+            </ul>
+
+            <h3 class="ind-art__h2">Related application pages</h3>
+            <ul class="ind-art__related">
+              <li><a href="#medical-aged-care">Medical &amp; Aged Care</a><span> &mdash; adaptive clothing and garment closures for care environments</span></li>
+              <li><a href="#upholstery-furniture">Upholstery &amp; Furniture</a><span> &mdash; fabric fastening for soft furnishings</span></li>
+            </ul>
+          </div>
+        </details>
+      </li>
+      <li>
+        <details class="ind-idx__item" id="upholstery-furniture">
+          <summary>
+            <b>Upholstery &amp; Furniture</b>
+            <span>Upholstery and furniture work are in consistent need of effective fasteners that hold firm under repeated use with no damaging effects on fabric or surfaces.</span>
+            <em>Read guide <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></em>
+          </summary>
+
+          <div class="ind-art__body">
+            <h2 class="ind-art__h2">Hook and Loop for Upholstery &amp; Furniture</h2>
+            <p class="ind-art__intro">Upholstery and furniture work are in consistent need of effective fasteners that hold firm under repeated use with no damaging effects on fabric or surfaces. Hook-and-loop tape for upholstery &amp; furniture serves as a practical choice to secure cushion covers, fabric panels, slipcovers, and decorative elements to furniture frames. It offers convenient removal and reattachment, ideal for cleaning, reupholstering or changing the seasons. HooknLoop Australia offers a wide range of adhesive-backed and sew-on hook and loop strips that are ideal for soft furnishings applications such as residential sofas, commercial fit-outs, and all other applications, in various widths and strengths.</p>
+
+            <h3 class="ind-art__h2">Common use cases in Upholstery &amp; Furniture</h3>
+            <div class="ind-art__block">
+              <h4 class="ind-art__h3">Cushion Cover Closures</h4>
+              <p>Hook and loop strips sewn into the underside or back side of a cushion cover allow covers to be removed for washing and replaced easily without zips that can snag fabric or corrode over time.</p>
+            </div>
+            <div class="ind-art__block">
+              <h4 class="ind-art__h3">Fabric Panel Attachment to Timber or MDF Frames</h4>
+              <p>Hook and loop is used in fitted furniture, decorative bed heads and acoustic panels where fabric is to be drawn over and fastened to a hard frame, but can be easily removed if the fabric needs to be replaced or if the finish is to be changed.</p>
+            </div>
+            <div class="ind-art__block">
+              <h4 class="ind-art__h3">Seat Pad and Chair Cover Securing</h4>
+              <p>Hook and loop strips on the back of the seat that hold the seat in place are more effective than clips for dining chairs and office furniture that can start to move with repeated use.</p>
+            </div>
+            <div class="ind-art__block">
+              <h4 class="ind-art__h3">Slipcover Fastenings</h4>
+              <p>Slipcovers on sofas and armchairs benefit from hook-and-loop closures at tucking points and back sides. It helps keep the cover tightly stretched and well positioned in place. No need for permanent stitching.</p>
+            </div>
+            <div class="ind-art__block">
+              <h4 class="ind-art__h3">Decorative Element Attachment</h4>
+              <p>The frame-side adhesive hook-and-loop fastening can be used to attach material to a headboard or wall-hung textile art, and on the fabric side, can be sewn to the fabric so that the material can be removed from the wall without harming the wall or backing structure.</p>
+            </div>
+
+            <h3 class="ind-art__h2">Key characteristics to look for</h3>
+            <ul class="ind-art__list">
+              <li>Great adhesive strength to wood, MDF, plastic and metal frames</li>
+              <li>Sew-on option for direct fabric attachment</li>
+              <li>Reusable — can be used and closed thousands of times</li>
+              <li>Holds fabric panels securely but without pins or staples or showing fasteners</li>
+              <li>Comes ready to roll and can be cut to length for any project</li>
+              <li>Resists frequent exposure to domestic and commercial use</li>
+            </ul>
+
+            <h3 class="ind-art__h2">Recommended products for this application</h3>
+            <p class="ind-art__p">The Sew-On Hook and Loop (Non-Adhesive) in 50 mm or 100 mm width is the go-to choice for fabric-to-fabric upholstery applications such as cushion closures and slipcovers. For attaching fabric components to timber or board frames, combine with the Self-Adhesive Hook and Loop Roll on the hard surface side. Where a particularly strong hold is needed on heavier panels, consider the Heavy Duty Hook and Loop Strap.</p>
+            <ul class="ind-art__plinks">
+              {%- assign p = all_products['sew-on-hook-and-loop-fastener'] -%}
+              {%- if p != blank and p.handle -%}
+                <li><a href="{{ p.url }}">{{ p.title }}</a><span> &mdash; from {{ p.price_min | money }}</span></li>
+              {%- endif -%}
+              {%- assign p = all_products['self-adhesive-hook-and-loop-roll'] -%}
+              {%- if p != blank and p.handle -%}
+                <li><a href="{{ p.url }}">{{ p.title }}</a><span> &mdash; from {{ p.price_min | money }}</span></li>
+              {%- endif -%}
+              {%- assign p = all_products['heavy-duty-hook-and-loop-strap'] -%}
+              {%- if p != blank and p.handle -%}
+                <li><a href="{{ p.url }}">{{ p.title }}</a><span> &mdash; from {{ p.price_min | money }}</span></li>
+              {%- endif -%}
+            </ul>
+
+            <h3 class="ind-art__h2">Related application pages</h3>
+            <ul class="ind-art__related">
+              <li><a href="#clothing-garments">Clothing &amp; Garments</a><span> &mdash; fabric and sewing applications</span></li>
+              <li><a href="#automotive-caravan-rv">Automotive, Caravan &amp; RV</a><span> &mdash; interior panel and soft furnishing applications in vehicles</span></li>
+            </ul>
+          </div>
+        </details>
+      </li>
+      <li>
+        <details class="ind-idx__item" id="schools-education">
+          <summary>
+            <b>Schools &amp; Education</b>
+            <span>Hook and loop fasteners are used in countless creative ways within schools, child care centres and other educational institutions, including displays, learning tools, storage solutions and furniture design.</span>
+            <em>Read guide <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></em>
+          </summary>
+
+          <div class="ind-art__body">
+            <h2 class="ind-art__h2">Hook and Loop for Schools &amp; Education</h2>
+            <p class="ind-art__intro">Hook and loop fasteners are used in countless creative ways within schools, child care centres and other educational institutions, including displays, learning tools, storage solutions and furniture design. The fasteners are safe, non-destructive and easy to use and can be used by teachers and students without any tools or special knowledge. They enable classroom configurations to be changed in a matter of moments, the display of content to be easily changed, and resources to be organized and easily retrieved. At HooknLoop Australia, we have a range of self-adhesive and sew-on hook and loop products offered to schools, TAFEs and education departments, and can be tax-invoiced for institutional use.</p>
+
+            <h3 class="ind-art__h2">Common use cases in Schools &amp; Education</h3>
+            <div class="ind-art__block">
+              <h4 class="ind-art__h3">Classroom Display Boards</h4>
+              <p>Hook and loop strips and dots are used by teachers to attach student work and charts, as well as learning materials to a display board and walls. Unlike staples, drawing pins or tape, content can be changed without any residue or damage.</p>
+            </div>
+            <div class="ind-art__block">
+              <h4 class="ind-art__h3">Rotating Learning Aids</h4>
+              <p>Flashcards, number charts, letter tiles and other hands-on learning materials can be mounted on boards or surfaces with hook-and-loop dots and be moved, grouped and changed throughout the course of a lesson.</p>
+            </div>
+            <div class="ind-art__block">
+              <h4 class="ind-art__h3">Resource and Equipment Organisation</h4>
+              <p>Hook and loop strips can be used to label and assign storage shelves, bins and trolleys to help keep classrooms tidy and to help students return resources to the correct location independently.</p>
+            </div>
+            <div class="ind-art__block">
+              <h4 class="ind-art__h3">Furniture and Mat Arrangement</h4>
+              <p>In movement-based learning areas, lightweight mats, floor markers and positioning guides can be attached to the floor or to surfaces using hook and loop so that layouts can be changed between classes.</p>
+            </div>
+            <div class="ind-art__block">
+              <h4 class="ind-art__h3">DIY Educational Games and Activities</h4>
+              <p>Reusable activity boards are designed by learning support staff and teachers to attach game pieces, sorting cards, and sequencing materials with hooks and loops so that they can be picked up, placed, and moved repeatedly.</p>
+            </div>
+
+            <h3 class="ind-art__h2">Key characteristics to look for</h3>
+            <ul class="ind-art__list">
+              <li>No sharp edges, which makes it safe for use around children</li>
+              <li>Self-adhesive options require no tools for installation</li>
+              <li>Reusable displays can be rearranged repeatedly</li>
+              <li>Sew-on versions survive machine washing in uniform and bag applications</li>
+              <li>Tax invoicing available for schools and institutions</li>
+              <li>Available in bulk rolls for cost-effective school ordering</li>
+            </ul>
+
+            <h3 class="ind-art__h2">Recommended products for this application</h3>
+            <p class="ind-art__p">Self-adhesive Hook &amp; Loop Dots are the most convenient for classroom applications. They come in 15 mm and 22 mm sizes, in large bulk rolls and are easy to apply and can be reused for a variety of lighter mounting projects found in education.</p>
+            <p class="ind-art__p">For larger format display work — mounting bigger charts or fabric panels to boards — the Self Adhesive Hook and Loop Roll in 25 mm or 50 mm width provides greater surface coverage and hold.</p>
+            <ul class="ind-art__plinks">
+              {%- assign p = all_products['hook-and-loop-dots'] -%}
+              {%- if p != blank and p.handle -%}
+                <li><a href="{{ p.url }}">{{ p.title }}</a><span> &mdash; from {{ p.price_min | money }}</span></li>
+              {%- endif -%}
+              {%- assign p = all_products['self-adhesive-hook-and-loop-roll'] -%}
+              {%- if p != blank and p.handle -%}
+                <li><a href="{{ p.url }}">{{ p.title }}</a><span> &mdash; from {{ p.price_min | money }}</span></li>
+              {%- endif -%}
+            </ul>
+
+            <h3 class="ind-art__h2">Related application pages</h3>
+            <ul class="ind-art__related">
+              <li><a href="#signage-displays">Signage &amp; Displays</a><span> &mdash; display mounting techniques for larger formats</span></li>
+              <li><a href="#medical-aged-care">Medical &amp; Aged Care</a><span> &mdash; adaptive use in care and therapy environments</span></li>
+            </ul>
+          </div>
+        </details>
+      </li>
+      <li>
+        <details class="ind-idx__item" id="signage-displays">
+          <summary>
+            <b>Signage &amp; Displays</b>
+            <span>When it comes to signage and displays for retail spaces, events, exhibitions and commercial settings, both timing and presentation are essential.</span>
+            <em>Read guide <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></em>
+          </summary>
+
+          <div class="ind-art__body">
+            <h2 class="ind-art__h2">Hook and Loop for Signage &amp; Displays</h2>
+            <p class="ind-art__intro">When it comes to signage and displays for retail spaces, events, exhibitions and commercial settings, both timing and presentation are essential. Adhesive backed hook and loop for signage and displays comes as the trusted and professional fastening solution that securely sticks printed panels, banners, foam boards and fabric displays without any damage to the surface. It is ideal as temporary and semi-permanent applications and lets it change quickly between events or promotions while leaving the space completely residue free and clean. At HooknLoop Australia, we offer adhesive-backed rolls and strips that are ideal for temporary or semi-permanent signage on smooth surfaces such as glass, metal, plastic, foam board and painted walls.</p>
+
+            <h3 class="ind-art__h2">Common use cases in Signage &amp; Displays</h3>
+            <div class="ind-art__block">
+              <h4 class="ind-art__h3">Point-of-Sale Display Panels</h4>
+              <p>Hook and loop tape is widely used in retail stores in multiple applications. It effectively helps in mounting promotional signage, price cards, and campaign graphics as well as shelving, walls, and display fixtures. It promises flexibility to update content in minutes without any surface damage or residue leftover.</p>
+            </div>
+            <div class="ind-art__block">
+              <h4 class="ind-art__h3">Trade Show and Exhibition Graphics</h4>
+              <p>Exhibition has a consistent demand for using hook and loop tape to attach printed graphics to fabric panels, foam board displays, and lightweight frame systems. This gives the flexibility to use the same display framework with updated graphics for each event.</p>
+            </div>
+            <div class="ind-art__block">
+              <h4 class="ind-art__h3">Fabric Banner Attachment</h4>
+              <p>Using sew-on hook and loop along the edge, fabric banners and textile displays can be easily attached to aluminium frames or stretched over mounting boards. This helps in creating a neat, flawless, professional finish without visible hardware.</p>
+            </div>
+            <div class="ind-art__block">
+              <h4 class="ind-art__h3">Seasonal Retail Displays</h4>
+              <p>Window and in-store seasonal displays that change frequently benefit from hook-and-loop mounting elements that can be removed and stored at the end of a season and redeployed when needed.</p>
+            </div>
+            <div class="ind-art__block">
+              <h4 class="ind-art__h3">Modular Display Systems</h4>
+              <p>Interchangeable panel systems where content areas can be swapped in and out are often built using hook and loop as the primary attachment method, allowing staff to update layouts without any tools or fixings.</p>
+            </div>
+
+            <h3 class="ind-art__h2">Key characteristics to look for</h3>
+            <ul class="ind-art__list">
+              <li>Pressure-sensitive adhesion bonds easily to glass, metal, acrylic, foam board, and painted surfaces</li>
+              <li>Reusable across multiple display cycles</li>
+              <li>Clean removal without surface damage (on smooth, sealed surfaces)</li>
+              <li>Fire-retardant option available for public environments</li>
+              <li>Supplied in rolls, which can be cut to the required length for any panel size</li>
+              <li>Available in black and white to complement display aesthetics</li>
+            </ul>
+
+            <h3 class="ind-art__h2">Recommended products for this application</h3>
+            <p class="ind-art__p">The Self-Adhesive Hook and Loop Roll in 25 mm or 50 mm width is the most versatile option for signage and display work. It cuts to length, applies directly to hard surfaces, and provides a consistent hold for regular mounting and dismounting of panels and graphics.</p>
+            <p class="ind-art__p">For smaller signs and individual display items, the Self-Adhesive Hook &amp; Loop Dots in 22mm are a practical, easy-to-apply option.</p>
+            <ul class="ind-art__plinks">
+              {%- assign p = all_products['self-adhesive-hook-and-loop-roll'] -%}
+              {%- if p != blank and p.handle -%}
+                <li><a href="{{ p.url }}">{{ p.title }}</a><span> &mdash; from {{ p.price_min | money }}</span></li>
+              {%- endif -%}
+              {%- assign p = all_products['hook-and-loop-dots'] -%}
+              {%- if p != blank and p.handle -%}
+                <li><a href="{{ p.url }}">{{ p.title }}</a><span> &mdash; from {{ p.price_min | money }}</span></li>
+              {%- endif -%}
+            </ul>
+
+            <h3 class="ind-art__h2">Related application pages</h3>
+            <ul class="ind-art__related">
+              <li><a href="#schools-education">Schools &amp; Education</a><span> &mdash; display board techniques for classrooms</span></li>
+              <li><a href="#construction-industrial">Construction &amp; Industrial</a><span> &mdash; temporary signage on site hoardings</span></li>
+            </ul>
+          </div>
+        </details>
+      </li>
+      <li>
+        <details class="ind-idx__item" id="automotive-caravan-rv">
+          <summary>
+            <b>Automotive, Caravan &amp; RV</b>
+            <span>Hook and loop fasteners are used to attach interior panels, hold accessories in place, organise storage spaces and hold loose items in place inside vehicles, caravans and RVs when traveling.</span>
+            <em>Read guide <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></em>
+          </summary>
+
+          <div class="ind-art__body">
+            <h2 class="ind-art__h2">Hook and Loop for Automotive, Caravan &amp; RV</h2>
+            <p class="ind-art__intro">Hook and loop fasteners are used to attach interior panels, hold accessories in place, organise storage spaces and hold loose items in place inside vehicles, caravans and RVs when traveling. They are suitable for vehicle interior applications where drilling or permanent adhesives are not preferred, as they hold securely against vibration and movement. Hook and loop can mount an organiser inside a camper van, secure carpet sections in a caravan or attach a device holder in a truck cab; it’s flexible and won’t damage the vehicle.</p>
+
+            <h3 class="ind-art__h2">Common use cases in Automotive, Caravan &amp; RV</h3>
+            <div class="ind-art__block">
+              <h4 class="ind-art__h3">Interior Panel and Trim Mounting in Caravans</h4>
+              <p>Some of the lightweight interior panels, like fabric-faced boards, foam insulation linings, decorative trim pieces, etc., are easy to attach with hook-and-loop strips and even remove panels without tools for maintenance.</p>
+            </div>
+            <div class="ind-art__block">
+              <h4 class="ind-art__h3">Organiser and Storage Pouch Attachment</h4>
+              <p>Hanging organisers, storage pouches, and gear nets can be attached to vehicle wall surfaces using adhesive hooks on the wall and a sew-on loop on the organiser. This keeps the interior tidy without permanent fixtures.</p>
+            </div>
+            <div class="ind-art__block">
+              <h4 class="ind-art__h3">Installing Carpet and Matting</h4>
+              <p>Carpet on the floor or walls of caravans, motorhomes and vans can be secured by hook-and-loop strips around the edges, without the need to glue carpet down permanently.</p>
+            </div>
+            <div class="ind-art__block">
+              <h4 class="ind-art__h3">Soft Furnishing and Cushion Hold</h4>
+              <p>Decorative cushions, bunk mattress toppers and seat cushions can be attached with hook and loop to the base to keep them stationary while driving and limit the need to move them after each trip.</p>
+            </div>
+            <div class="ind-art__block">
+              <h4 class="ind-art__h3">Dashcam and Device Mounting</h4>
+              <p>Small electronics like dashcams, GPS and tablet holders can be moved from one position to another throughout the windscreen and dashboard surface with hook and loop mounting pads and without any sticky residue.</p>
+            </div>
+
+            <h3 class="ind-art__h2">Key characteristics to look for</h3>
+            <ul class="ind-art__list">
+              <li>High-strength adhesive suitable for plastic, metal, and carpeted surfaces</li>
+              <li>Tolerates elevated temperatures common in parked vehicles</li>
+              <li>Vibration-resistant — maintains grip on the move</li>
+              <li>No drilling or permanent modification required</li>
+              <li>Reusable for seasonal or reconfigurable caravan fit-outs</li>
+              <li>Heavy-duty options available for load restraint applications</li>
+            </ul>
+
+            <h3 class="ind-art__h2">Recommended products for this application</h3>
+            <p class="ind-art__p">The Self Adhesive Hook and Loop Roll in 25mm or 50mm is suited to most interior vehicle mounting applications where the surface is hard and smooth. For fabric and carpet attachments, the Sew On Hook and Loop (Non-Adhesive) is a perfect choice to make.</p>
+            <p class="ind-art__p">To secure heavier cargo items, storage boxes, or rigid panels in the cargo area of a van or caravan, prefer using the Heavy Duty Hook and Loop Strap. It promises reliable load management.</p>
+            <ul class="ind-art__plinks">
+              {%- assign p = all_products['self-adhesive-hook-and-loop-roll'] -%}
+              {%- if p != blank and p.handle -%}
+                <li><a href="{{ p.url }}">{{ p.title }}</a><span> &mdash; from {{ p.price_min | money }}</span></li>
+              {%- endif -%}
+              {%- assign p = all_products['sew-on-hook-and-loop-fastener'] -%}
+              {%- if p != blank and p.handle -%}
+                <li><a href="{{ p.url }}">{{ p.title }}</a><span> &mdash; from {{ p.price_min | money }}</span></li>
+              {%- endif -%}
+              {%- assign p = all_products['heavy-duty-hook-and-loop-strap'] -%}
+              {%- if p != blank and p.handle -%}
+                <li><a href="{{ p.url }}">{{ p.title }}</a><span> &mdash; from {{ p.price_min | money }}</span></li>
+              {%- endif -%}
+            </ul>
+
+            <h3 class="ind-art__h2">Related application pages</h3>
+            <ul class="ind-art__related">
+              <li><a href="#upholstery-furniture">Upholstery &amp; Furniture</a><span> &mdash; soft furnishing and interior fabric applications</span></li>
+              <li><a href="#warehousing-logistics">Warehousing &amp; Logistics</a><span> &mdash; load restraint and cargo management</span></li>
+            </ul>
+          </div>
+        </details>
+      </li>
+      <li>
+        <details class="ind-idx__item" id="medical-aged-care">
+          <summary>
+            <b>Medical &amp; Aged Care</b>
+            <span>Hook and loop fasteners are playing a significant role in medical and aged care environments when it comes to considering features like ease of use, adjustability, and hygiene.</span>
+            <em>Read guide <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></em>
+          </summary>
+
+          <div class="ind-art__body">
+            <h2 class="ind-art__h2">Hook and Loop for Medical &amp; Aged Care</h2>
+            <p class="ind-art__intro">Hook and loop fasteners are playing a significant role in medical and aged care environments when it comes to considering features like ease of use, adjustability, and hygiene. With unique features, these are perfect to be used in adaptive clothing, orthopaedic supports, braces, wheelchair fittings and mobility supports. They are useful everywhere; a secure fasten, yet easily modified, is essential. Hook and loop is used in aged care environments. These turn dressing and undressing more efficient, decreasing strain on carers and care recipients. Soft loop-side materials minimise skin irritation. There are sew-on options that are washable, which is why they become practical for clinical and personal care applications.</p>
+
+            <h3 class="ind-art__h2">Common use cases in Medical &amp; Aged Care</h3>
+            <div class="ind-art__block">
+              <h4 class="ind-art__h3">Orthotic and Prosthetic Fastenings</h4>
+              <p>Orthotic braces, ankle foot orthoses (AFOs), and prosthetic liners use hook-and-loop straps as the primary closure mechanism. They allow each person’s device to be fitted precisely and adjusted easily at each application without tools.</p>
+            </div>
+            <div class="ind-art__block">
+              <h4 class="ind-art__h3">Adjustable Straps on Braces and Splints</h4>
+              <p>Hook and loop closures are perfect for products that offer support to the wrist, knee, elbow and ankle, in a diverse range of medical and physiotherapy sectors. They allow the compression and positioning to be adjusted quickly.</p>
+            </div>
+            <div class="ind-art__block">
+              <h4 class="ind-art__h3">Adaptive Clothing for Limited Dexterity</h4>
+              <p>The excellent hook-and-loop fasteners are used in some clothes instead of buttons or zippers. This feature turns excellent for those who struggle using their hands for gripping or fine motor movements. People with neurological disorders, arthritis patients, and stroke survivors usually find them useful.</p>
+            </div>
+            <div class="ind-art__block">
+              <h4 class="ind-art__h3">Wheelchair Positioning and Strap Systems</h4>
+              <p>The fastening mechanism for positioning belts, lap trays or foot strap systems on wheelchairs is often hook and loop. Carers can easily and safely fit it.</p>
+            </div>
+            <div class="ind-art__block">
+              <h4 class="ind-art__h3">Medical Equipment and Cuff Attachment</h4>
+              <p>Blood pressure cuffs, TENS electrode holders, and other wearable medical devices use hook and loop as the attachment mechanism that holds the device in contact with the body at the correct position.</p>
+            </div>
+
+            <h3 class="ind-art__h2">Key characteristics to look for</h3>
+            <ul class="ind-art__list">
+              <li><b>Soft Loop Side for Skin-Adjacent Placement</b> &mdash; The loop side should always be on the inside, next to the skin, of the garment. Hook-side material can irritate or cause abrasion if it comes into direct contact with sensitive skin.</li>
+              <li><b>Wash Resistance</b> &mdash; For garments, straps, and orthotic components used in personal care, the fastener must maintain its grip and structure after repeated machine washing at standard care cycle temperatures.</li>
+              <li><b>Multiple Width Options for Strap Sizing</b> &mdash; Narrow widths (20–25mm) suit fine strapping on splints and orthotics. Wider options (50mm+) are better suited to positioning belts and larger garment closures.</li>
+              <li><b>Consistent Engagement Across Repeated Use</b> &mdash; Medical and aged care applications often involve dozens of fastening and unfastening cycles per day. Consistent grip across high-cycle use is an important functional requirement.</li>
+              <li><b>Adjustability Without Tools</b> &mdash; A key advantage of hook and loop in care settings is the ability to adjust positioning precisely without scissors, tools, or replacement parts — allowing care staff to adapt quickly to each individual’s requirements.</li>
+            </ul>
+
+            <h3 class="ind-art__h2">Recommended products for this application</h3>
+            <p class="ind-art__p">The Sew On Hook and Loop (Non Adhesive) in 25mm or 50mm width is the most appropriate product for medical and aged care applications involving fabric components. It is washable, can be stitched to garments and supports, and is available in both black and white.</p>
+            <p class="ind-art__p">For applications where a strap needs to wrap and secure around a limb or device independently, the Double Sided Hook and Loop (Back to Back) in 25mm width provides a clean self-fastening strap solution.</p>
+            <ul class="ind-art__plinks">
+              {%- assign p = all_products['sew-on-hook-and-loop-fastener'] -%}
+              {%- if p != blank and p.handle -%}
+                <li><a href="{{ p.url }}">{{ p.title }}</a><span> &mdash; from {{ p.price_min | money }}</span></li>
+              {%- endif -%}
+              {%- assign p = all_products['double-sided-hook-and-loop'] -%}
+              {%- if p != blank and p.handle -%}
+                <li><a href="{{ p.url }}">{{ p.title }}</a><span> &mdash; from {{ p.price_min | money }}</span></li>
+              {%- endif -%}
+            </ul>
+
+            <h3 class="ind-art__h2">Related application pages</h3>
+            <ul class="ind-art__related">
+              <li><a href="#clothing-garments">Clothing &amp; Garments</a><span> &mdash; adaptive and accessible garment applications</span></li>
+              <li><a href="#schools-education">Schools &amp; Education</a><span> &mdash; use in early childhood and therapy environments</span></li>
+            </ul>
+          </div>
+        </details>
+      </li>
+      <li>
+        <details class="ind-idx__item" id="warehousing-logistics">
+          <summary>
+            <b>Warehousing &amp; Logistics</b>
+            <span>Organising a warehouse and logistics system efficiently and ensuring load management is secure can minimize errors, enhance safety, and accelerate daily operations.</span>
+            <em>Read guide <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></em>
+          </summary>
+
+          <div class="ind-art__body">
+            <h2 class="ind-art__h2">Hook and Loop for Warehousing &amp; Logistics</h2>
+            <p class="ind-art__intro">Organising a warehouse and logistics system efficiently and ensuring load management is secure can minimize errors, enhance safety, and accelerate daily operations. Hook and loop fasteners are utilized to bundle cables and hoses, secure lightweight covers on racking and pallets, label and zone storage spaces, and also organize packing stations. They are a reusable substitute to single use cable ties and packing tape and can help to save on consumable costs in high-volume situations. Heavy-duty straps can be used to bundle items that are not regular in shape or heavier, and adhesive rolls are effective for signage, zone marking, and equipment identification on the warehouse floor.</p>
+
+            <h3 class="ind-art__h2">Common use cases in Warehousing &amp; Logistics</h3>
+            <div class="ind-art__block">
+              <h4 class="ind-art__h3">Bundling Cables, Leads, and Hoses</h4>
+              <p>Power leads, compressed air hoses, data cables and more are frequently found as long runs in warehouses and distribution centres. These are easily kept in bundles and manageable with hook and loop cable wraps, which make them easier to see and find and less likely to cause tripping.</p>
+            </div>
+            <div class="ind-art__block">
+              <h4 class="ind-art__h3">Pallet and Racking Cover Securing</h4>
+              <p>Hook and loop strips help fasten dust covers, tarpaulins and protective sheets at the edges of the racking bays and pallet stacks. This also makes it easy to remove and replace during picking operations without the cover falling or shifting.</p>
+            </div>
+            <div class="ind-art__block">
+              <h4 class="ind-art__h3">Shelving and Bay Labelling</h4>
+              <p>Self-adhesive hook strips can be mounted on shelving and storage units with loops and can be removed without causing damage. Labels can be updated quickly as storage locations change. This is effective in environments with high SKU turnover or seasonal layout changes.</p>
+            </div>
+            <div class="ind-art__block">
+              <h4 class="ind-art__h3">Packing Station Organisation</h4>
+              <p>The station frame can be outfitted with tools and other packing station items mounted with hook and loop for easy access, keeping the work surface clear.</p>
+            </div>
+            <div class="ind-art__block">
+              <h4 class="ind-art__h3">Transit Bundle Management</h4>
+              <p>Some items that are packed or consolidated for dispatch can be wrapped with reusable hook-and-loop straps rather than single-use bands. This is the way to decrease packaging waste and simplify the unpacking process at the receiving end.</p>
+            </div>
+
+            <h3 class="ind-art__h2">Key characteristics to look for</h3>
+            <ul class="ind-art__list">
+              <li>Heavy-duty straps support loads up to 100kg with nylon webbing construction</li>
+              <li>Reusable — eliminates waste from single-use packaging materials</li>
+              <li>Quick to apply and remove — improves pick-pack efficiency</li>
+              <li>Machine washable straps for hygiene in food-handling environments</li>
+              <li>Available in roll and strap formats for different applications</li>
+              <li>Industrial-grade adhesive for permanent mounting applications</li>
+            </ul>
+
+            <h3 class="ind-art__h2">Recommended products for this application</h3>
+            <p class="ind-art__p">The Heavy Duty Hook and Loop Strap (50mm x 5m sets) is the recommended choice for bundling hoses, leads, and heavier items on the warehouse floor.</p>
+            <p class="ind-art__p">For cable and lead management, the Hook and Loop Reusable Cable Strap &amp; Ties in packs of 20 are a practical, compact option for daily use.</p>
+            <p class="ind-art__p">For labelling, zone marking, and attaching organisers to surfaces, the Self Adhesive Hook and Loop Roll in 25mm or 50mm width provides the coverage needed for a clean, flexible labelling system.</p>
+            <ul class="ind-art__plinks">
+              {%- assign p = all_products['heavy-duty-hook-and-loop-strap'] -%}
+              {%- if p != blank and p.handle -%}
+                <li><a href="{{ p.url }}">{{ p.title }}</a><span> &mdash; from {{ p.price_min | money }}</span></li>
+              {%- endif -%}
+              {%- assign p = all_products['hook-and-loop-adjustable-strap'] -%}
+              {%- if p != blank and p.handle -%}
+                <li><a href="{{ p.url }}">{{ p.title }}</a><span> &mdash; from {{ p.price_min | money }}</span></li>
+              {%- endif -%}
+              {%- assign p = all_products['self-adhesive-hook-and-loop-roll'] -%}
+              {%- if p != blank and p.handle -%}
+                <li><a href="{{ p.url }}">{{ p.title }}</a><span> &mdash; from {{ p.price_min | money }}</span></li>
+              {%- endif -%}
+            </ul>
+
+            <h3 class="ind-art__h2">Related application pages</h3>
+            <ul class="ind-art__related">
+              <li><a href="#construction-industrial">Construction &amp; Industrial</a><span> &mdash; site organisation and load management</span></li>
+              <li><a href="#signage-displays">Signage &amp; Displays</a><span> &mdash; zone marking and labelling on the floor</span></li>
+            </ul>
+          </div>
+        </details>
+      </li>
+      <li>
+        <details class="ind-idx__item" id="construction-industrial">
+          <summary>
+            <b>Construction &amp; Industrial</b>
+            <span>Fastening solutions at construction sites and industrial facilities must be capable of performing under harsh conditions, challenging handling, dust, moisture, and heavy loads.</span>
+            <em>Read guide <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></em>
+          </summary>
+
+          <div class="ind-art__body">
+            <h2 class="ind-art__h2">Hook and Loop for Construction &amp; Industrial Use</h2>
+            <p class="ind-art__intro">Fastening solutions at construction sites and industrial facilities must be capable of performing under harsh conditions, challenging handling, dust, moisture, and heavy loads. Hook and loop fasteners are applied to various supportive uses in situations like securing tool pouches, site organisers, cable/tube management, temporary signage on hoardings and barriers, and the attachment of protective covers to equipment and frameworks. For applications requiring fire safety, there are options available that are fire-resistant. Hook and loop does not qualify as a structural fastener but is useful as a supplement to the other fastening mechanisms for keeping worksites organised and safe.</p>
+
+            <h3 class="ind-art__h2">Common use cases in Construction &amp; Industrial</h3>
+            <div class="ind-art__block">
+              <h4 class="ind-art__h3">Tool Pouch and Belt Organiser Attachment</h4>
+              <p>Tool belts, pouches, and on-site organisers can be equipped with hook and loop attachment points. This allows accessories to be mounted to a belt or work vest and repositioned as needed throughout the day.</p>
+            </div>
+            <div class="ind-art__block">
+              <h4 class="ind-art__h3">Temporary Signage on Hoardings and Barriers</h4>
+              <p>Adhesive hook-and-loop tape for mounting and replacing construction site safety signs, directional signs and compliance notices allows the site signage to be easily changed when conditions change.</p>
+            </div>
+            <div class="ind-art__block">
+              <h4 class="ind-art__h3">Cable and Lead Management on Site</h4>
+              <p>Extension leads, power tool cables, and data cables can be wrapped together with reusable hook-and-loop cable straps. This helps decrease tripping hazards and makes a work site manageable.</p>
+            </div>
+            <div class="ind-art__block">
+              <h4 class="ind-art__h3">Protective Cover Attachment</h4>
+              <p>Heavy-duty hook-and-loop strips can attach dust sheets, weather protection covers and equipment shrouds at the edges. They are easy to remove during operation and reattach overnight or in wet weather.</p>
+            </div>
+            <div class="ind-art__block">
+              <h4 class="ind-art__h3">Fire-Rated Applications</h4>
+              <p>Fire safety compliance is essential in industrial settings, including electrical installations, building services, and certain manufacturing environments. Fire-retardant hook and loop is available for applications within compliance scope.</p>
+            </div>
+
+            <h3 class="ind-art__h2">Key characteristics to look for</h3>
+            <ul class="ind-art__list">
+              <li>High-temperature acrylic adhesive maintains bond in elevated heat conditions</li>
+              <li>Fire retardant variant meets safety requirements for commercial buildings</li>
+              <li>Heavy-duty construction handles significant load and repeated stress</li>
+              <li>Resists dust and moisture commonly encountered on construction sites</li>
+              <li>Available in roll format — cut to size for each application</li>
+              <li>Reusable for temporary and reconfigurable installation needs</li>
+            </ul>
+
+            <h3 class="ind-art__h2">Recommended products for this application</h3>
+            <p class="ind-art__p">The Heavy Duty Hook and Loop Strap is the recommended choice for bundling heavy hoses, leads and securing covers in industrial settings.</p>
+            <p class="ind-art__p">For cable management on site, the Hook and Loop Reusable Cable Strap &amp; Ties are a practical and compact option.</p>
+            <p class="ind-art__p">For fire safety-sensitive applications, the Fire Retardant Adhesive Hook and Loop Roll in 25mm width is available for use where compliance with fire retardant standards is required.</p>
+            <ul class="ind-art__plinks">
+              {%- assign p = all_products['heavy-duty-hook-and-loop-strap'] -%}
+              {%- if p != blank and p.handle -%}
+                <li><a href="{{ p.url }}">{{ p.title }}</a><span> &mdash; from {{ p.price_min | money }}</span></li>
+              {%- endif -%}
+              {%- assign p = all_products['hook-and-loop-adjustable-strap'] -%}
+              {%- if p != blank and p.handle -%}
+                <li><a href="{{ p.url }}">{{ p.title }}</a><span> &mdash; from {{ p.price_min | money }}</span></li>
+              {%- endif -%}
+              {%- assign p = all_products['fire-retardant-adhesive-hook-and-loop'] -%}
+              {%- if p != blank and p.handle -%}
+                <li><a href="{{ p.url }}">{{ p.title }}</a><span> &mdash; from {{ p.price_min | money }}</span></li>
+              {%- endif -%}
+            </ul>
+
+            <h3 class="ind-art__h2">Related application pages</h3>
+            <ul class="ind-art__related">
+              <li><a href="#signage-displays">Signage &amp; Displays</a><span> &mdash; temporary signage on site hoardings</span></li>
+              <li><a href="#warehousing-logistics">Warehousing &amp; Logistics</a><span> &mdash; load management and bundling</span></li>
+            </ul>
+          </div>
+        </details>
+      </li>
+    </ul>
+  </div>
+</main>
+{%- endif -%}
+
+<script>
+(function () {
+  /* Deep links: /pages/industries#schools-education opens that panel, and the
+     "Related application pages" links open their target rather than just
+     jumping to a closed summary. */
+  function openFromHash() {
+    var id = window.location.hash.slice(1);
+    if (!id) return;
+    var el = document.getElementById(id);
+    if (el && el.tagName === 'DETAILS') {
+      el.open = true;
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+  window.addEventListener('hashchange', openFromHash);
+  openFromHash();
+})();
+</script>
+
+{% schema %}
+{
+  "name": "HooknLoop industries",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "page_handle", "label": "Only show on page handle", "info": "Leave empty to show on every page using this template." },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Industries & applications" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Hook & loop, matched to your industry" },
+    { "type": "textarea", "id": "intro", "label": "Intro", "default": "Practical fastening guides for the trades and sectors we supply — the right product, the right width, and how it's used, for each application." }
+  ],
+  "presets": [{ "name": "HooknLoop industries" }]
+}
+{% endschema %}

@@ -201,7 +201,13 @@
         "page_handle": "",
         "center": true,
         "narrow": true,
-        "skip_handles": "contact,bulk-orders,shipping-delivery,return-policy,privacy-policy,terms-conditions,customer-service,blog"
+        "skip_handles": "contact,bulk-orders,shipping-delivery,return-policy,privacy-policy,terms-conditions,customer-service,blog,industries"
+      }
+    },
+    "hnl_industries": {
+      "type": "hnl-industries",
+      "settings": {
+        "page_handle": "industries"
       }
     }
   },
@@ -214,6 +220,7 @@
     "hnl_terms",
     "hnl_about",
     "hnl_blog",
+    "hnl_industries",
     "hnl_page"
   ]
 }

@@ -250,7 +250,7 @@
         {%- if product.description != blank -%}
           <section class="pdp__block">
             <h2>Description</h2>
-            <div class="pdp__rte">{{ product.description }}</div>
+            <div class="pdp__rte">{% render 'hnl-copy-rules', html: product.description %}</div>
           </section>
         {%- endif -%}
 
@@ -378,6 +378,7 @@
                  : document.querySelector('[data-hnl-variants]').textContent);
   var optGroups = [].slice.call(root.querySelectorAll('[data-hnl-opt]'));
   var qty = 1;
+  var userPicked = false;   /* has the shopper touched an option control yet? */
 
   var money = function (cents) {
     return '$' + (cents / 100).toFixed(2);
@@ -442,9 +443,13 @@
       }
     });
 
-    /* Keep the URL honest so a shared link opens on the same variant, and so a
-       reload does not silently swap what the shopper chose. */
-    if (history.replaceState) {
+    /* Put the variant in the URL only once the shopper has actually chosen one.
+       Writing it on first paint rewrote a clean /products/<handle> into
+       ?variant=… before anyone had touched a control — which made every share,
+       copy or bookmark of a product page carry a variant nobody picked. Now the
+       URL stays clean until a size, colour or side is selected, and from then on
+       it tracks the selection so a shared link opens on the same variant. */
+    if (userPicked && history.replaceState) {
       var u = new URL(window.location.href);
       u.searchParams.set('variant', v.id);
       history.replaceState({}, '', u);
@@ -459,6 +464,7 @@
       if (!btn) return;
       [].forEach.call(g.querySelectorAll('[data-hnl-val]'), function (b) { b.classList.remove('is-on'); });
       btn.classList.add('is-on');
+      userPicked = true;
       render();
     });
   });
