@@ -237,6 +237,12 @@
 
     {% sections 'footer-group' %}
 
+    {%- comment -%}
+      Rendered here, outside every section, so a Quick Add on the homepage or a
+      collection can open the same drawer the product page uses.
+    {%- endcomment -%}
+    {% render 'hnl-cart-drawer' %}
+
     {% section 'color-swatches' %}
     <ul hidden>
       <li id="a11y-refresh-page-message">{{ 'accessibility.refresh_page' | t }}</li>

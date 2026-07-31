@@ -601,7 +601,13 @@
   if (form) {
     form.addEventListener('submit', function (e) {
       /* Second press: honour the label and go to the cart. */
-      if (added) { e.preventDefault(); window.location.href = '/cart'; return; }
+      /* Second press re-opens the drawer rather than navigating: the drawer is
+         where both paths live — Checkout, and View cart. */
+      if (added) {
+        e.preventDefault();
+        document.dispatchEvent(new CustomEvent('hnl:cart:open'));
+        return;
+      }
       if (!window.fetch) return;                 /* let the browser post it */
       e.preventDefault();
 
@@ -625,6 +631,10 @@
             el.classList.add('is-on');
           });
           document.dispatchEvent(new CustomEvent('hnl:cart:updated', { detail: cart }));
+          /* Slide the drawer in, the way the React prototype did straight
+             after an add. It re-reads /cart.js itself, so it cannot disagree
+             with the badge we just set. */
+          document.dispatchEvent(new CustomEvent('hnl:cart:open'));
         })
         .catch(function (err) {
           /* Never strand the shopper: fall back to the real form post. */

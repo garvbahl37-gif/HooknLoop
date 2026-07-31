@@ -1,0 +1,160 @@
+{%- comment -%}
+  Cart drawer — port of storefront/src/components/CartDrawer.jsx.
+
+  cartdrawer.css shipped in the bundle from the very first build, but nothing
+  ever rendered .cd markup, so the styles were dead and every add-to-cart left
+  the page. This is the missing half.
+
+  Two departures from React, both because Shopify owns the cart here:
+
+  1. React held the cart in module state and re-rendered. This reads /cart.js
+     and writes through /cart/change.js, so the drawer, the header badge and
+     /cart can never disagree — the cart is Shopify's, not ours.
+
+  2. React's Checkout button was an alert() stub. It posts to /checkout.
+
+  Rendered once from theme.liquid so it is available on every page: a card's
+  Quick Add can open it from the homepage or a collection, not just the PDP.
+
+  Empty until opened — no cart request is made on page load.
+{%- endcomment -%}
+
+<div class="cd" id="hnl-cart-drawer" role="dialog" aria-label="Cart" aria-modal="true" hidden>
+  <div class="cd__backdrop" data-hnl-cd-close></div>
+  <div class="cd__panel">
+    <div class="cd__head">
+      <h2 data-hnl-cd-title>Added to cart</h2>
+      <button class="cd__close" type="button" data-hnl-cd-close aria-label="Close cart">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div class="cd__body" data-hnl-cd-body></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var root = document.getElementById('hnl-cart-drawer');
+  if (!root) return;
+
+  var body     = root.querySelector('[data-hnl-cd-body]');
+  var titleEl  = root.querySelector('[data-hnl-cd-title]');
+  var lastFocus = null;
+  var FREE_SHIP = {{ settings.hnl_free_ship_threshold | default: 20000 }};   /* cents */
+
+  function money(c) { return '$' + (c / 100).toFixed(2); }
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (m) {
+      return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[m];
+    });
+  }
+
+  function render(cart) {
+    /* Header badge tracks the same payload, so they cannot drift. */
+    [].forEach.call(document.querySelectorAll('[data-hnl-cart-count]'), function (el) {
+      el.textContent = cart.item_count;
+      el.classList.toggle('is-on', cart.item_count > 0);
+    });
+
+    if (!cart.items.length) {
+      titleEl.textContent = 'Your cart';
+      body.innerHTML =
+        '<div class="cd__empty"><p>Your cart is empty.</p>' +
+        '<a class="btn btn--primary" href="/collections/all">Shop all products &rarr;</a></div>';
+      return;
+    }
+
+    titleEl.textContent = 'Added to cart';
+    var rows = cart.items.map(function (it, i) {
+      /* it.image is null when a product has no photo — the CSS box stays, so
+         the row keeps its grid and does not collapse. */
+      var img = it.image
+        ? '<img src="' + esc(it.image.replace(/(\.[a-z]+)(\?|$)/i, '_136x$1$2')) + '" alt="' + esc(it.product_title) + '">'
+        : '';
+      var variant = (it.variant_title && it.variant_title !== 'Default Title') ? esc(it.variant_title) : '';
+      return '' +
+        '<div class="cd__row" data-line="' + (i + 1) + '">' +
+          '<div class="cd__media">' + img + '</div>' +
+          '<div class="cd__info">' +
+            '<h3>' + esc(it.product_title) + '</h3>' +
+            (variant ? '<span class="cd__variant">' + variant + '</span>' : '') +
+            '<div class="cd__row-bottom">' +
+              '<div class="cd__qty">' +
+                '<button type="button" data-hnl-cd-qty="' + (it.quantity - 1) + '" data-line="' + (i + 1) + '" aria-label="Decrease quantity">&minus;</button>' +
+                '<span>' + it.quantity + '</span>' +
+                '<button type="button" data-hnl-cd-qty="' + (it.quantity + 1) + '" data-line="' + (i + 1) + '" aria-label="Increase quantity">+</button>' +
+              '</div>' +
+              '<button type="button" class="cd__remove" data-hnl-cd-qty="0" data-line="' + (i + 1) + '">Remove</button>' +
+            '</div>' +
+          '</div>' +
+          '<div class="cd__line">' + money(it.line_price) + '</div>' +
+        '</div>';
+    }).join('');
+
+    var remaining = FREE_SHIP - cart.total_price;
+    var shipMsg = remaining > 0
+      ? 'You&rsquo;re <b>' + money(remaining) + '</b> away from free shipping.'
+      : '&#127881; You&rsquo;ve unlocked free shipping.';
+
+    body.innerHTML =
+      '<div class="cd__items">' + rows + '</div>' +
+      '<div class="cd__foot">' +
+        '<p class="cd__ship-msg">' + shipMsg + '</p>' +
+        '<div class="cd__sumrow"><span>Subtotal</span><b>' + money(cart.total_price) + ' AUD</b></div>' +
+        '<p class="cd__taxnote">Tax included. Shipping calculated at checkout.</p>' +
+        '<a class="btn btn--primary cd__checkout" href="/checkout">Checkout</a>' +
+        '<a class="cd__viewcart" href="/cart">View cart (' + cart.item_count + ')</a>' +
+      '</div>';
+  }
+
+  function refresh() {
+    return fetch('/cart.js', { credentials: 'same-origin' })
+      .then(function (r) { return r.json(); })
+      .then(function (cart) { render(cart); return cart; });
+  }
+
+  function open() {
+    lastFocus = document.activeElement;
+    root.hidden = false;
+    document.body.classList.add('drawer-open');
+    refresh().then(function () {
+      var f = root.querySelector('.cd__close');
+      if (f) f.focus();
+    });
+  }
+
+  function close() {
+    root.hidden = true;
+    document.body.classList.remove('drawer-open');
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+
+  root.addEventListener('click', function (e) {
+    if (e.target.closest('[data-hnl-cd-close]')) { close(); return; }
+
+    var q = e.target.closest('[data-hnl-cd-qty]');
+    if (q) {
+      var line = q.getAttribute('data-line');
+      var qty  = parseInt(q.getAttribute('data-hnl-cd-qty'), 10);
+      body.setAttribute('aria-busy', 'true');
+      fetch('/cart/change.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        credentials: 'same-origin',
+        body: JSON.stringify({ line: parseInt(line, 10), quantity: Math.max(0, qty) })
+      })
+        .then(function (r) { return r.json(); })
+        .then(function (cart) { render(cart); body.removeAttribute('aria-busy'); })
+        .catch(function () { body.removeAttribute('aria-busy'); refresh(); });
+    }
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && !root.hidden) close();
+  });
+
+  /* Public hook: anything that adds to the cart calls this. */
+  document.addEventListener('hnl:cart:open', open);
+  window.hnlOpenCartDrawer = open;
+})();
+</script>

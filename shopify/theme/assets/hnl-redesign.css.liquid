@@ -3627,16 +3627,19 @@ body.drawer-open { overflow: hidden; }
    cart", so the next click is a deliberate trip to the basket rather than an
    accidental second add.
 
-   #146c43 is the green the Verified review badge already uses — one success
-   colour, not two. White on it measures 6.45:1, past AA. */
+   The green is pitched to the .pdp__flag "In stock · ships in 1-2 days" tag
+   (#1f9d55) rather than the darker badge green, which read as heavy. The tag's
+   exact value could not be used as a button fill: white on #1f9d55 measures
+   3.49:1 and navy 4.33:1, and this label is 15px, so both miss AA's 4.5.
+   #1a8449 is the lightest step in that same family that clears it, at 4.73:1. */
 .pdp__add.is-added,
 .pdp__dock-add.is-added {
-  background: #146c43;
+  background: #1a8449;
   color: #fff;
-  box-shadow: 0 8px 22px rgba(20, 108, 67, 0.30);
+  box-shadow: 0 8px 22px rgba(26, 132, 73, 0.28);
 }
 .pdp__add.is-added:hover,
-.pdp__dock-add.is-added:hover { background: #0f5c39; }
+.pdp__dock-add.is-added:hover { background: #177a43; }
 .pdp__add.is-added svg,
 .pdp__dock-add.is-added svg { display: none; }
 

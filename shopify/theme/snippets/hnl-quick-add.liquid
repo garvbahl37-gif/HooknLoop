@@ -262,6 +262,11 @@
         document.querySelectorAll('[data-hnl-cart-count], .hdr__count, .cart-count').forEach(function (el) {
           el.textContent = cart.item_count;
         });
+        /* Same drawer the product page opens, so adding from a card on the
+           homepage or a collection confirms the same way. Closing this popup
+           first stops two overlays stacking. */
+        close();
+        document.dispatchEvent(new CustomEvent('hnl:cart:open'));
       })
       .catch(function (err) {
         errEl.textContent = err.message;
