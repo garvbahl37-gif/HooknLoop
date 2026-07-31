@@ -3959,23 +3959,63 @@ body.drawer-open {
    themselves at the cart, so the "Buy more & save" panel read as decoration.
    This is the line that answers "what do I actually pay for 10?".
 
-   Green, not orange: it is a saving being confirmed, not the next action.
-   #146c43 on the pale green measures well past AA at this size. */
+   It sits on its own row beneath the stepper and the add button, never beside
+   them — as a third flex item in that row it stole width from the button and
+   wrapped its label onto three lines.
+
+   Badge / statement / footnote, always in that order, so the eye lands on the
+   rate first and the numbers can change without anything moving. Green because
+   it confirms a saving; the orange CTA beside it stays the only call to
+   action. */
 .pdp__bulknote {
-  margin: 10px 0 0;
-  padding: 9px 13px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  width: 100%;
+  margin: 0;
+  padding: 11px 14px;
+  border: 1px solid rgba(20, 108, 67, 0.22);
   border-radius: var(--r-ctrl);
-  background: rgba(20, 108, 67, 0.09);
-  color: #146c43;
+  background: linear-gradient(180deg, rgba(20,108,67,0.07), rgba(20,108,67,0.04));
   font-size: 14px;
-  font-weight: 600;
-  line-height: 1.45;
+  line-height: 1.35;
+  /* Digits keep a fixed advance so the row does not twitch as the total
+     changes on every press of the stepper. */
+  font-variant-numeric: tabular-nums;
 }
 .pdp__bulknote[hidden] { display: none; }
-.pdp__bulknote b { font-weight: 800; }
-.pdp__bulknote span {
+
+.pdp__bulknote-badge {
+  flex: none;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: #146c43;
+  color: #fff;
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.pdp__bulknote-main { color: var(--navy); font-weight: 600; }
+.pdp__bulknote-main b { font-weight: 800; }
+.pdp__bulknote-sub {
+  flex-basis: 100%;
   color: var(--muted-ink);
+  font-size: 12.5px;
   font-weight: 500;
+}
+
+/* Not there yet: the same shape in the store's own orange, so "unlocked" and
+   "one more step" are told apart without reading a word. */
+.pdp__bulknote.is-next {
+  border-color: rgba(232, 119, 34, 0.28);
+  background: linear-gradient(180deg, rgba(232,119,34,0.08), rgba(232,119,34,0.04));
+}
+.pdp__bulknote.is-next .pdp__bulknote-badge {
+  background: var(--orange);
+  color: var(--navy);   /* navy on orange = 5.11:1; white would be 2.96 */
 }
 
 /* The tier the current quantity has reached. The panel already marks the

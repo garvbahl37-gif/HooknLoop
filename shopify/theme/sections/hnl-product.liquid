@@ -255,14 +255,18 @@
               The add now happens without a page load, so nothing announces it.
               This says so once, for screen readers only.
             {%- endcomment -%}
-            {%- comment -%}
-              Volume saving for the quantity currently chosen, filled by
-              applyBulk(). Starts hidden so it never flashes an empty row
-              before the first render.
-            {%- endcomment -%}
-            <p class="pdp__bulknote" data-hnl-bulk-note hidden></p>
             <p id="hnl-cart-live" class="visually-hidden" role="status" aria-live="polite"></p>
           </div>
+
+          {%- comment -%}
+            Volume saving for the quantity currently chosen, filled by
+            applyBulk(). It sits OUTSIDE .pdp__cta-row on purpose: that row is
+            a flex line holding the stepper and the add button, so a third item
+            in it stole width from the button and wrapped its label to three
+            lines. .pdp__cta is a column, so here it gets its own full-width
+            line beneath. Starts hidden so it never flashes an empty row.
+          {%- endcomment -%}
+          <p class="pdp__bulknote" data-hnl-bulk-note hidden></p>
 
           {%- comment -%}
             Shopify's own accelerated checkout — Shop Pay and whatever else this
@@ -642,15 +646,27 @@
 
     setAll('[data-hnl-total]', function (e) { e.textContent = money(now); });
 
+    /* Three parts, always in the same order and the same places: a badge
+       carrying the rate, one line of plain language, and a quiet footnote.
+       Built as elements rather than a sentence so the numbers can change
+       without the layout shifting. */
     var note = root.querySelector('[data-hnl-bulk-note]');
     if (note) {
       if (t) {
-        note.innerHTML = '<b>' + t.pct + '% off</b> at ' + qty + ' &mdash; you save '
-                       + money(full - now) + ' <span>applied at checkout</span>';
+        note.className = 'pdp__bulknote is-on';
+        note.innerHTML =
+          '<span class="pdp__bulknote-badge">' + t.pct + '% off</span>' +
+          '<span class="pdp__bulknote-main">You save <b>' + money(full - now) + '</b> on ' + qty + '</span>' +
+          '<span class="pdp__bulknote-sub">Applied automatically at checkout</span>';
         note.hidden = false;
       } else if (tiers.length) {
         var next = tiers[0];
-        note.innerHTML = 'Add ' + (next.min - qty) + ' more for <b>' + next.pct + '% off</b>';
+        var away = next.min - qty;
+        note.className = 'pdp__bulknote is-next';
+        note.innerHTML =
+          '<span class="pdp__bulknote-badge">' + next.pct + '% off</span>' +
+          '<span class="pdp__bulknote-main">Add <b>' + away + ' more</b> to unlock</span>' +
+          '<span class="pdp__bulknote-sub">Volume pricing, no code needed</span>';
         note.hidden = false;
       } else {
         note.hidden = true;
