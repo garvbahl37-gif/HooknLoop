@@ -112,12 +112,27 @@
       {%- endfor -%}
 
       {%- comment -%}
-        Industries. Rendered only once the page exists in Shopify — a theme
-        cannot create pages (Admin API only), and a nav item pointing at a 404
-        is worse than no nav item.
+        Industries dropdown — the React header's INDUSTRY_MENU: the index plus
+        one entry per guide. Each item renders only if its page exists, so a
+        guide that has not been created yet cannot leave a dead link.
       {%- endcomment -%}
       {%- if pages['industries'] != blank and pages['industries'].handle -%}
-        <li class="nav__item"><a href="/pages/industries" class="nav__link">Industries</a></li>
+        <li class="nav__item nav__item--has">
+          <a href="/pages/industries" class="nav__link">Industries
+            <svg class="nav__chev" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="m6 9 6 6 6-6"/></svg>
+          </a>
+          <div class="nav__drop">
+              {%- if pages['industries'] != blank and pages['industries'].handle -%}<a href="/pages/industries">All industries</a>{%- endif -%}
+              {%- if pages['clothing-garments'] != blank and pages['clothing-garments'].handle -%}<a href="/pages/clothing-garments">Clothing & Garments</a>{%- endif -%}
+              {%- if pages['upholstery-furniture'] != blank and pages['upholstery-furniture'].handle -%}<a href="/pages/upholstery-furniture">Upholstery & Furniture</a>{%- endif -%}
+              {%- if pages['schools-education'] != blank and pages['schools-education'].handle -%}<a href="/pages/schools-education">Schools & Education</a>{%- endif -%}
+              {%- if pages['signage-displays'] != blank and pages['signage-displays'].handle -%}<a href="/pages/signage-displays">Signage & Displays</a>{%- endif -%}
+              {%- if pages['automotive-caravan-rv'] != blank and pages['automotive-caravan-rv'].handle -%}<a href="/pages/automotive-caravan-rv">Automotive, Caravan & RV</a>{%- endif -%}
+              {%- if pages['medical-aged-care'] != blank and pages['medical-aged-care'].handle -%}<a href="/pages/medical-aged-care">Medical & Aged Care</a>{%- endif -%}
+              {%- if pages['warehousing-logistics'] != blank and pages['warehousing-logistics'].handle -%}<a href="/pages/warehousing-logistics">Warehousing & Logistics</a>{%- endif -%}
+              {%- if pages['construction-industrial'] != blank and pages['construction-industrial'].handle -%}<a href="/pages/construction-industrial">Construction & Industrial</a>{%- endif -%}
+          </div>
+        </li>
       {%- endif -%}
     </ul>
   </div>
@@ -162,7 +177,22 @@
         {%- endif -%}
       {%- endfor -%}
       {%- if pages['industries'] != blank and pages['industries'].handle -%}
-        <a href="/pages/industries" class="mdrawer__link">Industries</a>
+        <div class="mdrawer__group">
+          <button class="mdrawer__acc" aria-expanded="false">
+            Industries<svg class="mdrawer__chev" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <div class="mdrawer__sub">
+            {%- if pages['industries'] != blank and pages['industries'].handle -%}<a href="/pages/industries">All industries</a>{%- endif -%}
+            {%- if pages['clothing-garments'] != blank and pages['clothing-garments'].handle -%}<a href="/pages/clothing-garments">Clothing & Garments</a>{%- endif -%}
+            {%- if pages['upholstery-furniture'] != blank and pages['upholstery-furniture'].handle -%}<a href="/pages/upholstery-furniture">Upholstery & Furniture</a>{%- endif -%}
+            {%- if pages['schools-education'] != blank and pages['schools-education'].handle -%}<a href="/pages/schools-education">Schools & Education</a>{%- endif -%}
+            {%- if pages['signage-displays'] != blank and pages['signage-displays'].handle -%}<a href="/pages/signage-displays">Signage & Displays</a>{%- endif -%}
+            {%- if pages['automotive-caravan-rv'] != blank and pages['automotive-caravan-rv'].handle -%}<a href="/pages/automotive-caravan-rv">Automotive, Caravan & RV</a>{%- endif -%}
+            {%- if pages['medical-aged-care'] != blank and pages['medical-aged-care'].handle -%}<a href="/pages/medical-aged-care">Medical & Aged Care</a>{%- endif -%}
+            {%- if pages['warehousing-logistics'] != blank and pages['warehousing-logistics'].handle -%}<a href="/pages/warehousing-logistics">Warehousing & Logistics</a>{%- endif -%}
+            {%- if pages['construction-industrial'] != blank and pages['construction-industrial'].handle -%}<a href="/pages/construction-industrial">Construction & Industrial</a>{%- endif -%}
+          </div>
+        </div>
       {%- endif -%}
     </nav>
 

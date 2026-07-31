@@ -201,7 +201,7 @@
         "page_handle": "",
         "center": true,
         "narrow": true,
-        "skip_handles": "about-us,blog,bulk-orders,contact,customer-service,industries,privacy-policy,return-policy,shipping-delivery,terms-conditions"
+        "skip_handles": "about-us,automotive-caravan-rv,blog,bulk-orders,clothing-garments,construction-industrial,contact,customer-service,industries,medical-aged-care,privacy-policy,return-policy,schools-education,shipping-delivery,signage-displays,terms-conditions,upholstery-furniture,warehousing-logistics"
       }
     },
     "hnl_industries": {
@@ -220,6 +220,10 @@
         "cta_label": "Shop the range",
         "cta_link": "/collections/all"
       }
+    },
+    "hnl_industry": {
+      "type": "hnl-industry",
+      "settings": {}
     }
   },
   "order": [
@@ -233,6 +237,7 @@
     "hnl_blog",
     "hnl_industries",
     "hnl_aboutus",
+    "hnl_industry",
     "hnl_page"
   ]
 }
