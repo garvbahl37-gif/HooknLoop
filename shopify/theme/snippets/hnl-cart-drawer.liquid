@@ -129,10 +129,36 @@
       .then(function (data) { cart = data; render(data); return data; });
   }
 
+  {%- comment -%}
+    body { overflow: hidden } does not lock scrolling in mobile Safari — the
+    page still rubber-bands behind the panel, and because the drawer is
+    position: fixed against a viewport that changes height as the URL bar
+    collapses, the whole sheet visibly slides while you drag. That is the
+    "moves up" symptom.
+
+    Pinning the body at its current offset is what actually holds it. The
+    scroll position is restored on close, so the shopper returns to exactly
+    where they were rather than to the top of the page.
+  {%- endcomment -%}
+  var lockedAt = 0;
+
+  function lockScroll() {
+    lockedAt = window.pageYOffset || document.documentElement.scrollTop || 0;
+    document.body.style.top = '-' + lockedAt + 'px';
+    document.body.classList.add('drawer-open');
+  }
+
+  function unlockScroll() {
+    document.body.classList.remove('drawer-open');
+    document.body.style.top = '';
+    /* 'auto' — an animated jump back up would look like a second bug. */
+    window.scrollTo({ top: lockedAt, behavior: 'auto' });
+  }
+
   function open() {
     lastFocus = document.activeElement;
     root.hidden = false;
-    document.body.classList.add('drawer-open');
+    lockScroll();
     refresh().then(function () {
       var f = root.querySelector('.cd__close');
       if (f) f.focus();
@@ -141,7 +167,7 @@
 
   function close() {
     root.hidden = true;
-    document.body.classList.remove('drawer-open');
+    unlockScroll();
     if (lastFocus && lastFocus.focus) lastFocus.focus();
   }
 

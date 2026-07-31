@@ -3910,3 +3910,34 @@ body.drawer-open { overflow: hidden; }
 }
 .icn--me:hover .icn__ini { background: var(--orange); color: var(--navy); }
 .icn--me:focus-visible .icn__ini { outline: 2px solid var(--orange); outline-offset: 2px; }
+
+/* ── Cart drawer on mobile: hold the page still ───────────────────────────
+   cartdrawer.css locks the background with body { overflow: hidden }, which
+   mobile Safari ignores — the page rubber-bands behind the sheet, and since
+   the sheet is fixed against a viewport that resizes as the URL bar collapses,
+   the whole panel slides with it.
+
+   The JS pins the body at its current offset and sets `top`, so these three
+   properties are what make that hold. Restoring the offset on close is handled
+   in JS, so the shopper does not get dumped at the top of the page. */
+body.drawer-open {
+  position: fixed;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* dvh tracks the browser chrome as it collapses; the vh line is the fallback
+   for anything that does not support it. Without this the panel is sized to
+   the tallest viewport and its footer sits below the fold. */
+.cd,
+.cd__panel {
+  height: 100vh;
+  height: 100dvh;
+}
+
+/* Scrolling the item list must not chain to the page underneath once it hits
+   an end — that chaining is the other half of the drag-the-page-behind bug. */
+.cd__items {
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
