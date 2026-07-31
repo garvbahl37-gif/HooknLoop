@@ -156,7 +156,7 @@
         "id": "hnl_popup_points",
         "label": "Points",
         "info": "One per line.",
-        "default": "Discounts and bulk price drops first\nTrade pricing on volume orders\nFree shipping on orders over $200\nNo spam — unsubscribe any time"
+        "default": "Discounts and bulk price drops first\nTrade pricing on volume orders\nFree shipping on orders over $300\nNo spam — unsubscribe any time"
       },
       {
         "type": "header",

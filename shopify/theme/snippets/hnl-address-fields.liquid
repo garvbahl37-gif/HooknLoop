@@ -1,0 +1,70 @@
+{%- comment -%}
+  The address field set, shared by the "new address" form and every edit form
+  on /account/addresses. One copy so the two can never diverge.
+
+  Country and province use Shopify's own selectors: country_option_tags emits
+  every country with its provinces as data attributes, and the small script at
+  the bottom of hnl-addresses swaps the province list to match. Hand-rolling
+  that list would go stale.
+
+  Usage: {% render 'hnl-address-fields', form: form, address: address %}
+{%- endcomment -%}
+
+{%- if form.errors -%}
+  <p class="acct__err" role="alert">{{ form.errors | default_errors }}</p>
+{%- endif -%}
+
+<div class="acct__row2">
+  <label class="fld">
+    <span>First name</span>
+    <input type="text" name="address[first_name]" autocomplete="given-name" value="{{ address.first_name }}" placeholder="First name">
+  </label>
+  <label class="fld">
+    <span>Last name</span>
+    <input type="text" name="address[last_name]" autocomplete="family-name" value="{{ address.last_name }}" placeholder="Last name">
+  </label>
+</div>
+
+<label class="fld">
+  <span>Company <em>(optional)</em></span>
+  <input type="text" name="address[company]" autocomplete="organization" value="{{ address.company }}" placeholder="Company name">
+</label>
+
+<label class="fld">
+  <span>Address</span>
+  <input type="text" name="address[address1]" autocomplete="address-line1" value="{{ address.address1 }}" placeholder="Street address">
+</label>
+
+<label class="fld">
+  <span>Apartment, suite, etc. <em>(optional)</em></span>
+  <input type="text" name="address[address2]" autocomplete="address-line2" value="{{ address.address2 }}" placeholder="Unit, level, etc.">
+</label>
+
+<div class="acct__row2">
+  <label class="fld">
+    <span>Suburb</span>
+    <input type="text" name="address[city]" autocomplete="address-level2" value="{{ address.city }}" placeholder="Suburb">
+  </label>
+  <label class="fld">
+    <span>Postcode</span>
+    <input type="text" name="address[zip]" autocomplete="postal-code" value="{{ address.zip }}" placeholder="Postcode">
+  </label>
+</div>
+
+<div class="acct__row2">
+  <label class="fld">
+    <span>Country</span>
+    <select name="address[country]" data-hnl-country data-default="{{ address.country }}" autocomplete="country">
+      {{ country_option_tags }}
+    </select>
+  </label>
+  <label class="fld" data-hnl-province-wrap>
+    <span>State / Territory</span>
+    <select name="address[province]" data-hnl-province data-default="{{ address.province }}" autocomplete="address-level1"></select>
+  </label>
+</div>
+
+<label class="fld">
+  <span>Phone <em>(optional)</em></span>
+  <input type="tel" name="address[phone]" autocomplete="tel" value="{{ address.phone }}" placeholder="For delivery questions">
+</label>

@@ -1,0 +1,116 @@
+{%- comment -%}
+  Saved addresses. Replaces Suruchi's main-addresses.
+
+  Shopify's classic address forms need one form per address plus one for the
+  new one, and deletes are a POST with _method=delete — a link cannot do it.
+  Each edit panel is a <details> so the page opens as a readable list of cards
+  rather than a stack of expanded forms.
+
+  {{ form.errors }} only ever belongs to the form being submitted, so errors
+  surface on the right card.
+{%- endcomment -%}
+
+{% render 'hnl-account-shell', part: 'open', current: 'addresses',
+   eyebrow: 'Your account', title: 'Saved Addresses',
+   subtitle: 'Delivery addresses for faster checkout on repeat orders.' %}
+
+<div class="acct__card">
+  <details class="acct__disclose">
+    <summary>
+      <span class="acct__disclose-t">Add a new address</span>
+      <span class="acct__disclose-i" aria-hidden="true">+</span>
+    </summary>
+    {%- form 'customer_address', customer.new_address, class: 'acct__form acct__form--inset' -%}
+      {% render 'hnl-address-fields', form: form, address: customer.new_address %}
+      <label class="acct__check">
+        <input type="checkbox" name="address[default]" value="1">
+        <span>Set as my default address</span>
+      </label>
+      <button type="submit" class="btn btn--primary acct__submit">Save address</button>
+    {%- endform -%}
+  </details>
+</div>
+
+{%- if customer.addresses.size > 0 -%}
+  <div class="acct__addrgrid">
+    {%- for address in customer.addresses -%}
+      <section class="acct__card acct__addrcard">
+        {%- if address == customer.default_address -%}
+          <span class="acct__pill acct__pill--ok">Default</span>
+        {%- endif -%}
+        <address class="acct__address">{{ address | format_address }}</address>
+
+        <div class="acct__addrcard-acts">
+          <details class="acct__disclose acct__disclose--sm">
+            <summary><span class="acct__disclose-t">Edit</span></summary>
+            {%- form 'customer_address', address, class: 'acct__form acct__form--inset' -%}
+              {% render 'hnl-address-fields', form: form, address: address %}
+              <label class="acct__check">
+                <input type="checkbox" name="address[default]" value="1" {% if address == customer.default_address %}checked{% endif %}>
+                <span>Set as my default address</span>
+              </label>
+              <button type="submit" class="btn btn--primary acct__submit">Update</button>
+            {%- endform -%}
+          </details>
+
+          {%- comment -%} Deleting an address is a POST, and irreversible. {%- endcomment -%}
+          <form method="post" action="/account/addresses/{{ address.id }}">
+            <input type="hidden" name="_method" value="delete">
+            <button type="submit" class="acct__danger"
+                    onclick="return confirm('Delete this address?');">Delete</button>
+          </form>
+        </div>
+      </section>
+    {%- endfor -%}
+  </div>
+{%- else -%}
+  <div class="acct__card acct__empty">
+    <h2>No saved addresses</h2>
+    <p>Add one above and it will be filled in for you at checkout.</p>
+  </div>
+{%- endif -%}
+
+{% render 'hnl-account-shell', part: 'close' %}
+
+<script>
+(function () {
+  /* country_option_tags carries each country's provinces in a data attribute.
+     This fills the matching province select and hides it for countries that
+     have none, so the field never shows an empty dropdown. Runs per form, so
+     the new-address form and every edit form behave the same. */
+  function wire(country) {
+    var wrap = country.closest('form');
+    var province = wrap && wrap.querySelector('[data-hnl-province]');
+    if (!province) return;
+    var holder = province.closest('[data-hnl-province-wrap]');
+
+    function sync() {
+      var opt = country.options[country.selectedIndex];
+      var list = [];
+      try { list = JSON.parse(opt.getAttribute('data-provinces') || '[]'); } catch (e) {}
+      province.innerHTML = '';
+      if (!list.length) { if (holder) holder.hidden = true; province.disabled = true; return; }
+      if (holder) holder.hidden = false;
+      province.disabled = false;
+      var want = province.getAttribute('data-default');
+      list.forEach(function (p) {
+        var o = document.createElement('option');
+        o.value = p[0]; o.textContent = p[1];
+        if (p[0] === want || p[1] === want) o.selected = true;
+        province.appendChild(o);
+      });
+    }
+
+    var def = country.getAttribute('data-default');
+    if (def) country.value = def;
+    sync();
+    country.addEventListener('change', sync);
+  }
+
+  document.querySelectorAll('[data-hnl-country]').forEach(wire);
+})();
+</script>
+
+{% schema %}
+{ "name": "HooknLoop addresses", "settings": [] }
+{% endschema %}

@@ -1,0 +1,50 @@
+{%- comment -%}
+  Shared chrome for every customer account page: hero, side nav, main column.
+
+  One snippet so the five templates cannot drift — Suruchi's stock sections
+  each carried their own heading treatment, which is most of why the account
+  area looked unrelated to the storefront.
+
+  Usage:
+    {% render 'hnl-account-shell', part: 'open', title: 'Your Orders',
+       eyebrow: 'Welcome back', subtitle: '...', current: 'orders' %}
+    ...content...
+    {% render 'hnl-account-shell', part: 'close' %}
+
+  `current`: orders | addresses. `nav: false` drops the sidebar for the
+  logged-out pages (login, register, reset), which have nowhere to navigate to.
+{%- endcomment -%}
+
+{%- if part == 'open' -%}
+  <div id="main" class="page acct{% if nav == false %} acct--solo{% endif %}">
+    <header class="acct__hero">
+      <div class="wrap">
+        {%- if eyebrow != blank -%}<span class="acct__eyebrow">{{ eyebrow }}</span>{%- endif -%}
+        <h1 class="acct__h1">{{ title }}</h1>
+        {%- if subtitle != blank -%}<p class="acct__lead">{{ subtitle }}</p>{%- endif -%}
+      </div>
+    </header>
+
+    <div class="wrap acct__body">
+      {%- unless nav == false -%}
+        <nav class="acct__nav" aria-label="Account">
+          <a href="{{ routes.account_url }}"{% if current == 'orders' %} class="is-on" aria-current="page"{% endif %}>Orders</a>
+          <a href="{{ routes.account_addresses_url }}"{% if current == 'addresses' %} class="is-on" aria-current="page"{% endif %}>Addresses</a>
+          <a href="/pages/customer-service">Help</a>
+          {%- comment -%} Log out is a POST in classic accounts; a link 404s. {%- endcomment -%}
+          <form method="post" action="{{ routes.account_logout_url }}" class="acct__logout">
+            <input type="hidden" name="form_type" value="customer_logout">
+            <input type="hidden" name="utf8" value="✓">
+            <button type="submit">Log out</button>
+          </form>
+        </nav>
+      {%- endunless -%}
+
+      <div class="acct__main">
+{%- endif -%}
+
+{%- if part == 'close' -%}
+      </div>
+    </div>
+  </div>
+{%- endif -%}

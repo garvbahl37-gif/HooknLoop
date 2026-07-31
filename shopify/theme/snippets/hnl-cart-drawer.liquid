@@ -40,7 +40,7 @@
   var body     = root.querySelector('[data-hnl-cd-body]');
   var titleEl  = root.querySelector('[data-hnl-cd-title]');
   var lastFocus = null;
-  var FREE_SHIP = {{ settings.hnl_free_ship_threshold | default: 20000 }};   /* cents */
+  var FREE_SHIP = {{ settings.hnl_free_ship_threshold | default: 30000 }};   /* cents */
 
   function money(c) { return '$' + (c / 100).toFixed(2); }
   function esc(s) {

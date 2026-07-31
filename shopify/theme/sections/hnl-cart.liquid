@@ -12,7 +12,7 @@
       hand-drawn logos
 
   The free-shipping progress bar and the trust list carry over unchanged; the
-  threshold is a setting because $200 will change before this file does.
+  threshold is a setting because $300 will change before this file does.
 
   Dropped: React's ShippingEstimator. Shopify calculates real rates at checkout
   from the customer's address, and a second estimator that guesses beforehand
@@ -206,7 +206,7 @@
   "name": "HooknLoop cart",
   "tag": "section",
   "settings": [
-    { "type": "number", "id": "free_ship_threshold", "label": "Free shipping over ($)", "default": 200, "info": "Set to 0 to hide the progress bar. This only displays the goal — set the actual free-shipping rate in Settings > Shipping." },
+    { "type": "number", "id": "free_ship_threshold", "label": "Free shipping over ($)", "default": 300, "info": "Set to 0 to hide the progress bar. This only displays the goal — set the actual free-shipping rate in Settings > Shipping." },
     { "type": "textarea", "id": "trust", "label": "Trust list", "info": "One per line.", "default": "✓ GST tax invoice on every order\n✓ Dispatched 1–2 business days Australia-wide\n✓ Ordered the wrong side? We'll sort it" }
   ]
 }

@@ -41,7 +41,7 @@
       "block_order": ["m_products", "m_velcro", "m_fr", "l_bulk"],
       "settings": {
         "promo_lead": "Fast Australia-wide delivery",
-        "promo_hl1": "Free shipping over $200",
+        "promo_hl1": "Free shipping over $300",
         "promo_opt": "Best price in Australia",
         "promo_hl2": "★ 5-star rated store",
         "search_placeholder": "Search our store"

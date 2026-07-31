@@ -80,7 +80,7 @@
         "ladder_heading": "The more you order, the more you save",
         "ladder_sub": "Volume discounts scale with your order — no code needed. Large and recurring runs go further again, confirmed on your quote.",
         "tiers": "5+ rolls | 5\n10+ rolls | 10\n20+ rolls | 20\n50+ rolls | 30",
-        "strip": "Free shipping over $200\nGST tax invoice + PO\nAny width, no minimums\n1–2 day dispatch",
+        "strip": "Free shipping over $300\nGST tax invoice + PO\nAny width, no minimums\n1–2 day dispatch",
         "page_handle": "bulk-orders",
         "hero_eyebrow": "For trade & bulk buyers",
         "hero_title": "Bulk Orders",
@@ -127,7 +127,7 @@
       "type": "hnl-policy",
       "settings": {
         "eyebrow": "Delivery",
-        "highlights": "1–2 days | Dispatch time\nFree | Shipping over $200\n2–5 days | Metro delivery\n3–7 days | Regional delivery",
+        "highlights": "1–2 days | Dispatch time\nFree | Shipping over $300\n2–5 days | Metro delivery\n3–7 days | Regional delivery",
         "help_heading": "Need a hand?",
         "help_body": "Talk to a real person in Australia about your order, delivery or a return.",
         "help_email": "info@hooknloop.com.au",
