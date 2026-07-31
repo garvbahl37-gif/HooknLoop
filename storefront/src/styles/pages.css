@@ -185,7 +185,7 @@
 .cart__cont { display: block; text-align: center; color: var(--blue); font-weight: 600; font-size: 0.9rem; }
 .cart__trust { margin-top: 20px; display: grid; gap: 8px; } .cart__trust li { font-size: 0.82rem; color: var(--muted-ink); }
 .cart__empty { text-align: center; padding: clamp(48px,8vw,110px) var(--sp-5); }
-.cart__empty-icn { font-size: 3rem; } .cart__empty .page__h1 { margin: 16px 0 8px; } .cart__empty .btn { margin-top: 20px; }
+.cart__empty-icn { font-size: 3rem; display: flex; justify-content: center; color: var(--sky-edge); } .cart__empty .page__h1 { margin: 16px 0 8px; } .cart__empty .btn { margin-top: 20px; }
 
 @media (max-width: 900px){
   .coll__body { grid-template-columns: 1fr; }
