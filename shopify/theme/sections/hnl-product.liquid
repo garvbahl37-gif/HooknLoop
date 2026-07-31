@@ -134,9 +134,17 @@
         {%- endif -%}
       </div>
 
-      <form method="post" action="{{ routes.cart_add_url }}" id="hnl-pdp-form" data-hnl-pdp-form>
-        <input type="hidden" name="form_type" value="product">
-        <input type="hidden" name="utf8" value="✓">
+      {%- comment -%}
+        Liquid's form tag, not a hand-written <form>. That distinction is why the
+        Shop Pay button never appeared: {{ form | payment_button }} needs the
+        `form` object this tag creates, and a raw <form> leaves it nil, so the
+        filter silently rendered nothing. Dynamic checkout was enabled on the
+        store the whole time — the live product page renders the button fine.
+
+        The tag also supplies form_type and utf8 itself, so those hidden inputs
+        are gone.
+      {%- endcomment -%}
+      {%- form 'product', product, id: 'hnl-pdp-form', data-hnl-pdp-form: '' -%}
         <input type="hidden" name="id" value="{{ product_variant.id }}" data-hnl-variant-id>
 
         {%- for option in product.options_with_values -%}
@@ -236,7 +244,7 @@
           {%- endcomment -%}
           {{ form | payment_button }}
         </div>
-      </form>
+      {%- endform -%}
 
       <div class="pdp__policies">
         <a href="/pages/shipping-delivery"><span class="pdp__tico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6h11v11H2zM13 9h4l3 3v5h-7"/><circle cx="6" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg></span>Shipping</a>

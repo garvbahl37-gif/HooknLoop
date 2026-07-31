@@ -114,14 +114,21 @@
     
 
      
-  <script>
-document.addEventListener("DOMContentLoaded", function() {
-  var path = window.location.pathname;
-  if (!path.endsWith("/")) {
-    window.location.replace(path + "/" + window.location.search);
-  }
-});
-</script>
+  {%- comment -%}
+    Removed: a DOMContentLoaded handler that did
+      if (!path.endsWith("/")) window.location.replace(path + "/" + search)
+
+    It forced a trailing slash on every URL, so every page on the site loaded,
+    then immediately threw that load away and loaded again — the "renders once
+    then reloads" behaviour. Shopify serves /pages/industries and
+    /pages/industries/ both with 200 (measured), so it was buying nothing:
+    no link changes, no 404s either way.
+
+    It was also working against the store. Shopify's own canonical tag emits the
+    URL *without* the trailing slash, so the script sent every visitor to the
+    non-canonical form; and the second load resets LCP, which feeds Google Ads
+    landing-page experience on a store that is actively paying for traffic.
+  {%- endcomment -%}
 
 
 <script type="application/ld+json">

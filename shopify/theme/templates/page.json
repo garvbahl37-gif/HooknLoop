@@ -211,15 +211,55 @@
       }
     },
     "hnl_aboutus": {
-      "type": "hnl-page",
+      "type": "hnl-about",
       "settings": {
         "page_handle": "about-us",
         "eyebrow": "About HooknLoop",
-        "center": true,
-        "narrow": true,
-        "cta_label": "Shop the range",
-        "cta_link": "/collections/all"
-      }
+        "heading": "About Us",
+        "lead": "The right fastening solution should be simple to find, easy to order and dependable when you need it.",
+        "stats": "Australian | Owned and operated\nGST | Tax invoice on every order\n1–2 days | Typical dispatch\n6 years | Supplying the trades",
+        "quote": "Building long-term relationships is our prime focus — being a supplier you can trust and rely on.",
+        "values_heading": "What You Can Expect",
+        "cta_label": "Shop the Range",
+        "cta_link": "/collections/all",
+        "cta_note": "Free shipping over $200"
+      },
+      "blocks": {
+        "v1": {
+          "type": "value",
+          "settings": {
+            "title": "Australian Owned",
+            "body": "An Australian online store supplying individuals, tradespeople, schools, organisations and businesses right across the country."
+          }
+        },
+        "v2": {
+          "type": "value",
+          "settings": {
+            "title": "Fair, Honest Pricing",
+            "body": "Reliable products at fair prices, with a GST tax invoice on every order and no surprises at checkout."
+          }
+        },
+        "v3": {
+          "type": "value",
+          "settings": {
+            "title": "A Hassle-Free Process",
+            "body": "A simple path from first visit to delivered order, whether it is one roll for a home project or a standing business requirement."
+          }
+        },
+        "v4": {
+          "type": "value",
+          "settings": {
+            "title": "Advice You Can Use",
+            "body": "Clear information and honest advice on width, backing and strength — so you order the right thing the first time."
+          }
+        }
+      },
+      "block_order": [
+        "v1",
+        "v2",
+        "v3",
+        "v4"
+      ]
     },
     "hnl_industry": {
       "type": "hnl-industry",

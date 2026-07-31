@@ -852,4 +852,341 @@
   .ts__morewrap { animation: none; }
   [data-hnl-more-toggle] svg { transition: none; }
 }
+
+/* ── Footer: a fourth link column ─────────────────────────────────────────
+   sections.css sizes .ft__main for five children — brand, three link columns
+   and the newsletter. The Industries column makes six, and without a sixth
+   track it wraps onto a second row under the brand. The link tracks are
+   narrowed rather than the brand, so the wordmark and phone number stay on
+   one line. Tablet/mobile already collapse to 1fr 1fr and place brand and
+   .ft__col--connect explicitly, so the extra column just flows there. */
+@media (min-width: 1001px) {
+  .ft__main { grid-template-columns: 1.25fr 1fr 1fr 1fr 1fr 1.15fr; }
+}
+
+/* ── Judge.me review widget, wearing the React .rvw design ────────────────
+   The reviews themselves stay Judge.me's: their app renders the list, owns
+   moderation, and its "Write a review" modal is what actually submits. Only
+   the appearance is ours. Rewriting their DOM into .rvw markup was the other
+   option and was rejected — it would break every time they ship a widget
+   update, and it would take the submit form with it.
+
+   Judge.me's new widget is a Vue app that themes itself entirely through
+   --jm-* custom properties, set inline on the container. Stylesheet rules with
+   !important beat a non-important inline style, which is the only reason these
+   land. The shipped values are a generic teal (#108474) on black text; the
+   store is navy and orange.
+
+   Their body font is already DM Sans — the same face as --font-body — so
+   nothing here touches font-family. */
+#judgeme_product_reviews [data-widget-container="review-widget"] {
+  --jm-review-widget-star-and-histogram-color: #e87722 !important;  /* --orange */
+  --jm-widget-primary-color:                   #e87722 !important;
+  --jm-review-widget-button-color:             #e87722 !important;
+  --jm-review-widget-button-text-color:        #142548 !important;  /* navy on orange = AA 5.11 */
+  --jm-review-widget-form-button-color:        #e87722 !important;
+  --jm-review-widget-form-button-text-color:   #142548 !important;
+  --jm-review-widget-text-color:               #142548 !important;  /* --navy, not #000 */
+  --jm-review-widget-lighter-text-color:       #5a6b8c !important;  /* --muted-ink */
+  --jm-review-widget-form-text-color:          #142548 !important;
+  --jm-widget-border-radius:                   16px !important;     /* --r-card */
+  --jm-review-widget-form-border-radius:       16px !important;
+  --jm-review-widget-form-field-background-color: #f4f7fb !important; /* --cloud */
+  --jm-review-widget-bar-chart-height:         6px !important;      /* .rvw__bar-track */
+}
+
+/* Section heading — .rvw h2: display face, 800, navy */
+#judgeme_product_reviews .jm-review-widget-minimal-header__title {
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 26px;
+  color: var(--navy);
+  letter-spacing: -0.01em;
+}
+
+/* Average score — .rvw__avg is the one oversized number in the block */
+#judgeme_product_reviews .jm-average-rating-display {
+  font-family: var(--font-head);
+  color: var(--navy);
+}
+
+/* "Write a review" — .btn.btn--primary, including its lift on hover */
+#judgeme_product_reviews .jm-button.jm-button--primary {
+  border-radius: 10px;                      /* --r-ctrl */
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  min-height: 50px;
+  box-shadow: 0 8px 22px rgba(232,119,34,0.34);   /* --shadow-cta */
+  transition: transform 0.14s var(--ease), background 0.18s var(--ease);
+}
+#judgeme_product_reviews .jm-button.jm-button--primary:hover {
+  background: #f0842a !important;
+  transform: translateY(-1px);
+}
+/* Filter/sort controls read as .btn--ghost's quieter sibling, not as CTAs.
+   Deliberately NOT touching .jm-sort-filter__select: it is a native <select>
+   laid transparently over the sort icon, so giving it a colour paints its
+   selected option ("Most Recent") straight through the glyph. */
+#judgeme_product_reviews .jm-button.jm-button--secondary {
+  border-radius: 10px;
+  border-color: var(--line-card);
+  color: var(--muted-ink);
+}
+
+/* Reviewer avatar — .rvw__avatar: solid navy disc, white initial */
+#judgeme_product_reviews .jm-reviewer-avatar--with-initial {
+  background: var(--navy) !important;
+}
+#judgeme_product_reviews .jm-reviewer-avatar__initial {
+  color: #fff !important;
+  font-weight: 800;
+}
+
+/* Verified pill — .rvw__vf: green, uppercase, tight */
+#judgeme_product_reviews .jm-verified-buyer-badge {
+  background: rgba(20,108,67,0.10);
+  border-color: transparent;
+  border-radius: 999px;
+}
+#judgeme_product_reviews .jm-verified-buyer-badge__text {
+  color: #146c43;
+  font-weight: 800;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Review card — .rvw__card: hairline separator, no box */
+#judgeme_product_reviews .jm-review-item { border-bottom: 1px solid var(--line-card); }
+#judgeme_product_reviews .jm-review-item:last-child { border-bottom: 0; }
+#judgeme_product_reviews .jm-review-content__title {
+  font-family: var(--font-head);
+  font-weight: 800;
+  color: var(--navy);
+}
+#judgeme_product_reviews .jm-review-content__body,
+#judgeme_product_reviews .jdgm-review-content__body-content {
+  color: #38455f;                            /* .rvw__body */
+  line-height: 1.6;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #judgeme_product_reviews .jm-button.jm-button--primary { transition: none; }
+  #judgeme_product_reviews .jm-button.jm-button--primary:hover { transform: none; }
+}
+
+/* Judge.me ships a second, older variable set on :root that drives the star
+   glyphs — including the preview badges on every product card, which were
+   rendering teal store-wide, not just inside the review widget. Same element,
+   so !important wins the cascade here. */
+:root {
+  --jdgm-primary-color:            #e87722 !important;
+  --jdgm-secondary-color:          rgba(232,119,34,0.10) !important;
+  --jdgm-star-color:               #e87722 !important;
+  --jdgm-paginate-color:           #e87722 !important;
+  --jdgm-write-review-bg-color:    #e87722 !important;
+  --jdgm-write-review-text-color:  #142548 !important;
+  --jdgm-reviewer-name-color:      #142548 !important;
+}
+
+/* The revamp widget's star glyph reads its colour from neither variable set
+   reliably (measured: still #108474 with both overridden), so it is set
+   directly. Empty stars are the same hue drawn as an outline, exactly as
+   Judge.me draws them, so one declaration covers both states. */
+.jm-star-rating__font-icon,
+.jdgm-star { color: #e87722 !important; }
+
+/* ── About Us page ────────────────────────────────────────────────────────
+   New work, not a React port — the React app had no About page, which is why
+   this page was rendering as bare paragraphs through the generic prose shell.
+   Built from the same tokens as the rest of the redesign: navy ground, one
+   orange flare (the CTA), machined radii, DM Sans. px only, per the note in
+   build-css.sh about Suruchi's 62.5% root. */
+.abt { padding-bottom: clamp(56px, 7vw, 96px); }
+
+.abt__hero {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: flex-end;
+  min-height: clamp(320px, 42vw, 520px);
+  padding: clamp(40px, 6vw, 84px) 0 clamp(32px, 4vw, 56px);
+  background: linear-gradient(160deg, #142548 0%, #24406f 100%);
+  overflow: hidden;
+}
+.abt__hero-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+}
+/* Legibility floor for white type over an unpredictable photo: the scrim is
+   heaviest exactly where the text sits, so the picture stays visible above it. */
+.abt__hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg, rgba(10,18,38,0.30) 0%, rgba(10,18,38,0.55) 45%, rgba(10,18,38,0.88) 100%);
+}
+/* Without a photo there is nothing to hold a 520px band, so the empty state is
+   a shorter panel rather than a wall of navy waiting for an image. */
+.abt__hero--noimg {
+  background: linear-gradient(160deg, #142548 0%, #24406f 100%);
+  min-height: clamp(230px, 26vw, 330px);
+}
+.abt__hero--noimg::after { background: none; }
+
+/* .abt__hero is a flex container, so .wrap shrink-wrapped to its text and its
+   own `margin: 0 auto` then centred it — the hero copy sat 280px right of the
+   gutter every other block aligns to. Filling the row restores the shared edge. */
+.abt__hero-inner { position: relative; width: 100%; }
+.abt__eyebrow {
+  display: inline-block;
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--orange);
+  color: #f0842a;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.abt__h1 {
+  margin: 0;
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: clamp(34px, 5vw, 54px);
+  line-height: 1.06;
+  letter-spacing: -0.02em;
+  color: #fff;
+}
+.abt__lead {
+  max-width: 620px;
+  margin: 16px 0 0;
+  color: rgba(255,255,255,0.88);
+  font-size: clamp(16px, 1.6vw, 19px);
+  line-height: 1.6;
+}
+
+.abt__stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  margin-top: clamp(28px, 4vw, 44px);
+  background: var(--line-card);
+  border: 1px solid var(--line-card);
+  border-radius: var(--r-card);
+  overflow: hidden;
+}
+.abt__stat { background: #fff; padding: 20px 22px; }
+.abt__stat b {
+  display: block;
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 22px;
+  color: var(--navy);
+  line-height: 1.15;
+}
+.abt__stat span { display: block; margin-top: 4px; font-size: 13.5px; color: var(--muted-ink); }
+
+/* Prose: one readable measure, and a lead paragraph that carries the opening
+   line instead of letting six identical paragraphs read as a blog dump. */
+.abt__prose { max-width: 760px; margin-top: clamp(36px, 5vw, 60px); }
+.abt__prose p {
+  margin: 0 0 18px;
+  color: #38455f;
+  font-size: 17px;
+  line-height: 1.78;
+}
+.abt__prose p:first-of-type {
+  color: var(--navy);
+  font-size: clamp(19px, 2vw, 22px);
+  font-weight: 500;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+.abt__prose p:last-child { margin-bottom: 0; }
+.abt__prose a { color: var(--orange-ink); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
+
+.abt__quote {
+  position: relative;
+  max-width: 860px;
+  margin: clamp(36px, 5vw, 56px) 0 0;
+  padding: 28px 32px 28px 64px;
+  background: var(--cloud);
+  border: 0;
+  border-left: 3px solid var(--orange);
+  border-radius: var(--r-card);
+}
+.abt__quote::before {
+  content: '\201C';
+  position: absolute;
+  left: 24px;
+  top: 10px;
+  font-family: var(--font-head);
+  font-size: 54px;
+  line-height: 1;
+  color: var(--orange);
+  opacity: 0.5;
+}
+.abt__quote p {
+  margin: 0;
+  font-family: var(--font-head);
+  font-size: clamp(18px, 2vw, 21px);
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--navy);
+}
+
+.abt__values { margin-top: clamp(44px, 6vw, 72px); }
+.abt__h2 {
+  margin: 0 0 22px;
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: clamp(22px, 2.6vw, 30px);
+  letter-spacing: -0.01em;
+  color: var(--navy);
+}
+.abt__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+.abt__card {
+  padding: 22px 22px 24px;
+  background: #fff;
+  border: 1px solid var(--line-card);
+  border-radius: var(--r-card);
+  transition: transform 0.16s var(--ease), box-shadow 0.2s var(--ease);
+}
+.abt__card:hover { transform: translateY(-3px); box-shadow: var(--shadow-card); }
+.abt__card h3 {
+  margin: 0 0 8px;
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 16px;
+  color: var(--navy);
+}
+.abt__card p { margin: 0; color: var(--muted-ink); font-size: 14.5px; line-height: 1.6; }
+
+.abt__cta {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin-top: clamp(36px, 5vw, 56px);
+}
+.abt__cta-note { color: var(--muted-ink); font-size: 14.5px; }
+
+@media (max-width: 900px) {
+  .abt__stats { grid-template-columns: repeat(2, 1fr); }
+  .abt__grid  { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 560px) {
+  .abt__grid { grid-template-columns: 1fr; }
+  .abt__quote { padding: 24px 22px 24px 52px; }
+  .abt__quote::before { left: 18px; font-size: 44px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .abt__card { transition: none; }
+  .abt__card:hover { transform: none; }
 }

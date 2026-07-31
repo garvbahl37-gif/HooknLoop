@@ -1,0 +1,24 @@
+{%- comment -%}
+  One photo on an industry guide — port of the two <figure> blocks in
+  IndustryPage() (pages/IndustryPages.jsx).
+
+  The filename is derived from the page handle, which is identical to the React
+  slug for all eight guides, so there is nothing per-industry to maintain here:
+  /img/industries/<slug>-hero.webp becomes assets/ind-<slug>-hero.webp.
+
+  asset_url does not fail when a file is missing — it happily returns a URL that
+  404s — so the onerror keeps React's behaviour of hiding the whole figure
+  rather than leaving a broken-image icon in the middle of the article. That
+  matters if a ninth industry page is added before its photos are uploaded.
+
+  Usage: {% render 'hnl-industry-photo', slug: h, variant: 'hero', klass: 'hero', alt: '...' %}
+{%- endcomment -%}
+
+{%- assign file = 'ind-' | append: slug | append: '-' | append: variant | append: '.webp' -%}
+<figure class="ind-art__{{ klass }}">
+  <img src="{{ file | asset_url }}"
+       alt="{{ alt | escape }}"
+       width="1200" height="1200"
+       loading="lazy" decoding="async"
+       onerror="var f=this.closest('figure'); if(f){f.style.display='none'}">
+</figure>
