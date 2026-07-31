@@ -66,11 +66,15 @@
         <a class="icn icn--searchlink" href="{{ routes.search_url }}" aria-label="Search"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></a>
 
         {%- comment -%}
-          Signed out, the link goes through /customer_authentication/login with
-          return_to=/ so the shopper lands back on the storefront after signing
-          in, rather than on Shopify's hosted account dashboard. That path is
-          Shopify's documented way to control the destination with new customer
-          accounts — the old return_to on /account/login is ignored by it.
+          Signed out, the link uses routes.storefront_login_url, which Shopify
+          documents as "direct your customers back to the online store after
+          successful sign in". Two earlier attempts were worse: plain /account
+          hands OAuth a redirect_uri on shopify.com, so the shopper is dropped
+          on the hosted dashboard; and a hand-built
+          /customer_authentication/login?return_to=/ has the return_to stripped
+          out of the OAuth chain entirely (traced: it appears in no hop).
+          storefront_login_url is the theme-supported route for this, so it is
+          the one that gets to be responsible for the destination.
 
           Signed in, the outline person becomes a filled disc with the
           customer's initials, so the header itself answers "am I logged in?".
@@ -98,7 +102,7 @@
             <span class="icn__ini" aria-hidden="true">{{ ini | default: 'H' }}</span>
           </a>
         {%- else -%}
-          <a class="icn icn--account" href="/customer_authentication/login?return_to={{ routes.root_url | url_encode }}" aria-label="Sign in"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></a>
+          <a class="icn icn--account" href="{{ routes.storefront_login_url }}" aria-label="Sign in"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></a>
         {%- endif -%}
 
         <a class="icn icn--wish" href="{{ section.settings.wishlist_url | default: routes.root_url }}" aria-label="Wishlist">
@@ -234,7 +238,7 @@
       {%- if customer -%}
         <a href="{{ routes.account_url }}">Account</a>
       {%- else -%}
-        <a href="/customer_authentication/login?return_to={{ routes.root_url | url_encode }}">Sign in</a>
+        <a href="{{ routes.storefront_login_url }}">Sign in</a>
       {%- endif -%}
       <a href="/pages/contact">Contact</a>
       <a href="/pages/about-us">About us</a>
