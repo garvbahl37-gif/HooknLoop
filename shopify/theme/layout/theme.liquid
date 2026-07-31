@@ -42,16 +42,38 @@
       {%- endunless -%}
     {%- endif -%}
 
+    {%- comment -%}
+      Shopify's automatic "All" collection has no record in admin, so there is
+      nowhere to give it a title or description — both have to come from the
+      theme. It was rendering as the single word "All" with no description,
+      despite being what the footer's "Browse All Products" points at.
+
+      Scoped to that one handle, and only when the merchant has not set
+      something themselves, so a real collection is never overridden.
+    {%- endcomment -%}
+    {%- liquid
+      assign meta_title = page_title
+      assign meta_desc = page_description
+      if request.page_type == 'collection' and collection.handle == 'all'
+        if collection.title == 'All' or meta_title == 'All'
+          assign meta_title = 'All Hook & Loop Products | HooknLoop Australia'
+        endif
+        if meta_desc == blank
+          assign meta_desc = 'Browse the full HooknLoop range: self-adhesive and sew-on hook and loop, VELCRO® Brand, fire retardant tapes, dots and reusable straps. Australian stock, fast dispatch.'
+        endif
+      endif
+    -%}
+
     <title>
-      {{ page_title }}
+      {{ meta_title }}
       {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
       {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
-      
-      {%- unless page_title contains shop.name %} {% endunless -%}
+
+      {%- unless meta_title contains shop.name %} {% endunless -%}
     </title>
 
-    {% if page_description %}
-      <meta name="description" content="{{ page_description | escape }}">
+    {% if meta_desc %}
+      <meta name="description" content="{{ meta_desc | escape }}">
     {% endif %}
 
     {% render 'meta-tags' %}
