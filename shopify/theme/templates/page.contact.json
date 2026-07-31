@@ -12,13 +12,13 @@
         "phone_note": "Mon–Fri, Australian business hours",
         "email": "info@hooknloop.com.au",
         "email_note": "Replies within 1 business day",
-        "address": "Level 5, 111 Cecil St",
+        "address": "111 Cecil St",
         "address_sub": "South Melbourne VIC 3205",
         "abn": "ABN 93 878 995 217",
         "abn_note": "GST tax invoice on every order",
         "form_heading": "Send us a message",
         "success_note": "We'll get back to you within 1 business day.",
-        "map_query": "Level 5, 111 Cecil St, South Melbourne VIC 3205"
+        "map_query": "111 Cecil St, South Melbourne VIC 3205"
       },
       "blocks": {
         "s1": {
