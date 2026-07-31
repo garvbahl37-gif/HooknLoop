@@ -28,23 +28,19 @@
       </div>
 
       {%- if section.settings.cta_label != blank -%}
-        {%- comment -%}
-      The live store hides several paragraphs of category copy behind a
-      "Read more" on the homepage. It is there for search as much as for
-      shoppers, so it ships in the markup and the toggle only controls height —
-      a crawler sees all of it whether or not anyone clicks.
-    {%- endcomment -%}
-    {%- if section.settings.more_copy != blank -%}
-      <div class="ts__more" data-hnl-more hidden>
-        {{ section.settings.more_copy }}
-      </div>
-      <button type="button" class="btn btn--primary ts__cta" data-hnl-more-toggle aria-expanded="false">
-        <span data-hnl-more-label>{{ section.settings.cta_label | default: 'Read more' }}</span>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="m6 9 6 6 6-6"/></svg>
-      </button>
-    {%- else -%}
-      <a href="{{ section.settings.cta_link | default: '/pages/customer-service' }}" class="btn btn--primary ts__cta">{{ section.settings.cta_label }}<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-    {%- endif -%}
+        {%- if section.settings.more_copy != blank -%}
+          {%- comment -%}
+            The toggle stays here, in the copy column, because that is where the
+            eye already is. The panel it opens does NOT — see below.
+          {%- endcomment -%}
+          <button type="button" class="btn btn--primary ts__cta" data-hnl-more-toggle
+                  aria-expanded="false" aria-controls="ts-more">
+            <span data-hnl-more-label>{{ section.settings.cta_label | default: 'Read more' }}</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+        {%- else -%}
+          <a href="{{ section.settings.cta_link | default: '/pages/customer-service' }}" class="btn btn--primary ts__cta">{{ section.settings.cta_label }}<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        {%- endif -%}
       {%- endif -%}
     </div>
 
@@ -64,6 +60,24 @@
       {%- endif -%}
     </div>
   </div>
+
+  {%- comment -%}
+    The expanded copy sits BELOW the two-column grid, at full width, not inside
+    .ts__copy — that column is capped at 560px, so five paragraphs of category
+    prose became a narrow wall of text under two icon blocks. Out here it gets a
+    proper measure and reads in two columns on desktop.
+
+    It ships in the markup and is only visually collapsed, so search engines see
+    all of it whether or not anyone expands it — which is the point of the copy.
+  {%- endcomment -%}
+  {%- if section.settings.more_copy != blank -%}
+    <div class="wrap ts__morewrap" id="ts-more" data-hnl-more hidden>
+      <div class="ts__more">
+        {{ section.settings.more_copy }}
+      </div>
+    </div>
+  {%- endif -%}
+
 </section>
 
 <script>

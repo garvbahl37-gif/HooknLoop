@@ -38,7 +38,7 @@
       yet. Hardcoding "No reviews yet" hid ratings the store had earned.
     {%- endcomment -%}
     <div class="pc__rating">
-      <div class="jdgm-widget jdgm-preview-badge" data-id="{{ product.id }}"></div>
+      <div class="jdgm-widget jdgm-preview-badge" data-id="{{ product.id }}" data-template="manual-installation">{{ product.metafields.judgeme.badge }}</div>
       <span class="pc__rating-fallback">No reviews yet</span>
     </div>
 

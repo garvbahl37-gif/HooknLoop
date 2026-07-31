@@ -21,7 +21,16 @@
         "bulk_sub": "The more you order, the less you pay — volume discounts apply automatically at checkout, no code needed.",
         "bulk_tiers": "Buy 5+ | 5%\nBuy 10+ | 10%\nBuy 20+ | 20%\nBuy 50+ | 30%",
         "returns_note": "14-day returns policy"
-      }
+      },
+      "blocks": {
+        "judgeme_reviews": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "judgeme_reviews"
+      ]
     }
   },
   "order": [

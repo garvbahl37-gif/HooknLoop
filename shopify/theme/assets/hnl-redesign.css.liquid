@@ -3141,10 +3141,13 @@ body.drawer-open { overflow: hidden; }
   font-size: 14.4px;
   color: var(--muted-ink);
 }
-.pdp__brandline b { color: var(--navy); font-weight: 700; }
-/* VELCRO Brand is a licensed mark and a genuine one costs more than a generic —
-   worth being the thing the eye lands on in that line. */
-.pdp__brandline-mark { color: var(--orange-ink) !important; font-weight: 800 !important; }
+/* Brand names carry the store's blue — the same blue as the logo — so the line
+   reads as identification rather than as a promotion. Orange is reserved for
+   the one action per screen, and a brand label is not an action. */
+.pdp__brandline b { color: var(--blue); font-weight: 700; }
+/* VELCRO Brand is a licensed mark and a genuine one costs more than a generic,
+   so it carries the extra weight within that line. */
+.pdp__brandline-mark { color: var(--blue) !important; font-weight: 800 !important; }
 .pdp__brandline-sep { margin: 0 4px; color: #c9d3e6; }
 
 /* The fallback hides itself as soon as Judge.me paints a real badge, so a
@@ -3153,12 +3156,67 @@ body.drawer-open { overflow: hidden; }
 .pc__rating .jdgm-preview-badge:empty { display: none; }
 .pc__rating-fallback { font-size: 12.48px; color: var(--muted-ink); font-weight: 500; opacity: 0.7; }
 
-/* Homepage read-more block */
-.ts__more { margin: 14px 0 18px; animation: qaFade 0.22s ease; }
-.ts__more p { color: var(--muted-ink); line-height: 1.7; margin-bottom: 12px; }
+/* ── Homepage read-more panel ─────────────────────────────────────────────
+   Five paragraphs of category copy. Inside .ts__copy (max-width 560px) it was a
+   narrow wall; out at full width it can breathe.
+
+   Two columns on desktop because this is continuous prose with no hierarchy —
+   multi-column halves the vertical run and keeps the measure near 60-70
+   characters, which is where sustained reading is comfortable. break-inside
+   stops a paragraph splitting across the gutter mid-sentence. */
+.ts__morewrap {
+  margin-top: clamp(28px, 3.5vw, 44px);
+  padding-top: clamp(24px, 3vw, 34px);
+  border-top: 1px solid var(--line-card);
+  animation: tsMore 0.28s cubic-bezier(0.22, 0.61, 0.24, 1);
+}
+.ts__morewrap[hidden] { display: none; }
+
+@keyframes tsMore {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.ts__more {
+  columns: 2;
+  column-gap: clamp(32px, 4vw, 64px);
+  max-width: 1040px;
+}
+.ts__more p {
+  break-inside: avoid;
+  margin: 0 0 16px;
+  color: #3a4864;
+  font-size: 15.7px;
+  line-height: 1.72;
+}
+.ts__more p:last-child { margin-bottom: 0; }
+
+/* The opening paragraph carries the section, so it leads rather than blending
+   into the block — and spanning both columns stops it being orphaned at the
+   bottom of the first one. */
+.ts__more p:first-child {
+  column-span: all;
+  font-size: 17.6px;
+  line-height: 1.62;
+  color: var(--navy);
+  font-weight: 500;
+  margin-bottom: 22px;
+  max-width: 74ch;
+}
+
+@media (max-width: 900px) {
+  /* One column on a phone — two columns of 40 characters is unreadable, and
+     multi-column has no scroll affordance to tell you a column continues. */
+  .ts__more { columns: 1; }
+  .ts__more p { font-size: 15.2px; }
+  .ts__more p:first-child { font-size: 16.8px; }
+}
+
 [data-hnl-more-toggle] svg { transition: transform 0.18s var(--ease); }
 [data-hnl-more-toggle].is-open svg { transform: rotate(180deg); }
+
 @media (prefers-reduced-motion: reduce) {
-  .ts__more { animation: none; }
+  .ts__morewrap { animation: none; }
   [data-hnl-more-toggle] svg { transition: none; }
+}
 }

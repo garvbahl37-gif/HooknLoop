@@ -68,9 +68,14 @@
     <div class="pdp__buy">
       <span class="pdp__eyebrow">{{ section.settings.eyebrow }}</span>
       <h1 class="pdp__title">{{ product.title }}</h1>
+      {%- comment -%}
+        Vendor removed from this line. It printed "HOOKNLOOP ·" before the SKU
+        while the brand line directly below already names the brand — the same
+        fact twice, and the uppercase vendor was the louder of the two despite
+        being the less useful. The SKU stands alone here.
+      {%- endcomment -%}
       <span class="pdp__brand">
-        {{ product.vendor | default: shop.name }}
-        <span class="pdp__brand-sku">&middot; SKU <b data-hnl-sku>{{ product_variant.sku }}</b></span>
+        <span class="pdp__brand-sku">SKU <b data-hnl-sku>{{ product_variant.sku }}</b></span>
       </span>
 
       {%- comment -%}
@@ -101,7 +106,16 @@
           Until a product has reviews it renders nothing, so the fallback below
           keeps the row from collapsing — same as React's "No reviews yet".
         {%- endcomment -%}
-        <div class="jdgm-widget jdgm-preview-badge" data-id="{{ product.id }}"></div>
+        {%- comment -%}
+          Judge.me's own markup, copied attribute for attribute from the live
+          store, INCLUDING the metafield. Judge.me caches the rendered rating
+          and review list into product.metafields.judgeme.*; printing that is
+          what puts reviews on the page server-side. An empty placeholder with
+          the right classes renders nothing, which is what was happening.
+        {%- endcomment -%}
+        <div class="jdgm-widget jdgm-preview-badge"
+             data-id="{{ product.id }}"
+             data-template="manual-installation">{{ product.metafields.judgeme.badge }}</div>
         <span class="pdp__rating-none" data-hnl-norating>No reviews yet</span>
       </div>
 
@@ -325,8 +339,44 @@
           </section>
         {%- endif -%}
 
-        {%- comment -%} Judge.me's full review widget — the store's real reviews. {%- endcomment -%}
-        <div id="reviews" class="jdgm-widget jdgm-review-widget" data-id="{{ product.id }}"></div>
+        {%- comment -%}
+          The full review list and the "Write a review" button. Judge.me looks
+          for id="judgeme_product_reviews" specifically, and needs the product
+          id and title to load reviews and to attribute a new one — an anchor
+          named "reviews" with only data-id rendered nothing at all.
+        {%- endcomment -%}
+        {%- comment -%}
+          Reviews. On this store Judge.me's review widget is an APP BLOCK, not a
+          manual div — the live page renders it inside a shopify-app-block with
+          a data-block-id and its own entry point. A hand-written
+          .jdgm-review-widget has nothing to attach to, which is why the list
+          and the "Write a review" button never appeared.
+
+          The section accepts @app blocks now, so Judge.me (or any review app)
+          drops in here from the theme editor. The manual div is kept as a
+          fallback for when no app block has been added, so the anchor is never
+          empty.
+        {%- endcomment -%}
+        <div id="reviews" class="pdp__reviews">
+          {%- assign has_app_block = false -%}
+          {%- for block in section.blocks -%}
+            {%- if block.type == '@app' -%}{%- assign has_app_block = true -%}{%- endif -%}
+          {%- endfor -%}
+
+          {%- if has_app_block -%}
+            {%- for block in section.blocks -%}
+              {%- if block.type == '@app' -%}
+                {% render block %}
+              {%- endif -%}
+            {%- endfor -%}
+          {%- else -%}
+            <div id="judgeme_product_reviews"
+                 class="jdgm-widget jdgm-review-widget"
+                 data-product-title="{{ product.title | escape }}"
+                 data-id="{{ product.id }}"
+                 data-product-id="{{ product.id }}">{{ product.metafields.judgeme.widget }}</div>
+          {%- endif -%}
+        </div>
       </div>
     </div>
 
@@ -599,6 +649,7 @@
     { "type": "text", "id": "returns_note", "label": "Returns note", "default": "14-day returns policy" }
   ],
   "blocks": [
+    { "type": "@app" },
     {
       "type": "faq",
       "name": "FAQ",
