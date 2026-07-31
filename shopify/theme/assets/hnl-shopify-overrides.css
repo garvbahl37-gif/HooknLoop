@@ -1190,3 +1190,66 @@
   .abt__card { transition: none; }
   .abt__card:hover { transform: none; }
 }
+
+/* ── Related products: centred heading ────────────────────────────────────
+   .pdp__related-head is flex with space-between, which pins the h2 to the
+   left edge. A three-track grid centres the heading against the container
+   rather than against the remaining space, while "Shop all products" keeps
+   its place on the right and the row keeps its original height. The empty
+   first track is what makes the centring true. */
+.pdp__related-head {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: baseline;
+}
+.pdp__related-head h2 {
+  grid-column: 2;
+  text-align: center;
+}
+.pdp__related-all {
+  grid-column: 3;
+  justify-self: end;
+}
+@media (max-width: 640px) {
+  /* Side by side there is no room for both, so they stack and both centre. */
+  .pdp__related-head { grid-template-columns: 1fr; }
+  .pdp__related-head h2,
+  .pdp__related-all { grid-column: 1; justify-self: center; }
+}
+
+/* ── Footer: tighter, same content ────────────────────────────────────────
+   Measured at 646px on desktop and 1487px on mobile — tall enough that the
+   legal row sat well below the fold on a phone. Nothing is removed or
+   shrunk typographically: every link, column and control stays, and body
+   copy keeps its size. What changes is dead space — outer padding, the gap
+   between link rows, and the margins stacked around the brand block.
+
+   The link-row gap does the most work here, because the Industries column
+   added a fourth list of nine items. */
+.ft__main {
+  gap: clamp(20px, 2.2vw, 30px);
+  padding-top: clamp(32px, 3.4vw, 44px);
+  padding-bottom: clamp(22px, 2.4vw, 30px);
+}
+.ft__logo-img { height: 34px; }
+.ft__tag { margin: 10px 0 14px; }
+.ft__phone { margin-bottom: 9px; }
+.ft__col h4 { padding-bottom: 9px; margin-bottom: 13px; }
+.ft__col ul { gap: 9px; }
+.ft__signup-blurb { margin-bottom: 10px; }
+.ft__legal { padding: 14px 0 16px; }
+.ft__velcro { margin-top: 8px; }
+
+/* The desktop trims barely touched phones (1487px -> 1416px), because there the
+   grid collapses to two tracks and the height is the stacked columns, not the
+   outer padding. Same principle as above — spacing only, nothing removed. */
+@media (max-width: 640px) {
+  .ft__main {
+    gap: 18px 16px;
+    padding-top: 28px;
+    padding-bottom: 20px;
+  }
+  .ft__col h4 { padding-bottom: 7px; margin-bottom: 10px; }
+  .ft__col ul { gap: 8px; }
+  .ft__legal { padding: 12px 0 14px; }
+}

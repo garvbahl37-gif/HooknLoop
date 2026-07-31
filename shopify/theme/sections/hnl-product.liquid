@@ -184,8 +184,10 @@
               {%- when 'seg' -%}
                 <div class="pdp__seg" role="radiogroup" aria-label="Choose {{ option.name | downcase }}">
                   {%- comment -%}
-                    "Both" leads and carries the Recommended flag, as in React —
-                    a single side cannot fasten to anything on its own.
+                    "Both" still leads, because a single side cannot fasten to
+                    anything on its own, but it no longer carries a Recommended
+                    badge — the store sells all three as equal choices and the
+                    flag was steering the pick.
                   {%- endcomment -%}
                   {%- for value in option.values -%}
                     {%- assign v = value | downcase -%}
@@ -193,7 +195,6 @@
                       <button type="button" class="pdp__seg-btn {% if value == option.selected_value %}is-on{% endif %}"
                               role="radio" aria-checked="{% if value == option.selected_value %}true{% else %}false{% endif %}"
                               data-hnl-val="{{ value | escape }}">
-                        <span class="pdp__seg-rec">Recommended</span>
                         <span class="pdp__seg-t">Both</span>
                         <span class="pdp__seg-s">Complete set</span>
                       </button>
