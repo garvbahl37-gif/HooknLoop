@@ -78,10 +78,21 @@
 
     {% render 'meta-tags' %}
 
+    {%- comment -%}
+      swiper-bundle is 132KB and was the only script here without `defer`, so
+      it blocked parsing on every page — the single biggest render-blocking
+      item in the head.
+
+      It is deferred AND moved first, not just deferred in place. Deferred
+      scripts run in document order, so leaving it at its old position would
+      have put it after theme.js, whose custom elements call `new Swiper` when
+      they upgrade. Ordering it ahead of theme.js keeps that dependency intact
+      while still unblocking the parser.
+    {%- endcomment -%}
+    <script src="{{ 'swiper-bundle.min.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'utility.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'loadMore.js' | asset_url }}" defer="defer"></script>
-    <script src="{{ 'swiper-bundle.min.js' | asset_url }}"></script>
     <script src="{{ 'custom.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'slideshow.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'tab-active.js' | asset_url }}" defer="defer"></script>

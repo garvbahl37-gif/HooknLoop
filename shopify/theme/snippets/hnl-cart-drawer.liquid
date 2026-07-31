@@ -80,11 +80,11 @@
             (variant ? '<span class="cd__variant">' + variant + '</span>' : '') +
             '<div class="cd__row-bottom">' +
               '<div class="cd__qty">' +
-                '<button type="button" data-hnl-cd-qty="' + (it.quantity - 1) + '" data-line="' + (i + 1) + '" aria-label="Decrease quantity">&minus;</button>' +
+                '<button type="button" data-hnl-cd-qty="' + (it.quantity - 1) + '" data-key="' + esc(it.key) + '" aria-label="Decrease quantity">&minus;</button>' +
                 '<span>' + it.quantity + '</span>' +
-                '<button type="button" data-hnl-cd-qty="' + (it.quantity + 1) + '" data-line="' + (i + 1) + '" aria-label="Increase quantity">+</button>' +
+                '<button type="button" data-hnl-cd-qty="' + (it.quantity + 1) + '" data-key="' + esc(it.key) + '" aria-label="Increase quantity">+</button>' +
               '</div>' +
-              '<button type="button" class="cd__remove" data-hnl-cd-qty="0" data-line="' + (i + 1) + '">Remove</button>' +
+              '<button type="button" class="cd__remove" data-hnl-cd-qty="0" data-key="' + esc(it.key) + '">Remove</button>' +
             '</div>' +
           '</div>' +
           '<div class="cd__line">' + money(it.line_price) + '</div>' +
@@ -122,9 +122,11 @@
   }
 
   function refresh() {
+    /* Not named `cart` — that would shadow the module-level snapshot the
+       optimistic path reads from, and leave it stale. */
     return fetch('/cart.js', { credentials: 'same-origin' })
       .then(function (r) { return r.json(); })
-      .then(function (cart) { render(cart); return cart; });
+      .then(function (data) { cart = data; render(data); return data; });
   }
 
   function open() {
@@ -143,24 +145,87 @@
     if (lastFocus && lastFocus.focus) lastFocus.focus();
   }
 
+  {%- comment -%}
+    Quantity and Remove used to POST and wait, so every press sat still for a
+    full round trip before anything moved — which is what made Remove feel
+    slow. The panel now repaints immediately from a local copy of the cart and
+    reconciles when the server answers.
+
+    Two other changes come with it:
+
+    - Lines are addressed by `key`, not by index. /cart/change.js line numbers
+      shift the moment something is removed, so a queued change could have hit
+      the wrong row. Keys are stable.
+
+    - Rapid presses coalesce. Tapping + four times used to fire four requests
+      that could land out of order and fight each other; they now collapse into
+      one /cart/update.js call carrying the final quantities.
+  {%- endcomment -%}
+  var cart = null;              /* last state we believe is true */
+  var pending = {};             /* key -> desired quantity, not yet sent */
+  var flushTimer = null;
+
+  function recalc(c) {
+    c.item_count  = c.items.reduce(function (n, x) { return n + x.quantity; }, 0);
+    c.total_price = c.items.reduce(function (n, x) { return n + x.line_price; }, 0);
+    return c;
+  }
+
+  function optimistic(key, qty) {
+    if (!cart) return false;
+    var items = [];
+    var found = false;
+    cart.items.forEach(function (it) {
+      if (it.key !== key) { items.push(it); return; }
+      found = true;
+      if (qty <= 0) return;                       /* removed */
+      var unit = it.quantity ? (it.line_price / it.quantity) : it.price;
+      var copy = {};
+      for (var k in it) { if (Object.prototype.hasOwnProperty.call(it, k)) copy[k] = it[k]; }
+      copy.quantity = qty;
+      copy.line_price = Math.round(unit * qty);
+      items.push(copy);
+    });
+    if (!found) return false;
+    var next = {};
+    for (var k2 in cart) { if (Object.prototype.hasOwnProperty.call(cart, k2)) next[k2] = cart[k2]; }
+    next.items = items;
+    cart = recalc(next);
+    render(cart);
+    return true;
+  }
+
+  function flush() {
+    var updates = pending;
+    pending = {};
+    if (!Object.keys(updates).length) return;
+    fetch('/cart/update.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      credentials: 'same-origin',
+      body: JSON.stringify({ updates: updates })
+    })
+      .then(function (r) { return r.ok ? r.json() : Promise.reject(r); })
+      .then(function (server) { cart = server; render(server); })
+      /* Server is the authority: if the write failed, show what is really
+         there rather than leaving the optimistic view standing. */
+      .catch(function () { refresh(); });
+  }
+
   root.addEventListener('click', function (e) {
     if (e.target.closest('[data-hnl-cd-close]')) { close(); return; }
 
     var q = e.target.closest('[data-hnl-cd-qty]');
-    if (q) {
-      var line = q.getAttribute('data-line');
-      var qty  = parseInt(q.getAttribute('data-hnl-cd-qty'), 10);
-      body.setAttribute('aria-busy', 'true');
-      fetch('/cart/change.js', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        credentials: 'same-origin',
-        body: JSON.stringify({ line: parseInt(line, 10), quantity: Math.max(0, qty) })
-      })
-        .then(function (r) { return r.json(); })
-        .then(function (cart) { render(cart); body.removeAttribute('aria-busy'); })
-        .catch(function () { body.removeAttribute('aria-busy'); refresh(); });
-    }
+    if (!q) return;
+    var key = q.getAttribute('data-key');
+    var qty = Math.max(0, parseInt(q.getAttribute('data-hnl-cd-qty'), 10) || 0);
+    if (!key) return;
+
+    pending[key] = qty;
+    if (!optimistic(key, qty)) { flush(); return; }   /* unknown row: just ask */
+
+    clearTimeout(flushTimer);
+    flushTimer = setTimeout(flush, 220);
   });
 
   document.addEventListener('keydown', function (e) {
