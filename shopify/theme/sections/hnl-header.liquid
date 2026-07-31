@@ -65,7 +65,41 @@
       <div class="bar__actions">
         <a class="icn icn--searchlink" href="{{ routes.search_url }}" aria-label="Search"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></a>
 
-        <a class="icn icn--account" href="{{ routes.account_url }}" aria-label="Account and orders"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></a>
+        {%- comment -%}
+          Signed out, the link goes through /customer_authentication/login with
+          return_to=/ so the shopper lands back on the storefront after signing
+          in, rather than on Shopify's hosted account dashboard. That path is
+          Shopify's documented way to control the destination with new customer
+          accounts — the old return_to on /account/login is ignored by it.
+
+          Signed in, the outline person becomes a filled disc with the
+          customer's initials, so the header itself answers "am I logged in?".
+          Falls back to the email's first letter for a customer who has no name
+          on file, which is common when the account was created at checkout.
+        {%- endcomment -%}
+        {%- if customer -%}
+          {%- liquid
+            assign ini = ''
+            if customer.first_name != blank
+              assign ini = customer.first_name | slice: 0
+              if customer.last_name != blank
+                assign ini = ini | append: customer.last_name | slice: 0
+              endif
+            elsif customer.name != blank
+              assign ini = customer.name | slice: 0
+            elsif customer.email != blank
+              assign ini = customer.email | slice: 0
+            endif
+            assign ini = ini | upcase
+          -%}
+          <a class="icn icn--account icn--me" href="{{ routes.account_url }}"
+             aria-label="Account and orders, signed in as {{ customer.first_name | default: customer.email | escape }}"
+             title="{{ customer.first_name | default: customer.email | escape }}">
+            <span class="icn__ini" aria-hidden="true">{{ ini | default: 'H' }}</span>
+          </a>
+        {%- else -%}
+          <a class="icn icn--account" href="/customer_authentication/login?return_to={{ routes.root_url | url_encode }}" aria-label="Sign in"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></a>
+        {%- endif -%}
 
         <a class="icn icn--wish" href="{{ section.settings.wishlist_url | default: routes.root_url }}" aria-label="Wishlist">
           <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 21s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.5-7 10-7 10Z"/></svg>
@@ -197,7 +231,11 @@
     </nav>
 
     <div class="mdrawer__foot">
-      <a href="{{ routes.account_url }}">Account</a>
+      {%- if customer -%}
+        <a href="{{ routes.account_url }}">Account</a>
+      {%- else -%}
+        <a href="/customer_authentication/login?return_to={{ routes.root_url | url_encode }}">Sign in</a>
+      {%- endif -%}
       <a href="/pages/contact">Contact</a>
       <a href="/pages/about-us">About us</a>
       <a href="/pages/shipping-delivery">Shipping</a>

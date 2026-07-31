@@ -3885,3 +3885,28 @@ body.drawer-open { overflow: hidden; }
   .bc__list { font-size: 12.5px; padding: 9px 0; }
   .bc__item[aria-current='page'] { max-width: 22ch; }
 }
+
+/* ── Signed-in avatar in the header ───────────────────────────────────────
+   New work. The outline person icon looked identical whether or not you were
+   signed in, so the header never answered "am I logged in?". Signed in it
+   becomes a filled navy disc with the customer's initials.
+
+   Navy on white, white text: 15.13:1. Sized to the same 23px optical box as
+   the sibling icons so the action row keeps its rhythm. */
+.icn--me { text-decoration: none; }
+.icn__ini {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  background: var(--navy);
+  color: #fff;
+  font-family: var(--font-head);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+.icn--me:hover .icn__ini { background: var(--orange); color: var(--navy); }
+.icn--me:focus-visible .icn__ini { outline: 2px solid var(--orange); outline-offset: 2px; }
