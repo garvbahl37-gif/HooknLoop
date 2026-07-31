@@ -94,7 +94,13 @@
       <span class="pdp__brandline">
         Brand:&nbsp;
         {%- if is_velcro -%}
-          <b class="pdp__brandline-mark">VELCRO&reg; Brand</b> <span class="pdp__brandline-sep">|</span> <b>HooknLoop</b>
+          {%- comment -%}
+            VELCRO® Brand stands alone here. Naming HooknLoop beside it read as
+            a co-brand — as though the product were both — when HooknLoop is the
+            retailer, not a second maker. The footer trademark note already
+            makes that relationship explicit.
+          {%- endcomment -%}
+          <b class="pdp__brandline-mark">VELCRO&reg; Brand</b>
         {%- else -%}
           <b>HooknLoop</b>
         {%- endif -%}
