@@ -43,24 +43,6 @@
     that loads eagerly.
   {%- endcomment -%}
   <header class="abt__hero">
-    {%- if section.settings.image != blank -%}
-      {{ section.settings.image
-         | image_url: width: 2400
-         | image_tag:
-             class: 'abt__hero-img',
-             sizes: '100vw',
-             widths: '600, 900, 1200, 1600, 2000, 2400',
-             alt: section.settings.image.alt | default: shop.name,
-             loading: 'eager',
-             fetchpriority: 'high' }}
-    {%- else -%}
-      <img class="abt__hero-img"
-           src="{{ 'hnl-about-hero.jpg' | asset_url }}"
-           alt="The HooknLoop warehouse at dawn, with a HooknLoop truck at the loading docks"
-           width="1672" height="941"
-           loading="eager" fetchpriority="high">
-    {%- endif -%}
-
     <div class="wrap abt__hero-inner">
       {%- if section.settings.eyebrow != blank -%}
         <span class="abt__eyebrow">{{ section.settings.eyebrow }}</span>
@@ -103,13 +85,33 @@
     </div>
   {%- endif -%}
 
-  {%- if section.settings.quote != blank -%}
-    <div class="wrap">
-      <blockquote class="abt__quote">
-        <p>{{ section.settings.quote }}</p>
-      </blockquote>
-    </div>
-  {%- endif -%}
+  {%- comment -%}
+    The warehouse shot as its own figure rather than a hero backdrop. Behind
+    the H1 it was a texture with a scrim over it; given a frame and room of its
+    own it is actually looked at, and the type above it is read on a clean
+    ground instead of over a photograph.
+  {%- endcomment -%}
+  <figure class="wrap abt__figure">
+    {%- if section.settings.image != blank -%}
+      {{ section.settings.image
+         | image_url: width: 2400
+         | image_tag:
+             class: 'abt__figure-img',
+             sizes: '(min-width: 1280px) 1232px, 100vw',
+             widths: '600, 900, 1200, 1600, 2000, 2400',
+             alt: section.settings.image.alt | default: shop.name,
+             loading: 'lazy' }}
+    {%- else -%}
+      <img class="abt__figure-img"
+           src="{{ 'hnl-about-hero.jpg' | asset_url }}"
+           alt="The HooknLoop warehouse at dawn, with a HooknLoop truck at the loading docks"
+           width="1672" height="941"
+           loading="lazy" decoding="async">
+    {%- endif -%}
+    {%- if section.settings.caption != blank -%}
+      <figcaption>{{ section.settings.caption }}</figcaption>
+    {%- endif -%}
+  </figure>
 
   {%- assign value_blocks = 0 -%}
   {%- for block in section.blocks -%}
@@ -161,8 +163,8 @@
     { "type": "header", "content": "Stat strip" },
     { "type": "textarea", "id": "stats", "label": "Stats", "info": "One per line: Value | Caption", "default": "Australian | Owned and operated\nGST | Tax invoice on every order\n1–2 days | Typical dispatch\n6 years | Supplying the trades" },
 
-    { "type": "header", "content": "Pull quote" },
-    { "type": "textarea", "id": "quote", "label": "Quote", "default": "Building long-term relationships is our prime focus — being a supplier you can trust and rely on." },
+    { "type": "header", "content": "Photo" },
+    { "type": "text", "id": "caption", "label": "Caption", "info": "Optional. Sits under the photo." },
 
     { "type": "header", "content": "Values" },
     { "type": "text", "id": "values_heading", "label": "Heading", "default": "What You Can Expect" },
@@ -170,7 +172,7 @@
     { "type": "header", "content": "Call to action" },
     { "type": "text", "id": "cta_label", "label": "Button label", "default": "Shop the range" },
     { "type": "url", "id": "cta_link", "label": "Button link" },
-    { "type": "text", "id": "cta_note", "label": "Note beside the button", "default": "Free shipping over $200" }
+    { "type": "text", "id": "cta_note", "label": "Note beside the button", "info": "Leave empty for just the button." }
   ],
   "blocks": [
     {

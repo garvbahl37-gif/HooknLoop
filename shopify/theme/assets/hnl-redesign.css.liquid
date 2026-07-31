@@ -3371,45 +3371,26 @@ body.drawer-open { overflow: hidden; }
    build-css.sh about Suruchi's 62.5% root. */
 .abt { padding-bottom: clamp(56px, 7vw, 96px); }
 
+/* The photo moved out of the hero and onto the page as its own figure, so
+   this is now a type-only band: no scrim, no image, and centred. */
 .abt__hero {
   position: relative;
-  isolation: isolate;
   display: flex;
-  align-items: flex-end;
-  min-height: clamp(320px, 42vw, 520px);
-  padding: clamp(40px, 6vw, 84px) 0 clamp(32px, 4vw, 56px);
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: clamp(200px, 22vw, 300px);
+  padding: clamp(36px, 4.5vw, 64px) 0;
   background: linear-gradient(160deg, #142548 0%, #24406f 100%);
   overflow: hidden;
 }
-.abt__hero-img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: -2;
-}
-/* Legibility floor for white type over an unpredictable photo: the scrim is
-   heaviest exactly where the text sits, so the picture stays visible above it. */
-.abt__hero::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: linear-gradient(180deg, rgba(10,18,38,0.30) 0%, rgba(10,18,38,0.55) 45%, rgba(10,18,38,0.88) 100%);
-}
-/* Without a photo there is nothing to hold a 520px band, so the empty state is
-   a shorter panel rather than a wall of navy waiting for an image. */
-.abt__hero--noimg {
-  background: linear-gradient(160deg, #142548 0%, #24406f 100%);
-  min-height: clamp(230px, 26vw, 330px);
-}
-.abt__hero--noimg::after { background: none; }
+
 
 /* .abt__hero is a flex container, so .wrap shrink-wrapped to its text and its
    own `margin: 0 auto` then centred it — the hero copy sat 280px right of the
    gutter every other block aligns to. Filling the row restores the shared edge. */
 .abt__hero-inner { position: relative; width: 100%; }
+.abt__eyebrow { margin-left: auto; margin-right: auto; }
 .abt__eyebrow {
   display: inline-block;
   margin-bottom: 14px;
@@ -3432,7 +3413,7 @@ body.drawer-open { overflow: hidden; }
 }
 .abt__lead {
   max-width: 620px;
-  margin: 16px 0 0;
+  margin: 16px auto 0;
   color: rgba(255,255,255,0.88);
   font-size: clamp(16px, 1.6vw, 19px);
   line-height: 1.6;
@@ -3461,7 +3442,15 @@ body.drawer-open { overflow: hidden; }
 
 /* Prose: one readable measure, and a lead paragraph that carries the opening
    line instead of letting six identical paragraphs read as a blog dump. */
-.abt__prose { max-width: 760px; margin-top: clamp(36px, 5vw, 60px); }
+/* Centred on the page. The paragraphs themselves stay left-aligned: six
+   centred paragraphs give every line a different starting edge, which is what
+   makes centred body copy hard to read. The lead is centred, as the one line
+   short enough to carry it. */
+.abt__prose {
+  max-width: 760px;
+  margin: clamp(36px, 5vw, 60px) auto 0;
+}
+.abt__prose p:first-of-type { text-align: center; }
 .abt__prose p {
   margin: 0 0 18px;
   color: #38455f;
@@ -3478,34 +3467,26 @@ body.drawer-open { overflow: hidden; }
 .abt__prose p:last-child { margin-bottom: 0; }
 .abt__prose a { color: var(--orange-ink); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
 
-.abt__quote {
-  position: relative;
-  max-width: 860px;
-  margin: clamp(36px, 5vw, 56px) 0 0;
-  padding: 28px 32px 28px 64px;
-  background: var(--cloud);
-  border: 0;
-  border-left: 3px solid var(--orange);
+
+/* Standalone photo — given a frame and room rather than used as wallpaper
+   behind the heading. Fixed 16/9 with object-fit so a replacement shot of any
+   proportion cannot change the page's rhythm. */
+.abt__figure {
+  margin: clamp(40px, 5vw, 64px) auto 0;
+}
+.abt__figure-img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
   border-radius: var(--r-card);
+  box-shadow: 0 2px 6px rgba(8,18,40,0.10), 0 22px 48px rgba(8,18,40,0.18);
 }
-.abt__quote::before {
-  content: '\201C';
-  position: absolute;
-  left: 24px;
-  top: 10px;
-  font-family: var(--font-head);
-  font-size: 54px;
-  line-height: 1;
-  color: var(--orange);
-  opacity: 0.5;
-}
-.abt__quote p {
-  margin: 0;
-  font-family: var(--font-head);
-  font-size: clamp(18px, 2vw, 21px);
-  font-weight: 600;
-  line-height: 1.5;
-  color: var(--navy);
+.abt__figure figcaption {
+  margin-top: 12px;
+  text-align: center;
+  font-size: 13.5px;
+  color: var(--muted-ink);
 }
 
 .abt__values { margin-top: clamp(44px, 6vw, 72px); }
@@ -3550,8 +3531,6 @@ body.drawer-open { overflow: hidden; }
 }
 @media (max-width: 560px) {
   .abt__grid { grid-template-columns: 1fr; }
-  .abt__quote { padding: 24px 22px 24px 52px; }
-  .abt__quote::before { left: 18px; font-size: 44px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .abt__card { transition: none; }
@@ -3655,3 +3634,23 @@ body.drawer-open { overflow: hidden; }
   white-space: nowrap;
   border: 0;
 }
+
+/* ── Cart drawer: restore the scroll chain ────────────────────────────────
+   cartdrawer.css assumes .cd__items and .cd__foot are direct children of the
+   flex-column .cd__panel — .cd__items takes flex: 1 and scrolls, .cd__foot
+   stays pinned. The Liquid port introduced a .cd__body wrapper so the whole
+   contents could be re-rendered in one write, and that wrapper is a plain
+   block: flex: 1 on .cd__items resolved against nothing, the list grew to its
+   natural height, and the panel overflowed with no scrollbar — taking the
+   Checkout button off-screen with it.
+
+   Making the wrapper the flex column the CSS expects fixes both. min-height: 0
+   is the load-bearing part: without it a flex child refuses to shrink below
+   its content, so overflow-y never has a smaller box to scroll inside. */
+.cd__body {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.cd__items { min-height: 0; }
