@@ -255,6 +255,12 @@
               The add now happens without a page load, so nothing announces it.
               This says so once, for screen readers only.
             {%- endcomment -%}
+            {%- comment -%}
+              Volume saving for the quantity currently chosen, filled by
+              applyBulk(). Starts hidden so it never flashes an empty row
+              before the first render.
+            {%- endcomment -%}
+            <p class="pdp__bulknote" data-hnl-bulk-note hidden></p>
             <p id="hnl-cart-live" class="visually-hidden" role="status" aria-live="polite"></p>
           </div>
 
@@ -284,12 +290,23 @@
             <h2 id="bms-h" class="bms__h">{{ section.settings.bulk_heading }}</h2>
             <p class="bms__sub">{{ section.settings.bulk_sub }}</p>
           </div>
-          <div class="bms__tiers">
+          {%- comment -%}
+            data-min / data-pct are what let the buy box price itself against
+            these tiers as the quantity changes, and what lets the matching
+            card light up. Parsed from the same strings the panel prints, so
+            editing a tier in the theme editor moves both together — there is
+            no second copy of the numbers to fall out of sync.
+          {%- endcomment -%}
+          <div class="bms__tiers" data-hnl-tiers>
             {%- assign tiers = section.settings.bulk_tiers | newline_to_br | split: '<br />' -%}
             {%- for tier in tiers -%}
               {%- assign bits = tier | strip | split: '|' -%}
               {%- if bits.size >= 2 -%}
-                <div class="bms__tier {% if forloop.last %}is-best{% endif %}" style="--i: {{ forloop.index0 }}">
+                {%- assign tmin = bits[0] | strip | replace: 'Buy ', '' | replace: '+', '' | replace: ' rolls', '' | strip -%}
+                {%- assign tpct = bits[1] | strip | replace: '%', '' | strip -%}
+                <div class="bms__tier {% if forloop.last %}is-best{% endif %}"
+                     style="--i: {{ forloop.index0 }}"
+                     data-min="{{ tmin }}" data-pct="{{ tpct }}">
                   {%- if forloop.last -%}<span class="bms__ribbon">Best value</span>{%- endif -%}
                   <span class="bms__qty">{{ bits[0] | strip }}</span>
                   <span class="bms__pct">{{ bits[1] | strip }}</span>
@@ -561,6 +578,10 @@
        copy or bookmark of a product page carry a variant nobody picked. Now the
        URL stays clean until a size, colour or side is selected, and from then on
        it tracks the selection so a shared link opens on the same variant. */
+    /* After the label rewrite above, which recreates the total span with the
+       undiscounted figure — this is what puts the tier price back. */
+    applyBulk(v);
+
     if (userPicked && history.replaceState) {
       var u = new URL(window.location.href);
       u.searchParams.set('variant', v.id);
@@ -581,6 +602,63 @@
      Picking a different size, colour or side resets them: at that point the
      shopper is looking at a variant they have not added, so a green "View
      cart" would be lying about what is in the basket. */
+  {%- comment -%}
+    Volume pricing, shown while the shopper is still choosing.
+
+    The four tiers are real automatic discounts in Shopify (verified: 5+ =5%,
+    10+ =10%, 20+ =20%, 50+ =30%, all active), and they did apply — but only
+    at the cart, so raising the quantity here changed nothing on screen and
+    the "Buy more & save" panel below read as decoration. Someone typing 10
+    had no reason to believe the promise until two pages later.
+
+    Tiers are read from the panel's own data attributes, so the numbers cannot
+    drift apart.
+
+    Called an estimate deliberately. Shopify applies these across the whole
+    order, so a shopper with five of two products also qualifies — this box
+    can only speak for the line in front of it, and the cart remains the
+    authority.
+  {%- endcomment -%}
+  var tierEls = [].slice.call(root.querySelectorAll('[data-hnl-tiers] .bms__tier'));
+  var tiers = tierEls.map(function (el) {
+    return { el: el,
+             min: parseInt(el.getAttribute('data-min'), 10) || 0,
+             pct: parseFloat(el.getAttribute('data-pct')) || 0 };
+  }).filter(function (t) { return t.min > 0 && t.pct > 0; })
+    .sort(function (a, b) { return a.min - b.min; });
+
+  function tierFor(n) {
+    var hit = null;
+    tiers.forEach(function (t) { if (n >= t.min) hit = t; });
+    return hit;
+  }
+
+  function applyBulk(v) {
+    var t = tierFor(qty);
+    var full = v.price * qty;
+    var now = t ? Math.round(full * (1 - t.pct / 100)) : full;
+
+    tiers.forEach(function (x) { x.el.classList.toggle('is-active', !!t && x.min === t.min); });
+
+    setAll('[data-hnl-total]', function (e) { e.textContent = money(now); });
+
+    var note = root.querySelector('[data-hnl-bulk-note]');
+    if (note) {
+      if (t) {
+        note.innerHTML = '<b>' + t.pct + '% off</b> at ' + qty + ' &mdash; you save '
+                       + money(full - now) + ' <span>applied at checkout</span>';
+        note.hidden = false;
+      } else if (tiers.length) {
+        var next = tiers[0];
+        note.innerHTML = 'Add ' + (next.min - qty) + ' more for <b>' + next.pct + '% off</b>';
+        note.hidden = false;
+      } else {
+        note.hidden = true;
+      }
+    }
+    return now;
+  }
+
   /* The confirmation is a flash, not a mode: green "Added to cart" for a beat,
      then straight back to "Add to cart". It used to latch into a "View cart"
      button, which meant the primary action on the page stopped being "add" —

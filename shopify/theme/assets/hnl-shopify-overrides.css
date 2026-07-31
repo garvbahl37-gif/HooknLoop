@@ -1586,3 +1586,36 @@ body.drawer-open {
    the fix holds for a product with twenty images too. */
 .pdp__grid > * { min-width: 0; }
 .pdp__thumbs { flex-wrap: wrap; }
+
+/* ── Volume pricing, shown in the buy box ─────────────────────────────────
+   The tiers were real automatic discounts all along but only revealed
+   themselves at the cart, so the "Buy more & save" panel read as decoration.
+   This is the line that answers "what do I actually pay for 10?".
+
+   Green, not orange: it is a saving being confirmed, not the next action.
+   #146c43 on the pale green measures well past AA at this size. */
+.pdp__bulknote {
+  margin: 10px 0 0;
+  padding: 9px 13px;
+  border-radius: var(--r-ctrl);
+  background: rgba(20, 108, 67, 0.09);
+  color: #146c43;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.45;
+}
+.pdp__bulknote[hidden] { display: none; }
+.pdp__bulknote b { font-weight: 800; }
+.pdp__bulknote span {
+  color: var(--muted-ink);
+  font-weight: 500;
+}
+
+/* The tier the current quantity has reached. The panel already marks the
+   largest tier "Best value"; this marks the one you are actually getting, so
+   the two are distinguishable at a glance. */
+.bms__tier.is-active {
+  border-color: #1a8449;
+  box-shadow: 0 0 0 1px #1a8449, 0 10px 26px rgba(20, 108, 67, 0.22);
+}
+.bms__tier.is-active .bms__pct { color: #3ddc84; }
