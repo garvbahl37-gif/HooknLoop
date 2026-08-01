@@ -346,7 +346,15 @@
               <tr><th>Availability</th><td data-hnl-avail>{% if product_variant.available %}In stock{% else %}Out of stock{% endif %}</td></tr>
             </tbody>
           </table>
-          <p class="pdp__spec-note">{{ section.settings.spec_note }}</p>
+          {%- comment -%}
+            Guarded: with the note cleared, an unguarded <p> still rendered an
+            empty paragraph carrying its own margin, leaving a gap under the
+            spec table. The setting is kept so a note can be put back from the
+            theme editor without a deploy.
+          {%- endcomment -%}
+          {%- if section.settings.spec_note != blank -%}
+            <p class="pdp__spec-note">{{ section.settings.spec_note }}</p>
+          {%- endif -%}
         </section>
 
         {%- if product.description != blank -%}
@@ -881,7 +889,7 @@
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Australian stock · fast dispatch" },
     { "type": "text", "id": "stock_flag", "label": "Gallery flag", "default": "In stock · ships in 1–2 days" },
     { "type": "collection", "id": "related_collection", "label": "Related products from", "info": "Defaults to all products." },
-    { "type": "textarea", "id": "spec_note", "label": "Specifications note", "default": "Specifications are from the manufacturer's data. Fire-retardant standards are on the supplier's technical data sheet, supplied on request — we don't publish a rating we can't certify." },
+    { "type": "textarea", "id": "spec_note", "label": "Specifications note", "info": "Optional. Left empty so nothing shows under the spec table; add text here to bring a note back." },
 
     { "type": "header", "content": "Buy more & save" },
     { "type": "checkbox", "id": "show_bulk", "label": "Show the volume ladder", "default": true },
