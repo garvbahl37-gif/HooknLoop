@@ -6,9 +6,9 @@
   <div class="wrap wholesale__grid">
     <div class="wholesale__media">
       {%- if section.settings.image != blank -%}
-        <img src="{{ section.settings.image | image_url: width: 1200 }}" alt="{{ section.settings.image_alt | escape }}" loading="lazy" width="1200" height="1020">
+        <img src="{{ section.settings.image | image_url: width: 1200 }}" alt="{{ section.settings.image_alt | escape }}" loading="lazy" width="1200" height="900">
       {%- else -%}
-        <img src="{{ 'mts-bulk-wholesale.jpg' | asset_url }}" alt="{{ section.settings.image_alt | escape }}" loading="lazy" width="1200" height="1020">
+        <img src="{{ 'mts-bulk-wholesale.jpg' | asset_url }}" alt="{{ section.settings.image_alt | escape }}" loading="lazy" width="1200" height="900">
       {%- endif -%}
     </div>
 
