@@ -1,0 +1,31 @@
+{%- comment -%}
+  One catalogue card, rendered on demand for the wishlist page through the
+  Section Rendering API:
+
+      /products/<handle>?section_id=mts-wish-card
+
+  Why this exists: the wishlist page used to pre-render the catalogue and hide
+  every card except the saved ones. Liquid caps `collection.products` at 50, so
+  81 of the store's 131 products could be hearted and then never appear on the
+  wishlist — the header badge counted them, the page could not show them.
+
+  Fetching per handle removes that cap, ships ~50 fewer cards of markup on every
+  wishlist visit, and — because a dead handle answers 404 — gives the theme a
+  reliable way to prune saves whose product has since been deleted or renamed.
+
+  The card names the handle it is for, and renders nothing at all when there is
+  no product. That matters: asking for a handle that no longer exists does NOT
+  give you a 404 here — Shopify answers 200 and renders this section against an
+  empty product, which would otherwise mount a blank card. The wrapper is the
+  theme's proof that a real product came back; no wrapper, or the wrong handle
+  in it, means the save is dead and mts-theme.js prunes it.
+{%- endcomment -%}
+{%- if product.handle != blank -%}
+  <div data-mts-wish-card="{{ product.handle }}">
+    {% render 'mts-product-card', product: product, index: 0 %}
+  </div>
+{%- endif -%}
+
+{% schema %}
+{ "name": "Wishlist card" }
+{% endschema %}

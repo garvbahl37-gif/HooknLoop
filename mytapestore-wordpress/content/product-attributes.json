@@ -1,0 +1,147 @@
+[
+  {
+    "id": 2,
+    "name": "Size",
+    "slug": "pa_choose-your-size",
+    "type": "select",
+    "order_by": "menu_order",
+    "has_archives": false,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/attributes/2",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/attributes"
+        }
+      ]
+    }
+  },
+  {
+    "id": 1,
+    "name": "Colour",
+    "slug": "pa_color",
+    "type": "select",
+    "order_by": "menu_order",
+    "has_archives": true,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/attributes/1",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/attributes"
+        }
+      ]
+    }
+  },
+  {
+    "id": 5,
+    "name": "Colors",
+    "slug": "pa_colors",
+    "type": "image",
+    "order_by": "menu_order",
+    "has_archives": true,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/attributes/5",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/attributes"
+        }
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "name": "Thickness",
+    "slug": "pa_thickness",
+    "type": "button",
+    "order_by": "menu_order",
+    "has_archives": false,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/attributes/3",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/attributes"
+        }
+      ]
+    }
+  },
+  {
+    "id": 4,
+    "name": "Weight",
+    "slug": "pa_weight",
+    "type": "select",
+    "order_by": "menu_order",
+    "has_archives": false,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/attributes/4",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/attributes"
+        }
+      ]
+    }
+  }
+]

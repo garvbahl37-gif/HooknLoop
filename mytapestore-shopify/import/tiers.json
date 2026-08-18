@@ -1,0 +1,1378 @@
+[
+  {
+    "handle": "d",
+    "url": "https://mytapestore.com.au/product/d/",
+    "name": "D",
+    "minimum": 1,
+    "rules": {
+      "2": 10.0,
+      "6": 15.0,
+      "10": 20.0
+    },
+    "base_price": 1.0,
+    "regular_price": 1.0,
+    "heading": ""
+  },
+  {
+    "handle": "hook-loop-roll-adhesive-backed",
+    "url": "https://mytapestore.com.au/product/hook-loop-roll-adhesive-backed/",
+    "name": "Self Adhesive Hook and Loop Roll- Premium Quality",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 28.9,
+    "regular_price": 28.9,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "double-sided-acid-free-tissue-tape",
+    "url": "https://mytapestore.com.au/product/double-sided-acid-free-tissue-tape/",
+    "name": "Acid-Free Tape",
+    "minimum": 2,
+    "rules": {
+      "3": 5.0,
+      "7": 10.0,
+      "10": 15.0
+    },
+    "base_price": 6.76,
+    "regular_price": 6.76,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "hook-loop-straps-50mm-x-5m",
+    "url": "https://mytapestore.com.au/product/hook-loop-straps-50mm-x-5m/",
+    "name": "Hook & Loop Straps 50mm x 5m (Set of 5)",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 69.0,
+    "regular_price": 69.0,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "silicone-kraft-paper-tapes",
+    "url": "https://mytapestore.com.au/product/silicone-kraft-paper-tapes/",
+    "name": "Silicone Kraft Paper Tape - Brown",
+    "minimum": 2,
+    "rules": {
+      "3": 5.0,
+      "7": 10.0,
+      "10": 15.0
+    },
+    "base_price": 5.52,
+    "regular_price": 5.52,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "eco-friendly-kraft-paper-tape-printed",
+    "url": "https://mytapestore.com.au/product/eco-friendly-kraft-paper-tape-printed/",
+    "name": "Eco Friendly Kraft Paper Tape Printed 50mm x 50m",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 10.14,
+    "regular_price": 10.14,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "eco-friendly-kraft-paper-tapes",
+    "url": "https://mytapestore.com.au/product/eco-friendly-kraft-paper-tapes/",
+    "name": "Eco Friendly Kraft Paper Tapes - Brown",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 60.0,
+    "regular_price": 60.0,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "flatback-kraft-paper-tape",
+    "url": "https://mytapestore.com.au/product/flatback-kraft-paper-tape/",
+    "tiers": null
+  },
+  {
+    "handle": "rendering-cloth-masking-tape",
+    "url": "https://mytapestore.com.au/product/rendering-cloth-masking-tape/",
+    "name": "Renderers Cloth Masking Tape",
+    "minimum": 2,
+    "rules": {
+      "3": 5.0,
+      "7": 10.0,
+      "10": 15.0
+    },
+    "base_price": 5.94,
+    "regular_price": 5.94,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "utility-grade-masking-tapes",
+    "url": "https://mytapestore.com.au/product/utility-grade-masking-tapes/",
+    "name": "Utility Grade Masking Tapes",
+    "minimum": 6,
+    "rules": {
+      "7": 5.0,
+      "11": 10.0,
+      "15": 15.0
+    },
+    "base_price": 1.95,
+    "regular_price": 1.95,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "general-purpose-masking-tape",
+    "url": "https://mytapestore.com.au/product/general-purpose-masking-tape/",
+    "name": "General Purpose Masking Tape",
+    "minimum": 6,
+    "rules": {
+      "7": 5.0,
+      "11": 10.0,
+      "15": 15.0
+    },
+    "base_price": 1.74,
+    "regular_price": 1.74,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "high-performance-masking",
+    "url": "https://mytapestore.com.au/product/high-performance-masking/",
+    "name": "High Performance Masking",
+    "minimum": 4,
+    "rules": {
+      "5": 5.0,
+      "11": 10.0,
+      "15": 15.0
+    },
+    "base_price": 3.89,
+    "regular_price": 3.89,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "white-automotive-masking-tapes",
+    "url": "https://mytapestore.com.au/product/white-automotive-masking-tapes/",
+    "name": "White Automotive Painters Masking Tape",
+    "minimum": 6,
+    "rules": {
+      "7": 5.0,
+      "11": 10.0,
+      "15": 15.0
+    },
+    "base_price": 2.86,
+    "regular_price": 2.86,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "7-day-premium-masking-tape",
+    "url": "https://mytapestore.com.au/product/7-day-premium-masking-tape/",
+    "name": "Yellow Painters Masking Tape - 7 Days Removal",
+    "minimum": 2,
+    "rules": {
+      "3": 5.0,
+      "7": 10.0,
+      "10": 15.0
+    },
+    "base_price": 5.54,
+    "regular_price": 5.54,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "28-day-premium-masking",
+    "url": "https://mytapestore.com.au/product/28-day-premium-masking/",
+    "name": "Blue Painters Masking Tape - 28 Days Removal",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 10.1,
+    "regular_price": 10.1,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "cloth-tapes",
+    "url": "https://mytapestore.com.au/product/cloth-tapes/",
+    "name": "Cloth Tape \u2013 7 Colours",
+    "minimum": 4,
+    "rules": {
+      "5": 5.0,
+      "11": 10.0,
+      "15": 15.0
+    },
+    "base_price": 3.89,
+    "regular_price": 3.89,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "pe-foam-bumper-tape",
+    "url": "https://mytapestore.com.au/product/pe-foam-bumper-tape/",
+    "name": "Pe Foam Bumper Tape",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 220.0,
+    "regular_price": 220.0,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "economy-packaging-tape-brown",
+    "url": "https://mytapestore.com.au/product/economy-packaging-tape-brown/",
+    "name": "Economy Packaging Tape Brown / White 48mm x 72m",
+    "minimum": 6,
+    "rules": {
+      "7": 5.0,
+      "11": 10.0,
+      "15": 15.0
+    },
+    "base_price": 2.26,
+    "regular_price": 2.26,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "coloured-electrical-tape",
+    "url": "https://mytapestore.com.au/product/coloured-electrical-tape/",
+    "name": "Coloured PVC Electrical Tape - Pack of 10 - 18mm x 20m",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 18.31,
+    "regular_price": 18.31,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "reverse-wound-tissue-tape",
+    "url": "https://mytapestore.com.au/product/reverse-wound-tissue-tape/",
+    "name": "Reverse Wound Tissue Tape",
+    "minimum": 2,
+    "rules": {
+      "3": 5.0,
+      "7": 10.0,
+      "10": 15.0
+    },
+    "base_price": 7.5,
+    "regular_price": 7.5,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "reverse-wound-acid-free-tissue-tape",
+    "url": "https://mytapestore.com.au/product/reverse-wound-acid-free-tissue-tape/",
+    "name": "Reverse Wound Acid Free Tissue Tape",
+    "minimum": 2,
+    "rules": {
+      "3": 5.0,
+      "7": 10.0,
+      "10": 15.0
+    },
+    "base_price": 6.76,
+    "regular_price": 6.76,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "clamp-on-bench-dispenser",
+    "url": "https://mytapestore.com.au/product/clamp-on-bench-dispenser/",
+    "name": "Clamp On Bench Dispenser",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 39.99,
+    "regular_price": 39.99,
+    "heading": ""
+  },
+  {
+    "handle": "metal-bag-sealer-with-cutter",
+    "url": "https://mytapestore.com.au/product/metal-bag-sealer-with-cutter/",
+    "name": "Metal Bag Sealer with Cutter",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 62.53,
+    "regular_price": 62.53,
+    "heading": ""
+  },
+  {
+    "handle": "metal-desk-dispenser",
+    "url": "https://mytapestore.com.au/product/metal-desk-dispenser/",
+    "name": "Metal Desk Dispenser",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 52.61,
+    "regular_price": 52.61,
+    "heading": ""
+  },
+  {
+    "handle": "acribond-accessories-hand-pads",
+    "url": "https://mytapestore.com.au/product/acribond-accessories-hand-pads/",
+    "name": "Acribond - Hand Sanding Pads",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 35.15,
+    "regular_price": 35.15,
+    "heading": ""
+  },
+  {
+    "handle": "acribond-accessories-solvent",
+    "url": "https://mytapestore.com.au/product/acribond-accessories-solvent/",
+    "name": "Acribond Adesive Remover & Cleaner-Adhesive Solvent - 350gms",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 27.82,
+    "regular_price": 27.82,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "desk-tapes-dispenser",
+    "url": "https://mytapestore.com.au/product/desk-tapes-dispenser/",
+    "tiers": null
+  },
+  {
+    "handle": "glue-dots-permanent-adhesive",
+    "url": "https://mytapestore.com.au/product/glue-dots-permanent-adhesive/",
+    "name": "Glue Dots Permanent Adhesive (5000 Dots) - 12mm",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 96.25,
+    "regular_price": 96.25,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "h11-cp-pistol-grip-dispenser-50mm",
+    "url": "https://mytapestore.com.au/product/h11-cp-pistol-grip-dispenser-50mm/",
+    "name": "H11/CP Pistol Grip Dispenser 50mm",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 21.96,
+    "regular_price": 21.96,
+    "heading": ""
+  },
+  {
+    "handle": "black-strapping-tape",
+    "url": "https://mytapestore.com.au/product/black-strapping-tape/",
+    "name": "Strapping Tape-Black 18mm x 66m",
+    "minimum": 6,
+    "rules": {
+      "7": 5.0,
+      "11": 10.0,
+      "15": 15.0
+    },
+    "base_price": 2.81,
+    "regular_price": 2.81,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "kit-dispenser-and-tapes",
+    "url": "https://mytapestore.com.au/product/kit-dispenser-and-tapes/",
+    "name": "KIT -Dispenser and Tapes",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 29.24,
+    "regular_price": 29.24,
+    "heading": ""
+  },
+  {
+    "handle": "coloured-polypropylene-packaging-tapes",
+    "url": "https://mytapestore.com.au/product/coloured-polypropylene-packaging-tapes/",
+    "name": "Coloured Polypropylene Packing Tape - 48mm x 100m",
+    "minimum": 2,
+    "rules": {
+      "3": 5.0,
+      "7": 10.0,
+      "10": 15.0
+    },
+    "base_price": 6.76,
+    "regular_price": 6.76,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "glue-dots-removable-adhesive",
+    "url": "https://mytapestore.com.au/product/glue-dots-removable-adhesive/",
+    "name": "Glue Dots Removable Adhesive (5000 Dots) - 12mm",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 123.0,
+    "regular_price": 123.0,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "hh400r-hang-tab",
+    "url": "https://mytapestore.com.au/product/hh400r-hang-tab/",
+    "name": "HH400R Hang Tab - 60mm x 50mm (1000 tabs)",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 89.6,
+    "regular_price": 89.6,
+    "heading": ""
+  },
+  {
+    "handle": "ht200s-hang-tab",
+    "url": "https://mytapestore.com.au/product/ht200s-hang-tab/",
+    "name": "HT200S Hang Tab  - 40mm x 37mm (2400 tabs)",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 107.43,
+    "regular_price": 107.43,
+    "heading": ""
+  },
+  {
+    "handle": "ht450-hang-tab",
+    "url": "https://mytapestore.com.au/product/ht450-hang-tab/",
+    "name": "HT450 Hang Tab - 50mm x 50mm (1000 Tabs)",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 93.29,
+    "regular_price": 93.29,
+    "heading": ""
+  },
+  {
+    "handle": "hth1-hang-tab",
+    "url": "https://mytapestore.com.au/product/hth1-hang-tab/",
+    "name": "HTH1 Hang Tab -  45mm x 50mm (Roll of 1000)",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 127.95,
+    "regular_price": 127.95,
+    "heading": ""
+  },
+  {
+    "handle": "htr1-hang-tab",
+    "url": "https://mytapestore.com.au/product/htr1-hang-tab/",
+    "name": "HTR1 Hang Tab  - 55mm x 25mm (Roll of 2000)",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 72.2,
+    "regular_price": 72.2,
+    "heading": ""
+  },
+  {
+    "handle": "ht120r-hang-tab",
+    "url": "https://mytapestore.com.au/product/ht120r-hang-tab/",
+    "name": "HT120R Hang Tab - 18mm x 28mm (Roll of 2000)",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 56.68,
+    "regular_price": 56.68,
+    "heading": ""
+  },
+  {
+    "handle": "loop-fastener-non-adhesive",
+    "url": "https://mytapestore.com.au/product/loop-fastener-non-adhesive/",
+    "name": "Sew On Hook and Loop, Non Adhesive",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 25.26,
+    "regular_price": 25.26,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "electronic-tapes-dispenser",
+    "url": "https://mytapestore.com.au/product/electronic-tapes-dispenser/",
+    "name": "Electronic Tapes Dispenser",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 384.78,
+    "regular_price": 384.78,
+    "heading": ""
+  },
+  {
+    "handle": "plumbers-thread-seal-tape",
+    "url": "https://mytapestore.com.au/product/plumbers-thread-seal-tape/",
+    "name": "Plumber's Thread Seal Tape",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 15.96,
+    "regular_price": 15.96,
+    "heading": ""
+  },
+  {
+    "handle": "stretch-film-dispenser",
+    "url": "https://mytapestore.com.au/product/stretch-film-dispenser/",
+    "name": "Stretch Film Dispenser",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 113.45,
+    "regular_price": 113.45,
+    "heading": ""
+  },
+  {
+    "handle": "stretch-film",
+    "url": "https://mytapestore.com.au/product/stretch-film/",
+    "name": "Stretch Film",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 41.21,
+    "regular_price": 41.21,
+    "heading": ""
+  },
+  {
+    "handle": "lane-marking",
+    "url": "https://mytapestore.com.au/product/lane-marking/",
+    "name": "Floor Marking Tape Applicator | Line Marking Machine",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 237.0,
+    "regular_price": 237.0,
+    "heading": ""
+  },
+  {
+    "handle": "transfer-tapes-dispenser",
+    "url": "https://mytapestore.com.au/product/transfer-tapes-dispenser/",
+    "name": "Transfer Tapes Dispenser",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 75.6,
+    "regular_price": 75.6,
+    "heading": ""
+  },
+  {
+    "handle": "danger-tape",
+    "url": "https://mytapestore.com.au/product/danger-tape/",
+    "name": "Danger' Printed Barricade Tape- Red/White 75mm x 100m",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 17.1,
+    "regular_price": 17.1,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "caution-tape",
+    "url": "https://mytapestore.com.au/product/caution-tape/",
+    "name": "Caution Printed Barricade Tape- Yellow 75mm x 100m",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 23.16,
+    "regular_price": 23.16,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "h11-cpw-pistol-grip-dispenser-75mm",
+    "url": "https://mytapestore.com.au/product/h11-cpw-pistol-grip-dispenser-75mm/",
+    "name": "H11/CPW Pistol Grip Dispenser 75mm",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 30.55,
+    "regular_price": 30.55,
+    "heading": ""
+  },
+  {
+    "handle": "blue-electrical-tape",
+    "url": "https://mytapestore.com.au/product/blue-electrical-tape/",
+    "name": "Blue PVC Electrical Tape - Pack of 10",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 18.31,
+    "regular_price": 18.31,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "white-electrical-tape",
+    "url": "https://mytapestore.com.au/product/white-electrical-tape/",
+    "name": "While PVC Electrical Tape - Pack of 10",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 18.31,
+    "regular_price": 18.31,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "black-electrical-tape",
+    "url": "https://mytapestore.com.au/product/black-electrical-tape/",
+    "name": "Black PVC Electrical Tape - Pack of 10",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 18.31,
+    "regular_price": 18.31,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "red-electrical-tape",
+    "url": "https://mytapestore.com.au/product/red-electrical-tape/",
+    "name": "Red PVC Electrical Tape - Pack of 10",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 18.31,
+    "regular_price": 18.31,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "yellow-insulation-tape",
+    "url": "https://mytapestore.com.au/product/yellow-insulation-tape/",
+    "name": "Yellow PVC Electrical Tape - Pack of 10",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 18.31,
+    "regular_price": 18.31,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "green-insulation-tape",
+    "url": "https://mytapestore.com.au/product/green-insulation-tape/",
+    "name": "Green PVC Electrical Tape - Pack of 10",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 18.31,
+    "regular_price": 18.31,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "pvc-duct-tape-black",
+    "url": "https://mytapestore.com.au/product/pvc-duct-tape-black/",
+    "name": "PVC Duct Tape Black 48mm x 30m",
+    "minimum": 4,
+    "rules": {
+      "5": 5.0,
+      "11": 10.0,
+      "15": 15.0
+    },
+    "base_price": 4.9,
+    "regular_price": 4.9,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "do-not-enter-tape",
+    "url": "https://mytapestore.com.au/product/do-not-enter-tape/",
+    "name": "Printed Danger Do Not Enter Barricade Tape Red/White 75mm x 100m",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 17.1,
+    "regular_price": 17.1,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "fly-screen-repair-tape",
+    "url": "https://mytapestore.com.au/product/fly-screen-repair-tape/",
+    "name": "Fly Screen Repair Tape",
+    "minimum": 2,
+    "rules": {
+      "3": 5.0,
+      "7": 10.0,
+      "10": 15.0
+    },
+    "base_price": 9.5,
+    "regular_price": 9.5,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "glue-dots-removable-10mm-1500-roll",
+    "url": "https://mytapestore.com.au/product/glue-dots-removable-10mm-1500-roll/",
+    "name": "Glue Dots Removable 10mm - 1500/Roll - ATG Dispenser Compatible - 10mm",
+    "minimum": 1,
+    "rules": {
+      "10": 10.0
+    },
+    "base_price": 50.59,
+    "regular_price": 50.59,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "glue-strips-removable-35mm-5mm",
+    "url": "https://mytapestore.com.au/product/glue-strips-removable-35mm-5mm/",
+    "name": "Glue Strips Removable 35mm x 5mm - 3000 Strips/Roll - 35mm x 5mm",
+    "minimum": 1,
+    "rules": {
+      "10": 10.0
+    },
+    "base_price": 69.0,
+    "regular_price": 69.0,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "velcro-hook-loop-sticky-dots",
+    "url": "https://mytapestore.com.au/product/velcro-hook-loop-sticky-dots/",
+    "name": "Velcro\u00ae Sticky Dots Hook & Loop 900/1200 Pcs",
+    "minimum": 1,
+    "rules": {
+      "10": 5.0
+    },
+    "base_price": 115.99,
+    "regular_price": 115.99,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "velcro-adhesive-backed-hook-loop",
+    "url": "https://mytapestore.com.au/product/velcro-adhesive-backed-hook-loop/",
+    "name": "VELCRO\u00ae Self Adhesive Hook and Loop Roll",
+    "minimum": 1,
+    "rules": {
+      "10": 5.0
+    },
+    "base_price": 84.99,
+    "regular_price": 84.99,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "hook-loop-adhesive-dots",
+    "url": "https://mytapestore.com.au/product/hook-loop-adhesive-dots/",
+    "name": "Hook & Loop Sticky Dots 1000/5000 Pcs",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 63.5,
+    "regular_price": 63.5,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "sew-on-hook-loop-non-adhesive",
+    "url": "https://mytapestore.com.au/product/sew-on-hook-loop-non-adhesive/",
+    "name": "Sew On Hook and Loop, Non Adhesive",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 25.26,
+    "regular_price": 25.26,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "back-to-back-black-hook-and-loop",
+    "url": "https://mytapestore.com.au/product/back-to-back-black-hook-and-loop/",
+    "name": "Double Side Back to Back Hook Loop",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 21.9,
+    "regular_price": 21.9,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "kikusui-joist-protection-decking-tape",
+    "url": "https://mytapestore.com.au/product/kikusui-joist-protection-decking-tape/",
+    "tiers": null
+  },
+  {
+    "handle": "joist-protection-tape",
+    "url": "https://mytapestore.com.au/product/joist-protection-tape/",
+    "tiers": null
+  },
+  {
+    "handle": "anti-slip-tread-tape",
+    "url": "https://mytapestore.com.au/product/anti-slip-tread-tape/",
+    "tiers": null
+  },
+  {
+    "handle": "polyurethane-foam-tape",
+    "url": "https://mytapestore.com.au/product/polyurethane-foam-tape/",
+    "tiers": null
+  },
+  {
+    "handle": "gaffer-tape",
+    "url": "https://mytapestore.com.au/product/gaffer-tape/",
+    "tiers": null
+  },
+  {
+    "handle": "class-1-reflective-tape-prismatic-grade",
+    "url": "https://mytapestore.com.au/product/class-1-reflective-tape-prismatic-grade/",
+    "tiers": null
+  },
+  {
+    "handle": "class-1-reflective-tape",
+    "url": "https://mytapestore.com.au/product/class-1-reflective-tape/",
+    "tiers": null
+  },
+  {
+    "handle": "double-sided-black-butyl-tape",
+    "url": "https://mytapestore.com.au/product/double-sided-black-butyl-tape/",
+    "tiers": null
+  },
+  {
+    "handle": "double-sided-carpet-tape",
+    "url": "https://mytapestore.com.au/product/double-sided-carpet-tape/",
+    "tiers": null
+  },
+  {
+    "handle": "double-sided-pe-foam-tape",
+    "url": "https://mytapestore.com.au/product/double-sided-pe-foam-tape/",
+    "tiers": null
+  },
+  {
+    "handle": "high-bond-acrylic-tape-clear",
+    "url": "https://mytapestore.com.au/product/high-bond-acrylic-tape-clear/",
+    "name": "Ultra High Bond Acrylic Foam Tape D/Sided - Clear",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 13.0
+    },
+    "base_price": 28.57,
+    "regular_price": 28.57,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "high-bond-acrylic-tape-white",
+    "url": "https://mytapestore.com.au/product/high-bond-acrylic-tape-white/",
+    "name": "Ultra High Bond Acrylic Foam Tape D/Sided- White",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 37.67,
+    "regular_price": 37.67,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "high-bond-acrylic-tape-grey",
+    "url": "https://mytapestore.com.au/product/high-bond-acrylic-tape-grey/",
+    "name": "Ultra High Bond Acrylic Foam Tape D/Sided- Grey",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 28.57,
+    "regular_price": 28.57,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "high-bond-acrylic-tape-dark-grey",
+    "url": "https://mytapestore.com.au/product/high-bond-acrylic-tape-dark-grey/",
+    "name": "Ultra High Bond Acrylic Foam Tape D/Sided- Dark Grey",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 28.56,
+    "regular_price": 28.56,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "h11-sg-pistol-grip-dispenser",
+    "url": "https://mytapestore.com.au/product/h11-sg-pistol-grip-dispenser/",
+    "name": "H11/SG Pistol Grip Dispenser",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 34.2,
+    "regular_price": 34.2,
+    "heading": ""
+  },
+  {
+    "handle": "h11-rb-pistol-grip-dispenser",
+    "url": "https://mytapestore.com.au/product/h11-rb-pistol-grip-dispenser/",
+    "name": "H11/RB Pistol Grip Dispenser",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 25.08,
+    "regular_price": 25.08,
+    "heading": ""
+  },
+  {
+    "handle": "magnetic-tapes-non-adhesive",
+    "url": "https://mytapestore.com.au/product/magnetic-tapes-non-adhesive/",
+    "tiers": null
+  },
+  {
+    "handle": "heat-sealer-teflon-coated-tape",
+    "url": "https://mytapestore.com.au/product/heat-sealer-teflon-coated-tape/",
+    "name": "Heat Sealer Tape - Teflon Coated - 18mm x 10m",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 32.0,
+    "regular_price": 32.0,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "uhmw-tape-slick-surface-tape",
+    "url": "https://mytapestore.com.au/product/uhmw-tape-slick-surface-tape/",
+    "tiers": null
+  },
+  {
+    "handle": "barrier-warning-tape",
+    "url": "https://mytapestore.com.au/product/barrier-warning-tape/",
+    "tiers": null
+  },
+  {
+    "handle": "magnetic-tapes-adhesive-backed",
+    "url": "https://mytapestore.com.au/product/magnetic-tapes-adhesive-backed/",
+    "name": "Magnetic Tapes Adhesive Backed - 12mm x 15m",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 36.86,
+    "regular_price": 36.86,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "utility-grade-filament-tapes",
+    "url": "https://mytapestore.com.au/product/utility-grade-filament-tapes/",
+    "tiers": null
+  },
+  {
+    "handle": "cross-weave-filament-tapes",
+    "url": "https://mytapestore.com.au/product/cross-weave-filament-tapes/",
+    "tiers": null
+  },
+  {
+    "handle": "frog-tapes-delicate-surface",
+    "url": "https://mytapestore.com.au/product/frog-tapes-delicate-surface/",
+    "name": "FrogTape - Delicate Surface Tape",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 15.18,
+    "regular_price": 15.18,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "14-day-premium-masking-tape",
+    "url": "https://mytapestore.com.au/product/14-day-premium-masking-tape/",
+    "tiers": null
+  },
+  {
+    "handle": "general-purpose-adhesive-transfer-tape",
+    "url": "https://mytapestore.com.au/product/general-purpose-adhesive-transfer-tape/",
+    "tiers": null
+  },
+  {
+    "handle": "tear-drop-dispenser-metal",
+    "url": "https://mytapestore.com.au/product/tear-drop-dispenser-metal/",
+    "name": "Tear Drop Dispenser Metal",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 36.25,
+    "regular_price": 36.25,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "frog-tapes-multi-surface",
+    "url": "https://mytapestore.com.au/product/frog-tapes-multi-surface/",
+    "name": "FrogTape - Multi-Surface Masking Tape",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 15.18,
+    "regular_price": 15.18,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "premium-strapping-tapes",
+    "url": "https://mytapestore.com.au/product/premium-strapping-tapes/",
+    "tiers": null
+  },
+  {
+    "handle": "structural-glazing-tape",
+    "url": "https://mytapestore.com.au/product/structural-glazing-tape/",
+    "tiers": null
+  },
+  {
+    "handle": "spacer-glazing-tape",
+    "url": "https://mytapestore.com.au/product/spacer-glazing-tape/",
+    "tiers": null
+  },
+  {
+    "handle": "felt-tapes-permanent-adhesive",
+    "url": "https://mytapestore.com.au/product/felt-tapes-permanent-adhesive/",
+    "tiers": null
+  },
+  {
+    "handle": "heavy-duty-gaffer-tape",
+    "url": "https://mytapestore.com.au/product/heavy-duty-gaffer-tape/",
+    "tiers": null
+  },
+  {
+    "handle": "felt-dots",
+    "url": "https://mytapestore.com.au/product/felt-dots/",
+    "tiers": null
+  },
+  {
+    "handle": "fibreglass-cloth-insulation-tape",
+    "url": "https://mytapestore.com.au/product/fibreglass-cloth-insulation-tape/",
+    "tiers": null
+  },
+  {
+    "handle": "plain-foil-tape",
+    "url": "https://mytapestore.com.au/product/plain-foil-tape/",
+    "tiers": null
+  },
+  {
+    "handle": "class-2-reflective-tape",
+    "url": "https://mytapestore.com.au/product/class-2-reflective-tape/",
+    "tiers": null
+  },
+  {
+    "handle": "biodegradable-packaging-tape",
+    "url": "https://mytapestore.com.au/product/biodegradable-packaging-tape/",
+    "tiers": null
+  },
+  {
+    "handle": "floor-marking-tape",
+    "url": "https://mytapestore.com.au/product/floor-marking-tape/",
+    "tiers": null
+  },
+  {
+    "handle": "fragile-packing-tape",
+    "url": "https://mytapestore.com.au/product/fragile-packing-tape/",
+    "tiers": null
+  },
+  {
+    "handle": "pvc-packaging-tape",
+    "url": "https://mytapestore.com.au/product/pvc-packaging-tape/",
+    "tiers": null
+  },
+  {
+    "handle": "double-sided-premium-tissue-tape",
+    "url": "https://mytapestore.com.au/product/double-sided-premium-tissue-tape/",
+    "tiers": null
+  },
+  {
+    "handle": "polyester-insulation-tape",
+    "url": "https://mytapestore.com.au/product/polyester-insulation-tape/",
+    "tiers": null
+  },
+  {
+    "handle": "pvc-duct-tape-silver",
+    "url": "https://mytapestore.com.au/product/pvc-duct-tape-silver/",
+    "tiers": null
+  },
+  {
+    "handle": "clear-packaging-tape",
+    "url": "https://mytapestore.com.au/product/clear-packaging-tape/",
+    "tiers": null
+  },
+  {
+    "handle": "polyethylene-foam-tape",
+    "url": "https://mytapestore.com.au/product/polyethylene-foam-tape/",
+    "tiers": null
+  },
+  {
+    "handle": "polyimide-film-kapton-tape",
+    "url": "https://mytapestore.com.au/product/polyimide-film-kapton-tape/",
+    "tiers": null
+  },
+  {
+    "handle": "silicone-splicing-tape",
+    "url": "https://mytapestore.com.au/product/silicone-splicing-tape/",
+    "tiers": null
+  },
+  {
+    "handle": "adhesive-transfer-tape",
+    "url": "https://mytapestore.com.au/product/adhesive-transfer-tape/",
+    "tiers": null
+  },
+  {
+    "handle": "double-sided-differential-adhesive-tape",
+    "url": "https://mytapestore.com.au/product/double-sided-differential-adhesive-tape/",
+    "tiers": null
+  },
+  {
+    "handle": "double-sided-polypropylene-tape",
+    "url": "https://mytapestore.com.au/product/double-sided-polypropylene-tape/",
+    "tiers": null
+  },
+  {
+    "handle": "glass-reinforced-mylar",
+    "url": "https://mytapestore.com.au/product/glass-reinforced-mylar/",
+    "tiers": null
+  },
+  {
+    "handle": "double-sided-exhibition-cloth-tape",
+    "url": "https://mytapestore.com.au/product/double-sided-exhibition-cloth-tape/",
+    "tiers": null
+  },
+  {
+    "handle": "house-wrap-tape",
+    "url": "https://mytapestore.com.au/product/house-wrap-tape/",
+    "tiers": null
+  },
+  {
+    "handle": "all-weather-repair-tape",
+    "url": "https://mytapestore.com.au/product/all-weather-repair-tape/",
+    "tiers": null
+  },
+  {
+    "handle": "pvc-nitrile-foam-tape",
+    "url": "https://mytapestore.com.au/product/pvc-nitrile-foam-tape/",
+    "tiers": null
+  },
+  {
+    "handle": "reinforced-flashing-tape",
+    "url": "https://mytapestore.com.au/product/reinforced-flashing-tape/",
+    "tiers": null
+  },
+  {
+    "handle": "flashing-tape",
+    "url": "https://mytapestore.com.au/product/flashing-tape/",
+    "tiers": null
+  },
+  {
+    "handle": "protection-tape",
+    "url": "https://mytapestore.com.au/product/protection-tape/",
+    "tiers": null
+  },
+  {
+    "handle": "fineline-masking-tape",
+    "url": "https://mytapestore.com.au/product/fineline-masking-tape/",
+    "name": "Fine Line Masking Tape",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 10.86,
+    "regular_price": 10.86,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "reinforced-foil-tape",
+    "url": "https://mytapestore.com.au/product/reinforced-foil-tape/",
+    "name": "Reinforced Foil Tape",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 14.97,
+    "regular_price": 14.97,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "premium-polypropylene-packaging-tape",
+    "url": "https://mytapestore.com.au/product/premium-polypropylene-packaging-tape/",
+    "name": "Premium Polypropylene Tapes - 75m Brown",
+    "minimum": 6,
+    "rules": {
+      "7": 5.0,
+      "11": 10.0,
+      "15": 15.0
+    },
+    "base_price": 2.73,
+    "regular_price": 2.73,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "white-double-sided-polyester-tape",
+    "url": "https://mytapestore.com.au/product/white-double-sided-polyester-tape/",
+    "name": "White Double Sided Polyester Tape",
+    "minimum": 2,
+    "rules": {
+      "3": 5.0,
+      "7": 10.0,
+      "10": 15.0
+    },
+    "base_price": 7.88,
+    "regular_price": 7.88,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "hook-fastener-non-adhesive",
+    "url": "https://mytapestore.com.au/product/hook-fastener-non-adhesive/",
+    "name": "Sew On Hook and Loop, Non Adhesive",
+    "minimum": 1,
+    "rules": {
+      "2": 5.0,
+      "6": 10.0,
+      "10": 15.0
+    },
+    "base_price": 25.26,
+    "regular_price": 25.26,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "red-double-sided-polyester-tape",
+    "url": "https://mytapestore.com.au/product/red-double-sided-polyester-tape/",
+    "name": "Red Double Sided Polyester Tape",
+    "minimum": 2,
+    "rules": {
+      "3": 5.0,
+      "7": 10.0,
+      "10": 15.0
+    },
+    "base_price": 8.39,
+    "regular_price": 8.39,
+    "heading": "Get it at a discounted rate"
+  },
+  {
+    "handle": "clear-stationery-tape",
+    "url": "https://mytapestore.com.au/product/clear-stationery-tape/",
+    "name": "Clear Stationery Tape",
+    "minimum": 6,
+    "rules": {
+      "7": 10.0,
+      "11": 15.0,
+      "15": 20.0
+    },
+    "base_price": 0.7,
+    "regular_price": 0.7,
+    "heading": "Get it at a discounted rate"
+  }
+]

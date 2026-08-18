@@ -1,0 +1,43 @@
+{
+  "$schema": "https://playground.wordpress.net/blueprint-schema.json",
+  "landingPage": "/",
+  "preferredVersions": {
+    "php": "8.3",
+    "wp": "latest"
+  },
+  "features": {
+    "networking": true
+  },
+  "login": false,
+  "steps": [
+    {
+      "step": "installPlugin",
+      "pluginData": {
+        "resource": "wordpress.org/plugins",
+        "slug": "woocommerce"
+      },
+      "options": {
+        "activate": true
+      }
+    },
+    {
+      "step": "activateTheme",
+      "themeFolderName": "mytapestore"
+    },
+    {
+      "step": "setSiteOptions",
+      "options": {
+        "blogname": "My Tape Store",
+        "blogdescription": "Bringing Tapes Direct to Your Doorstep",
+        "permalink_structure": "/%postname%/",
+        "woocommerce_currency": "AUD",
+        "woocommerce_default_country": "AU:NSW",
+        "woocommerce_weight_unit": "kg",
+        "woocommerce_dimension_unit": "cm",
+        "woocommerce_store_city": "Sydney",
+        "woocommerce_calc_taxes": "yes",
+        "woocommerce_prices_include_tax": "yes"
+      }
+    }
+  ]
+}

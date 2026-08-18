@@ -1,0 +1,16 @@
+{
+  "sections": {
+    "main": {
+      "type": "mts-collection",
+      "settings": {
+        "rail_menu": "main-menu",
+        "products_per_page": 48,
+        "show_seo_close": true,
+        "close_text": "Still not sure which tape is right for the job?",
+        "close_cta": "Talk to our tape experts",
+        "close_url": "/pages/contact"
+      }
+    }
+  },
+  "order": ["main"]
+}

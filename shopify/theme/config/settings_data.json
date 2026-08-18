@@ -1,7 +1,18 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "current": {
+    "hnl_chat_mode": "app",
     "favicon": "shopify://shop_images/Hooknloop.com.au-favicon.png",
     "currency_code_enabled": false,
+    "back_top_enable": false,
     "container_lg_width": 1250,
     "container_fluid_offset": 190,
     "type_body_font": "dm_sans_n4",
@@ -142,22 +153,13 @@
           "toggleKnobRadius": 18
         }
       },
-      "15683396631634586217": {
-        "type": "shopify://apps/inbox/blocks/chat/841fc607-4181-4ad1-842d-e24d7f8bad6b",
-        "disabled": true,
-        "settings": {
-          "greeting_message": "",
-          "button_color": "#000000",
-          "secondary_color": "#FFFFFF",
-          "ternary_color": "#6A6A6A",
-          "button_icon": "chat_bubble",
-          "button_text": "chat_with_us",
-          "button_horizontal_position": "bottom_right",
-          "button_vertical_position": "lowest"
-        }
-      },
       "14947870889598929745": {
         "type": "shopify://apps/smartbot/blocks/app-embed/d9407b81-7d3e-4612-91c3-2020086e2073",
+        "disabled": false,
+        "settings": {}
+      },
+      "6610233760104865948": {
+        "type": "shopify://apps/brevo-pushowl/blocks/pushowl-app-embed-3d2ff2b5/fa20c3ba-38bf-43e0-ba5c-431f6ae07d95",
         "disabled": false,
         "settings": {}
       }
@@ -299,9 +301,7 @@
           "highligt_text_gradient": ""
         }
       }
-    },
-    "back_top_enable": false,
-    "hnl_chat_mode": "app"
+    }
   },
   "presets": {
     "Default": {

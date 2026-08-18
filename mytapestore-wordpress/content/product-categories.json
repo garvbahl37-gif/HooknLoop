@@ -1,0 +1,3013 @@
+[
+  {
+    "id": 432,
+    "name": "Acribond Accessories",
+    "slug": "acribond-accessories",
+    "parent": 0,
+    "description": "<h1>Acribond Accessories</h1>",
+    "display": "default",
+    "image": {
+      "id": 3834,
+      "date_created": "2023-09-05T09:42:56",
+      "date_created_gmt": "2023-09-05T09:42:56",
+      "date_modified": "2023-11-30T10:49:28",
+      "date_modified_gmt": "2023-11-30T10:49:28",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2023/09/705.jpg",
+      "name": "705",
+      "alt": "Acribond Accessories Solvent - Adhesive Tapes/Accessories Solvent - My Tape Store"
+    },
+    "menu_order": 2,
+    "count": 2,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/432",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ]
+    }
+  },
+  {
+    "id": 772,
+    "name": "Aerospace Defense",
+    "slug": "aerospace-defense",
+    "parent": 760,
+    "description": "<h1>Aerospace &amp; Defense Adhesive Tapes</h1>\r\n<p style=\"text-align: left\">Find the best quality tapes designed for demanding aerospace and defence applications. Durable performance with strong adhesion and resistance to extreme conditions.</p>",
+    "display": "default",
+    "image": {
+      "id": 8575,
+      "date_created": "2025-06-06T10:37:49",
+      "date_created_gmt": "2025-06-06T10:37:49",
+      "date_modified": "2025-07-02T01:14:18",
+      "date_modified_gmt": "2025-07-02T01:14:18",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2025/06/Untitled-6.jpg",
+      "name": "Aerospace &#038; Defense",
+      "alt": "Aerospace & Defense"
+    },
+    "menu_order": 31,
+    "count": 13,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/772",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ],
+      "up": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/760"
+        }
+      ]
+    }
+  },
+  {
+    "id": 765,
+    "name": "Airconditioning Refrigeration Tapes",
+    "slug": "airconditioning-refrigeration-tapes",
+    "parent": 760,
+    "description": "<h1>Our Collection of Airconditioning And Refrigeration Adhesive Tapes</h1>\r\n<p style=\"text-align: left\">Make HVAC installations and repairs seamless and durable with high quality tapes perfect for sealing ducts, insulation, and moisture protection. Give air conditioning and refrigeration systems a new life.</p>",
+    "display": "default",
+    "image": {
+      "id": 8768,
+      "date_created": "2025-06-25T05:57:17",
+      "date_created_gmt": "2025-06-25T05:57:17",
+      "date_modified": "2025-07-02T01:16:05",
+      "date_modified_gmt": "2025-07-02T01:16:05",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2025/06/Airconditioning-Industry.jpg",
+      "name": "Tapes for Airconditioning Refrigeration Industry",
+      "alt": "Tapes for Airconditioning Refrigeration Industry"
+    },
+    "menu_order": 32,
+    "count": 16,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/765",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ],
+      "up": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/760"
+        }
+      ]
+    }
+  },
+  {
+    "id": 358,
+    "name": "Aluminium Foil Tape",
+    "slug": "aluminium-foil-tapes",
+    "parent": 0,
+    "description": "<h1>Aluminium Foil Tape – Buy Online in Australia</h1>\r\n<p style=\"text-align: left\">Our aluminium foil tapes are the go-to choice for HVAC technicians, builders, and contractors all over Australia. Crafted for insulation, moisture protection, and sealing tasks, these top-notch tapes meet AS/NZS building standards. Whether you’re after just one roll or a bulk order, we’ve got you covered with heat-resistant foil tapes delivered quickly and reliably across the country.</p>",
+    "display": "default",
+    "image": {
+      "id": 8389,
+      "date_created": "2025-06-03T07:03:42",
+      "date_created_gmt": "2025-06-03T07:03:42",
+      "date_modified": "2025-06-03T07:03:42",
+      "date_modified_gmt": "2025-06-03T07:03:42",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2025/06/Best-Tapes-For-Waterproofing.jpg",
+      "name": "Best Tapes For Waterproofing",
+      "alt": ""
+    },
+    "menu_order": 20,
+    "count": 2,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/358",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ]
+    }
+  },
+  {
+    "id": 332,
+    "name": "Anti Slip Tape",
+    "slug": "anti-slip-tape",
+    "parent": 0,
+    "description": "",
+    "display": "default",
+    "image": {
+      "id": 3254,
+      "date_created": "2023-08-28T08:08:52",
+      "date_created_gmt": "2023-08-28T08:08:52",
+      "date_modified": "2023-11-30T10:54:50",
+      "date_modified_gmt": "2023-11-30T10:54:50",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2023/08/328.jpg",
+      "name": "328",
+      "alt": "Anti Slip Tread Tape - Adhesive Tapes/Tread Tape - My Tape Store"
+    },
+    "menu_order": 3,
+    "count": 0,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/332",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ]
+    }
+  },
+  {
+    "id": 670,
+    "name": "ATG Tapes",
+    "slug": "atg-tapes",
+    "parent": 0,
+    "description": "<h1>Buy ATG Tape Online at My Tape Store</h1>\r\nLooking for a high-performance bonding solution? My Tape Store has ATG Tape, also known as adhesive transfer tape, for you. Designed from an acrylic adhesive film with no carrier, it gives precise and clean applications with strong, long-lasting adhesion on a variety of surfaces. Good to use on paper, plastic, and metal. With its quick stick and easy handling feature, our tape ensures a reliable bond without mess or residue. It comes with superb resistance to chemicals, solvents, humidity, and moisture.",
+    "display": "default",
+    "image": {
+      "id": 3283,
+      "date_created": "2023-08-28T12:10:52",
+      "date_created_gmt": "2023-08-28T12:10:52",
+      "date_modified": "2024-09-05T06:25:34",
+      "date_modified_gmt": "2024-09-05T06:25:34",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2023/08/354.jpg",
+      "name": "General Purpose Adhesive Transfer Tape",
+      "alt": "General Purpose Adhesive Transfer Tape"
+    },
+    "menu_order": 4,
+    "count": 4,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/670",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ]
+    }
+  },
+  {
+    "id": 309,
+    "name": "Automotive Masking Tape",
+    "slug": "automotive",
+    "parent": 211,
+    "description": "<h1>Automotive Masking Tape</h1>\r\n<p style=\"text-align: left\">Achieving flawless results in an automotive project, whether painting, detailing or performing repairs, is easy now. Grab the finest quality automotive masking tapes in Australia at My Tape Store. We have an exclusive range of masking tapes to meet all your needs.</p>",
+    "display": "default",
+    "image": {
+      "id": 3000,
+      "date_created": "2023-08-24T07:37:50",
+      "date_created_gmt": "2023-08-24T07:37:50",
+      "date_modified": "2023-12-01T02:12:55",
+      "date_modified_gmt": "2023-12-01T02:12:55",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2023/08/120.jpg",
+      "name": "120",
+      "alt": "General Purpose Masking Tape - Adhesive Tapes/Masking Tape - My Tape Store"
+    },
+    "menu_order": 59,
+    "count": 6,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/309",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ],
+      "up": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/211"
+        }
+      ]
+    }
+  },
+  {
+    "id": 750,
+    "name": "Barricade Hazard Tapes",
+    "slug": "barricade-hazard-tapes",
+    "parent": 0,
+    "description": "<h1 class=\"des-2\"><strong>Barricade &amp; Hazard Tape for Safety, Warning &amp; Restricted Areas</strong></h1>\r\n<p style=\"text-align: left\">Barrier tape is primarily used to draw attention or temporarily barricade hazardous areas. This plastic tape is commonly visible at the accident areas, construction sites and crime scenes. It is often seen in the limited safety areas, too. At My Tape Store, we offer a range of hazard tape collections which are specifically designed to meet the industry demands of Australia. Here, we are one of the foremost online suppliers and wholesalers of non-adhesive safety tapes, and presenting high-performance tapes is our forte. We aim to fulfil a wide range of industry demands such as lightweight, tear-resistant, durable and eco-friendly. Place an order for the best performance safety tapes today!</p>",
+    "display": "default",
+    "image": {
+      "id": 5076,
+      "date_created": "2024-03-14T11:43:37",
+      "date_created_gmt": "2024-03-14T11:43:37",
+      "date_modified": "2024-05-19T19:06:31",
+      "date_modified_gmt": "2024-05-19T19:06:31",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2023/08/537-1-e1716145925531.jpg",
+      "name": "hazard warning tape",
+      "alt": "hazard warning tape"
+    },
+    "menu_order": 5,
+    "count": 4,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/750",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ]
+    }
+  },
+  {
+    "id": 505,
+    "name": "Barrier Warning Tape",
+    "slug": "barrier-warning-tape",
+    "parent": 0,
+    "description": "",
+    "display": "default",
+    "image": null,
+    "menu_order": 6,
+    "count": 0,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/505",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ]
+    }
+  },
+  {
+    "id": 778,
+    "name": "Building &amp; Construction",
+    "slug": "building-construction",
+    "parent": 760,
+    "description": "<h1>Adhesive Tapes for Building &amp; Construction</h1>\r\n<p style=\"text-align: left\">Explore adhesive tapes for building and construction, including roofing, electrical, HVAC, and more.</p>",
+    "display": "default",
+    "image": {
+      "id": 8767,
+      "date_created": "2025-06-25T04:33:54",
+      "date_created_gmt": "2025-06-25T04:33:54",
+      "date_modified": "2025-07-02T01:17:13",
+      "date_modified_gmt": "2025-07-02T01:17:13",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2025/06/Building-and-construction.png",
+      "name": "Building and construction Tapes",
+      "alt": "Building and construction Tapes"
+    },
+    "menu_order": 33,
+    "count": 42,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/778",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ],
+      "up": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/760"
+        }
+      ]
+    }
+  },
+  {
+    "id": 506,
+    "name": "Bumpers Tapes",
+    "slug": "bumpers-tapes",
+    "parent": 0,
+    "description": "<h1>Bumper Tapes</h1>\r\n<p style=\"text-align: left\"><span style=\"font-weight: 400\">Bumper tape is a versatile protective solution available in a wider range at My Tape Store. We have designed this tape to help prevent scratches, dents, and impact on various surfaces. Buy bumper tape from our wider collection for various applications in cars, furniture, walls, or industrial equipment. Get a reliable cushioning layer to absorb shocks. We deliver them nationwide to the doorstep. </span></p>",
+    "display": "default",
+    "image": null,
+    "menu_order": 7,
+    "count": 5,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/506",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ]
+    }
+  },
+  {
+    "id": 672,
+    "name": "Butyl Tape",
+    "slug": "butyl-tape",
+    "parent": 0,
+    "description": "<h1>Butyl Tapes</h1>\r\n<p style=\"text-align: left\">Butyl tapes have now turned to be a staple adhesive solution in construction, repair, and maintenance. Thanks to its outstanding adhesive and waterproofing features. Made from synthetic butyl rubber, these tapes outperform traditional rubber adhesives by maintaining their stickiness and flexibility even in extreme temperatures, whether you are working in the heat of summer or the chill of winter.</p>",
+    "display": "default",
+    "image": {
+      "id": 5022,
+      "date_created": "2024-03-13T11:04:50",
+      "date_created_gmt": "2024-03-13T11:04:50",
+      "date_modified": "2024-03-13T11:04:50",
+      "date_modified_gmt": "2024-03-13T11:04:50",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2023/08/262.jpg",
+      "name": "262",
+      "alt": ""
+    },
+    "menu_order": 8,
+    "count": 1,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/672",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ]
+    }
+  },
+  {
+    "id": 634,
+    "name": "Cloth Double Sided Tape",
+    "slug": "cloth-double-sided-tape",
+    "parent": 0,
+    "description": "<h1>Double-Sided Cloth Tapes</h1>\r\nDouble-sided cloth tape is a reliable solution for everyday needs. Its strong holding ability and fabric backing make it flexible, easy to use, and perfect for multiple tasks. Whether for crafts, décor, quick repairs, or mounting, this tape saves time and trouble—all without the mess of glue or nails. At My Tape Store, we supply quality double-sided cloth tape for both professional work and home projects. Trusted by designers, tailors, event contractors, and DIY enthusiasts across Australia, our products are backed by real-world use.",
+    "display": "default",
+    "image": {
+      "id": 5034,
+      "date_created": "2024-03-14T07:42:01",
+      "date_created_gmt": "2024-03-14T07:42:01",
+      "date_modified": "2025-06-11T02:18:51",
+      "date_modified_gmt": "2025-06-11T02:18:51",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2023/08/303-2.jpg",
+      "name": "303",
+      "alt": "Double Sided Adhesive Transfer Tape"
+    },
+    "menu_order": 9,
+    "count": 2,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/634",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ]
+    }
+  },
+  {
+    "id": 764,
+    "name": "Display Signage",
+    "slug": "display-signage",
+    "parent": 760,
+    "description": "<h1>Our Tapes Collection For Display &amp; Signage Industries</h1>\r\n<p style=\"text-align: left\">Essential adhesive tapes for schools and libraries. Ideal for book repairs, art projects, and labeling.</p>",
+    "display": "default",
+    "image": {
+      "id": 8573,
+      "date_created": "2025-06-06T10:37:47",
+      "date_created_gmt": "2025-06-06T10:37:47",
+      "date_modified": "2025-07-02T01:18:15",
+      "date_modified_gmt": "2025-07-02T01:18:15",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2025/06/Untitled-4.jpg",
+      "name": "Adhesive Tapes for Display Signage",
+      "alt": "Adhesive Tapes for Display Signage"
+    },
+    "menu_order": 34,
+    "count": 25,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/764",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ],
+      "up": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/760"
+        }
+      ]
+    }
+  },
+  {
+    "id": 214,
+    "name": "Double Sided Tape",
+    "slug": "double-sided-tape",
+    "parent": 0,
+    "description": "<h1>Double Sided Tape</h1>\r\n<h2>Here is a Range of Double Sided Tapes to Suit Your Applications</h2>\r\nIt is a versatile adhesive tool designed to stick two surfaces together. Unlike normal tape, which has adhesive on one side, double sided tape comes with premium-quality adhesion on both sides. This unique quality makes it highly useful for mounting, bonding, and securing objects and of course without any visible fasteners. Our double sided tapes are strong and flexible, perfect for bonding the same products or different materials. ",
+    "display": "default",
+    "image": {
+      "id": 8567,
+      "date_created": "2025-06-06T10:03:17",
+      "date_created_gmt": "2025-06-06T10:03:17",
+      "date_modified": "2025-06-06T10:03:17",
+      "date_modified_gmt": "2025-06-06T10:03:17",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2023/08/2-1.jpg",
+      "name": "2",
+      "alt": ""
+    },
+    "menu_order": 10,
+    "count": 21,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/214",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ]
+    }
+  },
+  {
+    "id": 212,
+    "name": "Duct Tape",
+    "slug": "duct-tape",
+    "parent": 0,
+    "description": "<h1>Duct Tapes</h1>\r\n<p style=\"text-align: left\">The duct tape structure gives maximum strength, and the rubber adhesive makes it a preferable choice for sealing boxes, fixing household items, etc. As Australia's leading adhesive tape supplier, My Tape Store brings a premium collection of duct tapes designed to offer strength, flexibility, and strong adhesion.</p>",
+    "display": "default",
+    "image": {
+      "id": 2821,
+      "date_created": "2023-08-21T10:44:01",
+      "date_created_gmt": "2023-08-21T10:44:01",
+      "date_modified": "2023-08-21T10:44:01",
+      "date_modified_gmt": "2023-08-21T10:44:01",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2023/08/Duct-Tape.jpg",
+      "name": "Duct-Tape",
+      "alt": ""
+    },
+    "menu_order": 11,
+    "count": 2,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/212",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ]
+    }
+  },
+  {
+    "id": 512,
+    "name": "Eco Friendly Tapes",
+    "slug": "eco-friendly-tapes",
+    "parent": 0,
+    "description": "<h1>Buy Eco-friendly Tape Online at My Tape Store</h1>\r\n<p style=\"text-align: left\">Do you need an environment-friendly adhesive solution for sustainable packaging and sealing? Then, explore the wider collection of eco-friendly tapes at My Tape Store. These are useful adhesive solutions made from sensitive materials. We have designed them to reduce the impact on the environment. Regular tapes are usually made of plastic or PVC. But our tapes are made from sustainable materials. Paper, plant-based adhesive, and biodegradable plastics are to name a few.</p>",
+    "display": "default",
+    "image": {
+      "id": 7669,
+      "date_created": "2025-02-27T04:40:44",
+      "date_created_gmt": "2025-02-27T04:40:44",
+      "date_modified": "2025-02-27T04:40:44",
+      "date_modified_gmt": "2025-02-27T04:40:44",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2025/02/119_3_11zon-300.webp",
+      "name": "119_3_11zon-300",
+      "alt": ""
+    },
+    "menu_order": 12,
+    "count": 3,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/512",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ]
+    }
+  },
+  {
+    "id": 771,
+    "name": "Electronics &amp; Electrical",
+    "slug": "electronics-electrical",
+    "parent": 760,
+    "description": "<h1>Adhesive Tapes Used in Electronics &amp; Electrical Industries</h1>\r\n<p style=\"text-align: left\">Protect, insulate, and secure electronic components with tapes that meet safety and industry requirements. Ideal for wiring, repairs, and assembly.</p>",
+    "display": "default",
+    "image": {
+      "id": 8770,
+      "date_created": "2025-06-25T05:57:22",
+      "date_created_gmt": "2025-06-25T05:57:22",
+      "date_modified": "2025-07-02T01:19:10",
+      "date_modified_gmt": "2025-07-02T01:19:10",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2025/06/Electronics-Electrical-tape.jpg",
+      "name": "Tapes for Electronics &#038; Electrical industry",
+      "alt": "Tapes for Electronics & Electrical industry"
+    },
+    "menu_order": 35,
+    "count": 16,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/771",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ],
+      "up": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/760"
+        }
+      ]
+    }
+  },
+  {
+    "id": 15,
+    "name": "Fabric Tape",
+    "slug": "fabric-tape",
+    "parent": 0,
+    "description": "<h1>Fabric Tape (Also Known as Cloth Tape)</h1>\r\n<p style=\"text-align: left\">Cloth tapes are the most flexible and useful adhesive solutions, used by people in different industries. My Tape Store presents an incredible range of cloth tapes, also known as fabric tapes, at the best price in Australia. Our cloth tapes are available in various colours and sizes. Here at My Tape Store, explore multiple varieties like gaffer tapes, cloth tapes (7 colours available) and heavy-duty gaffer tapes. Buy online from any of them. Knowing the diverse requirements, we have crafted our products with the best features. Order your choice of tape now!</p>",
+    "display": "default",
+    "image": {
+      "id": 8849,
+      "date_created": "2025-06-27T04:24:30",
+      "date_created_gmt": "2025-06-27T04:24:30",
+      "date_modified": "2025-06-27T04:24:30",
+      "date_modified_gmt": "2025-06-27T04:24:30",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2025/06/33-300x300-1.png",
+      "name": "33-300&#215;300",
+      "alt": ""
+    },
+    "menu_order": 1,
+    "count": 3,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/15",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ]
+    }
+  },
+  {
+    "id": 367,
+    "name": "Felt Tape &amp; Dots",
+    "slug": "felt-tapes-dots",
+    "parent": 0,
+    "description": "<h1>Our Range of Felt Dots and Tapes</h1>\r\n<p style=\"text-align: left\">Our range of felt dots and tapes offers a versatile solution for a variety of projects. Whether you're looking to add a soft touch to your handmade creations or seeking an efficient way to protect surfaces, our felt dots and tape are your go-to solution.</p>",
+    "display": "default",
+    "image": {
+      "id": 3498,
+      "date_created": "2023-08-30T10:42:31",
+      "date_created_gmt": "2023-08-30T10:42:31",
+      "date_modified": "2023-11-30T11:26:54",
+      "date_modified_gmt": "2023-11-30T11:26:54",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2023/08/518.jpg",
+      "name": "518",
+      "alt": "Felt Tapes Permanent Adhesive - Adhesive Tapes/Felt Tapes - My Tape Store"
+    },
+    "menu_order": 13,
+    "count": 2,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/367",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ]
+    }
+  },
+  {
+    "id": 743,
+    "name": "Filament Tape",
+    "slug": "filament-tapes",
+    "parent": 0,
+    "description": "<h1>Filament Tape</h1>\r\n<p style=\"text-align: left\">Filament tape is a highly used pressure-sensitive adhesive tape that is strengthened with fibreglass filaments. My Tape Store brings an exclusive range of filament tapes designed for various industries. It promises high tensile strength, versatility, and durability. Our filament tapes are a must-buy if you are looking for a reliable adhesive solution for securing pallets, handling industrial packaging, or bundling heavy-duty material.</p>",
+    "display": "default",
+    "image": {
+      "id": 4017,
+      "date_created": "2023-09-18T11:10:59",
+      "date_created_gmt": "2023-09-18T11:10:59",
+      "date_modified": "2023-09-18T11:10:59",
+      "date_modified_gmt": "2023-09-18T11:10:59",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2023/08/672.jpg",
+      "name": "672",
+      "alt": ""
+    },
+    "menu_order": 14,
+    "count": 2,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/743",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ]
+    }
+  },
+  {
+    "id": 314,
+    "name": "Flashing Tape",
+    "slug": "flashing-tape",
+    "parent": 0,
+    "description": "<h1>Flashing Tapes</h1>\r\n<p style=\"text-align: left\">If you are looking for a reliable solution to seal out water, air, and moisture from a construction site or a repair project at home, My Tape Store has the perfect solution. Buy window &amp; roofing flashing tape online now. This adhesive tape is the ultimate solution whether you need to seal windows, doors, or roof joints. Our tapes provide a strong and waterproof barrier to keep any structure safe for years.</p>",
+    "display": "default",
+    "image": {
+      "id": 3055,
+      "date_created": "2023-08-24T11:33:25",
+      "date_created_gmt": "2023-08-24T11:33:25",
+      "date_modified": "2023-12-01T02:08:14",
+      "date_modified_gmt": "2023-12-01T02:08:14",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2023/08/182.jpg",
+      "name": "182",
+      "alt": "Flashing Tape - Adhesive Tapes/Flashing Tape - My Tape Store"
+    },
+    "menu_order": 16,
+    "count": 2,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/314",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ]
+    }
+  },
+  {
+    "id": 504,
+    "name": "Floor Marking Tape",
+    "slug": "floor-marking-tape",
+    "parent": 0,
+    "description": "",
+    "display": "default",
+    "image": null,
+    "menu_order": 17,
+    "count": 0,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/504",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ]
+    }
+  },
+  {
+    "id": 783,
+    "name": "Flooring",
+    "slug": "flooring",
+    "parent": 760,
+    "description": "<h1>Adhesive Tapes For Flooring</h1>\r\n<p style=\"text-align: left\">Find high-quality tapes with strong adhesion and an easy removal feature, manufactured to secure carpets, vinyl, and underlayment for flooring projects.</p>",
+    "display": "default",
+    "image": {
+      "id": 8765,
+      "date_created": "2025-06-25T04:20:34",
+      "date_created_gmt": "2025-06-25T04:20:34",
+      "date_modified": "2025-07-02T01:20:12",
+      "date_modified_gmt": "2025-07-02T01:20:12",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2025/06/flooring-tapes.jpg",
+      "name": "tape used on flooring",
+      "alt": "tape used on flooring"
+    },
+    "menu_order": 36,
+    "count": 7,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/783",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ],
+      "up": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/760"
+        }
+      ]
+    }
+  },
+  {
+    "id": 273,
+    "name": "Foam Tape - Single Sided",
+    "slug": "foam-tape",
+    "parent": 0,
+    "description": "<h1>Single Sided Foam Tapes</h1>\r\n<p style=\"text-align: left\">Foam tapes are the best to serve when it comes to cushioning, bonding, and sealing requirements in various industries. At My Tape Store, quality foam tapes are offered which are made from premium materials like polyethylene or PVC fortified with pressure-sensitive adhesives.</p>",
+    "display": "default",
+    "image": {
+      "id": 5039,
+      "date_created": "2024-03-14T07:56:56",
+      "date_created_gmt": "2024-03-14T07:56:56",
+      "date_modified": "2024-03-14T07:56:56",
+      "date_modified_gmt": "2024-03-14T07:56:56",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2023/08/329.jpg",
+      "name": "329",
+      "alt": ""
+    },
+    "menu_order": 18,
+    "count": 3,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/273",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ]
+    }
+  },
+  {
+    "id": 633,
+    "name": "Foam Tape Double Sided",
+    "slug": "foam-tape-double-sided",
+    "parent": 0,
+    "description": "<h1>Double Sided Foam Tapes</h1>\r\nDouble-sided foam tape is the best bonding solution and is also thicker than the regular double-sided tape. It is produced by applying a strong pressure-sensitive adhesive to both sides of a foam core, and, therefore, is perfect when used on uneven surfaces needing strong yet flexible bonding. It offers great tack, stretch and cushioning ability. This tape is one of those general-purpose tools that people look for to secure bond surfaces. Get premium quality tapes here at My Tape Store that promise high-performance adhesion, as it is designed for secure, long-lasting bonding across a wide range of surfaces. We are your trusted wholesale double-sided foam tape supplier and benefit from fast delivery across Australia.",
+    "display": "default",
+    "image": {
+      "id": 5063,
+      "date_created": "2024-03-14T11:07:36",
+      "date_created_gmt": "2024-03-14T11:07:36",
+      "date_modified": "2024-08-30T12:00:35",
+      "date_modified_gmt": "2024-08-30T12:00:35",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2023/08/508.jpg",
+      "name": "White Double Sided Foam Tape",
+      "alt": "Buy White Double Sided Foam Tape"
+    },
+    "menu_order": 19,
+    "count": 1,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/633",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ]
+    }
+  },
+  {
+    "id": 785,
+    "name": "Framing &amp; Insulation",
+    "slug": "framing-insulation",
+    "parent": 760,
+    "description": "<h1>Tapes For Framing &amp; Insulation</h1>\r\n<p style=\"text-align: left\">Tapes to secure insulation, seal gaps, and reinforce framing structures. Essential for energy-efficient builds.</p>",
+    "display": "default",
+    "image": {
+      "id": 8772,
+      "date_created": "2025-06-25T05:57:24",
+      "date_created_gmt": "2025-06-25T05:57:24",
+      "date_modified": "2025-06-25T05:57:24",
+      "date_modified_gmt": "2025-06-25T05:57:24",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2025/06/framing-industry.jpg",
+      "name": "framing industry",
+      "alt": ""
+    },
+    "menu_order": 37,
+    "count": 10,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/785",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ],
+      "up": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/760"
+        }
+      ]
+    }
+  },
+  {
+    "id": 781,
+    "name": "Glass &amp; Glazing",
+    "slug": "glass-glazing",
+    "parent": 760,
+    "description": "<h1>Our Range Of Tapes For Glass &amp; Glazing Industries </h1>\r\n<p style=\"text-align: left\">Specialised tapes for glass installation, edge protection, and glazing tasks. Secure and clean finishes every time.</p>",
+    "display": "default",
+    "image": {
+      "id": 8773,
+      "date_created": "2025-06-25T05:57:25",
+      "date_created_gmt": "2025-06-25T05:57:25",
+      "date_modified": "2025-06-25T05:57:25",
+      "date_modified_gmt": "2025-06-25T05:57:25",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2025/06/Glass-Glazing-tape.jpg",
+      "name": "Glass-&#038;-Glazing-tape",
+      "alt": ""
+    },
+    "menu_order": 38,
+    "count": 18,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/781",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ],
+      "up": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/760"
+        }
+      ]
+    }
+  },
+  {
+    "id": 374,
+    "name": "Glazing Tapes",
+    "slug": "glazing-tapes",
+    "parent": 0,
+    "description": "<h1>Glazing Tapes</h1>\r\nSealing windows for insulation and weather protection becomes super easy when you start using high-quality Glazing Tape available at the best price with My Tape Store. Made from durable PVC foam, this tape comes with strong double-sided acrylic adhesion for long-lasting performance. Trusted to provide a flawless seal between glass and frame, this tape helps prevent any type of leaks by air, water or dust. With excellent compression recovery, it adjusts to surface movement without losing grip.",
+    "display": "default",
+    "image": {
+      "id": 5114,
+      "date_created": "2024-03-19T12:07:04",
+      "date_created_gmt": "2024-03-19T12:07:04",
+      "date_modified": "2024-03-19T12:07:04",
+      "date_modified_gmt": "2024-03-19T12:07:04",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2023/08/645.jpg",
+      "name": "645",
+      "alt": ""
+    },
+    "menu_order": 21,
+    "count": 2,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/374",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ]
+    }
+  },
+  {
+    "id": 547,
+    "name": "Glue Dots",
+    "slug": "glue-dots",
+    "parent": 0,
+    "description": "<h1>Glue Dots | Sticky Adhesive Dots</h1>\r\n<p style=\"text-align: left\">Glue dots are a simple and affordable adhesive solution to stick lightweight objects cleanly and efficiently. It comes in a convenient dispenser box for easy use. These are highly useful in crafting, decorations, office work, and industrial applications. Buy them with us for any of the applications, as we promise convenience and strong adhesion with every lot. We are the most trusted adhesive dots supplier in Australia.</p>",
+    "display": "default",
+    "image": null,
+    "menu_order": 22,
+    "count": 4,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/547",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ]
+    }
+  },
+  {
+    "id": 440,
+    "name": "Hang Tab",
+    "slug": "hang-tab",
+    "parent": 0,
+    "description": "<h1>Hang Tabs – Buy Online in Australia</h1>\r\n<p style=\"text-align: left\">Enhance any product’s visibility, make it noticeable with premium quality hang tabs. With handy design and useful hanging feature, it promises performance with ease of application at retail stores. Hang tabs by My Tape Store are ideal for displaying and showcasing purposes. Self-adhesive, easy to attach and remove, these are high tack adhesive solutions. Suitable to serve various industries. Buy non-yellowing hang tabs online in Australia.</p>",
+    "display": "default",
+    "image": {
+      "id": 3871,
+      "date_created": "2023-09-05T11:19:43",
+      "date_created_gmt": "2023-09-05T11:19:43",
+      "date_modified": "2023-12-01T02:19:51",
+      "date_modified_gmt": "2023-12-01T02:19:51",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2023/09/733.jpg",
+      "name": "733",
+      "alt": "Hh400r Hang Tab - Adhesive Tapes/Hang Tab - My Tape Store"
+    },
+    "menu_order": 23,
+    "count": 6,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/440",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ]
+    }
+  },
+  {
+    "id": 491,
+    "name": "Heavy Duty Gaffer Tape",
+    "slug": "heavy-duty-gaffer-tape",
+    "parent": 0,
+    "description": "",
+    "display": "default",
+    "image": null,
+    "menu_order": 24,
+    "count": 0,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/491",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ]
+    }
+  },
+  {
+    "id": 436,
+    "name": "Hook &amp; Loop Tape",
+    "slug": "hook-loop-tapes",
+    "parent": 0,
+    "description": "<h1>Hook and Loop Tape/Velcro® Brand Tape</h1>\r\n<p style=\"text-align: left\">Hook and loop tapes are the ultimate solution when managing messy cables, securing lightweight items, or creating adjustable straps becomes challenging. My Tape Store brings a premium collection of tapes to fulfil your demands well. It is a reusable, reliable and easy way of handling and securing bundles. We get you the simple yet effective fastening method for people across Australia that comes with supreme features in our Hook and loop tapes.</p>",
+    "display": "default",
+    "image": {
+      "id": 8699,
+      "date_created": "2025-06-16T11:06:25",
+      "date_created_gmt": "2025-06-16T11:06:25",
+      "date_modified": "2025-06-16T11:06:25",
+      "date_modified_gmt": "2025-06-16T11:06:25",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2025/06/211-min.png",
+      "name": "211-min",
+      "alt": ""
+    },
+    "menu_order": 26,
+    "count": 8,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/436",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ]
+    }
+  },
+  {
+    "id": 552,
+    "name": "Hook and Loop Dots",
+    "slug": "hook-and-loop-dots",
+    "parent": 0,
+    "description": "<h1>Hook and Loop Dots / Velcro® Dots</h1>\r\n<p style=\"text-align: left\">Hook and loop dots are the perfect solution for secure fastening in various applications. At My Tape Store, we offer superior-quality adhesive fasteners that feature durability and reliability for long-term use. Around the boundaries of Australia, we serve as the most renowned supplier and wholesaler of hook and loop sticky dots. Our industry-leading experience enables us to offer a range of high-performance hook and loop dots for various industries. For various DIY and classroom crafts, as well as desk organisation for cables, we offer quick and hassle-free fastening solutions. Order now from us for user-friendly fastening solutions.</p>",
+    "display": "default",
+    "image": null,
+    "menu_order": 27,
+    "count": 2,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/552",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ]
+    }
+  },
+  {
+    "id": 782,
+    "name": "HVAC &amp; Plumbing",
+    "slug": "hvac-plumbing",
+    "parent": 760,
+    "description": "<h1>HVAC &amp; Plumbing Adhesive Tapes</h1>\r\n<p style=\"text-align: left\">Get premium quality, durable and moisture-resistant tapes to make HVAC and plumbing applications simpler and effortless. Promise reliable adhesion in seal ducts, pipes, and fittings.</p>",
+    "display": "default",
+    "image": {
+      "id": 8574,
+      "date_created": "2025-06-06T10:37:48",
+      "date_created_gmt": "2025-06-06T10:37:48",
+      "date_modified": "2025-06-06T10:37:48",
+      "date_modified_gmt": "2025-06-06T10:37:48",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2025/06/Untitled-5.jpg",
+      "name": "Untitled-5",
+      "alt": ""
+    },
+    "menu_order": 39,
+    "count": 16,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/782",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ],
+      "up": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/760"
+        }
+      ]
+    }
+  },
+  {
+    "id": 760,
+    "name": "Industry",
+    "slug": "industry",
+    "parent": 0,
+    "description": "<h1>Industries</h1>\r\n<p style=\"text-align: left\">At My Tape Store, we know every industry has its own challenges. That’s why we offer a wide range of tapes to meet the needs of construction, printing, automotive, and more. Find the perfect solution for your business right here.</p>",
+    "display": "default",
+    "image": {
+      "id": 8973,
+      "date_created": "2025-07-02T04:30:52",
+      "date_created_gmt": "2025-07-02T04:30:52",
+      "date_modified": "2025-07-02T04:32:27",
+      "date_modified_gmt": "2025-07-02T04:32:27",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2025/07/multiple-img.png",
+      "name": "multiple-img",
+      "alt": "Industry Mytape Store"
+    },
+    "menu_order": 30,
+    "count": 102,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/760",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ]
+    }
+  },
+  {
+    "id": 768,
+    "name": "Joinery Kitchen Furniture",
+    "slug": "joinery-kitchen-furniture",
+    "parent": 760,
+    "description": "<h1>Adhesive Tapes for Joinery, Kitchen &amp; Furniture</h1>\r\n<p style=\"text-align: left\">Get tapes for joinery, cabinetmaking, and furniture assembly. Perfect for edge protection, bonding, and securing surfaces.</p>",
+    "display": "default",
+    "image": {
+      "id": 8774,
+      "date_created": "2025-06-25T05:57:26",
+      "date_created_gmt": "2025-06-25T05:57:26",
+      "date_modified": "2025-06-25T05:57:26",
+      "date_modified_gmt": "2025-06-25T05:57:26",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2025/06/Joinery-Kitchen-Furniture-tapes.jpg",
+      "name": "Joinery-Kitchen-Furniture-tapes",
+      "alt": ""
+    },
+    "menu_order": 40,
+    "count": 21,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/768",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ],
+      "up": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/760"
+        }
+      ]
+    }
+  },
+  {
+    "id": 551,
+    "name": "Magnetic Tapes",
+    "slug": "magnetic-tapes",
+    "parent": 0,
+    "description": "<h1>Buy Magnetic Tape &amp; Magnetic Strips Online in Australia</h1>\r\n<p style=\"text-align: left\">My Tape Store stocks the widest range of magnetic tapes and strips across Australia. This specialised range of flexible magnet tapes makes adhesion easy and effortless. Magnetic tapes are available at the best price, we promise to cater to all requirements like sticking promotional products, signage boards, etc. These are flexible tapes suitable for various surfaces, such as flat or curved.</p>",
+    "display": "default",
+    "image": {
+      "id": 6876,
+      "date_created": "2024-09-16T01:51:36",
+      "date_created_gmt": "2024-09-16T01:51:36",
+      "date_modified": "2024-09-16T02:19:02",
+      "date_modified_gmt": "2024-09-16T02:19:02",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2024/09/770.webp",
+      "name": "Magnetic Tapes",
+      "alt": "Magnetic Tapes"
+    },
+    "menu_order": 57,
+    "count": 2,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/551",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ]
+    }
+  },
+  {
+    "id": 766,
+    "name": "Manufacturing",
+    "slug": "manufacturing",
+    "parent": 760,
+    "description": "<h1>Range of Manufacturers Adhesive Tapes</h1>\r\n<p style=\"text-align: left\">Find tapes that support your production lines from bundling and surface protection to splicing and labelling, which effectively meet industrial standards.</p>",
+    "display": "default",
+    "image": {
+      "id": 8577,
+      "date_created": "2025-06-06T10:37:50",
+      "date_created_gmt": "2025-06-06T10:37:50",
+      "date_modified": "2025-06-06T10:37:50",
+      "date_modified_gmt": "2025-06-06T10:37:50",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2025/06/Untitled-8.jpg",
+      "name": "Untitled-8",
+      "alt": ""
+    },
+    "menu_order": 41,
+    "count": 27,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/766",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ],
+      "up": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/760"
+        }
+      ]
+    }
+  },
+  {
+    "id": 774,
+    "name": "Marine",
+    "slug": "marine",
+    "parent": 760,
+    "description": "<h1>Adhesive Tapes For Marine Applications</h1>\r\n<p style=\"text-align: left\">Buy premium quality tapes that withstand harsh marine environments, providing waterproofing, corrosion resistance, and secure sealing for boats and marine equipment.</p>",
+    "display": "default",
+    "image": {
+      "id": 8775,
+      "date_created": "2025-06-25T05:57:27",
+      "date_created_gmt": "2025-06-25T05:57:27",
+      "date_modified": "2025-06-25T05:57:27",
+      "date_modified_gmt": "2025-06-25T05:57:27",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2025/06/marine-tapes.jpg",
+      "name": "marine-tapes",
+      "alt": ""
+    },
+    "menu_order": 42,
+    "count": 15,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/774",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ],
+      "up": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/760"
+        }
+      ]
+    }
+  },
+  {
+    "id": 777,
+    "name": "Marking Safety",
+    "slug": "marking-safety",
+    "parent": 760,
+    "description": "<h1>Our Collection of Tapes For Marking and Safety Needs</h1>\r\n<p style=\"text-align: left\">Make your workplace safer and more organised with our marking and safety tapes. Perfect for highlighting hazards, creating walkways, and ensuring everyone knows where to go.</p>",
+    "display": "default",
+    "image": {
+      "id": 8776,
+      "date_created": "2025-06-25T05:57:28",
+      "date_created_gmt": "2025-06-25T05:57:28",
+      "date_modified": "2025-06-25T05:57:28",
+      "date_modified_gmt": "2025-06-25T05:57:28",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2025/06/marking-safety-tapes.jpg",
+      "name": "marking-safety-tapes",
+      "alt": ""
+    },
+    "menu_order": 43,
+    "count": 8,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/777",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ],
+      "up": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/760"
+        }
+      ]
+    }
+  },
+  {
+    "id": 211,
+    "name": "Masking Tape",
+    "slug": "masking-tape",
+    "parent": 0,
+    "description": "<h1>Masking Tape</h1>\r\n<p style=\"text-align: left\">Masking tapes are your life saver, as these can be used in multiple tasks. From painting walls and crafting to a quick fix, it gives the best facility of easy-to-stick and peel-off features – No mess, no fuss. If you are looking for useful and handy adhesive solutions, you are right at your destination – My Tape Store! Whether you are a professional painter, a DIY enthusiast, or a common user, we have the premium quality to deliver across various locations in Australia. Order masking tapes online now!</p>",
+    "display": "default",
+    "image": {
+      "id": 2819,
+      "date_created": "2023-08-21T10:43:13",
+      "date_created_gmt": "2023-08-21T10:43:13",
+      "date_modified": "2023-08-21T10:43:13",
+      "date_modified_gmt": "2023-08-21T10:43:13",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2023/08/Masking-Tape.jpg",
+      "name": "Masking-Tape",
+      "alt": ""
+    },
+    "menu_order": 58,
+    "count": 11,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/211",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ]
+    }
+  },
+  {
+    "id": 769,
+    "name": "Nameplates",
+    "slug": "nameplates",
+    "parent": 760,
+    "description": "<h1>Adhesive Tapes Used For Nameplates </h1>\r\n<p style=\"text-align: left\">Secure nameplates, labels, and tags by buying high quality tapes designed for high performance and trusted adhesion across various surfaces.</p>",
+    "display": "default",
+    "image": {
+      "id": 8777,
+      "date_created": "2025-06-25T05:57:29",
+      "date_created_gmt": "2025-06-25T05:57:29",
+      "date_modified": "2025-06-25T05:57:29",
+      "date_modified_gmt": "2025-06-25T05:57:29",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2025/06/name-plate-tapes.jpg",
+      "name": "name-plate-tapes",
+      "alt": ""
+    },
+    "menu_order": 44,
+    "count": 15,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/769",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ],
+      "up": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/760"
+        }
+      ]
+    }
+  },
+  {
+    "id": 216,
+    "name": "Packaging Tapes",
+    "slug": "packaging-tapes",
+    "parent": 0,
+    "description": "<h1>Packing &amp; Packaging Tapes – Strong Adhesive Solutions for Secure Sealing</h1>\r\n<p style=\"text-align: left\">If you have serious packaging requirements related to your business or industry, finding premium quality packaging tapes is necessary. Explore the widest collection of packaging tapes in different colours at My Tape Store. We are your trusted adhesive tape supplier that can competently fulfil any tape requirements.</p>",
+    "display": "default",
+    "image": {
+      "id": 7667,
+      "date_created": "2025-02-27T04:36:07",
+      "date_created_gmt": "2025-02-27T04:36:07",
+      "date_modified": "2025-02-27T04:36:15",
+      "date_modified_gmt": "2025-02-27T04:36:15",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2025/02/Packing-Tape_11zon.webp",
+      "name": "Packing-Tape",
+      "alt": ""
+    },
+    "menu_order": 61,
+    "count": 8,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/216",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ]
+    }
+  },
+  {
+    "id": 310,
+    "name": "Painters Masking Tape",
+    "slug": "painters-tape",
+    "parent": 211,
+    "description": "<h1>Painters Masking Tape</h1>\r\n<p style=\"text-align: left\">Painting is a tough job that needs focus and special equipment. However, it can get messy if not handled properly and without the right tape. Hence, My Tape Store brings painters' choice, excellent quality, and highly useful products that the professionals swear by – Painters Masking Tape! We have designed it to give sharp and clean lines. Its outstanding features make it a must-have in the painter's magic box.</p>\r\n<p style=\"text-align: left\">So, if you want incredible results in doing a full room makeover or a small touch-up, buy painter's masking tape online today. Our tape will help you paint like a pro – every single time!</p>",
+    "display": "default",
+    "image": {
+      "id": 3026,
+      "date_created": "2023-08-24T09:53:09",
+      "date_created_gmt": "2023-08-24T09:53:09",
+      "date_modified": "2023-11-30T10:40:55",
+      "date_modified_gmt": "2023-11-30T10:40:55",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2023/08/151.jpg",
+      "name": "151",
+      "alt": "7 Day Premium Masking Tape - Adhesive Tapes/Masking Tape - My Tape Store"
+    },
+    "menu_order": 60,
+    "count": 10,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/310",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ],
+      "up": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/211"
+        }
+      ]
+    }
+  },
+  {
+    "id": 308,
+    "name": "Paper Tape",
+    "slug": "paper-kraft-tape",
+    "parent": 0,
+    "description": "<h1>Paper Tape</h1>\r\n<p style=\"text-align: left\">Upgrade your packaging, crafting, sealing, and masking projects. Buy premium quality paper tapes at My Tape Store. We have an extensive collection of paper adhesive tapes with excellent adhesion and usefulness. Whether you need a strong hold, easy movability, or an eco-friendly option for flawless packaging, here we have solutions to match. Our huge collection fulfills all the packaging and crafting demands of different industries in Australia.</p>",
+    "display": "default",
+    "image": {
+      "id": 2796,
+      "date_created": "2023-08-18T12:24:05",
+      "date_created_gmt": "2023-08-18T12:24:05",
+      "date_modified": "2023-12-01T02:08:53",
+      "date_modified_gmt": "2023-12-01T02:08:53",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2023/08/17-2.jpg",
+      "name": "17",
+      "alt": "Flatback Kraft Paper Tape - Adhesive Tapes/Kraft Paper Tape - My Tape Store"
+    },
+    "menu_order": 29,
+    "count": 4,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/308",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ]
+    }
+  },
+  {
+    "id": 762,
+    "name": "Picture Framing Tapes",
+    "slug": "picture-framing-tapes",
+    "parent": 760,
+    "description": "<h1>Picture Framing Adhesive Tapes</h1>\r\n<p style=\"text-align: left\">Get premium quality picture framing tapes or framers tape designed for precision, durability, and clean finishes. A go-to tool for professional framers and DIY enthusiasts alike.</p>",
+    "display": "default",
+    "image": {
+      "id": 8778,
+      "date_created": "2025-06-25T05:57:30",
+      "date_created_gmt": "2025-06-25T05:57:30",
+      "date_modified": "2025-06-25T05:57:30",
+      "date_modified_gmt": "2025-06-25T05:57:30",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2025/06/picture-framing-tape.jpg",
+      "name": "picture-framing-tape",
+      "alt": ""
+    },
+    "menu_order": 45,
+    "count": 16,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/762",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ],
+      "up": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/760"
+        }
+      ]
+    }
+  },
+  {
+    "id": 671,
+    "name": "Polyester Tape",
+    "slug": "polyester-tape",
+    "parent": 0,
+    "description": "<h1 style=\"text-align: left\">Polyester Tape / Double Sided PET Tape</h1>\r\nMy Tape Store offers a huge polyester tape collection that promises durability and versatility. This tape is also called double-sided PET tape and is designed for high-performance bonding with exceptional strength and reliable adhesion.",
+    "display": "default",
+    "image": {
+      "id": 4815,
+      "date_created": "2023-12-26T07:57:40",
+      "date_created_gmt": "2023-12-26T07:57:40",
+      "date_modified": "2023-12-26T07:57:40",
+      "date_modified_gmt": "2023-12-26T07:57:40",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2023/08/243.jpg",
+      "name": "243",
+      "alt": ""
+    },
+    "menu_order": 62,
+    "count": 2,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/671",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ]
+    }
+  },
+  {
+    "id": 786,
+    "name": "Pool &amp; Spa",
+    "slug": "pool-spa",
+    "parent": 760,
+    "description": "<h1>Pool &amp; Spa Adhesive Tapes</h1>\r\n<p style=\"text-align: left\">Get tapes for sealing, repairs, and maintenance in pool and spa areas. Resistant to moisture and chemicals.</p>",
+    "display": "default",
+    "image": {
+      "id": 8787,
+      "date_created": "2025-06-25T08:52:31",
+      "date_created_gmt": "2025-06-25T08:52:31",
+      "date_modified": "2025-06-25T08:53:12",
+      "date_modified_gmt": "2025-06-25T08:53:12",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2025/06/Tapes-use-in-pool-and-spa.png",
+      "name": "Tapes use in pool and spa",
+      "alt": "Tapes use in pool and spa"
+    },
+    "menu_order": 46,
+    "count": 18,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/786",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ],
+      "up": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/760"
+        }
+      ]
+    }
+  },
+  {
+    "id": 775,
+    "name": "Printing",
+    "slug": "printing",
+    "parent": 760,
+    "description": "<h1>Our Range of Printing Industry Adhesive Tapes</h1>\r\n<p style=\"text-align: left\">Find high-quality tapes to enhance print production for splicing, plate mounting, and surface protection. Reliable performance in high-speed printing operations.</p>",
+    "display": "default",
+    "image": {
+      "id": 8580,
+      "date_created": "2025-06-06T10:37:53",
+      "date_created_gmt": "2025-06-06T10:37:53",
+      "date_modified": "2025-06-06T10:37:53",
+      "date_modified_gmt": "2025-06-06T10:37:53",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2025/06/Untitled-11.jpg",
+      "name": "Untitled-11",
+      "alt": ""
+    },
+    "menu_order": 47,
+    "count": 10,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/775",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ],
+      "up": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/760"
+        }
+      ]
+    }
+  },
+  {
+    "id": 313,
+    "name": "Protection Tape",
+    "slug": "protection-tape",
+    "parent": 0,
+    "description": "<h1>Protection Tape At Best Price</h1>\r\n<p style=\"text-align: left\">Are you looking for a reliable and durable adhesive solution that helps protect surfaces and repair as well? My Tape Store stocks a premium collection of protection tapes. We are the leading supplier of adhesive tapes designed for various purposes. Our protection tapes promise benefits like strong adhesion, durability, and stable protection from water, chemicals, and harsh weather conditions.</p>",
+    "display": "default",
+    "image": {
+      "id": 3047,
+      "date_created": "2023-08-24T11:13:19",
+      "date_created_gmt": "2023-08-24T11:13:19",
+      "date_modified": "2023-12-01T03:05:11",
+      "date_modified_gmt": "2023-12-01T03:05:11",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2023/08/177.jpg",
+      "name": "177",
+      "alt": "Protection Tape - Adhesive Tapes/Protection Tape - My Tape Store"
+    },
+    "menu_order": 63,
+    "count": 2,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/313",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ]
+    }
+  },
+  {
+    "id": 549,
+    "name": "PTFE Tapes | Teflon Tapes",
+    "slug": "ptfe-tapes-teflon-tapes",
+    "parent": 0,
+    "description": "",
+    "display": "default",
+    "image": null,
+    "menu_order": 64,
+    "count": 0,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/549",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ]
+    }
+  },
+  {
+    "id": 213,
+    "name": "PVC Electrical Insulation Tape",
+    "slug": "pvc-electrical-insulation-tape",
+    "parent": 0,
+    "description": "<h1>Electrical Insulation Tapes</h1>\r\n<p style=\"text-align: left\">Electrical tapes are an essential tool for professionals looking for a protective option for bundling wires, and insulating connections. Buy electrical tapes at My Tape Store for safe and flawless electrical applications and repairs. We have the best range that promises safety, efficiency, and long-lasting results.</p>",
+    "display": "default",
+    "image": {
+      "id": 2826,
+      "date_created": "2023-08-21T10:46:14",
+      "date_created_gmt": "2023-08-21T10:46:14",
+      "date_modified": "2023-08-21T10:46:14",
+      "date_modified_gmt": "2023-08-21T10:46:14",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2023/08/Washi-Tape.jpg",
+      "name": "Washi-Tape",
+      "alt": ""
+    },
+    "menu_order": 65,
+    "count": 7,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/213",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ]
+    }
+  },
+  {
+    "id": 345,
+    "name": "Reflective Tape",
+    "slug": "reflective-tape",
+    "parent": 0,
+    "description": "<h1>Reflective Tapes / High Visibility Tape</h1>\r\n<p style=\"text-align: left\">Finding a reliable and affordable way to enhance safety and visibility is easy now. My Tape Store brings premium quality reflective tape at the best price. This is the ultimate solution for keeping you, your workplace, and your belongings noticeable. No more worries about securing your construction site, marking hazardous areas or increasing nighttime visibility. Our collection of reflective tapes, which are available to customise, ensures that the results stand out the best.</p>",
+    "display": "default",
+    "image": {
+      "id": 3963,
+      "date_created": "2023-09-16T07:40:35",
+      "date_created_gmt": "2023-09-16T07:40:35",
+      "date_modified": "2023-12-01T03:13:51",
+      "date_modified_gmt": "2023-12-01T03:13:51",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2023/08/490.jpg",
+      "name": "490",
+      "alt": "Reflective Tape Yellow Class 2 - Adhesive Tapes/Reflective Tape - My Tape Store"
+    },
+    "menu_order": 66,
+    "count": 3,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/345",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ]
+    }
+  },
+  {
+    "id": 779,
+    "name": "Roofing &amp; Gutters",
+    "slug": "roofing-gutters",
+    "parent": 760,
+    "description": "<h1>Roofing &amp; Gutter Adhesive Tapes</h1>\r\n<p style=\"text-align: left\">Seal leaks, protect joints, and secure materials with tapes built for roofing and gutter work. Weatherproof and reliable.</p>",
+    "display": "default",
+    "image": {
+      "id": 8788,
+      "date_created": "2025-06-25T09:01:40",
+      "date_created_gmt": "2025-06-25T09:01:40",
+      "date_modified": "2025-06-25T09:01:50",
+      "date_modified_gmt": "2025-06-25T09:01:50",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2025/06/Roofing-Gutters.png",
+      "name": "Roofing &#038; Gutters",
+      "alt": "Roofing & Gutters"
+    },
+    "menu_order": 48,
+    "count": 6,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/779",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ],
+      "up": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/760"
+        }
+      ]
+    }
+  },
+  {
+    "id": 217,
+    "name": "Safety Tapes",
+    "slug": "safety-tape",
+    "parent": 0,
+    "description": "<h1 class=\"des-2\"><strong>Safety Tape</strong></h1>\r\n<p style=\"text-align: left\">Keeping workplaces and public places safe is easier now. Here comes the new handy and effective solution- Safety Tapes. Known as the premium solution for big protection, these small stripes play a crucial role in your day-to-day life. My Tape Store brings this bright, durable, and easy-to-use adhesive solution that prevents accidents before they happen. We ensure safety at every step, offering premium quality tapes. These are not just easy to apply but to buy as well with us.</p>\r\n<p style=\"text-align: left\">Whether you are marking hazardous zones, preventing slips, or organising workspaces, the right tape makes all the difference. Stay safe, stay visible. Buy now from our premium collection of safety tapes at the best price today!</p>",
+    "display": "default",
+    "image": {
+      "id": 8265,
+      "date_created": "2025-05-28T12:15:47",
+      "date_created_gmt": "2025-05-28T12:15:47",
+      "date_modified": "2025-05-28T12:15:47",
+      "date_modified_gmt": "2025-05-28T12:15:47",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2023/08/Image-3.jpg",
+      "name": "Image (3)",
+      "alt": ""
+    },
+    "menu_order": 67,
+    "count": 10,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/217",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ]
+    }
+  },
+  {
+    "id": 784,
+    "name": "Sheathing &amp; Moisture Management",
+    "slug": "sheathing-moisture-management",
+    "parent": 760,
+    "description": "<h1>Sheathing &amp; Moisture Management Adhesive Tapes</h1>\r\n<p style=\"text-align: left\">Buy excellent quality tapes that protect buildings from moisture, useful for sheathing, sealing, and weatherproofing. Essential for construction and renovation projects.</p>",
+    "display": "default",
+    "image": {
+      "id": 8790,
+      "date_created": "2025-06-25T10:05:06",
+      "date_created_gmt": "2025-06-25T10:05:06",
+      "date_modified": "2025-06-25T10:05:13",
+      "date_modified_gmt": "2025-06-25T10:05:13",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2025/06/Sheathing-Moisture-Management.png",
+      "name": "Sheathing &#038; Moisture Management",
+      "alt": "Sheathing & Moisture Management"
+    },
+    "menu_order": 49,
+    "count": 9,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/784",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ],
+      "up": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/760"
+        }
+      ]
+    }
+  },
+  {
+    "id": 776,
+    "name": "Solar Energy",
+    "slug": "solar-energy",
+    "parent": 760,
+    "description": "<h1>Collection Of Adhesive Tapes For Solar Energy Industry</h1>\r\n<p style=\"text-align: left\">Support solar panel installation and maintenance with tapes for bonding, sealing, and weatherproofing. Built to withstand sun, wind, and rain.</p>",
+    "display": "default",
+    "image": {
+      "id": 8579,
+      "date_created": "2025-06-06T10:37:52",
+      "date_created_gmt": "2025-06-06T10:37:52",
+      "date_modified": "2025-06-06T10:37:52",
+      "date_modified_gmt": "2025-06-06T10:37:52",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2025/06/Untitled-10.jpg",
+      "name": "Untitled-10",
+      "alt": ""
+    },
+    "menu_order": 50,
+    "count": 12,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/776",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ],
+      "up": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/760"
+        }
+      ]
+    }
+  },
+  {
+    "id": 320,
+    "name": "Specialty Tape",
+    "slug": "specialty-tape",
+    "parent": 0,
+    "description": "<h1>Specialty Tape</h1>",
+    "display": "default",
+    "image": {
+      "id": 3186,
+      "date_created": "2023-08-25T11:48:33",
+      "date_created_gmt": "2023-08-25T11:48:33",
+      "date_modified": "2023-12-01T02:52:00",
+      "date_modified_gmt": "2023-12-01T02:52:00",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2023/08/481.jpg",
+      "name": "481",
+      "alt": "Polyester Film Masking Tape - Adhesive Tapes/Masking Tape - My Tape Store"
+    },
+    "menu_order": 68,
+    "count": 11,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/320",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ]
+    }
+  },
+  {
+    "id": 382,
+    "name": "Strapping and Filament",
+    "slug": "strapping-and-filament",
+    "parent": 0,
+    "description": "<h1>Filament Tapes: Strengthening Your Packaging Solutions</h1>\r\n<p style=\"text-align: left\">Filament tapes, also known as strapping tapes, are pressure-sensitive adhesive tapes that are reinforced with filaments. These tapes consist of a strong backing material, typically polypropylene or polyester film, and are reinforced with fibreglass strands. The adhesive used in filament tapes is usually synthetic rubber or acrylic.</p>",
+    "display": "default",
+    "image": {
+      "id": 3537,
+      "date_created": "2023-08-30T11:34:46",
+      "date_created_gmt": "2023-08-30T11:34:46",
+      "date_modified": "2023-08-30T11:34:46",
+      "date_modified_gmt": "2023-08-30T11:34:46",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2023/08/549-1.jpg",
+      "name": "549",
+      "alt": ""
+    },
+    "menu_order": 69,
+    "count": 4,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/382",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ]
+    }
+  },
+  {
+    "id": 744,
+    "name": "Strapping Tapes",
+    "slug": "strapping-tapes",
+    "parent": 0,
+    "description": "<h1>Buy Heavy-Duty Strapping Tape Online in Australia</h1>\r\n<p style=\"text-align: left\">Strapping tapes are the premium quality pressure-sensitive adhesive tapes available at My Tape Store. We provide a wider range of tapes designed for strength and durability. These tapes are the perfect choice to secure heavy-duty packages, bundling materials, or reinforcing boxes. These tapes promise performance as made with premium quality polypropylene and strong backing material. They come with strong adhesives, usually synthetic rubber. Order online now!</p>",
+    "display": "default",
+    "image": {
+      "id": 3537,
+      "date_created": "2023-08-30T11:34:46",
+      "date_created_gmt": "2023-08-30T11:34:46",
+      "date_modified": "2023-08-30T11:34:46",
+      "date_modified_gmt": "2023-08-30T11:34:46",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2023/08/549-1.jpg",
+      "name": "549",
+      "alt": ""
+    },
+    "menu_order": 70,
+    "count": 2,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/744",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ]
+    }
+  },
+  {
+    "id": 433,
+    "name": "Tape Dispensers",
+    "slug": "tapes-dispensers",
+    "parent": 0,
+    "description": "<h1>Tape Dispenser</h1>\r\n<p style=\"text-align: left\">Handling tape tasks has become easier now. Buy high-quality tape dispensers at My Tape Store, your trusted supplier in Australia. Our tape dispenser will make your tasks smoother, more precise, and less clumsy. Whether you are busy in your office or at a shipping department, we have this perfect solution for easy handling and less waste. </p>",
+    "display": "default",
+    "image": {
+      "id": 8847,
+      "date_created": "2025-06-26T11:51:50",
+      "date_created_gmt": "2025-06-26T11:51:50",
+      "date_modified": "2025-06-26T11:51:50",
+      "date_modified_gmt": "2025-06-26T11:51:50",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2025/06/Untitled-1-11.jpg",
+      "name": "Untitled-1 11",
+      "alt": ""
+    },
+    "menu_order": 71,
+    "count": 13,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/433",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ]
+    }
+  },
+  {
+    "id": 763,
+    "name": "Tapes For School Library",
+    "slug": "tapes-for-school-library",
+    "parent": 760,
+    "description": "<h1></h1>\r\n<p style=\"text-align: left\">Make book repairs, labelling, classroom projects, and library maintenance an effortless job using premium quality tapes. Durable, easy-to-use solutions for schools and libraries.</p>",
+    "display": "default",
+    "image": {
+      "id": 8791,
+      "date_created": "2025-06-25T10:28:13",
+      "date_created_gmt": "2025-06-25T10:28:13",
+      "date_modified": "2025-06-25T10:28:20",
+      "date_modified_gmt": "2025-06-25T10:28:20",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2025/06/School-Library-Supply.png",
+      "name": "School &#038; Library Supply",
+      "alt": "School & Library Supply"
+    },
+    "menu_order": 51,
+    "count": 17,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/763",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ],
+      "up": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/760"
+        }
+      ]
+    }
+  },
+  {
+    "id": 761,
+    "name": "Tapes for Visual, Arts &amp; Entertainment",
+    "slug": "tapes-for-visual-arts-entertainment",
+    "parent": 760,
+    "description": "<h1>Adhesive Tapes for Visual, Arts &amp; Entertainment</h1>\r\n<p style=\"text-align: left\">Find tapes for securing cables, backdrops, and stage equipment in photography, TV, film, music, stage and theatre productions. Flawless setups and quick tear-downs for entertainment needs.</p>",
+    "display": "default",
+    "image": {
+      "id": 8792,
+      "date_created": "2025-06-25T10:39:14",
+      "date_created_gmt": "2025-06-25T10:39:14",
+      "date_modified": "2025-06-25T10:39:24",
+      "date_modified_gmt": "2025-06-25T10:39:24",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2025/06/Entertainment-Photo-Events-Film-Music-Theater-Studio.png",
+      "name": "Entertainment-Photo, Events, Film, Music, Theater, Studio",
+      "alt": "Entertainment-Photo, Events, Film, Music, Theater, Studio"
+    },
+    "menu_order": 52,
+    "count": 17,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/761",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ],
+      "up": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/760"
+        }
+      ]
+    }
+  },
+  {
+    "id": 770,
+    "name": "Telecommunication",
+    "slug": "telecommunication",
+    "parent": 760,
+    "description": "<h1>Our Tapes Collection For Telecommunication Industries</h1>\r\n<p style=\"text-align: left\">Find high-quality tapes suitable for cable management, insulation, and labelling in telecommunications setups that promise organised and safe installations.</p>",
+    "display": "default",
+    "image": {
+      "id": 8779,
+      "date_created": "2025-06-25T05:57:31",
+      "date_created_gmt": "2025-06-25T05:57:31",
+      "date_modified": "2025-06-25T05:57:31",
+      "date_modified_gmt": "2025-06-25T05:57:31",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2025/06/telecommunication-tape.jpg",
+      "name": "telecommunication-tape",
+      "alt": ""
+    },
+    "menu_order": 53,
+    "count": 16,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/770",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ],
+      "up": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/760"
+        }
+      ]
+    }
+  },
+  {
+    "id": 746,
+    "name": "Thermal Insulation Tape",
+    "slug": "thermal-insulation-tape",
+    "parent": 0,
+    "description": "<h1>Thermal Insulation Tape</h1>\r\n<p style=\"text-align: left\">Thermal insulation tape is an essential adhesive solution for protecting surfaces and components in high temperatures zones. At My Tape Store, we bring an exclusive collection of insulation tapes. We have designed them to meet the diverse needs of industries across Australia. We are the leading wholesaler and supplier of adhesive tapes. Place an order for high-performance tapes today. We supply them with specific industry requirements like strong adhesive properties, high thermal insulation, excellent electrical insulation, etc.</p>",
+    "display": "default",
+    "image": {
+      "id": 5058,
+      "date_created": "2024-03-14T10:52:39",
+      "date_created_gmt": "2024-03-14T10:52:39",
+      "date_modified": "2024-03-14T10:52:39",
+      "date_modified_gmt": "2024-03-14T10:52:39",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2023/08/530-1.jpg",
+      "name": "530",
+      "alt": ""
+    },
+    "menu_order": 72,
+    "count": 5,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/746",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ]
+    }
+  },
+  {
+    "id": 469,
+    "name": "Tissue Tape",
+    "slug": "double-sided-tissue-tape",
+    "parent": 0,
+    "description": "<h1>Double-Sided Tissue Tapes</h1>\r\nDouble-sided tissue tape is a multipurpose adhesive solution perfect for bonding lightweight products. It is designed from non-woven tissue coated. A high-tack acrylic adhesive is on both sides. This tape ensures strong adhesion to various surfaces, like paper, plastic, and fabric. A thin profile allows for discreet application. With its tissue carrier, this tape is flexible and easy to handle. This tape offers excellent temperature resistance, clean removal. Ideal for mounting, splicing, laminating, and crafts.\r\n\r\nBuy high-performance, supreme-quality tissue tapes with My Tape Store today!",
+    "display": "default",
+    "image": null,
+    "menu_order": 73,
+    "count": 5,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/469",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ]
+    }
+  },
+  {
+    "id": 773,
+    "name": "Transport Automotive RV",
+    "slug": "transport-automotive-rv",
+    "parent": 760,
+    "description": "<h1>Our Adhesive Tapes for Transport, Automotive &amp; RV</h1>\r\n<p style=\"text-align: left\">Explore tapes for vehicle repairs, surface protection, trim attachment, and vibration dampening. Designed for automotive and RV use.</p>",
+    "display": "default",
+    "image": {
+      "id": 8794,
+      "date_created": "2025-06-25T11:02:22",
+      "date_created_gmt": "2025-06-25T11:02:22",
+      "date_modified": "2025-06-25T11:02:32",
+      "date_modified_gmt": "2025-06-25T11:02:32",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2025/06/Tapes-for-Automobile-Industry.png",
+      "name": "Tapes for Automobile Industry",
+      "alt": "Tapes for Automobile Industry"
+    },
+    "menu_order": 54,
+    "count": 27,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/773",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ],
+      "up": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/760"
+        }
+      ]
+    }
+  },
+  {
+    "id": 500,
+    "name": "Ultra High Bond Tape",
+    "slug": "high-bond-acrylic-tape-vhp",
+    "parent": 0,
+    "description": "<h1>Ultra High Bond Acrylic Foam Tapes</h1>\r\nAdhesive tape buying is no longer tiresome as you get the best quality Ultra High Bond Double Sided Tape here with My Tape Store that sticks fast and lasts long. We are the most trusted supplier and dealer of an exclusive range of Ultra High Bond Tapes made with acrylic foam. This double-sided heavy-duty tape is powerful, reliable, and perfect for both home and industrial use, as you can use it for mounting, holding, and joining where a strong bond is required. This tape is designed to handle tough jobs with ease. It’s an excellent, reasonable alternative to 3M VHB tape. Order your required collection now!",
+    "display": "default",
+    "image": {
+      "id": 4868,
+      "date_created": "2024-01-04T10:42:27",
+      "date_created_gmt": "2024-01-04T10:42:27",
+      "date_modified": "2024-01-04T10:42:27",
+      "date_modified_gmt": "2024-01-04T10:42:27",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2023/09/801.jpg",
+      "name": "801",
+      "alt": ""
+    },
+    "menu_order": 25,
+    "count": 4,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/500",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ]
+    }
+  },
+  {
+    "id": 767,
+    "name": "Warehouse Packaging Logistics",
+    "slug": "warehouse-packaging-logistics",
+    "parent": 760,
+    "description": "<h1>Our Collection of Adhesive Tapes For Logistics, Warehousing And Packaging Industries </h1>\r\n<p style=\"text-align: left\">Keep your operations running smoothly with tapes built for high-volume demands and suitable for carton sealing, pallet wrapping, labelling, and bundling.</p>",
+    "display": "default",
+    "image": {
+      "id": 8577,
+      "date_created": "2025-06-06T10:37:50",
+      "date_created_gmt": "2025-06-06T10:37:50",
+      "date_modified": "2025-06-06T10:37:50",
+      "date_modified_gmt": "2025-06-06T10:37:50",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2025/06/Untitled-8.jpg",
+      "name": "Untitled-8",
+      "alt": ""
+    },
+    "menu_order": 55,
+    "count": 18,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/767",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ],
+      "up": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/760"
+        }
+      ]
+    }
+  },
+  {
+    "id": 674,
+    "name": "Water Proofing Tape",
+    "slug": "water-proofing-tape-1",
+    "parent": 0,
+    "description": "<h1>Waterproof Double-Sided Tape: Your Go-To Solution for Every Waterproofing Need</h1>",
+    "display": "default",
+    "image": null,
+    "menu_order": 74,
+    "count": 0,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/674",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ]
+    }
+  },
+  {
+    "id": 780,
+    "name": "Windows Doors &amp; Decking",
+    "slug": "windows-doors-decking",
+    "parent": 760,
+    "description": "<h1>Windows, Doors &amp; Decking Adhesive Tapes</h1>\r\n<p style=\"text-align: left\">Find tapes for window and door sealing, deck installation, and trim work. Protect against drafts, moisture, and wear.</p>",
+    "display": "default",
+    "image": {
+      "id": 8795,
+      "date_created": "2025-06-25T11:08:24",
+      "date_created_gmt": "2025-06-25T11:08:24",
+      "date_modified": "2025-06-25T11:08:40",
+      "date_modified_gmt": "2025-06-25T11:08:40",
+      "src": "https://mytapestore.com.au/wp-content/uploads/2025/06/Windows-Doors-Decking.png",
+      "name": "Windows, Doors &#038; Decking",
+      "alt": "Tapes for Windows, Doors & Decking"
+    },
+    "menu_order": 56,
+    "count": 12,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/780",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories"
+        }
+      ],
+      "up": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wc/v3/products/categories/760"
+        }
+      ]
+    }
+  }
+]

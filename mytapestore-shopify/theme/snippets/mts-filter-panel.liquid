@@ -1,0 +1,263 @@
+{%- comment -%}
+  Filter sidebar, matching the live mytapestore.com.au layout: each group is a
+  collapsible heading with a chevron and a short brand underline, and every
+  option carries its result count on the right.
+
+  Filters come from Shopify's storefront filtering (Admin → Search & Discovery →
+  Filters). Whatever is enabled there renders here in the design's own markup:
+
+    boolean / list          -> checkbox rows with counts
+    option named "colour"   -> checkbox + swatch dot + count
+    option named "size"     -> checkbox rows with counts
+    price_range             -> the fixed brackets the original store used
+
+  IMPORTANT: "Filter by colour" and "Filter by size" only appear once those
+  product options are enabled as filters in Search & Discovery. Without them
+  Shopify exposes no option filters at all and there is nothing for the theme to
+  render — the groups are absent rather than empty.
+
+  It is a plain <form>: with JS off it still filters on submit. mts-theme.js
+  auto-submits on change and drives the collapse.
+{%- endcomment -%}
+{%- if collection.filters.size > 0 -%}
+  {%- liquid
+    assign has_active = false
+    for f in collection.filters
+      if f.active_values.size > 0
+        assign has_active = true
+      endif
+      if f.type == 'price_range'
+        if f.min_value.value or f.max_value.value
+          assign has_active = true
+        endif
+      endif
+    endfor
+  -%}
+
+  <form class="filt-card" data-mts-filters
+        {% if collection.url %}action="{{ collection.url }}"{% endif %} method="get">
+    {%- if collection.sort_by != blank -%}
+      <input type="hidden" name="sort_by" value="{{ collection.sort_by }}">
+    {%- endif -%}
+
+    {%- for filter in collection.filters -%}
+      {%- liquid
+        assign fname = filter.label | downcase
+        assign is_colour = false
+        if fname contains 'colour' or fname contains 'color'
+          assign is_colour = true
+        endif
+        # The original sidebar reads "PRODUCT CATEGORIES" / "FILTER BY COLOUR" /
+        # "FILTER BY SIZE" / "FILTER BY PRICE" — availability is not prefixed.
+        assign group_label = filter.label
+        assign lname = filter.label | downcase
+        unless lname contains 'availab' or lname contains 'categor'
+          assign group_label = 'Filter by ' | append: lname
+        endunless
+      -%}
+
+      <div class="filt" data-mts-filt-group>
+        <button type="button" class="filt__title" data-mts-filt-toggle aria-expanded="true">
+          <span>{{ group_label }}</span>
+          {% render 'mts-icon', name: 'chevronDown', size: 16, class: 'filt__chev' %}
+        </button>
+
+        <div class="filt__body" data-mts-filt-body>
+          {%- case filter.type -%}
+
+            {%- when 'boolean' -%}
+              {%- for value in filter.values -%}
+                <label class="filt__check">
+                  <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}"
+                         {% if value.active %}checked{% endif %}>
+                  <span>{{ value.label }}</span>
+                  {%- if value.count -%}<b class="filt__count num">{{ value.count }}</b>{%- endif -%}
+                </label>
+              {%- endfor -%}
+
+            {%- when 'list' -%}
+              <div class="{% if is_colour %}filt__colours{% else %}filt__cats{% endif %}">
+                {%- for value in filter.values -%}
+                  {%- if is_colour -%}
+                    {%- capture swatch_fill -%}{% render 'mts-swatch-fill', value: value.label %}{%- endcapture -%}
+                    {%- assign swatch_fill = swatch_fill | strip -%}
+                  {%- endif -%}
+                  <label class="filt__check{% if is_colour %} filt__check--colour{% endif %}">
+                    <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}"
+                           {% if value.active %}checked{% endif %}
+                           {% if value.count == 0 and value.active == false %}disabled{% endif %}>
+                    {%- if is_colour -%}
+                      <span class="filt__dot" {% if swatch_fill != blank %}style="background: {{ swatch_fill }}"{% endif %}></span>
+                    {%- endif -%}
+                    <span>{{ value.label }}</span>
+                    {%- if value.count -%}<b class="filt__count num">{{ value.count }}</b>{%- endif -%}
+                  </label>
+                {%- endfor -%}
+              </div>
+
+            {%- when 'price_range' -%}
+              {%- comment -%}
+                Units matter: the URL parameter is in DOLLARS, but
+                filter.min_value.value comes back in CENTS. Mixing them filters
+                at 100x the intended price.
+              {%- endcomment -%}
+              {%- liquid
+                assign gte = filter.min_value.value
+                assign lte = filter.max_value.value
+                assign bucket = 'all'
+                if gte == nil and lte == 5000
+                  assign bucket = 'a'
+                elsif gte == 5000 and lte == 10000
+                  assign bucket = 'b'
+                elsif gte == 10000 and lte == 20000
+                  assign bucket = 'c'
+                elsif gte == 20000 and lte == nil
+                  assign bucket = 'd'
+                endif
+              -%}
+              <div data-mts-price-buckets>
+                <label class="filt__check">
+                  <input type="radio" name="mts-price" value="all" data-gte="" data-lte=""
+                         {% if bucket == 'all' %}checked{% endif %}>
+                  <span>All prices</span>
+                </label>
+                <label class="filt__check">
+                  <input type="radio" name="mts-price" value="a" data-gte="" data-lte="50"
+                         {% if bucket == 'a' %}checked{% endif %}>
+                  <span>{{ 0 | money }}&ndash;{{ 5000 | money }}</span>
+                </label>
+                <label class="filt__check">
+                  <input type="radio" name="mts-price" value="b" data-gte="50" data-lte="100"
+                         {% if bucket == 'b' %}checked{% endif %}>
+                  <span>{{ 5000 | money }}&ndash;{{ 10000 | money }}</span>
+                </label>
+                <label class="filt__check">
+                  <input type="radio" name="mts-price" value="c" data-gte="100" data-lte="200"
+                         {% if bucket == 'c' %}checked{% endif %}>
+                  <span>{{ 10000 | money }}&ndash;{{ 20000 | money }}</span>
+                </label>
+                <label class="filt__check">
+                  <input type="radio" name="mts-price" value="d" data-gte="200" data-lte=""
+                         {% if bucket == 'd' %}checked{% endif %}>
+                  <span>{{ 20000 | money }}+</span>
+                </label>
+                <input type="hidden" name="{{ filter.min_value.param_name }}" data-mts-price-min
+                       value="{% if gte %}{{ gte | money_without_currency | replace: ',', '' }}{% endif %}">
+                <input type="hidden" name="{{ filter.max_value.param_name }}" data-mts-price-max
+                       value="{% if lte %}{{ lte | money_without_currency | replace: ',', '' }}{% endif %}">
+              </div>
+          {%- endcase -%}
+        </div>
+      </div>
+    {%- endfor -%}
+
+{%- comment -%}
+  DERIVED COLOUR / SIZE FILTERS
+
+  Shopify only exposes product-option filters once they are enabled in the
+  Search & Discovery app. Until a merchant does that, `collection.filters`
+  contains Availability and Price and nothing else — which is why the sidebar
+  had a "Filter by colour" heading on the old site and nothing here.
+
+  Rather than leave the feature missing, the values are derived from the
+  products actually in this collection and filtered in the browser. Every
+  category here fits on one page (48 per page, largest collection is 21), so
+  client-side filtering sees the whole set and cannot mislead.
+
+  If the native filters are ever switched on, `has_native_options` becomes true
+  and this block renders nothing — the real filters take over with no conflict.
+{%- endcomment -%}
+{%- liquid
+  assign has_native_options = false
+  for f in collection.filters
+    assign fl = f.label | downcase
+    if fl contains 'colour' or fl contains 'color' or fl contains 'size'
+      assign has_native_options = true
+    endif
+  endfor
+
+  assign colour_vals = ''
+  assign size_vals = ''
+  if has_native_options == false
+    for product in collection.products
+      for opt in product.options_with_values
+        assign oname = opt.name | downcase
+        if oname contains 'colour' or oname contains 'color'
+          for v in opt.values
+            assign key = '~' | append: v | append: '~'
+            unless colour_vals contains key
+              assign colour_vals = colour_vals | append: '~' | append: v | append: '~'
+            endunless
+          endfor
+        elsif oname contains 'size'
+          for v in opt.values
+            assign key = '~' | append: v | append: '~'
+            unless size_vals contains key
+              assign size_vals = size_vals | append: '~' | append: v | append: '~'
+            endunless
+          endfor
+        endif
+      endfor
+    endfor
+    assign colour_list = colour_vals | split: '~~' | uniq
+    assign size_list = size_vals | split: '~~' | uniq
+  endif
+-%}
+{%- if has_native_options == false -%}
+  {%- comment -%}
+    The list has to be built with `assign` first: Shopify Liquid does not accept
+    a filter in a `for` tag's iterable, and `for grp in 'colour,size' | split`
+    is a parse error that silently renders the whole snippet as nothing.
+  {%- endcomment -%}
+  {%- assign derived_groups = 'colour,size' | split: ',' -%}
+  {%- for grp in derived_groups -%}
+    {%- liquid
+      if grp == 'colour'
+        assign vals = colour_list
+        assign glabel = 'Filter by colour'
+      else
+        assign vals = size_list
+        assign glabel = 'Filter by size'
+      endif
+    -%}
+    {%- if vals.size > 0 -%}
+      <div class="filt" data-mts-filt-group>
+        <button type="button" class="filt__title" data-mts-filt-toggle aria-expanded="true">
+          <span>{{ glabel }}</span>
+          {% render 'mts-icon', name: 'chevronDown', size: 16, class: 'filt__chev' %}
+        </button>
+        <div class="filt__body" data-mts-filt-body>
+          <div class="{% if grp == 'colour' %}filt__colours{% else %}filt__cats{% endif %}">
+            {%- for v in vals -%}
+              {%- assign val = v | replace: '~', '' | strip -%}
+              {%- if val != blank -%}
+                {%- if grp == 'colour' -%}
+                  {%- capture swatch_fill -%}{% render 'mts-swatch-fill', value: val %}{%- endcapture -%}
+                  {%- assign swatch_fill = swatch_fill | strip -%}
+                {%- endif -%}
+                <label class="filt__check{% if grp == 'colour' %} filt__check--colour{% endif %}">
+                  <input type="checkbox" data-mts-cfilter="{{ grp }}" value="{{ val | downcase | escape }}">
+                  {%- if grp == 'colour' -%}
+                    <span class="filt__dot" {% if swatch_fill != blank %}style="background: {{ swatch_fill }}"{% endif %}></span>
+                  {%- endif -%}
+                  <span>{{ val }}</span>
+                  <b class="filt__count num" data-mts-cfilter-count>0</b>
+                </label>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </div>
+      </div>
+    {%- endif -%}
+  {%- endfor -%}
+{%- endif -%}
+
+    <noscript><button type="submit" class="btn btn--brand btn--block">Apply filters</button></noscript>
+
+    {%- if has_active -%}
+      <a class="filt__clear" href="{{ collection.url }}{% if collection.sort_by != blank %}?sort_by={{ collection.sort_by }}{% endif %}">
+        {{ 'collections.filters.clear_all' | t }}
+      </a>
+    {%- endif -%}
+  </form>
+{%- endif -%}

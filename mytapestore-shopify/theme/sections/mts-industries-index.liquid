@@ -1,0 +1,101 @@
+{%- comment -%}
+  Industries index — ported from IndustriesPage in IndustryPages.jsx.
+  Centred intro, then a 4-up grid of every industry as an .ind-card.
+
+  The .ind-grid / .ind-card styles already ship in the bundle (industries.css);
+  this section is what was missing, which is why /pages/industries rendered as a
+  bare heading.
+
+  Industries are Shopify collections, listed via a menu so the merchant controls
+  the order. Each card reads its image and product count from the collection.
+{%- endcomment -%}
+<main id="main">
+  <div class="wrap ind-page__crumbs">
+    {% render 'mts-breadcrumbs' %}
+  </div>
+
+  <div class="wrap ind-page__intro">
+    {%- if section.settings.eyebrow != blank -%}
+      <span class="eyebrow">{{ section.settings.eyebrow }}</span>
+    {%- endif -%}
+    <h1>{{ section.settings.heading | default: page.title }}</h1>
+    {%- if section.settings.intro != blank -%}
+      <p>{{ section.settings.intro }}</p>
+    {%- endif -%}
+  </div>
+
+  {%- assign menu = linklists[section.settings.menu] -%}
+  {%- if menu.links.size > 0 -%}
+    <div class="wrap section--tight">
+      <div class="ind-grid">
+        {%- for link in menu.links -%}
+{%- comment -%}
+                A menu link created as an HTTP link exposes no `link.object`, so
+                the collection is resolved from the last path segment of its URL
+                instead. This works for both HTTP and COLLECTION link types.
+              {%- endcomment -%}
+              {%- assign _parts = link.url | split: '/' -%}
+              {%- assign _handle = _parts | last | split: '?' | first -%}
+              {%- assign coll = collections[_handle] -%}
+          <a href="{{ link.url }}" class="ind-card">
+            {%- if coll.image -%}
+              <div class="ind-card__img">
+                {%- comment -%}
+                  The card is now image-led, so this must serve a CARD-sized
+                  file. It previously requested `sizes="120px"` for a 74px
+                  thumbnail — at the new size the browser would have upscaled a
+                  120px file across a ~380px card and it would have looked soft.
+                {%- endcomment -%}
+                <img src="{{ coll.image | image_url: width: 600 }}"
+                     srcset="{{ coll.image | image_url: width: 400 }} 400w,
+                             {{ coll.image | image_url: width: 600 }} 600w,
+                             {{ coll.image | image_url: width: 800 }} 800w,
+                             {{ coll.image | image_url: width: 1100 }} 1100w"
+                     sizes="(min-width: 1100px) 380px, (min-width: 700px) 44vw, 92vw"
+                     alt="{{ link.title | escape }}"
+                     loading="lazy" decoding="async" width="380" height="238">
+              </div>
+            {%- elsif coll.products.first.featured_media -%}
+              <div class="ind-card__img">
+                <img src="{{ coll.products.first.featured_media | image_url: width: 600 }}"
+                     alt="{{ link.title | escape }}" loading="lazy" decoding="async" width="380" height="238">
+              </div>
+            {%- else -%}
+              <div class="ind-card__img ind-card__img--icon">
+                {% render 'mts-icon', name: 'factory', size: 30 %}
+              </div>
+            {%- endif -%}
+            <div class="ind-card__body">
+              <b>{{ link.title }}</b>
+              {%- if coll.all_products_count > 0 -%}
+                <span class="num">
+                  {{ 'collections.general.products_count' | t: count: coll.all_products_count }}
+                  {% render 'mts-icon', name: 'arrowRight', size: 14 %}
+                </span>
+              {%- endif -%}
+            </div>
+          </a>
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- if page.content != blank -%}
+    <div class="wrap page-prose">{{ page.content }}</div>
+  {%- endif -%}
+</main>
+
+{% schema %}
+{
+  "name": "Industries index",
+  "settings": [
+    { "type": "link_list", "id": "menu", "label": "Industries menu" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "The right tape for the job" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Tapes by industry" },
+    {
+      "type": "textarea", "id": "intro", "label": "Intro",
+      "default": "From construction and marine to signage, manufacturing and healthcare — find the adhesive tapes trusted in your line of work."
+    }
+  ]
+}
+{% endschema %}

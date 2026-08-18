@@ -573,7 +573,11 @@ ul { list-style: none; padding: 0; }
   .hs__slide:not(.is-active) { display: none; }        /* avoid stacked-height on mobile */
   .hs__slide.is-active { position: relative; }
   .hs__figure { order: 2; max-width: 420px; }
-  .hs__price { right: 0; }
+  /* One banner at this width, so the dots and their fill bar go: they would
+     advertise four more slides that no longer arrive, and a progress bar that
+     never completes reads as something broken rather than something still. The
+     JS in hnl-hero.liquid stops the rotation at this same breakpoint. */
+  .hs__nav { display: none; }
 }
 @media (prefers-reduced-motion: reduce){
   /* the ticker stops and becomes a static, horizontally-scrollable row */
@@ -582,6 +586,194 @@ ul { list-style: none; padding: 0; }
   .marq__row + .marq__row { display: none; }
   .hs__dot-fill { display: none; }
   .hs__slide { transition: opacity 0.2s; transform: none; }
+}
+
+/* ═══ FULL-BLEED BANNER SLIDES ══════════════════════════════════════════
+   Slides carrying a `banner` drop the framed product card and become a single
+   photograph with the copy laid over it. The framed card put a product in a
+   box inside a box — the section already had a card, so the product read as
+   trapped rather than presented.
+
+   The photographs are shot with the left 45% empty, so nothing needs moving
+   out of the way. What they cannot guarantee is contrast: object-fit crops
+   differently at every viewport, so a bright part of the scene can drift under
+   the headline on a narrow screen. The scrim covers that case rather than
+   trusting the crop.                                                        */
+.hs__slide--banner {
+  grid-template-columns: 1fr;
+  align-items: center;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* FULL-BLEED BREAKOUT
+   .hs__stage carries .wrap, a max-width centred container, so an inset:0 child
+   only ever covers the column — which left the section's own navy gradient
+   showing down both sides and the photograph looking like a panel dropped on
+   top of a background rather than being the background.
+
+   left:50% + width:100vw + translateX(-50%) escapes the container and spans the
+   viewport. .hs already has overflow:hidden, so the 100vw cannot introduce a
+   horizontal scrollbar. */
+.hs__bg {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  right: auto;
+  width: 100vw;
+  transform: translateX(-50%);
+  z-index: 0;
+  display: block;
+}
+.hs__bg img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  /* hold the product cluster (right of frame) on screen as the viewport
+     narrows, rather than letting a centre crop slice it in half */
+  object-position: 72% center;
+}
+
+.hs__bg-scrim {
+  /* No dimming on desktop.
+
+     The photographs are already lit for this: the left side is deep navy by
+     design, so white type sits on it cleanly without help. The earlier scrim
+     was insurance against an unknown image — now that the actual artwork is
+     in, insurance is just a veil over colour someone paid to get right.
+
+     Kept as an element (not deleted) because the mobile crop genuinely does
+     need it — see the media query below. */
+  display: none;
+}
+
+
+.hs__slide--banner .hs__copy {
+  position: relative;
+  z-index: 2;
+  max-width: 620px;
+  padding-left: var(--sp-5);
+  padding-right: var(--sp-5);
+}
+
+@media (max-width: 920px) {
+  /* Portrait crop pushes the products low and the copy sits over them, so the
+     scrim goes vertical here — dark at the top where the words are, clearing
+     toward the bottom where the product should still read. */
+  .hs__bg img { object-position: 62% center; }
+  /* Mobile keeps a wash, but a lighter one than before: the portrait crop puts
+     the lit product area directly under the headline, and unlike desktop there
+     is no dark region for the type to land on. Tuned to the minimum that keeps
+     white text legible rather than the maximum that felt safe. */
+  .hs__bg-scrim {
+    display: block;
+    background: linear-gradient(
+      180deg,
+      rgba(15, 29, 58, 0.86) 0%,
+      rgba(15, 29, 58, 0.70) 42%,
+      rgba(15, 29, 58, 0.30) 70%,
+      rgba(15, 29, 58, 0.06) 100%
+    );
+  }
+  .hs__slide--banner .hs__copy { max-width: none; }
+}
+
+/* The stage keeps its padding so the copy stays off the viewport edge, but the
+   photograph must ignore it — hence the breakout above rather than inset:0.
+   On a banner slide the section's grain and warm glow sit behind the image and
+   never show, which is correct: the photograph is the background now. */
+.hs__slide--banner .hs__copy {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* ═══ MOBILE HERO TILES (slide 1 only) ══════════════════════════════════
+   On a phone the hero occupies the entire first screen, so it has to earn
+   that space by being a way into the catalogue rather than a poster. Four
+   product types and the two brands people search by name, one tap each.
+
+   Desktop keeps the bullets: there is room to read four lines of benefit copy
+   there, and a tile grid beside a full-height product photograph would compete
+   with it. This is a mobile-only treatment on purpose.                      */
+.hs__tiles { display: none; }
+
+@media (max-width: 920px) {
+  .hs__tiles {
+    display: block;
+    margin-top: 22px;
+  }
+
+  .hs__tiles-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 9px;
+    margin-bottom: 9px;
+  }
+
+  .hs__tile {
+    /* 52px min — comfortably above the 44px Apple / 48px Material floor, and
+       tall enough that a gloved hand on a work site still hits it. */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 52px;
+    padding: 12px 14px;
+    border-radius: 11px;
+    background: rgba(255, 255, 255, 0.96);
+    color: var(--navy);
+    font-size: 15.04px;
+    font-weight: 700;
+    line-height: 1.2;
+    text-align: center;
+    text-decoration: none;
+    box-shadow: 0 2px 10px rgba(4, 10, 26, 0.22);
+    transition: transform 0.12s var(--ease), background 0.16s var(--ease);
+  }
+  .hs__tile:active { transform: scale(0.975); background: #fff; }
+
+  /* Brands sit above the categories and read slightly louder — they are what
+     a returning trade buyer scans for first. */
+  .hs__tile--brand {
+    min-height: 56px;
+    font-size: 16px;
+    letter-spacing: -0.01em;
+  }
+
+  /* The one orange element in the hero, and the only full-width tile, so the
+     eye lands on it last and knows it is the catch-all. */
+  .hs__tile--all {
+    gap: 8px;
+    min-height: 54px;
+    background: var(--orange);
+    color: var(--navy);
+    font-weight: 800;
+    box-shadow: var(--shadow-cta);
+  }
+  .hs__tile--all:active { background: var(--orange); }
+
+  /* With tiles present the bullets and the two text buttons are redundant —
+     the tiles say the same thing in fewer words and are easier to hit. Keeping
+     all three would push the fold well past one screen. */
+  .hs__slide--banner .hs__tiles ~ .hs__cta,
+  .hs__slide--banner:has(.hs__tiles) .hs__bullets {
+    display: none;
+  }
+}
+
+/* Mobile-only supporting line for slide 1. Desktop already has the four
+   bullets, so this would be a duplicate statement there. */
+.hs__lead-m { display: none; }
+@media (max-width: 920px) {
+  .hs__lead-m {
+    display: block;
+    margin: 4px 0 0;
+    color: rgba(255, 255, 255, 0.86);
+    font-size: 16px;
+    line-height: 1.5;
+    max-width: 32ch;
+  }
 }
 
 /* ================= sections.css ================= */
@@ -1504,6 +1696,8 @@ section { scroll-margin-top: 80px; }
 @keyframes pdpFade { from { opacity: 0.3; transform: scale(1.015); } to { opacity: 1; transform: scale(1); } }
 @media (prefers-reduced-motion: reduce) { .pdp__stage img { animation: none; } }
 .pdp__flag { position: absolute; top: 16px; left: 16px; z-index: 2; background: #1f9d55; color: #fff; font-size: 11.2px; font-weight: 700; padding: 6px 12px; border-radius: var(--r-pill); }
+/* sold-out variants hide the flag; this has to beat the positioned rule above */
+.pdp__flag[hidden] { display: none !important; }
 .pdp__thumbs { display: flex; gap: 10px; margin-top: 12px; }
 .pdp__thumb { width: 76px; height: 76px; border: 1.5px solid var(--line-card); border-radius: var(--r-ctrl); overflow: hidden; background: #fff; flex-shrink: 0; }
 .pdp__thumb img { width: 100%; height: 100%; object-fit: contain; padding: 6px; }
@@ -4099,3 +4293,31 @@ body.drawer-open {
 }
 .sugg__all:hover { text-decoration: underline; text-underline-offset: 2px; }
 .sugg__empty { margin: 0; padding: 14px 10px; color: var(--muted-ink); font-size: 14px; }
+
+/* ── Buy it now ───────────────────────────────────────────────────────────
+   STAGED, DELIBERATELY NOT LIVE. Uncomment and re-run shopify/build-css.sh to
+   ship it.
+
+   This button is no longer Shop Pay, so it no longer wears Shop's purple.
+   That purple is Shop's brand and it promises the Shop flow — a shopper who
+   presses it expecting to sign in, or expecting Shop's wallet, would be
+   reading a colour that now means something else. Navy keeps it clearly
+   secondary to the orange Add to cart while still reading as a real button.
+
+   It is held back because it was written during the hero work and never
+   pushed, so it would have ridden along with the single-banner release as an
+   unrequested change to the primary purchase button on every product page.
+   Product-page colour belongs in its own release, tested on its own.
+
+.pdp__buynow {
+  background: var(--navy);
+}
+.pdp__buynow:hover {
+  background: #0d1a38;
+}
+.pdp__buynow[disabled] {
+  opacity: 0.72;
+  cursor: default;
+  transform: none;
+}
+*/

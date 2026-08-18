@@ -1,0 +1,31 @@
+# BuildKit reads <dockerfile>.dockerignore in preference to ./.dockerignore,
+# so this file only applies to deploy/Dockerfile.
+#
+# Without it the build context is ~1.2 GB: node_modules (186 packages) plus the
+# 350 MB mytapestore-draft.zip plus a second full copy of the install under
+# local/. Docker uploads the whole context to the builder before it reads the
+# first COPY, so this is the difference between a 30-second and a 6-minute build.
+
+node_modules/**
+!node_modules/@wp-playground/cli/sqlite-database-integration.zip
+
+*.zip
+local/
+content/
+scripts/
+mytapestore-redesign/
+.git/
+.env
+**/.DS_Store
+**/node_modules
+**/*.map
+
+# The theme is copied in via build/site/wp-content/themes/mytapestore. Ignoring
+# the top-level theme/ here avoids shipping it twice.
+theme/
+
+# Runtime droppings from a previous local run.
+build/site/wp-content/database/.ht.sqlite-wal
+build/site/wp-content/database/.ht.sqlite-shm
+build/site/wp-content/uploads/wc-logs/
+build/site/wp-content/debug.log

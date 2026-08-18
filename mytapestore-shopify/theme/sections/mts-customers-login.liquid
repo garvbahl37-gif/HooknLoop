@@ -1,0 +1,53 @@
+{%- comment -%}
+  Customer login / password recovery. The React redesign had only a placeholder
+  account page, so these use the design's page-hero + form vocabulary (the same
+  input styling as the contact form) rather than a new one.
+{%- endcomment -%}
+<main id="main">
+  <div class="wrap page__crumbs">{% render 'mts-breadcrumbs', current_title: 'Sign in' %}</div>
+
+  <section class="page-hero">
+    <div class="wrap">
+      <span class="eyebrow eyebrow--onink">Account</span>
+      <h1>{{ 'customer.login.title' | t }}</h1>
+    </div>
+  </section>
+
+  <div class="wrap mts-auth">
+    <div id="recover" class="contact__form" hidden>
+      <h2>{{ 'customer.recover_password.title' | t }}</h2>
+      {%- form 'recover_customer_password' -%}
+        {%- if form.posted_successfully? -%}
+          <div class="contact__sent" role="status">
+            {% render 'mts-icon', name: 'check', size: 22 %}
+            <div><b>{{ 'customer.recover_password.success' | t }}</b></div>
+          </div>
+        {%- else -%}
+          <p class="mts-auth__note">{{ 'customer.recover_password.subtext' | t }}</p>
+          {{ form.errors | default_errors }}
+          <label>{{ 'customer.login.email' | t }}<input type="email" name="email" required autocomplete="email"></label>
+          <button class="btn btn--brand btn--lg" type="submit">{{ 'customer.recover_password.submit' | t }}</button>
+        {%- endif -%}
+      {%- endform -%}
+      <button class="mts-auth__toggle" type="button" data-mts-auth-toggle>{{ 'customer.recover_password.cancel' | t }}</button>
+    </div>
+
+    <div id="login" class="contact__form">
+      <h2>{{ 'customer.login.title' | t }}</h2>
+      {%- form 'customer_login' -%}
+        {{ form.errors | default_errors }}
+        <label>{{ 'customer.login.email' | t }}<input type="email" name="customer[email]" required autocomplete="email"></label>
+        <label>{{ 'customer.login.password' | t }}<input type="password" name="customer[password]" required autocomplete="current-password"></label>
+        <button class="btn btn--brand btn--lg" type="submit">{{ 'customer.login.sign_in' | t }}</button>
+      {%- endform -%}
+      <button class="mts-auth__toggle" type="button" data-mts-auth-toggle>{{ 'customer.login.forgot_password' | t }}</button>
+      <p class="mts-auth__note">
+        New here? <a href="{{ routes.account_register_url }}">{{ 'customer.login.create_account' | t }}</a>
+      </p>
+    </div>
+  </div>
+</main>
+
+{% schema %}
+{ "name": "Login" }
+{% endschema %}

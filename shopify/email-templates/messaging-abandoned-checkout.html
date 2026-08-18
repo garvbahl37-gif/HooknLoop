@@ -1,0 +1,175 @@
+<!--
+  HooknLoop — Abandoned CHECKOUT  (Shopify Messaging / Shopify Email)
+  ===================================================================
+  Pure HTML. No Liquid conditionals, no loops, no logic tags of any kind
+  -- an unclosed logic tag, even inside an HTML comment, can break the parse.
+
+  The only {{ }} tags are merge variables, which Messaging substitutes:
+      {{ unsubscribe_link }}     required — template is rejected without it
+      {{ open_tracking_block }}  required — the open pixel
+      {{ url }}                  the recovery link back to their checkout
+
+  If Messaging does not recognise {{ url }}, replace that one href with
+  whatever its variable picker offers for the checkout / cart link. Everything
+  else on this page is static HTML and cannot break.
+
+  ── WHERE THE PRODUCTS GO ───────────────────────────────────────────────
+  Without Liquid there is no way to loop line items, so this file does NOT
+  render the products. It is the shell.
+
+  In the Messaging editor, drop Shopify's dynamic "Abandoned checkout" block
+  into the gap marked PRODUCT BLOCK GOES HERE below. That block is populated
+  server-side with product image, title, variant, price and the working
+  "Complete your order" button — the thing already rendering correctly in your
+  editor. It is the one piece you should not hand-build.
+-->
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="color-scheme" content="light only">
+  <meta name="supported-color-schemes" content="light only">
+  <title>You were one step away</title>
+  <style type="text/css">
+    body,table,td,a { -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; }
+    table,td { mso-table-lspace:0pt; mso-table-rspace:0pt; }
+    img { -ms-interpolation-mode:bicubic; border:0; height:auto; line-height:100%; outline:none; text-decoration:none; }
+    body { margin:0 !important; padding:0 !important; width:100% !important; background:#f4f7fb; }
+    a { color:#b8460a; }
+    @media only screen and (max-width:600px){
+      .full { width:100% !important; }
+      .px { padding-left:22px !important; padding-right:22px !important; }
+      .stack { display:block !important; width:100% !important; }
+      .stack-gap { height:22px !important; line-height:22px !important; font-size:22px !important; }
+      .btn a { display:block !important; text-align:center !important; }
+      .h1 { font-size:27px !important; line-height:1.18 !important; }
+    }
+  </style>
+</head>
+<body style="margin:0; padding:0; background:#f4f7fb;">
+
+  <div style="display:none; font-size:1px; line-height:1px; max-height:0; max-width:0; opacity:0; overflow:hidden; mso-hide:all; color:#f4f7fb;">
+    Your cart and details are still saved — pick up where you left off.
+  </div>
+
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f4f7fb;">
+    <tr>
+      <td align="center" style="padding:0 12px;">
+        <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" class="full"
+               style="width:600px; max-width:600px; margin:26px 0; background:#ffffff; border-radius:14px; overflow:hidden;">
+
+          <!-- ══ MASTHEAD ══════════════════════════════════════════════════ -->
+          <tr>
+            <td style="background:#ffffff; padding:26px 30px 22px;" class="px">
+              <img src="https://cdn.shopify.com/s/files/1/0975/4509/3489/files/logo_5.png?v=1767767497" alt="HooknLoop" width="180" height="32" style="display:block; width:180px; height:32px; border:0;">
+            </td>
+          </tr>
+          <tr><td style="border-top:1px solid #e7ecf4; font-size:0; line-height:0;">&nbsp;</td></tr>
+
+          <!-- ══ MESSAGE ═══════════════════════════════════════════════════ -->
+          <tr>
+            <td style="padding:30px 30px 0;" class="px">
+              <h1 class="h1" style="margin:0; font-family:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif; font-size:31px; line-height:1.14; font-weight:800; letter-spacing:-0.02em; color:#142548;">
+                You were<br>one step away.
+              </h1>
+              <p style="margin:15px 0 0; font-family:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif; font-size:16px; line-height:1.62; color:#5a6b8c;">
+                Your cart and your details are still saved. Pick up exactly where you left off — nothing to re-enter.
+              </p>
+            </td>
+          </tr>
+
+          <!-- ══════════════════════════════════════════════════════════════
+               PRODUCT BLOCK GOES HERE
+               Drop Shopify's dynamic "Abandoned checkout" section into this
+               gap in the Messaging editor. It renders the products, variants,
+               prices and the recovery button automatically.
+               ══════════════════════════════════════════════════════════════ -->
+          <tr>
+            <td style="padding:26px 30px 0;" class="px">
+              <div style="border-top:2px solid #142548; font-size:0; line-height:0;">&nbsp;</div>
+            </td>
+          </tr>
+
+          <!-- ══ CTA ═══════════════════════════════════════════════════════
+               Keep this only if the dynamic block above is NOT used. That
+               block already carries its own button, and two buttons doing the
+               same thing is worse than one.
+               ══════════════════════════════════════════════════════════════ -->
+          <tr>
+            <td style="padding:26px 30px 0;" class="px">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0" class="btn">
+                <tr>
+                  <td align="center" bgcolor="#e87722" style="border-radius:10px;">
+                    <a href="{{ url }}" style="display:inline-block; padding:15px 30px; font-family:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif; font-size:15.5px; font-weight:800; color:#142548; text-decoration:none; border-radius:10px;">
+                      Complete your order &rarr;
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- ══ THREE FACTS ═══════════════════════════════════════════════ -->
+          <tr>
+            <td style="padding:28px 30px 34px;" class="px">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f4f7fb; border-radius:12px;">
+                <tr>
+                  <td style="padding:18px 20px; font-family:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif; font-size:13.5px; line-height:1.85; color:#5a6b8c;">
+                    <span style="color:#142548; font-weight:700;">Stocked in Australia</span> — dispatched from our own warehouse, not drop-shipped.<br>
+                    <span style="color:#142548; font-weight:700;">Free shipping over $300</span> — on all standard domestic orders.<br>
+                    <span style="color:#142548; font-weight:700;">Need a custom size?</span> — we cut to length. Call before you order.
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- ══ FOOTER ════════════════════════════════════════════════════ -->
+          <tr>
+            <td style="background:#142548; padding:32px 30px;" class="px">
+              <img src="https://cdn.shopify.com/s/files/1/0975/4509/3489/files/hnl-email-logo-footer.png?v=1786003221" alt="HooknLoop" width="164" height="29" style="display:block; width:164px; height:29px; border:0;">
+              <div style="font-family:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif; font-size:13.5px; line-height:1.62; color:#8194b5; padding-top:14px; max-width:430px;">
+                Australian hook &amp; loop specialists — tapes, strips, dots and fasteners, stocked and dispatched locally.
+              </div>
+
+              <div style="border-top:1px solid rgba(255,255,255,0.13); margin-top:22px; padding-top:22px;">
+                <div style="font-family:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace; font-size:10px; font-weight:700; letter-spacing:0.16em; color:#f0842a; text-transform:uppercase; padding-bottom:12px;">Need a hand?</div>
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <td class="stack" valign="middle" style="white-space:nowrap; padding-right:18px;">
+                      <a href="tel:+61340616287" style="font-family:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace; font-size:16px; font-weight:700; color:#ffffff; text-decoration:none; white-space:nowrap;">+61&nbsp;3&nbsp;4061&nbsp;6287</a>
+                    </td>
+                    <td class="stack-gap" style="font-size:0; line-height:0; height:0;">&nbsp;</td>
+                    <td class="stack" valign="middle" align="right" style="white-space:nowrap;">
+                      <a href="mailto:info@hooknloop.com.au" style="font-family:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif; font-size:14px; color:#c9d3e6; text-decoration:none; border-bottom:1px solid rgba(201,211,230,0.38); white-space:nowrap;">info@hooknloop.com.au</a>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+
+              <div style="border-top:1px solid rgba(255,255,255,0.13); margin-top:22px; padding-top:16px;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <td align="left">
+                      <a href="https://hooknloop.com.au" style="font-family:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif; font-size:13px; font-weight:700; color:#ffffff; text-decoration:none;">hooknloop.com.au</a>
+                    </td>
+                    <td align="right">
+                      <a href="{{ unsubscribe_link }}" style="font-family:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif; font-size:12px; color:#8194b5; text-decoration:underline;">Unsubscribe</a>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+
+  {{ open_tracking_block }}
+
+</body>
+</html>

@@ -12,14 +12,59 @@
   the way the React data array was.
 {%- endcomment -%}
 
+{%- comment -%}
+  DESKTOP SHOWS THE PHOTOGRAPH. MOBILE SHOWS THE THEME GRADIENT.
+
+  The banner is a landscape studio shot composed with the product cluster on
+  the right and the left 45% deliberately empty for the headline. On a phone
+  that composition cannot survive: object-fit has to crop a 1920x1278 frame
+  into a tall column, which either slices the products in half or pushes them
+  under the copy. The mobile hero is a navigation screen — eyebrow, H1, one
+  supporting line and seven tap targets — and it reads better on the section's
+  own navy gradient than on a photograph fighting it for contrast.
+
+  Two mechanisms, because each solves a different half of the problem:
+
+    1. The <source> below hands phones a 1x1 transparent GIF, so the 160KB
+       photograph is never requested at all on the viewport where bandwidth
+       actually costs something. Hiding it in CSS alone would not stop the
+       download — a display:none <img> is still fetched.
+
+    2. This rule removes the element from layout, so nothing depends on an
+       invisible stretched pixel behaving itself.
+
+  920px matches the breakpoint slides.css already uses for the hero, so the
+  photograph disappears at exactly the width the layout restacks.
+{%- endcomment -%}
+<style>
+  @media (max-width: 920px) {
+    .hs__bg,
+    .hs__bg-scrim { display: none !important; }
+  }
+</style>
+
 <section class="hs" aria-roledescription="carousel" aria-label="Featured" data-hnl-hero>
   <div class="hs__glow" aria-hidden="true"></div>
 
   <div class="wrap hs__stage" id="hnl-hero-stage">
     {%- for block in section.blocks -%}
-      <div class="hs__slide {% if forloop.first %}is-active{% endif %}"
+      {%- assign banner = block.settings.banner_asset | strip -%}
+      <div class="hs__slide {% if banner != blank %}hs__slide--banner{% endif %} {% if forloop.first %}is-active{% endif %}"
            {% unless forloop.first %}aria-hidden="true"{% endunless %}
            {{ block.shopify_attributes }}>
+        {%- if banner != blank -%}
+          <picture class="hs__bg">
+            <source media="(max-width: 920px)" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
+            <img src="{{ banner | asset_url }}"
+                 alt=""
+                 width="1920"
+                 height="1278"
+                 draggable="false"
+                 loading="eager"
+                 fetchpriority="{% if forloop.first %}high{% else %}auto{% endif %}">
+          </picture>
+          <div class="hs__bg-scrim" aria-hidden="true"></div>
+        {%- endif -%}
         <div class="hs__copy">
           {%- if block.settings.eyebrow != blank -%}
             <span class="hs__eyebrow"><i class="hs__eyebrow-line" aria-hidden="true"></i>{{ block.settings.eyebrow }}</span>
@@ -70,6 +115,83 @@
             {%- endif -%}
           {%- endcapture -%}
 
+          {%- comment -%}
+            Mobile-only supporting line. Desktop already carries four bullets,
+            so this would say the same thing twice there; slides.css hides it
+            above 920px. It exists because headline-straight-into-tiles read
+            bare — nothing said what the business is before asking a first-time
+            visitor to choose a department.
+          {%- endcomment -%}
+          {%- if block.settings.mobile_lead != blank -%}
+            <p class="hs__lead-m">{{ block.settings.mobile_lead }}</p>
+          {%- endif -%}
+
+          {%- comment -%}
+            MOBILE TILE NAVIGATION (hidden above 920px by slides.css).
+
+            On a phone the hero is the entire first screen, so it has to earn
+            that space by being a way into the catalogue rather than a poster.
+            Two brand tiles, four product types, one catch-all — each a 52px+
+            target, which clears the 44px Apple / 48px Material floor with room
+            for a gloved hand on a work site.
+
+            Rows are "Label > /link", pipe-separated, matching the bullets and
+            spec settings above. Every link is editable in the theme editor, so
+            a destination that changes later does not need a code push.
+
+            A row with no ">" is treated as label-only and falls back to the
+            all-products route rather than using the label as the href — which
+            is what a naive split would produce, and it would ship a tile
+            pointing at /Self-Adhesive.
+
+            Hrefs are escaped because a real destination here is
+            /search?q=VELCRO%C2%AE+Brand&type=product: a bare "&" inside an
+            attribute is an unterminated entity reference, and while browsers
+            recover from it, they are not obliged to.
+          {%- endcomment -%}
+          {%- if block.settings.tiles_cats != blank -%}
+            <nav class="hs__tiles" aria-label="Shop by brand or product type">
+              {%- if block.settings.tiles_brands != blank -%}
+                <div class="hs__tiles-grid hs__tiles-grid--brands">
+                  {%- assign brand_rows = block.settings.tiles_brands | split: '|' -%}
+                  {%- for row in brand_rows -%}
+                    {%- assign tile_label = row | split: '>' | first | strip -%}
+                    {%- if row contains '>' -%}
+                      {%- assign tile_link = row | split: '>' | last | strip -%}
+                    {%- else -%}
+                      {%- assign tile_link = '' -%}
+                    {%- endif -%}
+                    {%- if tile_label != blank -%}
+                      <a class="hs__tile hs__tile--brand" href="{{ tile_link | default: routes.all_products_collection_url | escape }}">{{ tile_label }}</a>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+              {%- endif -%}
+
+              <div class="hs__tiles-grid">
+                {%- assign cat_rows = block.settings.tiles_cats | split: '|' -%}
+                {%- for row in cat_rows -%}
+                  {%- assign tile_label = row | split: '>' | first | strip -%}
+                  {%- if row contains '>' -%}
+                    {%- assign tile_link = row | split: '>' | last | strip -%}
+                  {%- else -%}
+                    {%- assign tile_link = '' -%}
+                  {%- endif -%}
+                  {%- if tile_label != blank -%}
+                    <a class="hs__tile" href="{{ tile_link | default: routes.all_products_collection_url | escape }}">{{ tile_label }}</a>
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+
+              {%- if block.settings.tile_all_label != blank -%}
+                <a class="hs__tile hs__tile--all" href="{{ block.settings.tile_all_link | default: routes.all_products_collection_url | escape }}">
+                  {{ block.settings.tile_all_label }}
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </a>
+              {%- endif -%}
+            </nav>
+          {%- endif -%}
+
           <div class="hs__cta">
             <a href="{{ block.settings.cta_link | default: routes.all_products_collection_url }}" class="btn btn--primary">{{ block.settings.cta_label }}<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
             {%- if block.settings.cta2_label != blank -%}
@@ -78,19 +200,71 @@
           </div>
         </div>
 
+        {%- comment -%}
+          The framed product card is the pre-banner layout, and the two cannot
+          coexist: a banner slide is one photograph edge to edge, so a card on
+          top of it would put a product in a box inside a box.
+
+          It is kept, rather than deleted, for any slide that has no banner
+          asset. That keeps the section usable both ways and means a banner can
+          be cleared in the theme editor without the slide collapsing to text
+          on a gradient.
+        {%- endcomment -%}
+        {%- if banner == blank -%}
         <div class="hs__figure">
           <div class="hs__card {% if block.settings.is_photo %}hs__card--photo{% endif %}">
             {%- if block.settings.tag != blank -%}<span class="hs__tag">{{ block.settings.tag }}</span>{%- endif -%}
-            {%- if block.settings.image != blank -%}
-              {{ block.settings.image | image_url: width: 900 | image_tag: alt: '', draggable: 'false', loading: forloop.first | default: 'lazy' }}
+            {%- comment -%}
+              Every slide image loads eagerly, and that is deliberate.
+
+              .hs__slide sits at opacity 0 / visibility hidden until its turn,
+              and the carousel only reveals slide 2 five seconds in. A lazy image
+              on a hidden slide is therefore not fetched until the rotation
+              uncovers it — which made slide 2's image the LCP element at 25.8s
+              on mobile, 24.9s of that pure load delay. The image was never slow;
+              it was simply never asked for.
+
+              Five slides is ~264KB all up, so fetching the set during initial
+              load is cheap. Slide 1 takes fetchpriority high so it still wins
+              the race for first paint; the rest take low, which keeps them
+              behind the LCP candidate in the queue while still guaranteeing
+              they are decoded well before the carousel needs them.
+
+              (The old `loading: forloop.first | default: 'lazy'` also emitted
+              loading="true" on slide 1 — `default` only substitutes on a falsy
+              value, so `true` passed straight through as the attribute value.
+              Invalid, and browsers fell back to eager by accident rather than
+              by intent.)
+            {%- endcomment -%}
+            {%- if forloop.first -%}
+              {%- assign img_priority = 'high' -%}
             {%- else -%}
-              <img src="{{ block.settings.asset_image | default: 'hnl-self-adhesive-roll-1.jpg' | asset_url }}" alt="" draggable="false" {% unless forloop.first %}loading="lazy"{% endunless %}>
+              {%- assign img_priority = 'auto' -%}
+            {%- endif -%}
+            {%- if block.settings.image != blank -%}
+              {{ block.settings.image | image_url: width: 900 | image_tag: alt: '', draggable: 'false', loading: 'eager', fetchpriority: img_priority }}
+            {%- else -%}
+              <img src="{{ block.settings.asset_image | default: 'hnl-self-adhesive-roll-1.jpg' | asset_url }}" alt="" draggable="false" loading="eager" fetchpriority="{{ img_priority }}">
             {%- endif -%}
           </div>
-          {%- if block.settings.price_from != blank -%}
-            <div class="hs__price"><span class="hs__price-from">FROM</span><span class="hs__price-amt">${{ block.settings.price_from }}</span></div>
-          {%- endif -%}
+          {%- comment -%}
+            The orange "FROM $24.46" tile that used to sit on the corner of the
+            hero image is gone.
+
+            A hero is the shop window, and a price tag in the window sells one
+            item — this hero is selling the range and the company behind it. The
+            figure was also the cheapest variant of one product, so it quietly
+            anchored the whole catalogue to its lowest number before a visitor
+            had seen what the catalogue contains. Pricing belongs on the product
+            card and the product page, where it sits beside the variant it
+            actually describes.
+
+            The price_from setting is left in the schema so nothing breaks in
+            the theme editor and no stored content is lost; it simply no longer
+            renders. Delete the values there if they should be gone for good.
+          {%- endcomment -%}
         </div>
+        {%- endif -%}
       </div>
     {%- endfor -%}
   </div>
@@ -159,6 +333,28 @@
     var i = 0;
     var DUR = {{ section.settings.duration | default: 5000 }};
     var timer = null;
+    var firstFill = root.querySelector('[data-hnl-hero-fill]');
+
+    {%- comment -%}
+      On a phone the hero is a single banner, not a carousel.
+
+      Five rotating slides is a desktop idea. On a narrow screen each one
+      restacks to a full-height column, so a shopper who starts reading slide 1
+      has it replaced mid-sentence by slide 2 — and slide 1 is the one that
+      actually introduces the business. The remaining slides say things the
+      page repeats further down anyway.
+
+      So mobile holds slide 1 and never rotates. The other slides stay in the
+      markup rather than being stripped out: they cost nothing (the CSS already
+      hides every inactive slide at this width) and they come straight back if
+      the window is widened, which keeps this a presentation choice rather than
+      two different sets of content to maintain.
+
+      920px matches the breakpoint slides.css already uses for the hero, so the
+      switch to one banner happens at exactly the point the layout restacks.
+    {%- endcomment -%}
+    var mq = window.matchMedia('(max-width: 920px)');
+    function oneBannerMode() { return mq.matches; }
 
     function show(n) {
       slides[i].classList.remove('is-active');
@@ -174,7 +370,62 @@
     function start() { clearInterval(timer); timer = setInterval(function () { show(i + 1); }, DUR); }
     function go(n) { show(n); start(); }
 
-    start();
+    /* Hold the first rotation until the page has finished loading, then wait
+       HOLD ms more before the carousel starts moving.
+
+       This is an LCP fix, not a whim. Largest Contentful Paint measures the
+       visible area of the biggest element, and every slide here fills the same
+       card. Slide 1 paints at ~0.67s — but the hero settles ~31px upward as the
+       page finishes laying out, so when slide 2 painted at 5.6s it measured
+       54,144px² against slide 1's 45,402px². Larger paint, later time, so slide
+       2 took the LCP and dragged it from 0.67s to 5.6s+ (25.8s under throttling,
+       once the main thread was contended).
+
+       LCP stops updating at the first user interaction, so holding the carousel
+       still through the opening moments means the metric settles on slide 1 for
+       real visitors as well as in the lab. Anyone who scrolls, taps a dot, or
+       uses the arrows starts the rotation early via go() — the hold only covers
+       the window where nobody has touched the page yet. */
+    var HOLD = {{ section.settings.autoplay_hold | default: 10 | times: 1000 }};
+    function beginAutoplay() {
+      if (timer) return;
+      /* One banner on mobile means no rotation at all, however the visitor
+         engages with the page. Every path into autoplay runs through here, so
+         this single guard covers the hold timer, the scroll/tap listeners and
+         anything added later. */
+      if (oneBannerMode()) return;
+      /* The first dot's fill bar is the promise that the slide is about to
+         change, so it stays paused for exactly as long as that isn't true. */
+      if (firstFill) firstFill.style.animationPlayState = 'running';
+      start();
+    }
+
+    /* Crossing the breakpoint — rotating a phone, dragging a desktop window
+       narrow — settles the hero back to slide 1 and stops the timer, so the
+       carousel is never left mid-rotation in a layout that shows one banner. */
+    function syncToViewport() {
+      if (!oneBannerMode()) return;
+      clearInterval(timer);
+      timer = null;
+      if (i !== 0) show(0);
+      if (firstFill) firstFill.style.animationPlayState = 'paused';
+    }
+    if (mq.addEventListener) { mq.addEventListener('change', syncToViewport); }
+    else if (mq.addListener) { mq.addListener(syncToViewport); }
+
+    if (HOLD > 0) {
+      var held = setTimeout(beginAutoplay, HOLD);
+      /* Any real engagement means the visitor is here and the LCP window has
+         closed; no reason to keep holding. */
+      ['pointerdown', 'keydown', 'wheel', 'touchstart'].forEach(function (evt) {
+        window.addEventListener(evt, function once() {
+          clearTimeout(held);
+          beginAutoplay();
+        }, { once: true, passive: true });
+      });
+    } else {
+      start();
+    }
 
     var dots = [].slice.call(root.querySelectorAll('[data-hnl-hero-dot]'));
 
@@ -200,9 +451,9 @@
     dots.forEach(function (d, n) {
       d.addEventListener('click', function () { go(n); });
     });
-    if (dots.length) {
-      var firstFill = root.querySelector('[data-hnl-hero-fill]');
-      if (firstFill) firstFill.style.animationDuration = DUR + 'ms';
+    if (dots.length && firstFill) {
+      firstFill.style.animationDuration = DUR + 'ms';
+      if (HOLD > 0 && !timer) firstFill.style.animationPlayState = 'paused';
     }
 
     /* Arrow keys, once the carousel has focus. */
@@ -266,6 +517,17 @@
       "unit": "ms",
       "label": "Seconds per slide",
       "default": 5000
+    },
+    {
+      "type": "range",
+      "id": "autoplay_hold",
+      "min": 0,
+      "max": 15,
+      "step": 1,
+      "unit": "s",
+      "label": "Hold before autoplay starts",
+      "default": 10,
+      "info": "Keeps slide 1 still while the page settles so it, not a later slide, is measured as the Largest Contentful Paint. Scrolling or tapping starts the rotation immediately. Setting this to 0 restores instant autoplay and will cost roughly 5s of LCP."
     }
   ],
   "blocks": [
@@ -283,6 +545,15 @@
         { "type": "url", "id": "cta_link", "label": "Primary button link" },
         { "type": "text", "id": "cta2_label", "label": "Secondary button" },
         { "type": "url", "id": "cta2_link", "label": "Secondary button link" },
+        { "type": "header", "content": "Full-bleed banner" },
+        { "type": "text", "id": "banner_asset", "label": "Banner theme asset", "info": "e.g. hnl-hero-banner-1.webp. Fills the whole section behind the copy and replaces the framed product card. Desktop only — phones show the section's navy gradient instead and never download the file. Leave empty to go back to the framed card." },
+        { "type": "header", "content": "Mobile only" },
+        { "type": "text", "id": "mobile_lead", "label": "Supporting line", "info": "One line under the heading on phones. Hidden on desktop, where the bullets already say this." },
+        { "type": "textarea", "id": "tiles_brands", "label": "Brand tiles", "info": "One per row as Label > /link, pipe-separated. Shown above the category tiles." },
+        { "type": "textarea", "id": "tiles_cats", "label": "Category tiles", "info": "Same Label > /link format, pipe-separated. Leave empty to hide the whole tile block and show the bullets and buttons instead." },
+        { "type": "text", "id": "tile_all_label", "label": "Catch-all tile" },
+        { "type": "url", "id": "tile_all_link", "label": "Catch-all tile link" },
+        { "type": "header", "content": "Framed card (slides without a banner)" },
         { "type": "image_picker", "id": "image", "label": "Image" },
         { "type": "text", "id": "asset_image", "label": "Fallback theme asset", "info": "Used only when no image is picked above." },
         { "type": "text", "id": "tag", "label": "Corner tag" },

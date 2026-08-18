@@ -1,0 +1,606 @@
+{
+  "sections": {
+    "hero": {
+      "type": "mts-hero-slider",
+      "blocks": {
+        "s1": {
+          "type": "slide",
+          "settings": {
+            "packaged_image": "mts-banner-australia.jpg",
+            "eyebrow": "Express delivery",
+            "title": "Fast delivery, right across Australia",
+            "text": "Dispatch to 3,600+ postcodes — most orders arrive in 2–3 business days.",
+            "cta_label": "Shop the range",
+            "cta_url": "/collections/all",
+            "alt_label": "Track your order",
+            "alt_url": "/pages/shipping-delivery"
+          }
+        },
+        "s2": {
+          "type": "slide",
+          "settings": {
+            "packaged_image": "mts-banner-2.jpg",
+            "eyebrow": "Premium quality",
+            "title": "Industrial-grade tapes, built to last",
+            "text": "Trusted brands and premium lines — quality-checked for every job.",
+            "cta_label": "Shop premium tapes",
+            "cta_url": "/collections/all",
+            "alt_label": "Our brands",
+            "alt_url": "/pages/about-us"
+          }
+        },
+        "s3": {
+          "type": "slide",
+          "settings": {
+            "packaged_image": "mts-banner-3.jpg",
+            "eyebrow": "Australia-wide",
+            "title": "Adhesive Tape Suppliers in Australia",
+            "text": "130+ industrial lines across 35 categories — double-sided, foam, foil, safety and more, dispatched Australia-wide.",
+            "cta_label": "Browse all tapes",
+            "cta_url": "/collections/all",
+            "alt_label": "Shop by industry",
+            "alt_url": "/pages/industries"
+          }
+        },
+        "s4": {
+          "type": "slide",
+          "settings": {
+            "packaged_image": "mts-banner-4.jpg",
+            "eyebrow": "Bulk & trade",
+            "title": "Save more when you buy more",
+            "text": "Volume discounts on larger orders for business buyers.",
+            "cta_label": "Bulk & trade pricing",
+            "cta_url": "/pages/bulk-trade",
+            "alt_label": "Get in contact",
+            "alt_url": "/pages/contact"
+          }
+        },
+        "slide_au_owned": {
+          "type": "slide",
+          "settings": {
+            "packaged_image": "mts-banner-australian-owned.jpg",
+            "eyebrow": "Australian owned",
+            "title": "Australian owned, Australian stocked",
+            "text": "Local stock, local support, and tape on its way to 3,600+ postcodes — no overseas wait.",
+            "cta_label": "Shop the range",
+            "cta_url": "/collections/all",
+            "alt_label": "About us",
+            "alt_url": "/pages/about-us"
+          }
+        }
+      },
+      "block_order": [
+        "s3",
+        "s1",
+        "slide_au_owned",
+        "s2",
+        "s4"
+      ],
+      "settings": {
+        "interval": 6,
+        "m_packaged": "mts-banner-3.jpg",
+        "m_eyebrow": "Australian owned",
+        "m_title": "Adhesive Tape Suppliers in Australia",
+        "m_text": "Premium brands, quality-checked for the job — with volume pricing on every roll.",
+        "m_cta_label": "Shop all tapes",
+        "m_cta_url": "/collections/all",
+        "m_proof_1": "1–2 days | to dispatch",
+        "m_proof_2": "Lowest price | guaranteed",
+        "m_proof_3": "Secure | checkout"
+      }
+    },
+    "intro": {
+      "type": "mts-intro-band",
+      "blocks": {
+        "b1": {
+          "type": "stat",
+          "settings": {
+            "value": "4.9★",
+            "label": "Highly rated by customers"
+          }
+        },
+        "b2": {
+          "type": "stat",
+          "settings": {
+            "value": "26",
+            "label": "Industries served"
+          }
+        },
+        "b3": {
+          "type": "stat",
+          "settings": {
+            "value": "3,600+",
+            "label": "AU postcodes"
+          }
+        },
+        "b4": {
+          "type": "stat",
+          "settings": {
+            "value": "2–3",
+            "label": "Day typical delivery"
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3",
+        "b4"
+      ],
+      "settings": {
+        "eyebrow": "Every tape. One supplier.",
+        "heading": "Buy tapes online from My Tape Store",
+        "cta_label": "Shop the full range",
+        "cta_url": "/collections/all",
+        "lead": "My Tape Store brings top-notch quality to our extensive range of adhesive tapes. We are committed to serving all industries across Australia. Whether you belong to the construction, retail, packaging, or transport industry, we have got you covered. We stock only top-rated and highly trusted brands like FrogTape®, T-Rex®, Shurtape, Husky Tape, Kikusui, Acribond, VELCRO®. We work for you, bringing fast and Australia-wide delivery at pocket-friendly prices. Shop worry-free as we have bulk order discounts.",
+        "brands_label": "Trusted brands we stock",
+        "brands": "FrogTape®, T-Rex®, Shurtape, Husky Tape, Kikusui, Acribond, VELCRO®"
+      }
+    },
+    "categories": {
+      "type": "mts-category-showcase",
+      "blocks": {
+        "c1": {
+          "type": "category",
+          "settings": {
+            "collection": "tapes-dispensers"
+          }
+        },
+        "c2": {
+          "type": "category",
+          "settings": {
+            "collection": "masking-tape"
+          }
+        },
+        "c3": {
+          "type": "category",
+          "settings": {
+            "collection": "specialty-tape"
+          }
+        },
+        "c4": {
+          "type": "category",
+          "settings": {
+            "collection": "painters-tape"
+          }
+        },
+        "c5": {
+          "type": "category",
+          "settings": {
+            "collection": "safety-tape"
+          }
+        },
+        "c6": {
+          "type": "category",
+          "settings": {
+            "collection": "hook-loop-tapes"
+          }
+        },
+        "c7": {
+          "type": "category",
+          "settings": {
+            "collection": "packaging-tapes"
+          }
+        },
+        "c8": {
+          "type": "category",
+          "settings": {
+            "collection": "pvc-electrical-insulation-tape"
+          }
+        }
+      },
+      "block_order": [
+        "c1",
+        "c2",
+        "c3",
+        "c4",
+        "c5",
+        "c6",
+        "c7",
+        "c8"
+      ],
+      "settings": {
+        "eyebrow": "Our adhesive tapes collection",
+        "heading": "Discover the ideal tape for your job",
+        "text": "Browse our most popular categories — from double-sided and foam to hook & loop, safety and packaging.",
+        "cta_label": "View all categories",
+        "cta_url": "/collections"
+      }
+    },
+    "bestsellers": {
+      "type": "mts-featured-grid",
+      "settings": {
+        "eyebrow": "Our bestsellers",
+        "heading": "Popular right now",
+        "collection": "bestsellers",
+        "count": 4,
+        "paper": false,
+        "cta_label": "Shop all products",
+        "cta_url": "/collections/all"
+      }
+    },
+    "brands": {
+      "type": "mts-brand-wall",
+      "blocks": {
+        "l1": {
+          "type": "logo",
+          "settings": {
+            "name": "FrogTape",
+            "packaged_logo": "mts-brand-6.png"
+          }
+        },
+        "l2": {
+          "type": "logo",
+          "settings": {
+            "name": "T-Rex",
+            "packaged_logo": "mts-brand-4.png"
+          }
+        },
+        "l3": {
+          "type": "logo",
+          "settings": {
+            "name": "Shurtape",
+            "packaged_logo": "mts-brand-2.png"
+          }
+        },
+        "l4": {
+          "type": "logo",
+          "settings": {
+            "name": "Husky Tape",
+            "packaged_logo": "mts-brand-3.png"
+          }
+        },
+        "l5": {
+          "type": "logo",
+          "settings": {
+            "name": "Kikusui",
+            "packaged_logo": "mts-brand-1.png"
+          }
+        },
+        "l6": {
+          "type": "logo",
+          "settings": {
+            "name": "Acribond",
+            "packaged_logo": "mts-brand-5.png"
+          }
+        },
+        "s1": {
+          "type": "stat",
+          "settings": {
+            "value": "12",
+            "label": "Leading brands"
+          }
+        },
+        "s2": {
+          "type": "stat",
+          "settings": {
+            "value": "130+",
+            "label": "Genuine tapes"
+          }
+        },
+        "s3": {
+          "type": "stat",
+          "settings": {
+            "value": "100%",
+            "label": "Trade-grade quality"
+          }
+        },
+        "l7": {
+          "type": "logo",
+          "settings": {
+            "name": "VELCRO®",
+            "packaged_logo": "mts-brand-7.png"
+          }
+        },
+        "l8": {
+          "type": "logo",
+          "settings": {
+            "name": "My Tape Store",
+            "packaged_logo": "mts-brand-8.png"
+          }
+        }
+      },
+      "block_order": [
+        "l1",
+        "l2",
+        "l3",
+        "l4",
+        "l5",
+        "l6",
+        "l7",
+        "l8",
+        "s1",
+        "s2",
+        "s3"
+      ],
+      "settings": {
+        "eyebrow": "Trusted brands",
+        "heading": "We partner with the best tape brands",
+        "text": "Genuine, trade-grade products from the names professionals rely on — plus our own value lines."
+      }
+    },
+    "range": {
+      "type": "mts-range",
+      "blocks": {
+        "r1": {
+          "type": "item",
+          "settings": {
+            "icon": "layers",
+            "title": "General-purpose adhesive tapes",
+            "text": "Cost-effective, versatile tapes for everyday packaging, bundling and assembly — dependable hold across countless jobs."
+          }
+        },
+        "r2": {
+          "type": "item",
+          "settings": {
+            "icon": "layers",
+            "title": "Specialty adhesive tapes",
+            "text": "Engineered for specific applications: high-bond, glazing, thermal, fire-retardant and more, where a standard tape won't do."
+          }
+        },
+        "r3": {
+          "type": "item",
+          "settings": {
+            "icon": "layers",
+            "title": "Construction & industrial tapes",
+            "text": "Rugged tapes built for the site — flashing, cloth, foil and duct grades that stand up to demanding conditions."
+          }
+        }
+      },
+      "block_order": [
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "settings": {
+        "eyebrow": "A more comprehensive range",
+        "heading": "Adhesive tapes for every purpose",
+        "image_alt": "A range of adhesive tapes — packaging, duct, masking, foil, cloth and electrical",
+        "cta_label": "Explore the full range",
+        "cta_url": "/collections/all"
+      }
+    },
+    "seal": {
+      "type": "mts-seal",
+      "settings": {
+        "eyebrow": "Ready when you are",
+        "heading": "Seal the deal today",
+        "text": "Shop our wide range of tapes and elevate your projects — fast dispatch Australia-wide.",
+        "cta_label": "Shop now",
+        "cta_url": "/collections/all",
+        "alt_label": "Bulk & trade pricing",
+        "alt_url": "/pages/bulk-trade"
+      }
+    },
+    "industries": {
+      "type": "mts-industries",
+      "settings": {
+        "menu": "industries",
+        "eyebrow": "Covering diverse industries",
+        "heading": "From construction to crafting",
+        "text": "The right adhesive for your trade — quality-checked tapes across every industry we serve.",
+        "image_alt": "Adhesive tapes for every trade — hard hat, blueprints, packaging, foil and craft tapes on a workbench",
+        "interval": 3,
+        "cta_label": "Explore all industries",
+        "cta_url": "/pages/industries"
+      }
+    },
+    "testimonials": {
+      "type": "mts-testimonials",
+      "settings": {
+        "eyebrow": "Testimonials",
+        "heading": "Trusted by thousands of happy customers",
+        "text": "Real reviews from Australian trade & DIY buyers."
+      },
+      "blocks": {
+        "r1": {
+          "type": "review",
+          "settings": {
+            "quote": "\"I recently used this reinforced aluminium foil tape to seal up some HVAC ducts, and honestly, I’m impressed! It sticks well, handles heat, and is super reliable. I found it perfect for sealing ducts and would like to recommend it to others as well. Thank You, My Tape Store.\"",
+            "name": "Timothy",
+            "product": "Reinforced Foil Tape",
+            "rating": 5
+          }
+        },
+        "r2": {
+          "type": "review",
+          "settings": {
+            "quote": "\"This Teflon tape is really good on my vacuum sealer! I have been using it for a few months and am completely happy with its performance. It is super durable and does not tear like thinner versions. Easy to apply and lasts much longer – a must-have for our production floor.”",
+            "name": "Nicholas",
+            "product": "Heat Sealer Tape – Teflon Coated",
+            "rating": 5
+          }
+        },
+        "r3": {
+          "type": "review",
+          "settings": {
+            "quote": "I used this open-cell glazing tape during window installations, and I am stunned by the results; it was flawless. The adhesive held strong, spacing was perfect, and it handled temperature changes without a hitch. A must-buy professional-grade product from My Tape Store!\"",
+            "name": "Jack Williams",
+            "product": "Structural Glazing Tape – Medium Density Open Cell",
+            "rating": 5
+          }
+        },
+        "r4": {
+          "type": "review",
+          "settings": {
+            "quote": "“I bought this amazing yet affordable adhesive solution and it worked wonders. I like the strength and residue-free features of this tape. I used it in bundling and sealing and am quite happy with the results. Also, the price was stunning. A highly recommended product.”",
+            "name": "Cyrus",
+            "product": "Economy Packaging Tape Brown / White 48mm x 72m",
+            "rating": 5
+          }
+        },
+        "r5": {
+          "type": "review",
+          "settings": {
+            "quote": "\"Honestly, this cross-weave filament tape is a game changer at my warehouse. It made the tough packaging task simpler. I am happy with its quality and strong bond. Also, the price is very reasonable. Must recommend this product to others. Thank you, my tape store!\"",
+            "name": "Cayne",
+            "product": "Cross Weave Filament Tape | 2-Way/Bi-Directional",
+            "rating": 5
+          }
+        },
+        "r6": {
+          "type": "review",
+          "settings": {
+            "quote": "\"I have been using this PVC nitrile foam tape for a few months in my factory, and I am happy with the quality received at this price. Perfect thermal and acoustic insulation stick easily and are handy to tear. Good product, I must say. Thank You, My Tape Store! \"",
+            "name": "Nayeli",
+            "product": "PVC Nitrile Foam Tape-Single Sided (Black)",
+            "rating": 5
+          }
+        }
+      },
+      "block_order": [
+        "r1",
+        "r2",
+        "r3",
+        "r4",
+        "r5",
+        "r6"
+      ]
+    },
+    "wholesale": {
+      "type": "mts-wholesale",
+      "blocks": {
+        "p1": {
+          "type": "perk",
+          "settings": {
+            "icon": "tag",
+            "title": "Significant discounts",
+            "text": "Save more when you order in bulk — contact us for substantial reductions on large quantities."
+          }
+        },
+        "p2": {
+          "type": "perk",
+          "settings": {
+            "icon": "truck",
+            "title": "Quick delivery across Australia",
+            "text": "Fast, reliable shipping so your bulk tape orders arrive exactly when you need them."
+          }
+        },
+        "p3": {
+          "type": "perk",
+          "settings": {
+            "icon": "layers",
+            "title": "Cost-effective stock management",
+            "text": "Keep a well-stocked inventory without breaking the bank, even with high tape usage."
+          }
+        },
+        "p4": {
+          "type": "perk",
+          "settings": {
+            "icon": "factory",
+            "title": "Tailored wholesale services",
+            "text": "Customised wholesale solutions built around your business's specific needs."
+          }
+        },
+        "p5": {
+          "type": "perk",
+          "settings": {
+            "icon": "shield",
+            "title": "Trusted tape suppliers",
+            "text": "Consistent quality and after-sales service — all your adhesive needs, always covered."
+          }
+        }
+      },
+      "block_order": [
+        "p1",
+        "p2",
+        "p3",
+        "p4",
+        "p5"
+      ],
+      "settings": {
+        "eyebrow": "Wholesale & bulk",
+        "heading": "Buy adhesive tape in bulk — wholesale pricing for Australia",
+        "intro": "Australia's trusted tape experts. We're proud to supply thousands of individuals and businesses with tailored solutions and quality products.",
+        "image_alt": "Warehouse pallets stacked with adhesive tape stock",
+        "cta_label": "Bulk & trade pricing",
+        "cta_url": "/pages/bulk-trade"
+      }
+    },
+    "faq": {
+      "type": "mts-faq",
+      "blocks": {
+        "q1": {
+          "type": "qa",
+          "settings": {
+            "question": "How quickly can I receive my tape order in Australia?",
+            "answer": "We dispatch Australia-wide to 3,600+ postcodes, and most orders arrive within 2–3 business days once dispatched, with express options available at checkout."
+          }
+        },
+        "q2": {
+          "type": "qa",
+          "settings": {
+            "question": "Can you deliver adhesive tape all over Australia?",
+            "answer": "Yes — we deliver to Melbourne, Sydney, Brisbane, Perth, Adelaide, Darwin and more than 3,600 postcodes right across the country."
+          }
+        },
+        "q3": {
+          "type": "qa",
+          "settings": {
+            "question": "What industries do you supply adhesive tape to?",
+            "answer": "From construction, automotive and marine to signage, packaging, electronics, HVAC and healthcare — browse our industry pages to find the right tape for your sector."
+          }
+        },
+        "q4": {
+          "type": "qa",
+          "settings": {
+            "question": "Do you offer bulk or wholesale pricing?",
+            "answer": "Yes. Get in touch for volume pricing — larger orders unlock better rates and priority support."
+          }
+        },
+        "q5": {
+          "type": "qa",
+          "settings": {
+            "question": "Can I track my adhesive tape order online?",
+            "answer": "Absolutely — you'll receive tracking as soon as your order ships, so you can follow it right to your door."
+          }
+        },
+        "q6": {
+          "type": "qa",
+          "settings": {
+            "question": "What payment methods do you accept?",
+            "answer": "We accept all major cards (Visa, Mastercard, Amex), PayPal and Shop Pay through a secure, encrypted checkout."
+          }
+        },
+        "q7": {
+          "type": "qa",
+          "settings": {
+            "question": "What types of adhesive tape can I buy online?",
+            "answer": "Double-sided, foam, foil, duct, hook & loop, packaging, safety, masking and specialty tapes — plus dispensers — over 130 lines held in stock."
+          }
+        }
+      },
+      "block_order": [
+        "q1",
+        "q2",
+        "q3",
+        "q4",
+        "q5",
+        "q6",
+        "q7"
+      ],
+      "settings": {
+        "eyebrow": "Good to know",
+        "heading": "Frequently asked questions",
+        "show_map": true,
+        "map_alt": "Map of Australia showing our nationwide delivery coverage",
+        "map_badge": "Australia-wide delivery",
+        "map_title": "We deliver to 3,600+ postcodes",
+        "map_text": "Sydney, Melbourne, Brisbane, Perth, Adelaide, Darwin and everywhere in between — most orders arrive in 2–3 business days."
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "intro",
+    "categories",
+    "bestsellers",
+    "brands",
+    "range",
+    "seal",
+    "industries",
+    "testimonials",
+    "wholesale",
+    "faq"
+  ]
+}

@@ -1,0 +1,32 @@
+{%- comment -%}
+  Handles that must NEVER be used as a product-facing category label — the 22
+  industry collections plus the three structural ones.
+
+  Output (comma-wrapped on both sides):
+      ,building-construction,display-signage,…,all,frontpage,bestsellers,
+
+  WHY THIS IS A HARD-CODED LIST
+
+  Two earlier attempts derived it from menus and both failed, because on this
+  store industries and categories are indistinguishable in the data: all 65
+  smart collections use the same rule shape (`tag == own title`), and the main
+  menu carries BOTH a Shop tree and an Industries tree, so walking it swept the
+  industries straight back in. There is genuinely no signal to infer from.
+
+  So the list is stated outright. It was derived once from the full collection
+  list — the 25 collections whose titles contain no product word (tape, tapes,
+  dots, dispenser, glue, hang tab, accessories) — minus `strapping-and-filament`,
+  which IS a tape category despite its name.
+
+  MAINTENANCE: adding a new industry collection means adding its handle here.
+  That is the cost of the trade; the benefit is that it cannot silently break
+  again the way the menu-derived versions did.
+
+  Comma-wrapped so a `contains ',handle,'` test cannot match a partial handle
+  (`,tape,` must not match `,masking-tape,`).
+
+  Usage — `render` is scope-isolated, so capture it:
+      {%- capture skip -%}{% render 'mts-category-handles' %}{%- endcapture -%}
+      {%- assign skip = skip | strip -%}
+{%- endcomment -%}
+,aerospace-defense,building-construction,display-signage,electronics-electrical,flooring,framing-insulation,glass-glazing,hvac-plumbing,joinery-kitchen-furniture,manufacturing,marine,marking-safety,nameplates,pool-spa,printing,roofing-gutters,sheathing-moisture-management,solar-energy,telecommunication,transport-automotive-rv,warehouse-packaging-logistics,windows-doors-decking,all,frontpage,bestsellers,

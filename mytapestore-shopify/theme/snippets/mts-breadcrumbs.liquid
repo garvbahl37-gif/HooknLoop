@@ -1,0 +1,112 @@
+{%- comment -%}
+  Breadcrumbs — ported from Breadcrumbs.jsx. The last item is the current page
+  and never links.
+
+  The React version was handed an explicit trail; here it is derived from the
+  request, which is what Shopify gives us. Callers can prepend one extra level
+  (the nav group a collection belongs to) via `parent_title` / `parent_url`.
+
+  The trail is built ONCE into two parallel lists and then rendered twice: as
+  the visible <ol>, and as schema.org BreadcrumbList JSON-LD. Deriving both
+  from the same source is the point — a hand-maintained second copy is how
+  structured data ends up disagreeing with the page, which Google treats as a
+  markup error rather than ignoring.
+{%- endcomment -%}
+{%- liquid
+  assign SEP = '~|~'
+  assign names = ''
+  assign urls = ''
+
+  assign names = names | append: 'general.breadcrumbs.home' | t | append: SEP
+  assign urls = urls | append: routes.root_url | append: SEP
+
+  if parent_title != blank
+    assign names = names | append: parent_title | append: SEP
+    assign urls = urls | append: parent_url | append: SEP
+  endif
+
+  case request.page_type
+    when 'product'
+      if collection
+        assign names = names | append: collection.title | append: SEP
+        assign urls = urls | append: collection.url | append: SEP
+      endif
+      assign names = names | append: product.title | append: SEP
+      assign urls = urls | append: product.url | append: SEP
+    when 'collection'
+      if current_tags
+        assign names = names | append: collection.title | append: SEP
+        assign urls = urls | append: collection.url | append: SEP
+        assign tagname = current_tags | join: ', '
+        assign names = names | append: tagname | append: SEP
+        assign urls = urls | append: request.path | append: SEP
+      else
+        assign names = names | append: collection.title | append: SEP
+        assign urls = urls | append: collection.url | append: SEP
+      endif
+    when 'blog'
+      assign names = names | append: blog.title | append: SEP
+      assign urls = urls | append: blog.url | append: SEP
+    when 'article'
+      assign names = names | append: blog.title | append: SEP
+      assign urls = urls | append: blog.url | append: SEP
+      assign names = names | append: article.title | append: SEP
+      assign urls = urls | append: article.url | append: SEP
+    when 'page'
+      assign names = names | append: page.title | append: SEP
+      assign urls = urls | append: page.url | append: SEP
+    when 'search'
+      assign sname = 'general.search.heading' | t
+      assign names = names | append: sname | append: SEP
+      assign urls = urls | append: routes.search_url | append: SEP
+    when 'cart'
+      assign cname = 'cart.general.title' | t
+      assign names = names | append: cname | append: SEP
+      assign urls = urls | append: routes.cart_url | append: SEP
+    else
+      if current_title != blank
+        assign names = names | append: current_title | append: SEP
+        assign urls = urls | append: request.path | append: SEP
+      endif
+  endcase
+
+  assign crumb_names = names | split: SEP
+  assign crumb_urls = urls | split: SEP
+  assign last_index = crumb_names.size | minus: 1
+-%}
+
+<nav class="crumbs" aria-label="{{ 'general.breadcrumbs.label' | t }}">
+  <ol>
+    {%- for name in crumb_names -%}
+      <li>
+        {%- if forloop.index0 == last_index -%}
+          <span aria-current="page">{{ name }}</span>
+        {%- else -%}
+          <a href="{{ crumb_urls[forloop.index0] }}">{{ name }}</a>
+          {% render 'mts-icon', name: 'chevronRight', size: 13, class: 'crumbs__sep' %}
+        {%- endif -%}
+      </li>
+    {%- endfor -%}
+  </ol>
+</nav>
+
+{%- comment -%}
+  Absolute URLs: Google requires them here even though the visible links are
+  relative.
+{%- endcomment -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {%- for name in crumb_names -%}
+      {
+        "@type": "ListItem",
+        "position": {{ forloop.index }},
+        "name": {{ name | strip | json }},
+        "item": {{ shop.url | append: crumb_urls[forloop.index0] | json }}
+      }{%- unless forloop.last -%},{%- endunless -%}
+    {%- endfor -%}
+  ]
+}
+</script>

@@ -1,0 +1,17 @@
+{%- comment -%}
+  Floating call button — ported from CallButton.jsx. Hidden at the top of the
+  page, slides in past 220px of scroll (mts-theme.js toggles .is-visible).
+{%- endcomment -%}
+{%- if settings.phone != blank -%}
+  <a class="callbtn" data-mts-callbtn href="tel:{{ settings.phone_href | default: settings.phone | remove: ' ' }}"
+     aria-label="Call us on {{ settings.phone }}" tabindex="-1" aria-hidden="true">
+    <span class="callbtn__ic">{% render 'mts-icon', name: 'phone', size: 20 %}</span>
+    {%- comment -%}
+      The button itself is a bare circle now, so the label rides alongside it as
+      a small fixed teaser rather than living inside the button — that keeps the
+      target round while still saying what it does. aria-hidden because the
+      anchor's own label already reads out the full number.
+    {%- endcomment -%}
+    <span class="callbtn__teaser" aria-hidden="true">Call us</span>
+  </a>
+{%- endif -%}

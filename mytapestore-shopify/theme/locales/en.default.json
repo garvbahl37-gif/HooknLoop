@@ -1,0 +1,327 @@
+{
+  "general": {
+    "accessibility": {
+      "skip_to_content": "Skip to content",
+      "close": "Close",
+      "next": "Next",
+      "previous": "Previous",
+      "star_reviews_info": "Rated {{ rating_value }} out of 5"
+    },
+    "meta": {
+      "tags": "Tagged \"{{ tags }}\"",
+      "page": "Page {{ page }}"
+    },
+    "search": {
+      "heading": "Search",
+      "placeholder": "Search 130+ tapes, brands or sizes…",
+      "submit": "Search",
+      "results_for": "Search results for “{{ terms }}”",
+      "no_results": "No products matched “{{ terms }}”. Try a broader term like “foam”, “duct”, “double sided” or “hook & loop”.",
+      "prompt": "Type a product, brand or size to search our range.",
+      "results_count": {
+        "one": "{{ count }} product found",
+        "other": "{{ count }} products found"
+      },
+      "categories": "Categories",
+      "products": "Products",
+      "view_all": "View all results for “{{ terms }}”"
+    },
+    "pagination": {
+      "label": "Pagination",
+      "previous": "Previous",
+      "next": "Next",
+      "page": "Page {{ number }}"
+    },
+    "newsletter": {
+      "label": "Newsletter",
+      "heading": "Trade tips & tape deals — no spam.",
+      "placeholder": "Your email",
+      "submit": "Subscribe",
+      "success": "You're subscribed!"
+    },
+    "breadcrumbs": {
+      "label": "Breadcrumb",
+      "home": "Home"
+    },
+    "404": {
+      "title": "Page not found",
+      "subtext": "The page you were after has moved or no longer exists.",
+      "link": "Shop the range"
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Add to cart",
+      "added_to_cart": "Added to cart",
+      "buy_it_now": "Buy it now",
+      "sold_out": "Sold out",
+      "unavailable": "Unavailable",
+      "choose_options": "Choose options",
+      "quantity": "Quantity",
+      "increase": "Increase quantity",
+      "decrease": "Decrease quantity",
+      "in_stock": "In stock — dispatched in 1–2 business days",
+      "out_of_stock": "Currently out of stock",
+      "inc_gst": "Inc GST",
+      "from": "From",
+      "sku": "SKU",
+      "brand": "Brand",
+      "tax_line": "Tax included · Shipping calculated at checkout",
+      "select_option": "Select",
+      "zoom": "Zoom image",
+      "view_image": "View image",
+      "bestseller": "Bestseller",
+      "sale": "Sale",
+      "out_of_stock_badge": "Out of stock",
+      "add_to_wishlist": "Add to wishlist",
+      "remove_from_wishlist": "Remove from wishlist",
+      "total": "Total",
+      "you_save": "You save {{ amount }}",
+      "volume_heading": "Get it at a discounted rate",
+      "volume_note": "",
+      "each": "each",
+      "save_percent": "Save {{ percent }}%",
+      "view_cart": "View cart & checkout →",
+      "added_n": "Added {{ quantity }} to your cart.",
+      "no_reviews": "No reviews yet",
+      "reviews_count": {
+        "one": "{{ count }} review",
+        "other": "{{ count }} reviews"
+      },
+      "sizes_count": {
+        "one": "{{ count }} size",
+        "other": "{{ count }} sizes"
+      },
+      "available_colours": "Available colours: {{ colours }}",
+      "tabs": {
+        "description": "Description",
+        "specs": "Specifications",
+        "reviews": "Reviews",
+        "shipping": "Shipping & Returns"
+      },
+      "specs": {
+        "category": "Category",
+        "price": "Price",
+        "availability": "Availability",
+        "in_stock": "In stock",
+        "out_of_stock": "Out of stock",
+        "recommended_for": "Recommended for"
+      },
+      "trust": {
+        "dispatch": "Fast AU dispatch",
+        "returns": "Easy returns",
+        "secure": "Secure checkout",
+        "price_guarantee": "Lowest-price guarantee",
+        "we_accept": "We accept",
+        "shipping_info": "Shipping info",
+        "returns_info": "Returns & exchanges"
+      },
+      "related": "Related products",
+      "related_eyebrow": "You might also need",
+      "volume_aria": "Quantity price breaks",
+      "percent_off": "({{ percent }}% off)",
+      "pieces_one": "{{ n }} piece",
+      "pieces_many": "{{ n }} pieces",
+      "min_qty": "Minimum order: {{ n }} pieces",
+      "from_price": "From {{ price }}",
+      "pieces_range": "{{ from }} - {{ to }} pieces",
+      "pieces_plus": "{{ from }}+ pieces",
+      "in_stock_badge": "In stock",
+      "colours_count": {
+        "one": "{{ count }} colour",
+        "other": "{{ count }} colours"
+      }
+    }
+  },
+  "collections": {
+    "general": {
+      "products_count": {
+        "one": "{{ count }} product",
+        "other": "{{ count }} products"
+      },
+      "available_count": {
+        "one": "{{ count }} product available",
+        "other": "{{ count }} products available"
+      },
+      "no_matches": "No products match your filters here.",
+      "clear_filters": "Clear filters",
+      "sort_by": "Sort by",
+      "view_all": "View all products",
+      "all_products": "All products",
+      "products_in": "{{ title }} products"
+    },
+    "sorting": {
+      "featured": "Featured",
+      "price_ascending": "Price: low to high",
+      "price_descending": "Price: high to low",
+      "best_selling": "Top rated",
+      "az": "Name: A–Z"
+    },
+    "filters": {
+      "heading": "Filter",
+      "availability": "Availability",
+      "in_stock_only": "In stock only",
+      "category": "Product category",
+      "colour": "Colour",
+      "size": "Size",
+      "all_sizes": "All sizes",
+      "price": "Price",
+      "clear_all": "Clear all filters",
+      "rail_heading": "Shop by category",
+      "rail_search": "Search categories…",
+      "rail_none": "No categories match “{{ terms }}”.",
+      "clear_search": "Clear search"
+    }
+  },
+  "cart": {
+    "general": {
+      "title": "Your cart",
+      "empty": "Your cart is empty",
+      "empty_subtext": "Browse our range of adhesive tapes, dispensers and fastening solutions.",
+      "continue_shopping": "Continue shopping",
+      "clear": "Clear cart",
+      "remove": "Remove {{ title }}",
+      "items_count": {
+        "one": "({{ count }} item)",
+        "other": "({{ count }} items)"
+      },
+      "subtotal": "Subtotal",
+      "shipping": "Shipping",
+      "shipping_calculated": "Calculated at checkout",
+      "free": "Free",
+      "estimated_delivery": "Estimated delivery",
+      "estimated_delivery_value": "3–5 business days",
+      "gst": "GST",
+      "gst_note": "Included in prices",
+      "total": "Total",
+      "checkout": "Proceed to checkout",
+      "express_or": "or check out faster with",
+      "order_summary": "Order summary",
+      "free_shipping_unlocked": "You've unlocked <b>free shipping!</b>",
+      "free_shipping_remaining": "You're <b class=\"num\">{{ amount }}</b> away from <b>free shipping</b>",
+      "upsell_bestsellers": "Our bestsellers",
+      "upsell_together": "Frequently bought together",
+      "shop_the_range": "Shop the range",
+      "trust": {
+        "secure": "Secure, encrypted checkout",
+        "dispatch": "Dispatch to 3,600+ AU postcodes",
+        "returns": "30-day easy returns",
+        "volume": "Volume discounts applied automatically"
+      },
+      "you_saved": "You saved",
+      "bulk_nudge_html": "Add {{ count }} more to save {{ percent }}%"
+    }
+  },
+  "customer": {
+    "account": {
+      "title": "My account",
+      "details": "Account details",
+      "view_addresses": "View addresses",
+      "return": "Return to account details",
+      "orders": "Order history",
+      "no_orders": "You haven't placed any orders yet."
+    },
+    "login": {
+      "title": "Sign in",
+      "email": "Email",
+      "password": "Password",
+      "forgot_password": "Forgot your password?",
+      "sign_in": "Sign in",
+      "create_account": "Create account",
+      "guest_title": "Continue as a guest",
+      "guest_continue": "Continue"
+    },
+    "register": {
+      "title": "Create account",
+      "first_name": "First name",
+      "last_name": "Last name",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Create",
+      "already": "Already have an account?"
+    },
+    "recover_password": {
+      "title": "Reset your password",
+      "subtext": "We'll send you an email to reset your password.",
+      "submit": "Submit",
+      "cancel": "Cancel",
+      "success": "We've sent you an email with a link to update your password."
+    },
+    "reset_password": {
+      "title": "Reset account password",
+      "subtext": "Enter a new password.",
+      "password": "Password",
+      "password_confirm": "Confirm password",
+      "submit": "Reset password"
+    },
+    "activate_account": {
+      "title": "Activate account",
+      "subtext": "Create your password to activate your account.",
+      "password": "Password",
+      "password_confirm": "Confirm password",
+      "submit": "Activate account",
+      "cancel": "Decline invitation"
+    },
+    "addresses": {
+      "title": "Addresses",
+      "add_new": "Add a new address",
+      "edit": "Edit",
+      "delete": "Delete",
+      "delete_confirm": "Are you sure you want to delete this address?",
+      "first_name": "First name",
+      "last_name": "Last name",
+      "company": "Company",
+      "address1": "Address",
+      "address2": "Apartment, suite, etc.",
+      "city": "City",
+      "country": "Country/region",
+      "province": "State",
+      "zip": "Postcode",
+      "phone": "Phone",
+      "set_default": "Set as default address",
+      "add": "Add address",
+      "update": "Update address",
+      "cancel": "Cancel"
+    },
+    "orders": {
+      "order_number": "Order",
+      "date": "Date",
+      "payment_status": "Payment status",
+      "fulfillment_status": "Fulfilment status",
+      "total": "Total"
+    },
+    "order": {
+      "title": "Order {{ name }}",
+      "date": "Placed on {{ date }}",
+      "product": "Product",
+      "sku": "SKU",
+      "price": "Price",
+      "quantity": "Quantity",
+      "total": "Total",
+      "subtotal": "Subtotal",
+      "shipping": "Shipping",
+      "tax": "Tax",
+      "billing_address": "Billing address",
+      "shipping_address": "Shipping address",
+      "payment_status": "Payment status",
+      "fulfillment_status": "Fulfilment status"
+    }
+  },
+  "contact": {
+    "form": {
+      "name": "Your name",
+      "email": "Email",
+      "phone": "Phone",
+      "message": "Message",
+      "send": "Send message",
+      "success": "Thanks — we'll get back to you shortly."
+    }
+  },
+  "blogs": {
+    "article": {
+      "back_to_blog": "Back to {{ title }}",
+      "read_more": "Read more",
+      "shop_all": "Shop all {{ title }} →"
+    }
+  }
+}

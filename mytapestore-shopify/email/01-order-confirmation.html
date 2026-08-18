@@ -1,0 +1,198 @@
+{%- comment -%}
+  MY TAPE STORE — Order confirmation
+  Paste into: Settings → Notifications → Order confirmation → Edit code
+
+  This is a Shopify NOTIFICATION template, not a theme file. Notes that matter:
+
+  * Inline styles only. Gmail strips <style> blocks in many contexts, and
+    Outlook ignores most of what survives. Every rule here is on the element.
+  * Tables for layout. Flexbox and grid do not work in Outlook (Word engine).
+  * Barlow will not load — email clients block webfonts almost everywhere — so
+    the stack degrades to Helvetica/Arial. The brand carries on colour and
+    layout instead of type.
+  * 600px is the safe width; anything wider is cut off in Outlook's reading pane.
+  * `| money` here renders in the store currency (AUD) with the store's format.
+
+  AUSTRALIAN TAX INVOICE: the ABN and the words "Tax invoice" are included, so
+  this doubles as a compliant tax invoice for orders over $82.50. Do not remove
+  the ABN line without checking that requirement.
+{%- endcomment -%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>{{ shop.name }} — order {{ order_name }}</title>
+</head>
+<body style="margin:0; padding:0; background:#f4f2ef; -webkit-font-smoothing:antialiased;">
+
+<!-- preheader: shows in the inbox list, hidden in the body -->
+<div style="display:none; max-height:0; overflow:hidden; opacity:0;">
+  Order {{ order_name }} is confirmed. We'll email tracking the moment it ships.
+</div>
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f4f2ef;">
+<tr><td align="center" style="padding:24px 12px;">
+
+<table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px; max-width:100%; background:#ffffff; border-radius:14px; overflow:hidden;">
+
+  <!-- hazard stripe: the store's signature device -->
+  <tr><td style="height:6px; line-height:6px; font-size:0;
+      background:repeating-linear-gradient(45deg,#df3c22 0 14px,#1f1f1f 14px 28px);">&nbsp;</td></tr>
+
+  <!-- masthead -->
+  <tr><td style="padding:28px 32px 0 32px;">
+    <a href="{{ shop.url }}" style="text-decoration:none; font-family:Helvetica,Arial,sans-serif; font-size:24px; font-weight:bold; letter-spacing:-0.02em;">
+      <span style="color:#1f1f1f;">mytape</span><span style="color:#df3c22;">store</span>
+    </a>
+  </td></tr>
+
+  <!-- headline -->
+  <tr><td style="padding:22px 32px 0 32px; font-family:Helvetica,Arial,sans-serif;">
+    <p style="margin:0 0 6px 0; font-size:12px; font-weight:bold; letter-spacing:0.1em; text-transform:uppercase; color:#df3c22;">
+      Order confirmed
+    </p>
+    <h1 style="margin:0 0 10px 0; font-size:26px; line-height:1.2; color:#1f1f1f; font-weight:bold;">
+      Thanks{% if customer.first_name %}, {{ customer.first_name }}{% endif %} — we've got it.
+    </h1>
+    <p style="margin:0; font-size:15px; line-height:1.6; color:#555050;">
+      Order <strong style="color:#1f1f1f;">{{ order_name }}</strong>, placed {{ created_at | date: "%-d %B %Y" }}.
+      We dispatch in 1–2 business days and you'll get tracking by email the moment it leaves us.
+    </p>
+  </td></tr>
+
+  <!-- items -->
+  <tr><td style="padding:26px 32px 0 32px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"
+           style="font-family:Helvetica,Arial,sans-serif; border-top:1px solid #e3e1dd;">
+      {% for line in line_items %}
+      <tr>
+        <td width="64" valign="top" style="padding:16px 14px 0 0;">
+          {% if line.image %}
+            <img src="{{ line | img_url: 'compact_cropped' }}" alt="" width="64" height="64"
+                 style="display:block; width:64px; height:64px; border-radius:8px; border:1px solid #e3e1dd; object-fit:cover;">
+          {% endif %}
+        </td>
+        <td valign="top" style="padding:16px 0 0 0;">
+          <p style="margin:0 0 3px 0; font-size:15px; font-weight:bold; color:#1f1f1f; line-height:1.35;">{{ line.title }}</p>
+          {% unless line.variant_title == blank or line.variant_title == 'Default Title' %}
+            <p style="margin:0 0 3px 0; font-size:13px; color:#6b6560;">{{ line.variant_title }}</p>
+          {% endunless %}
+          {% if line.sku != blank %}
+            <p style="margin:0 0 3px 0; font-size:12px; color:#8a837d;">SKU {{ line.sku }}</p>
+          {% endif %}
+          <p style="margin:0; font-size:13px; color:#6b6560;">Qty {{ line.quantity }}</p>
+        </td>
+        <td valign="top" align="right" style="padding:16px 0 0 0; font-size:15px; font-weight:bold; color:#1f1f1f; white-space:nowrap;">
+          {{ line.final_line_price | money }}
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+  </td></tr>
+
+  <!-- totals -->
+  <tr><td style="padding:20px 32px 0 32px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"
+           style="font-family:Helvetica,Arial,sans-serif; border-top:1px solid #e3e1dd;">
+      <tr>
+        <td style="padding:16px 0 0 0; font-size:14px; color:#555050;">Subtotal</td>
+        <td align="right" style="padding:16px 0 0 0; font-size:14px; color:#1f1f1f;">{{ subtotal_price | money }}</td>
+      </tr>
+      {% for discount_application in discount_applications %}
+      <tr>
+        <td style="padding:6px 0 0 0; font-size:14px; color:#1f7a2e;">{{ discount_application.title }}</td>
+        <td align="right" style="padding:6px 0 0 0; font-size:14px; color:#1f7a2e;">−{{ discount_application.total_allocated_amount | money }}</td>
+      </tr>
+      {% endfor %}
+      <tr>
+        <td style="padding:6px 0 0 0; font-size:14px; color:#555050;">Shipping</td>
+        <td align="right" style="padding:6px 0 0 0; font-size:14px; color:#1f1f1f;">
+          {% if shipping_price == 0 %}<span style="color:#1f7a2e; font-weight:bold;">Free</span>{% else %}{{ shipping_price | money }}{% endif %}
+        </td>
+      </tr>
+      <tr>
+        <td style="padding:12px 0 0 0; border-top:1px solid #e3e1dd; font-size:17px; font-weight:bold; color:#1f1f1f;">Total</td>
+        <td align="right" style="padding:12px 0 0 0; border-top:1px solid #e3e1dd; font-size:17px; font-weight:bold; color:#1f1f1f;">
+          {{ total_price | money }} <span style="font-size:12px; font-weight:normal; color:#6b6560;">AUD</span>
+        </td>
+      </tr>
+      {% if tax_price > 0 %}
+      <tr>
+        <td colspan="2" align="right" style="padding:4px 0 0 0; font-size:12px; color:#8a837d;">
+          Includes {{ tax_price | money }} GST
+        </td>
+      </tr>
+      {% endif %}
+    </table>
+  </td></tr>
+
+  <!-- primary action -->
+  <tr><td align="center" style="padding:26px 32px 0 32px;">
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+      <tr><td align="center" bgcolor="#df3c22" style="border-radius:10px;">
+        <a href="{{ order_status_url }}"
+           style="display:inline-block; padding:14px 30px; font-family:Helvetica,Arial,sans-serif;
+                  font-size:15px; font-weight:bold; color:#ffffff; text-decoration:none; letter-spacing:0.02em;">
+          Track your order
+        </a>
+      </td></tr>
+    </table>
+  </td></tr>
+
+  <!-- delivery address -->
+  {% if requires_shipping and shipping_address %}
+  <tr><td style="padding:26px 32px 0 32px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"
+           style="background:#faf9f7; border:1px solid #e3e1dd; border-radius:12px;">
+      <tr><td style="padding:16px 18px; font-family:Helvetica,Arial,sans-serif;">
+        <p style="margin:0 0 6px 0; font-size:11px; font-weight:bold; letter-spacing:0.08em; text-transform:uppercase; color:#8a837d;">
+          Delivering to
+        </p>
+        <p style="margin:0; font-size:14px; line-height:1.55; color:#1f1f1f;">
+          {{ shipping_address.name }}<br>
+          {{ shipping_address.street }}<br>
+          {{ shipping_address.city }} {{ shipping_address.province_code }} {{ shipping_address.zip }}<br>
+          {{ shipping_address.country }}
+        </p>
+      </td></tr>
+    </table>
+  </td></tr>
+  {% endif %}
+
+  <!-- help -->
+  <tr><td style="padding:26px 32px 0 32px; font-family:Helvetica,Arial,sans-serif;">
+    <p style="margin:0; font-size:14px; line-height:1.65; color:#555050;">
+      Something not right? Reply to this email or call
+      <a href="tel:+61340616287" style="color:#b62f18; text-decoration:none; font-weight:bold;">+61 3 4061 6287</a>
+      — a real person will sort it out.
+    </p>
+  </td></tr>
+
+  <!-- footer -->
+  <tr><td style="padding:26px 32px 30px 32px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"
+           style="border-top:1px solid #e3e1dd; font-family:Helvetica,Arial,sans-serif;">
+      <tr><td style="padding:18px 0 0 0;">
+        <p style="margin:0 0 4px 0; font-size:12px; line-height:1.6; color:#8a837d;">
+          <strong style="color:#555050;">Tax invoice</strong> · {{ shop.name }} · ABN 93 878 995 217
+        </p>
+        <p style="margin:0 0 10px 0; font-size:12px; line-height:1.6; color:#8a837d;">
+          Australian owned. Dispatching to 3,600+ postcodes.
+        </p>
+        <p style="margin:0; font-size:12px; line-height:1.6; color:#8a837d;">
+          <a href="{{ shop.url }}" style="color:#8a837d; text-decoration:underline;">mytapestore.com.au</a>
+          &nbsp;·&nbsp;
+          <a href="mailto:info@mytapestore.com.au" style="color:#8a837d; text-decoration:underline;">info@mytapestore.com.au</a>
+        </p>
+      </td></tr>
+    </table>
+  </td></tr>
+
+</table>
+
+</td></tr>
+</table>
+</body>
+</html>

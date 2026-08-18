@@ -42,8 +42,9 @@ export default function Dashboard() {
   function fitPreview() {
     const f = iframeRef.current
     const doc = f && f.contentDocument
-    if (!doc || !doc.documentElement) return
-    const measure = () => { f.style.height = doc.documentElement.scrollHeight + 'px' }
+    if (!doc || !doc.body) return
+    // Reset to 0 first so scrollHeight reflects the content exactly (no trailing gap).
+    const measure = () => { f.style.height = '0px'; f.style.height = doc.body.scrollHeight + 'px' }
     measure()
     Array.from(doc.images || []).forEach(img => { if (!img.complete) img.addEventListener('load', measure, { once: true }) })
   }
@@ -143,6 +144,7 @@ export default function Dashboard() {
       {msg && <div className={`toast toast--${msg.kind === 'ok' ? 'ok' : 'err'}`}>{msg.text}</div>}
 
       <div className="grid">
+        <div className="col-left">
         {/* Editor */}
         <section className="panel" aria-label="Newsletter editor">
           <div className="panel__hd">
@@ -220,6 +222,25 @@ export default function Dashboard() {
           </div>
         </section>
 
+        {/* Audience */}
+        <section className="panel audience" aria-label="Audience">
+          <div className="panel__hd">
+            <span className="panel__title">Subscribers</span>
+            <div className="tools">
+              <label className="upload">Import CSV<input type="file" accept=".csv" onChange={importCsv} hidden /></label>
+              <button className="btn btn--ghost" onClick={syncShopify} disabled={busy}>Sync from Shopify</button>
+            </div>
+          </div>
+          <div className="panel__body">
+            {subs.contacts.length === 0
+              ? <div className="empty"><div className="empty__mark"><Mark size={34} /></div><h4>No subscribers yet</h4><p>Import a CSV or share the storefront signup form to start the list.</p></div>
+              : <ul className="subs-list">{subs.contacts.map(c => (
+                  <li key={c.email}><span className="email">{c.email}</span><span className={`status ${c.status}`}>{c.status}</span></li>
+                ))}</ul>}
+          </div>
+        </section>
+        </div>
+
         {/* Preview */}
         <section className="preview" aria-label="Email preview">
           <div className="preview__frame">
@@ -227,7 +248,7 @@ export default function Dashboard() {
               <span className="preview__dots"><i /><i /><i /></span>
               <span className="preview__addr">{draft.subject || 'HooknLoop weekly'}</span>
             </div>
-            <iframe ref={iframeRef} title="Email preview" srcDoc={previewHtml} onLoad={fitPreview} style={{ height: 640 }} />
+            <iframe ref={iframeRef} title="Email preview" srcDoc={previewHtml} onLoad={fitPreview} style={{ height: 620 }} scrolling="no" />
             <div className="preview__meta">
               <span className="eyebrow">Live preview — exactly what subscribers receive</span>
               <button type="button" className="preview__open" onClick={openFullPreview}>Open full ↗</button>
@@ -235,24 +256,6 @@ export default function Dashboard() {
           </div>
         </section>
       </div>
-
-      {/* Audience */}
-      <section className="panel audience" aria-label="Audience">
-        <div className="panel__hd">
-          <span className="panel__title">Subscribers</span>
-          <div className="tools">
-            <label className="upload">Import CSV<input type="file" accept=".csv" onChange={importCsv} hidden /></label>
-            <button className="btn btn--ghost" onClick={syncShopify} disabled={busy}>Sync from Shopify</button>
-          </div>
-        </div>
-        <div className="panel__body">
-          {subs.contacts.length === 0
-            ? <div className="empty"><div className="empty__mark"><Mark size={34} /></div><h4>No subscribers yet</h4><p>Import a CSV or add the signup form to your storefront to start the list.</p></div>
-            : <ul className="subs-list">{subs.contacts.map(c => (
-                <li key={c.email}><span className="email">{c.email}</span><span className={`status ${c.status}`}>{c.status}</span></li>
-              ))}</ul>}
-        </div>
-      </section>
     </div>
   )
 }

@@ -1,0 +1,406 @@
+{%- comment -%}
+  Custom account dashboard, on an ORDINARY page template.
+
+  WHY THIS EXISTS RATHER THAN templates/customers/account.json
+  This store runs new customer accounts, so Shopify owns the /account routes and
+  never renders the theme's customers/* templates. What it does NOT take away is
+  the `customer` object on the storefront — once someone is signed in, Liquid on
+  a normal page still knows who they are, including their orders and addresses.
+
+  So: authentication stays Shopify's (it is OAuth, and that part genuinely can't
+  be replaced from a theme), and everything after the sign-in is ours — same
+  sidebar, same panels, same type as the rest of the store.
+
+  Ported from AcctSidebar / AcctOverview / AcctOrdersTable in ContentPages.jsx.
+{%- endcomment -%}
+
+<main id="main">
+  <div class="wrap page__crumbs">{% render 'mts-breadcrumbs', current_title: 'My account' %}</div>
+
+  {%- if customer -%}
+    {%- liquid
+      assign spent = 0
+      for order in customer.orders
+        unless order.cancelled
+          assign spent = spent | plus: order.total_price
+        endunless
+      endfor
+    -%}
+
+    <div class="wrap acct">
+      {% render 'mts-account-sidebar', active: 'overview' %}
+
+      <div class="acct__main">
+        <div class="acct__panel">
+          <h2>Welcome back{% if customer.first_name != blank %}, {{ customer.first_name }}{% endif %}</h2>
+
+          <div class="page-stats acct__stats">
+            <div>
+              <b class="num">{{ customer.orders_count }}</b>
+              <span>{% if customer.orders_count == 1 %}Order placed{% else %}Orders placed{% endif %}</span>
+            </div>
+            <div>
+              <b class="num">{{ spent | money }}</b>
+              <span>Total spent</span>
+            </div>
+            <div>
+              <b class="num" data-mts-wish-total>0</b>
+              <span>Items saved</span>
+            </div>
+          </div>
+
+          {%- if customer.orders.size > 0 -%}
+            <div class="acct__panel-head" id="orders">
+              <h3>Your orders</h3>
+            </div>
+          {%- endif -%}
+          {% render 'mts-account-orders', orders: customer.orders, limit: 25 %}
+        </div>
+
+        <div class="acct__panel" id="addresses">
+          <div class="acct__panel-head">
+            <h3>Saved addresses</h3>
+            <a class="acct__viewall" href="{{ shop.customer_accounts_url | default: settings.account_url }}">
+              Edit {% render 'mts-icon', name: 'chevronRight', size: 14 %}
+            </a>
+          </div>
+
+          {%- if customer.addresses.size > 0 -%}
+            <div class="mts-address-grid">
+              {%- for address in customer.addresses -%}
+                <div class="mts-address">
+                  {%- if address == customer.default_address -%}
+                    <span class="tag tag--best">Default</span>
+                  {%- endif -%}
+                  {{ address | format_address }}
+                </div>
+              {%- endfor -%}
+            </div>
+          {%- else -%}
+            <div class="col__empty">
+              {% render 'mts-icon', name: 'mapPin', size: 34 %}
+              <p>No addresses saved yet. Add one and it'll be offered at checkout.</p>
+            </div>
+          {%- endif -%}
+        </div>
+
+        <div class="acct__panel" id="details">
+          <h2>Account details</h2>
+          <dl class="cart__sum-rows acct__form">
+            <div><dt>Name</dt><dd>{{ customer.name | default: '—' }}</dd></div>
+            <div><dt>Email</dt><dd class="num">{{ customer.email }}</dd></div>
+            {%- if customer.phone != blank -%}
+              <div><dt>Phone</dt><dd class="num">{{ customer.phone }}</dd></div>
+            {%- endif -%}
+          </dl>
+          <div class="acct__form-actions">
+            <a class="btn btn--brand" href="{{ routes.root_url }}pages/wishlist">
+              View wishlist {% render 'mts-icon', name: 'arrowRight', size: 16 %}
+            </a>
+            <a class="btn btn--ghost" href="{{ routes.account_logout_url }}">Sign out</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  {%- else -%}
+    {%- comment -%}
+      SIGNED OUT — two possible routes, chosen by the `custom_auth` setting.
+
+      The comment that used to sit here said sign-in "cannot be replaced from a
+      theme". That was tested and it is wrong on this store: the Storefront API
+      still exposes customerAccessTokenCreate, and a live probe created a
+      customer with a password, signed in as them and read them back. So a real
+      form is possible.
+
+      What is NOT possible, and is stated in the UI rather than discovered at
+      checkout: a Storefront customer token does not sign anyone into Shopify's
+      checkout. Someone signed in here is still a guest there — no saved
+      addresses, no order history. Shopify owns checkout on a non-Plus plan.
+
+      Hence the toggle. Off (default) hands off to Shopify, which is worse
+      looking and functionally complete. On uses the form below.
+    {%- endcomment -%}
+    <div class="wrap page-hero page-hero--plain" data-mts-auth-hero>
+      <span class="eyebrow">Your account</span>
+      <h1 data-mts-auth-hero-h>{{ section.settings.signed_out_heading }}</h1>
+    </div>
+
+      {%- comment -%}
+        Shell only. Every value here is filled by JS from the Storefront API,
+        because a Storefront customer token is invisible to Liquid — the
+        `customer` object stays nil however successfully someone signs in.
+
+        The markup deliberately mirrors the Liquid dashboard above
+        (acct / acct__side / acct__panel / mts-address-grid) so it reuses that
+        CSS exactly. Two dashboards that look different depending on HOW you
+        signed in would be worse than one that is slightly less capable.
+      {%- endcomment -%}
+      <div class="wrap acct mts-acct" data-mts-acct hidden>
+        <aside class="acct__side">
+          <div class="acct__profile">
+            <span class="acct__avatar" data-mts-acct-initial>A</span>
+            <b data-mts-acct-name>Your account</b>
+            <span class="num" data-mts-acct-email></span>
+          </div>
+          {%- comment -%}
+            Real links, not #anchors. Orders / Addresses / Details are separate
+            pages so each has its own URL, its own back-button step and its own
+            title — a single scrolling page cannot be bookmarked or shared, and
+            "Addresses" pointing at #addresses on the page you are already on
+            reads as a broken link.
+
+            `view` is set per template (page.account-orders.json and friends);
+            it decides which panel renders and which nav item is current.
+          {%- endcomment -%}
+          {%- assign view = section.settings.view | default: 'overview' -%}
+          <nav class="acct__nav">
+            <a class="acct__nav-item{% if view == 'overview' %} is-active{% endif %}"
+               href="{{ routes.root_url }}pages/account"{% if view == 'overview' %} aria-current="page"{% endif %}>
+              {% render 'mts-icon', name: 'grid', size: 17 %}<span>Dashboard</span>
+            </a>
+            <a class="acct__nav-item{% if view == 'orders' %} is-active{% endif %}"
+               href="{{ routes.root_url }}pages/account-orders"{% if view == 'orders' %} aria-current="page"{% endif %}>
+              {% render 'mts-icon', name: 'layers', size: 17 %}<span>Orders</span>
+            </a>
+            <a class="acct__nav-item{% if view == 'addresses' %} is-active{% endif %}"
+               href="{{ routes.root_url }}pages/account-addresses"{% if view == 'addresses' %} aria-current="page"{% endif %}>
+              {% render 'mts-icon', name: 'mapPin', size: 17 %}<span>Addresses</span>
+            </a>
+            <a class="acct__nav-item{% if view == 'details' %} is-active{% endif %}"
+               href="{{ routes.root_url }}pages/account-details"{% if view == 'details' %} aria-current="page"{% endif %}>
+              {% render 'mts-icon', name: 'user', size: 17 %}<span>Account details</span>
+            </a>
+            <a class="acct__nav-item" href="{{ routes.root_url }}pages/wishlist">
+              {% render 'mts-icon', name: 'heart', size: 17 %}<span>Wishlist</span>
+            </a>
+            <button class="acct__nav-item acct__nav-item--out" type="button" data-mts-acct-signout>
+              {% render 'mts-icon', name: 'close', size: 17 %}<span>Sign out</span>
+            </button>
+          </nav>
+        </aside>
+
+        <div class="acct__main">
+          {%- if view == 'overview' -%}
+          <div class="acct__panel" id="overview">
+            <h2 data-mts-acct-greet>Welcome back</h2>
+
+            <div class="page-stats acct__stats">
+              <div><b class="num" data-mts-acct-ordercount>0</b><span>Orders placed</span></div>
+              <div><b class="num" data-mts-acct-spent>&mdash;</b><span>Total spent</span></div>
+              <div><b class="num" data-mts-wish-total>0</b><span>Items saved</span></div>
+            </div>
+
+            <div class="acct__quick">
+              <a class="btn btn--ghost" href="{{ routes.root_url }}pages/account-orders">
+                View orders {% render 'mts-icon', name: 'arrowRight', size: 15 %}
+              </a>
+              <a class="btn btn--ghost" href="{{ routes.root_url }}pages/account-addresses">
+                Addresses {% render 'mts-icon', name: 'arrowRight', size: 15 %}
+              </a>
+            </div>
+          </div>
+          {%- endif -%}
+
+          {%- if view == 'orders' -%}
+          <div class="acct__panel" id="orders">
+            <div class="acct__panel-head"><h3>Your orders</h3></div>
+            <div data-mts-acct-orders><p class="mts-acct__muted">Loading&hellip;</p></div>
+          </div>
+          {%- endif -%}
+
+          {%- if view == 'addresses' -%}
+          <div class="acct__panel" id="addresses">
+            <div class="acct__panel-head"><h3>Saved addresses</h3></div>
+            <div data-mts-acct-addresses><p class="mts-acct__muted">Loading&hellip;</p></div>
+          </div>
+          {%- endif -%}
+
+          {%- if view == 'details' -%}
+          <div class="acct__panel" id="details" data-mts-acct-details>
+            <h2>Account details</h2>
+            <dl class="cart__sum-rows acct__form">
+              <div><dt>Name</dt><dd data-mts-acct-dname>&mdash;</dd></div>
+              <div><dt>Email</dt><dd class="num" data-mts-acct-demail>&mdash;</dd></div>
+              <div data-mts-acct-phone-row hidden><dt>Phone</dt><dd class="num" data-mts-acct-dphone></dd></div>
+            </dl>
+            <div class="acct__form-actions">
+              {%- comment -%}
+                Editing runs through the Storefront customerUpdate mutation, so
+                name, email, phone and password are all changeable here without
+                sending the customer to Shopify's hosted account page.
+              {%- endcomment -%}
+              <button class="btn btn--brand" type="button" data-mts-profile-edit>
+                {% render 'mts-icon', name: 'user', size: 16 %} Edit details
+              </button>
+              <a class="btn btn--ghost" href="{{ routes.root_url }}pages/wishlist">
+                View wishlist {% render 'mts-icon', name: 'arrowRight', size: 16 %}
+              </a>
+              <button class="btn btn--ghost" type="button" data-mts-acct-signout>Sign out</button>
+            </div>
+          </div>
+          {%- endif -%}
+        </div>
+      </div>
+
+    <div class="wrap auth" data-mts-auth-wrap>
+      {%- if settings.custom_auth and settings.storefront_token != blank -%}
+        {%- comment -%}
+          SIGNED-IN PANEL for a Storefront session.
+
+          This exists because a Storefront customer access token is NOT a
+          Shopify session: Liquid's `customer` object stays nil no matter how
+          successfully someone signs in here. The first cut of this feature
+          signed the shopper in and then called location.reload(), which handed
+          control back to `{% if customer %}` — always false — so the login form
+          reappeared and a successful sign-in was indistinguishable from a
+          failed one.
+
+          So the signed-in state is rendered by JS from the Storefront API
+          instead of by reloading. Server-rendered empty, filled on the client.
+        {%- endcomment -%}
+        <div class="auth__card" data-mts-auth
+             data-sf-token="{{ settings.storefront_token }}"
+             data-sf-version="2024-10"
+             data-shop="{{ shop.permanent_domain }}">
+
+          <div class="mts-auth__tabs" role="tablist">
+            <button class="mts-auth__tab is-on" type="button" role="tab"
+                    aria-selected="true" data-mts-auth-tab="signin">Sign in</button>
+            <button class="mts-auth__tab" type="button" role="tab"
+                    aria-selected="false" data-mts-auth-tab="register">Create account</button>
+          </div>
+
+          <p class="mts-auth__msg" data-mts-auth-msg role="status" hidden></p>
+
+          <form class="mts-auth__form" data-mts-auth-form="signin" novalidate>
+            <label>Email
+              <input type="email" name="email" required autocomplete="email"
+                     inputmode="email" autocapitalize="none" spellcheck="false">
+            </label>
+            <label>Password
+              <input type="password" name="password" required
+                     autocomplete="current-password">
+            </label>
+            <button class="btn btn--brand btn--lg btn--block" type="submit">
+              {% render 'mts-icon', name: 'lock', size: 18 %} Sign in
+            </button>
+            <button class="mts-auth__link" type="button" data-mts-auth-recover>
+              Forgotten your password?
+            </button>
+          </form>
+
+          <form class="mts-auth__form" data-mts-auth-form="register" hidden novalidate>
+            <div class="mts-auth__row">
+              <label>First name<input type="text" name="firstName" autocomplete="given-name"></label>
+              <label>Last name<input type="text" name="lastName" autocomplete="family-name"></label>
+            </div>
+            <label>Email
+              <input type="email" name="email" required autocomplete="email"
+                     inputmode="email" autocapitalize="none" spellcheck="false">
+            </label>
+            <label>Password
+              {%- comment -%}
+                Shopify enforces 5 characters minimum and rejects shorter ones
+                with a generic error. Say so up front rather than let the form
+                fail for a reason the shopper cannot see.
+              {%- endcomment -%}
+              <input type="password" name="password" required minlength="5"
+                     autocomplete="new-password">
+              <small class="mts-auth__hint">At least 5 characters.</small>
+            </label>
+            <button class="btn btn--brand btn--lg btn--block" type="submit">
+              Create account
+            </button>
+          </form>
+
+        </div>
+      {%- else -%}
+        <div class="auth__card">
+          <p class="auth__alt" style="margin-bottom:18px">{{ section.settings.signed_out_text }}</p>
+          <a class="btn btn--brand btn--lg btn--block" href="{{ routes.account_login_url }}">
+            {% render 'mts-icon', name: 'lock', size: 18 %} Sign in
+          </a>
+          <p class="auth__alt">
+            New to {{ shop.name }}? <a href="{{ routes.account_register_url }}">Create an account</a>
+          </p>
+        </div>
+      {%- endif -%}
+
+      {%- comment -%}
+        The right-hand column was a bare list of four one-line claims floating
+        beside the form with nothing to anchor it. It now reads as a panel with
+        its own heading, and each row carries a LABEL plus the sentence that
+        earns it — "Track orders and reorder in a click" states a feature; the
+        supporting line says what it saves you. Same four promises, given a
+        hierarchy instead of four equal-weight lines.
+
+        `data-mts-auth-perks` stays on the wrapper — mts-theme.js hides this
+        whole block once someone is signed in, where it is just noise.
+      {%- endcomment -%}
+      <aside class="auth__aside" data-mts-auth-perks>
+        <span class="eyebrow">{{ section.settings.perks_eyebrow }}</span>
+        <h2 class="auth__aside-h">{{ section.settings.perks_heading }}</h2>
+
+        <ul class="auth__perks">
+          <li>
+            <span class="auth__perk-ic">{% render 'mts-icon', name: 'truck', size: 18 %}</span>
+            <div>
+              <b>Track orders and reorder</b>
+              <span>Every order in one list, and a repeat order in a single click.</span>
+            </div>
+          </li>
+          <li>
+            <span class="auth__perk-ic">{% render 'mts-icon', name: 'tag', size: 18 %}</span>
+            <div>
+              <b>Volume pricing, visible</b>
+              <span>See bulk discounts as you build the order, not after.</span>
+            </div>
+          </li>
+          <li>
+            <span class="auth__perk-ic">{% render 'mts-icon', name: 'heart', size: 18 %}</span>
+            <div>
+              <b>Save what you use</b>
+              <span>Keep the tapes you buy often on a wishlist.</span>
+            </div>
+          </li>
+          <li>
+            <span class="auth__perk-ic">{% render 'mts-icon', name: 'lock', size: 18 %}</span>
+            <div>
+              <b>Faster checkout</b>
+              <span>Your details ready to go each time you order.</span>
+            </div>
+          </li>
+        </ul>
+
+        <div class="auth__aside-foot">
+          {% render 'mts-icon', name: 'shieldCheck', size: 15 %}
+          <span>Australian owned &middot; secure checkout &middot; GST invoices</span>
+        </div>
+      </aside>
+    </div>
+  {%- endif -%}
+</main>
+
+{% schema %}
+{
+  "name": "Account",
+  "settings": [
+    { "type": "select", "id": "view", "label": "Which panel this page shows",
+      "default": "overview",
+      "info": "Set per template — page.account = overview, page.account-orders = orders, etc.",
+      "options": [
+        { "value": "overview",  "label": "Dashboard" },
+        { "value": "orders",    "label": "Orders" },
+        { "value": "addresses", "label": "Addresses" },
+        { "value": "details",   "label": "Account details" }
+      ] },
+    { "type": "text", "id": "perks_eyebrow", "label": "Benefits eyebrow", "default": "Why create an account" },
+    { "type": "text", "id": "perks_heading", "label": "Benefits heading", "default": "Everything in one place" },
+    { "type": "text", "id": "signed_out_heading", "label": "Signed-out heading",
+      "default": "Sign in to My Tape Store" },
+    { "type": "textarea", "id": "signed_out_text", "label": "Signed-out text",
+      "default": "Sign in to see your orders, saved addresses and wishlist in one place." }
+  ]
+}
+{% endschema %}

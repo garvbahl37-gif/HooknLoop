@@ -1,0 +1,15 @@
+{
+  "sections": {
+    "main": {
+      "type": "mts-blog",
+      "settings": {
+        "eyebrow": "The tape journal",
+        "intro": "Practical guidance on choosing, applying and getting the most out of adhesive tape \u2014 written by the team that stocks it.",
+        "topics": "Industry Insight|7\nPackaging Tapes|6\nThermal Insulation Tape|5\nSafety Tapes|4\nFoam Tape \u2013 Single Sided|4\nSpecialty Tape|4\nDuct Tape|3\nHook & Loop Tape|3\nFlashing Tape|2\nButyl Tape|2\nFabric Tape|2\nMasking Tape|2\nFelt Tape & Dots|2\nAluminium Foil Tape|2\nEco Friendly Tapes|1\nUltra High Bond Tape|1\nFilament Tape|1\nDouble Sided Tape|1\nStrapping Tapes|1\nPrinting|1"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

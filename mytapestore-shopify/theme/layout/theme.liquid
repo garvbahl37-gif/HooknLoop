@@ -1,0 +1,289 @@
+<!doctype html>
+{%- comment -%}
+  no-js is set up front and swapped for js by the inline script below, so the
+  CSS can provide fallbacks for anything JS would otherwise toggle open.
+{%- endcomment -%}
+<html class="no-js" lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="{{ settings.brand_colour | default: '#df3c22' }}">
+    <link rel="canonical" href="{{ canonical_url }}">
+
+    {%- comment -%}
+      Images and the theme bundle come from the shop's own origin, which is
+      already connected by the time the HTML lands — nothing to warm there.
+
+      `cdn.shopify.com` is a DIFFERENT origin, and the installed apps
+      (Judge.me, Inbox) put a RENDER-BLOCKING stylesheet on it. That meant a
+      cold DNS + TCP + TLS handshake — measured at ~195ms on this store — before
+      the file could even start downloading, and rendering waited on all of it.
+      Warming the connection in the first bytes of <head> lets that handshake
+      overlap the HTML parse instead of following it.
+
+      preconnect (not dns-prefetch): the DNS lookup is the cheap third of the
+      cost; the TLS negotiation is the expensive part worth doing early.
+    {%- endcomment -%}
+    <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+
+    {%- comment -%}
+      INTRO SPLASH — the decision has to happen before the first paint.
+
+      This inline script marks the document when the splash has already been
+      seen this session, so CSS can keep it display:none from the very first
+      frame. Doing it in JS after load would flash the overlay on every page
+      view, which is exactly the thing that makes splash screens feel cheap.
+
+      It is deliberately tiny and synchronous: it must run before the body
+      paints, and it touches nothing but one class.
+    {%- endcomment -%}
+    {%- if settings.splash_enabled -%}
+      <script>
+        (function () {
+          try {
+            if (sessionStorage.getItem('mts.splash') === '1') {
+              document.documentElement.classList.add('mts-splash-done');
+            } else {
+              sessionStorage.setItem('mts.splash', '1');
+            }
+          } catch (e) {
+            /* private mode: show it once, never trap anyone */
+            document.documentElement.classList.add('mts-splash-done');
+          }
+        })();
+      </script>
+    {%- endif -%}
+
+    {%- comment -%}
+      The icon is the store's real one, lifted byte-for-byte from
+      mytapestore.com.au (wp-content/uploads/2023/08/fav.png) — the black
+      tape-roll glyph, not the red ring the redesign shipped.
+
+      It is 30x30 and that is the ONLY size that exists: every WordPress variant
+      (-32x32, -180x180, -192x192, -270x270, -scaled) 302s, and the site logo is
+      244x43, so there is no larger copy of the mark to recover. The 32px link
+      therefore serves the original file untouched; the touch icon is scaled up
+      from it and is necessarily soft.
+
+      A merchant-uploaded favicon in theme settings still wins if one is set.
+    {%- endcomment -%}
+    {%- if settings.favicon != blank -%}
+      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+      <link rel="apple-touch-icon" href="{{ settings.favicon | image_url: width: 180, height: 180 }}">
+    {%- else -%}
+      <link rel="icon" type="image/png" sizes="32x32" href="{{ 'mts-favicon-32.png' | asset_url }}">
+      <link rel="icon" type="image/png" sizes="180x180" href="{{ 'mts-favicon.png' | asset_url }}">
+      <link rel="apple-touch-icon" href="{{ 'mts-favicon.png' | asset_url }}">
+    {%- endif -%}
+
+    {%- comment -%}
+      The collection banner is the largest paint on a category page, so it is
+      preloaded from the head rather than waiting to be found in the body. Same
+      srcset as the <img>, so the browser preloads the exact file it will use —
+      a mismatched preload downloads the image twice.
+
+      THIS MUST MIRROR mts-collection.liquid'S BANNER PRECEDENCE EXACTLY.
+      Preloading a different file from the one the <img> renders is worse than
+      not preloading at all: the browser downloads both, and the one that
+      actually paints is the one that WASN'T given priority. When the banner
+      moved to the `custom.banner` metafield this block still pointed at
+      collection.image, so every category page fetched the old banner at high
+      priority and the real one late — the "images load late" symptom.
+
+      The section-level `banner_image` override is still not visible from the
+      layout; it is unset on this store, and if it is ever set the fallback here
+      is merely a redundant fetch, not a wrong paint.
+    {%- endcomment -%}
+    {%- liquid
+      assign pre_banner = blank
+      if template.name == 'collection'
+        assign pre_mf = collection.metafields.custom.banner.value
+        if pre_mf != blank
+          assign pre_banner = pre_mf
+        elsif collection.image
+          assign pre_banner = collection.image
+        endif
+      endif
+    -%}
+    {%- if pre_banner != blank -%}
+      {%- comment -%}
+        The 24px placeholder is a CSS background-image on `.colban`, and the
+        preload scanner CANNOT see CSS backgrounds — it is only discovered once
+        styles are computed, which is well after the real banner has already
+        been requested. So the thing meant to paint FIRST was reliably arriving
+        LAST, and the band sat empty in the meantime.
+
+        Preloading it puts it in the very first round trip. It costs a few
+        hundred bytes and is same-origin, so it cannot meaningfully delay the
+        full-size banner below it.
+      {%- endcomment -%}
+      <link rel="preload" as="image" fetchpriority="high"
+            href="{{ pre_banner | image_url: width: 24 }}">
+      <link rel="preload" as="image" fetchpriority="high"
+            href="{{ pre_banner | image_url: width: 1600 }}"
+            imagesrcset="{{ pre_banner | image_url: width: 800 }} 800w,
+                         {{ pre_banner | image_url: width: 1200 }} 1200w,
+                         {{ pre_banner | image_url: width: 1600 }} 1600w,
+                         {{ pre_banner | image_url: width: 2000 }} 2000w"
+            imagesizes="100vw">
+    {%- endif -%}
+
+    {%- comment -%}
+      Same treatment for the product page's LCP, the gallery's main image. It
+      sits behind the breadcrumbs and a gallery wrapper, so the preload scanner
+      reaches it noticeably later than it reaches a banner.
+
+      MUST MATCH the srcset/sizes in sections/mts-product.liquid exactly —
+      widths, order and `sizes` alike — or the browser preloads one candidate
+      and paints another, which costs a whole extra download.
+    {%- endcomment -%}
+    {%- if template.name == 'product' and product.featured_media -%}
+      <link rel="preload" as="image" fetchpriority="high"
+            href="{{ product.featured_media | image_url: width: 800 }}"
+            imagesrcset="{{ product.featured_media | image_url: width: 400 }} 400w,
+                         {{ product.featured_media | image_url: width: 600 }} 600w,
+                         {{ product.featured_media | image_url: width: 800 }} 800w,
+                         {{ product.featured_media | image_url: width: 1000 }} 1000w,
+                         {{ product.featured_media | image_url: width: 1360 }} 1360w"
+            imagesizes="(min-width: 960px) 680px, 100vw">
+    {%- endif -%}
+
+    <title>
+      {{ page_title }}
+      {%- if current_tags %} &ndash; {{ 'general.meta.tags' | t: tags: current_tags | join: ', ' }}{% endif -%}
+      {%- if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{% endif -%}
+      {%- comment -%}
+        The " &ndash; My Tape Store" suffix used to be appended here. Removed on
+        request: every title already carries the product or category name, the
+        store name added ~17 characters to every one of them, and Google
+        truncates around 60 — so the suffix was pushing real words out of the
+        result and adding nothing a shopper searching for tape needs to see.
+      {%- endcomment -%}
+    </title>
+    {%- comment -%}
+      The HOME PAGE had no meta description at all. Shopify's homepage
+      description lives in Online Store > Preferences, which is not exposed in
+      the Admin API, so it cannot be set the way the 132 product and 40
+      collection descriptions were. A theme-level fallback covers it and stays
+      editable in theme settings.
+
+      Order matters: a real page_description always wins, so setting the
+      preference later silently takes over from this without a code change.
+    {%- endcomment -%}
+    {%- if page_description -%}
+      <meta name="description" content="{{ page_description | escape }}">
+    {%- elsif template.name == 'index' and settings.home_meta_description != blank -%}
+      <meta name="description" content="{{ settings.home_meta_description | escape }}">
+    {%- endif -%}
+
+    {% render 'mts-meta-tags' %}
+
+    {%- comment -%}
+      Preload the two faces that paint above the fold — same pair the React app
+      preloads, so first paint uses the real type rather than a fallback.
+    {%- endcomment -%}
+    {{ 'Inter-400.woff2' | asset_url | preload_tag: as: 'font', type: 'font/woff2', crossorigin: 'anonymous' }}
+    {{ 'Sora-var.woff2' | asset_url | preload_tag: as: 'font', type: 'font/woff2', crossorigin: 'anonymous' }}
+
+    {%- comment -%}
+      One bundle, built from the React stylesheets by mytapestore-shopify/build-css.sh.
+      It is the ONLY stylesheet this theme loads — no vendor CSS runs alongside it,
+      which is what lets every rem, colour and size stay byte-identical to the redesign.
+    {%- endcomment -%}
+    {%- comment -%}
+      The file on disk is mts-styles.css.liquid, but Shopify STRIPS the .liquid
+      extension when resolving asset_url — so it must be requested as
+      'mts-styles.css'. Asking for the full filename returns a 404 and the store
+      renders with no CSS at all.
+    {%- endcomment -%}
+    {{ 'mts-styles.css' | asset_url | stylesheet_tag }}
+
+    <script>document.documentElement.className = document.documentElement.className.replace('no-js', 'js');</script>
+    <script src="{{ 'mts-theme.js' | asset_url }}" defer></script>
+
+    {%- comment -%}
+      Judge.me core. This theme has none of the app's default anchors, so the
+      settings script is output directly (Judge.me's documented manual install)
+      rather than relying on the app embed being toggled on. The widgets
+      themselves are placed in mts-product.liquid.
+    {%- endcomment -%}
+    {%- if shop.metafields.judgeme.settings -%}
+      {{ shop.metafields.judgeme.settings }}
+      {{ shop.metafields.judgeme.html_miracle_0 }}
+    {%- endif -%}
+
+    {{ content_for_header }}
+  </head>
+
+  <body class="template-{{ template.name | handle }}{% if template.suffix %} template-suffix-{{ template.suffix | handle }}{% endif %}">
+{%- if settings.splash_enabled -%}
+      {%- comment -%}
+        No JS is required to REMOVE this. The fade-out and the final
+        `visibility:hidden; pointer-events:none` are both keyframe steps, so if
+        scripting fails, is blocked, or throws, the overlay still clears itself
+        and the shopper is never sealed behind it. JS only tidies the node away
+        afterwards. aria-hidden + inert keeps it out of the accessibility tree
+        so a screen reader never announces it at all.
+      {%- endcomment -%}
+      <div class="mts-splash" data-mts-splash aria-hidden="true">
+        <div class="mts-splash__glow"></div>
+        {%- liquid
+          assign splash_logo = 'mts-logo-light.png' | asset_url
+          if settings.logo_light != blank
+            assign splash_logo = settings.logo_light | image_url: width: 720
+          endif
+        -%}
+        <div class="mts-splash__mark">
+          {%- comment -%}
+            The light wordmark is used directly rather than inverting the dark
+            one with a filter — inverting flattens the two-tone mark to a single
+            white silhouette and throws away the red.
+
+            The shine is a separate layer MASKED to the same artwork, so the
+            highlight travels across the letterforms themselves instead of
+            sweeping over a rectangle. That is the difference between a glint
+            and a reflection sliding over a box.
+          {%- endcomment -%}
+          <span class="mts-splash__logo" style="--mts-splash-logo:url({{ splash_logo }})">
+            <img src="{{ splash_logo }}" alt="" width="300" height="52" fetchpriority="high">
+            <span class="mts-splash__shine" aria-hidden="true"></span>
+          </span>
+          <span class="mts-splash__rule"></span>
+        </div>
+      </div>
+    {%- endif -%}
+    <a class="skip" href="#main">{{ 'general.accessibility.skip_to_content' | t }}</a>
+
+    {% sections 'header-group' %}
+
+    {{ content_for_layout }}
+
+    {% sections 'footer-group' %}
+
+    {% render 'mts-call-button' %}
+    {% render 'mts-chat' %}
+    {% render 'mts-newsletter-popup' %}
+
+    {%- comment -%}
+      Cart state the JS needs on every page (header count, free-shipping bar,
+      quick-add). Rendered rather than fetched so the first paint is correct.
+    {%- endcomment -%}
+    <script type="application/json" id="mts-cart-bootstrap">
+      {"item_count": {{ cart.item_count | json }}, "total_price": {{ cart.total_price | json }}, "currency": {{ cart.currency.iso_code | json }}}
+    </script>
+    <script>
+      window.MTS = window.MTS || {};
+      window.MTS.routes = {
+        root: {{ routes.root_url | json }},
+        cart: {{ routes.cart_url | json }},
+        cartAdd: {{ routes.cart_add_url | json }},
+        cartChange: {{ routes.cart_change_url | json }},
+        cartUpdate: {{ routes.cart_update_url | json }},
+        search: {{ routes.search_url | json }},
+        predictiveSearch: {{ routes.predictive_search_url | json }}
+      };
+      window.MTS.moneyFormat = {{ shop.money_format | json }};
+      window.MTS.freeShipThreshold = {{ settings.free_shipping_threshold | default: 100 | times: 100 | json }};
+    </script>
+  </body>
+</html>

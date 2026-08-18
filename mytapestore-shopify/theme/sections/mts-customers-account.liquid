@@ -1,0 +1,100 @@
+{%- comment -%}
+  Account dashboard — ported from AcctOverview/AcctSidebar in ContentPages.jsx.
+  Sidebar + welcome, three stats, recent orders, then the full order list and
+  account details.
+
+  REQUIRES CLASSIC CUSTOMER ACCOUNTS. If the store is on "new customer accounts"
+  (Settings → Customer accounts), Shopify serves its own hosted account pages and
+  this template is never rendered. Switch to classic to use it.
+
+  The React dashboard totalled "spent" from demo orders; here it is summed from
+  the customer's real orders, excluding cancelled ones — same rule.
+{%- endcomment -%}
+{%- liquid
+  assign spent = 0
+  for order in customer.orders
+    unless order.cancelled
+      assign spent = spent | plus: order.total_price
+    endunless
+  endfor
+-%}
+
+<main id="main">
+  <div class="wrap page__crumbs">{% render 'mts-breadcrumbs', current_title: 'My account' %}</div>
+
+  <div class="wrap acct">
+    {% render 'mts-account-sidebar', active: 'overview' %}
+
+    <div class="acct__main">
+      <div class="acct__panel">
+        <h2>Welcome back{% if customer.first_name != blank %}, {{ customer.first_name }}{% endif %}</h2>
+        <p class="acct__lede">Here's what's happening with your account.</p>
+
+        <div class="page-stats acct__stats">
+          <div>
+            <b class="num">{{ customer.orders_count }}</b>
+            <span>{% if customer.orders_count == 1 %}Order placed{% else %}Orders placed{% endif %}</span>
+          </div>
+          <div>
+            <b class="num">{{ spent | money }}</b>
+            <span>Total spent</span>
+          </div>
+          <div>
+            {%- comment -%} wishlist lives in the browser — filled in by mts-theme.js {%- endcomment -%}
+            <b class="num" data-mts-wish-total>0</b>
+            <span>Items saved</span>
+          </div>
+        </div>
+
+        {%- if customer.orders.size > 0 -%}
+          <div class="acct__panel-head" id="orders">
+            <h3>Recent orders</h3>
+          </div>
+        {%- endif -%}
+
+        {% render 'mts-account-orders', orders: customer.orders, limit: 3 %}
+
+        {%- if customer.orders.size > 3 -%}
+          <div class="acct__panel-head" id="all-orders">
+            <h3>All orders</h3>
+          </div>
+          {% render 'mts-account-orders', orders: customer.orders, limit: 50 %}
+        {%- endif -%}
+      </div>
+
+      <div class="acct__panel" id="details">
+        <h2>Account details</h2>
+        <p class="acct__lede">Your contact details and default delivery address.</p>
+
+        <dl class="cart__sum-rows acct__form">
+          <div><dt>Name</dt><dd>{{ customer.name | default: '—' }}</dd></div>
+          <div><dt>Email</dt><dd class="num">{{ customer.email }}</dd></div>
+          {%- if customer.phone != blank -%}
+            <div><dt>Phone</dt><dd class="num">{{ customer.phone }}</dd></div>
+          {%- endif -%}
+          <div>
+            <dt>Default address</dt>
+            <dd>
+              {%- if customer.default_address -%}
+                {{ customer.default_address | format_address }}
+              {%- else -%}
+                No address saved yet.
+              {%- endif -%}
+            </dd>
+          </div>
+        </dl>
+
+        <div class="acct__form-actions">
+          <a class="btn btn--brand" href="{{ routes.account_addresses_url }}">
+            Manage addresses {% render 'mts-icon', name: 'arrowRight', size: 16 %}
+          </a>
+          <a class="btn btn--ghost" href="{{ routes.root_url }}pages/wishlist">View wishlist</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+{% schema %}
+{ "name": "Account" }
+{% endschema %}

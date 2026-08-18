@@ -1,0 +1,924 @@
+{%- comment -%}
+  Product — ported from ProductPage.jsx: gallery + lightbox, buy box with option
+  swatches, stock line, quantity, add-to-cart, trust band, and the four tabs.
+
+  Two honest departures from the React page, both called out in the README:
+
+  1. REVIEWS are read-only here. The React page let a visitor "write a review"
+     into localStorage — on a real storefront that renders a review nobody else
+     can ever see, which reads as a working feature and isn't one. So this
+     template DISPLAYS ratings from the standard reviews.rating /
+     reviews.rating_count metafields (what review apps write to) and omits the
+     submit form. Install a reviews app to collect them for real.
+
+  2. VOLUME PRICE BREAKS are off by default. The theme cannot apply a discount —
+     only Shopify Discounts can. Showing a "save 15%" table the checkout does not
+     honour is a promise the store would break. Turn it on in theme settings
+     ONLY once matching automatic discounts exist.
+{%- endcomment -%}
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign rating = product.metafields.reviews.rating.value.rating
+  assign rating_count = product.metafields.reviews.rating_count.value
+  assign bestseller = false
+  if settings.bestseller_tag != blank and product.tags contains settings.bestseller_tag
+    assign bestseller = true
+  endif
+  assign on_sale = false
+  if product.compare_at_price > product.price
+    assign on_sale = true
+  endif
+-%}
+
+<main id="main" class="pdp" data-mts-product>
+  <script type="application/json" data-mts-product-json>{{ product.variants | json }}</script>
+
+  <div class="wrap pdp__crumbs">
+    {% render 'mts-breadcrumbs', parent_title: section.settings.parent_label, parent_url: section.settings.parent_url %}
+  </div>
+
+  <div class="wrap pdp__top">
+    {%- comment -%} gallery {%- endcomment -%}
+    <div class="pdp-gallery" data-mts-gallery>
+      <div class="pdp-gallery__row">
+        {%- comment -%}
+          Thumbnails are visible again.
+
+          They were hidden on request ("the small boxes should not appear"),
+          but that turned out to conflict with a second requirement: a product
+          with 4-7 photos then had no way to reach any of them, so the gallery
+          looked as though the images had never been migrated. Visible
+          thumbnails are also how the original store presents these.
+
+          They are still the mechanism the variant picker uses — paintImage()
+          clicks the matching thumb so the main image, the active highlight and
+          the lightbox index all move together.
+        {%- endcomment -%}
+        {%- if product.media.size > 1 -%}
+          <div class="pdp-gallery__thumbs">
+            {%- comment -%}
+              No limit. It was 6, but variants point at images anywhere in the
+              set — a 9-image product had variant photos with no thumb to
+              activate, so switching colour could not highlight the right one.
+            {%- endcomment -%}
+            {%- for media in product.media -%}
+              {%- comment -%}
+                data-media-id lets the variant picker point at an exact image.
+                Matching on the URL would be fragile — Shopify rewrites
+                filenames on collision and appends its own size/version query.
+              {%- endcomment -%}
+              <button class="pdp-gallery__thumb{% if forloop.first %} is-active{% endif %}"
+                      data-mts-thumb data-full="{{ media | image_url: width: 1600 }}"
+                      data-media-id="{{ media.id }}"
+                      data-index="{{ forloop.index0 }}" aria-label="{{ 'products.product.view_image' | t }}">
+                <img src="{{ media | image_url: width: 144 }}" alt="" width="72" height="72" loading="lazy">
+              </button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+
+        <button class="pdp-gallery__main" data-mts-gallery-main aria-label="{{ 'products.product.zoom' | t }}">
+          {%- if product.featured_media -%}
+            {%- comment -%}
+              This is the LCP element of every product page, and it had no
+              srcset — a 390px phone downloaded the same 1200px file as a
+              desktop, which is roughly six times the pixels it can show.
+
+              Sizes: `.pdp__top` is a 1.15fr / 0.85fr grid inside a 1280px
+              `.wrap` with 24px side padding and a 54px gap, so the gallery
+              column settles at ~680px on desktop; below the grid's breakpoint
+              it is full-bleed. The 44px inner padding shrinks the visible art,
+              not the box, so the box width is what `sizes` must describe.
+
+              Kept in step with the preload in layout/theme.liquid — if the
+              widths here change, change them there too or the browser
+              preloads one file and paints another.
+            {%- endcomment -%}
+            <img src="{{ product.featured_media | image_url: width: 800 }}"
+                 srcset="{{ product.featured_media | image_url: width: 400 }} 400w,
+                         {{ product.featured_media | image_url: width: 600 }} 600w,
+                         {{ product.featured_media | image_url: width: 800 }} 800w,
+                         {{ product.featured_media | image_url: width: 1000 }} 1000w,
+                         {{ product.featured_media | image_url: width: 1360 }} 1360w"
+                 sizes="(min-width: 960px) 680px, 100vw"
+                 alt="{{ product.featured_media.alt | default: product.title | escape }}"
+                 width="600" height="600" data-mts-gallery-img
+                 fetchpriority="high" decoding="async">
+          {%- else -%}
+            {{ 'product-1' | placeholder_svg_tag }}
+          {%- endif -%}
+          <div class="pdp-gallery__badges">
+            {%- if bestseller -%}
+              <span class="tag tag--best">{% render 'mts-icon', name: 'star', size: 11 %} {{ 'products.product.bestseller' | t }}</span>
+            {%- endif -%}
+            {%- if on_sale -%}<span class="tag tag--sale">{{ 'products.product.sale' | t }}</span>{%- endif -%}
+            <span class="tag tag--out" data-mts-oos-badge {% if current_variant.available %}hidden{% endif %}>
+              {{ 'products.product.out_of_stock_badge' | t }}
+            </span>
+          </div>
+          <span class="pdp-gallery__zoom">{% render 'mts-icon', name: 'search', size: 16 %}</span>
+        </button>
+      </div>
+
+      {%- assign key_specs = product.metafields.custom.key_specs.value -%}
+      {%- if key_specs -%}
+        <ul class="pdp-gallery__specs">
+          {%- for spec in key_specs limit: 4 -%}
+            <li>{% render 'mts-icon', name: 'check', size: 15 %}<span>{{ spec }}</span></li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} buy column {%- endcomment -%}
+    <div class="pdp-buy">
+      {%- comment -%}
+        `product.collections.first` is whatever order Shopify returns, and for
+        many products that is an INDUSTRY — so the eyebrow above the H1 read
+        "Building & Construction" and the spec table's Category row said the
+        same. Neither is the product's category; both are who might buy it.
+
+        Same rule as the card and the chips: take the first collection that is
+        an actual product category. `first_coll` feeds the eyebrow, the spec
+        row, the chip de-duplication and the related-products fallback, so
+        fixing it here fixes all four.
+      {%- endcomment -%}
+      {%- comment -%}
+        The industries are read from the `industries` MENU rather than a frozen
+        list. The hardcoded version had 22 handles and the store has more — it
+        was missing `airconditioning-refrigeration-tapes`, so any product whose
+        collections happened to return that first showed "Air Conditioning &
+        Refrigeration Tapes" as its CATEGORY. Butyl Tape was one of them.
+
+        Liquid does not guarantee the order of `product.collections`, so a skip
+        list that is merely mostly-complete fails intermittently and looks like
+        a random bug. Reading the menu means adding an industry can never
+        reintroduce this.
+      {%- endcomment -%}
+      {%- capture cat_skip -%},{% for l in linklists.industries.links %}{{ l.url | split: '/' | last | split: '?' | first }},{% endfor %}all,frontpage,bestsellers,{%- endcapture -%}
+      {%- if linklists.industries.links.size == 0 -%}
+        {%- comment -%} menu missing — fall back so the row never shows an industry {%- endcomment -%}
+        {%- assign cat_skip = ',aerospace-defense,airconditioning-refrigeration-tapes,building-construction,display-signage,electronics-electrical,flooring,framing-insulation,glass-glazing,hvac-plumbing,joinery-kitchen-furniture,manufacturing,marine,marking-safety,nameplates,pool-spa,printing,roofing-gutters,sheathing-moisture-management,solar-energy,telecommunication,transport-automotive-rv,warehouse-packaging-logistics,windows-doors-decking,all,frontpage,bestsellers,' -%}
+      {%- endif -%}
+      {%- assign first_coll = nil -%}
+      {%- for coll in product.collections -%}
+        {%- if first_coll == nil -%}
+          {%- assign c_needle = coll.handle | prepend: ',' | append: ',' -%}
+          {%- unless cat_skip contains c_needle -%}
+            {%- assign first_coll = coll -%}
+          {%- endunless -%}
+        {%- endif -%}
+      {%- endfor -%}
+      {%- comment -%}
+        The category eyebrow above the H1 is gone on request. It was internal
+        linking dressed as a label, and because it drew from the same
+        collection lookup it frequently announced an INDUSTRY over the product
+        name — "Air Conditioning & Refrigeration Tapes" sitting above Butyl
+        Tape. `first_coll` is still computed: the Specifications table and the
+        related-products fallback both use it.
+      {%- endcomment -%}
+
+      <h1 class="pdp-buy__title">{{ product.title }}</h1>
+
+      {%- comment -%}
+        The rating comes from our own metafields, not Judge.me's preview badge.
+
+        Judge.me is installed but holds zero reviews, so its badge rendered an
+        empty strip on every product while 119 genuine reviews sat unused. Our
+        stars are also server-rendered, which means they are in the HTML for
+        Google to read — the app badge paints in later via JavaScript.
+      {%- endcomment -%}
+      {%- if rating -%}
+        <div class="pdp-buy__rating">
+          <button class="pdp-buy__ratebtn" data-mts-goto-reviews aria-label="See reviews">
+            {% render 'mts-stars', rating: rating, size: 16, show_count: false %}
+          </button>
+          <button class="pdp-buy__revlink" data-mts-goto-reviews>
+            {%- if rating_count > 0 -%}
+              {{ 'products.product.reviews_count' | t: count: rating_count }}
+            {%- else -%}
+              {{ 'products.product.no_reviews' | t }}
+            {%- endif -%}
+          </button>
+        </div>
+      {%- endif -%}
+
+      <div class="pdp-buy__idline">
+        {%- if product.vendor != blank -%}
+          <span class="pdp-buy__idchip"><b>{{ 'products.product.brand' | t }}</b> {{ product.vendor }}</span>
+        {%- endif -%}
+        <span class="pdp-buy__idchip num" data-mts-sku-wrap {% if current_variant.sku == blank %}hidden{% endif %}>
+          <b>{{ 'products.product.sku' | t }}</b> <span data-mts-sku>{{ current_variant.sku }}</span>
+        </span>
+      </div>
+
+      <div class="pdp-buy__pricerow">
+        {%- comment -%}
+          When a quantity break applies, the headline price becomes the
+          discounted one and the original is shown struck through beside it —
+          otherwise the shopper sees the price silently drop with nothing to
+          say why, and loses the saving as a reason to buy more.
+          Hidden until a tier is active; mts-theme.js owns it.
+        {%- endcomment -%}
+        <s class="pdp-buy__was num" data-mts-was hidden></s>
+        <span class="pdp-buy__price num" data-mts-price>{{ current_variant.price | money }}</span>
+        <span class="pdp-buy__gst">{{ 'products.product.inc_gst' | t }}</span>
+      </div>
+      <p class="pdp-buy__tax">
+        {{ 'products.product.tax_line' | t }}
+        {%- if product.price_varies %} &middot; Range {{ product.price_min | money }} – {{ product.price_max | money }}{% endif -%}
+      </p>
+
+      {%- form 'product', product, class: 'pdp-buybox', data-mts-product-form: true, novalidate: 'novalidate' -%}
+        <input type="hidden" name="id" value="{{ current_variant.id }}" data-mts-variant-id>
+
+        {%- unless product.has_only_default_variant -%}
+          <div class="pdp-buy__section">
+            {%- for option in product.options_with_values -%}
+              {%- liquid
+                assign oname = option.name | downcase
+                assign is_colour = false
+                if oname contains 'colour' or oname contains 'color'
+                  assign is_colour = true
+                endif
+              -%}
+              <div class="pdp-opt">
+                <div class="pdp-opt__label">
+                  <span>{{ option.name }}</span>
+                  {%- if is_colour -%}
+                    {%- comment -%} translate only the fallback — see mts-collection.liquid {%- endcomment -%}
+                    <b data-mts-opt-selected="{{ forloop.index0 }}">
+                      {%- if option.selected_value != blank -%}
+                        {{ option.selected_value }}
+                      {%- else -%}
+                        {{ 'products.product.select_option' | t }}
+                      {%- endif -%}
+                    </b>
+                  {%- endif -%}
+                </div>
+
+                {%- if is_colour -%}
+                  <div class="pdp-opt__swatches">
+                    {%- for value in option.values -%}
+                      {%- capture swatch_fill -%}{% render 'mts-swatch-fill', value: value %}{%- endcapture -%}
+                      {%- assign swatch_fill = swatch_fill | strip -%}
+                      <button type="button"
+                              class="pdp-swatch{% if option.selected_value == value %} is-active{% endif %}"
+                              data-mts-opt="{{ forloop.parentloop.index0 }}" data-value="{{ value | escape }}"
+                              title="{{ value | escape }}" aria-label="{{ value | escape }}"
+                              aria-pressed="{% if option.selected_value == value %}true{% else %}false{% endif %}">
+                        {%- if swatch_fill != blank -%}
+                          <span class="pdp-swatch__dot" style="background: {{ swatch_fill }}"></span>
+                        {%- else -%}
+                          <span class="pdp-swatch__txt">{{ value }}</span>
+                        {%- endif -%}
+                      </button>
+                    {%- endfor -%}
+                  </div>
+                {%- else -%}
+                  <div class="pdp-opt__select">
+                    <select data-mts-opt="{{ forloop.index0 }}" aria-label="{{ option.name | escape }}">
+                      {%- for value in option.values -%}
+                        <option value="{{ value | escape }}" {% if option.selected_value == value %}selected{% endif %}>{{ value }}</option>
+                      {%- endfor -%}
+                    </select>
+                    {% render 'mts-icon', name: 'chevronDown', size: 16 %}
+                  </div>
+                {%- endif -%}
+              </div>
+            {%- endfor -%}
+          </div>
+        {%- endunless -%}
+
+        {%- comment -%}
+          Volume price breaks, read per product from the mts.volume_tiers
+          metafield that scripts/push_tiers.py lifts off mytapestore.com.au.
+
+          They are NOT one ladder for the whole catalogue: 81 of the 131
+          products carry breaks and they run to nine different shapes — some
+          start at a minimum of 6, one steps 10/15/20% — so the bands are
+          per product and the rest of the catalogue shows nothing at all.
+
+          `to: null` on the last band means "and up".
+        {%- endcomment -%}
+        {%- assign vt = product.metafields.mts.volume_tiers.value -%}
+        {%- if settings.show_volume_tiers and vt.bands.size > 1 -%}
+          <div class="pdp-buy__section pdp-vol" data-mts-volume>
+            <div class="pdp-vol__head">
+              {% render 'mts-icon', name: 'tag', size: 14 %} {{ 'products.product.volume_heading' | t }}
+            </div>
+            <div class="pdp-vol__row" role="group" aria-label="{{ 'products.product.volume_aria' | t }}">
+              {%- for band in vt.bands -%}
+                {%- liquid
+                  assign off = band.off | round
+                  assign keep = 100 | minus: off
+
+                  # Add half a cent before the integer divide. Liquid truncates,
+                  # so 5% off $36.86 would land on $35.01 where the original
+                  # store — and every calculator — says $35.02.
+                  assign tier_price = current_variant.price | times: keep | plus: 50 | divided_by: 100
+
+                  if band.to == nil
+                    assign lbl = 'products.product.pieces_plus' | t: from: band.from
+                  elsif band.to == band.from
+                    if band.from == 1
+                      assign lbl = 'products.product.pieces_one' | t: n: band.from
+                    else
+                      assign lbl = 'products.product.pieces_many' | t: n: band.from
+                    endif
+                  else
+                    assign lbl = 'products.product.pieces_range' | t: from: band.from, to: band.to
+                  endif
+                -%}
+                <button type="button" class="pdp-vtier{% if forloop.first %} is-active{% endif %}"
+                        data-mts-tier="{{ band.from }}" data-off="{{ off }}"
+                        aria-label="{{ lbl }}{% if off > 0 %} — {{ off }}% off{% endif %}">
+                  <span class="pdp-vtier__top">
+                    <b class="num" data-mts-tier-price>{{ tier_price | money }}</b>
+                    {%- if off > 0 -%}
+                      <span class="pdp-vtier__off">{{ 'products.product.percent_off' | t: percent: off }}</span>
+                    {%- endif -%}
+                  </span>
+                  <span class="pdp-vtier__lbl">{{ lbl }}</span>
+                </button>
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- endif -%}
+
+        <div class="pdp-buy__section">
+          <div class="pdp-buy__stock">
+            <span class="pdp-buy__instock" data-mts-instock {% unless current_variant.available %}hidden{% endunless %}>
+              <span class="pdp-buy__dot"></span> {{ 'products.product.in_stock' | t }}
+            </span>
+            <span class="pdp-buy__oos" data-mts-oos {% if current_variant.available %}hidden{% endif %}>
+              {{ 'products.product.out_of_stock' | t }}
+            </span>
+          </div>
+
+          {%- comment -%}
+            MINIMUM ORDER QUANTITY.
+
+            `min` on the volume_tiers metafield is the original store's
+            per-product minimum, carried over from the WooCommerce plugin's
+            `data-minimum`. It is not a pricing hint — it is the smallest
+            quantity the shop will sell, and the first band always starts
+            there (a 6-minimum masking tape's first row IS "6 pieces").
+
+            112 products are min 1, 10 are min 2, 3 are min 4, 7 are min 6.
+
+            Read it independently of `settings.show_volume_tiers`: hiding the
+            price-break table is a merchandising choice, but the minimum is an
+            order rule and has to hold either way.
+          {%- endcomment -%}
+          {%- liquid
+            assign min_qty = product.metafields.mts.volume_tiers.value.min | default: 1
+            if min_qty < 1
+              assign min_qty = 1
+            endif
+          -%}
+
+          <div class="pdp-buy__actions">
+            <div class="qty" role="group" aria-label="{{ 'products.product.quantity' | t }}">
+              {%- comment -%}
+                Starts disabled because the field opens at the floor. A button
+                that silently does nothing is worse than one that says it is
+                unavailable; JS re-enables it the moment the count rises.
+              {%- endcomment -%}
+              <button type="button" data-mts-qty-down disabled aria-disabled="true"
+                      aria-label="{{ 'products.product.decrease' | t }}">
+                {% render 'mts-icon', name: 'minus', size: 16 %}
+              </button>
+              <input class="num" type="text" inputmode="numeric" name="quantity" value="{{ min_qty }}"
+                     data-mts-qty-min="{{ min_qty }}"
+                     {% if min_qty > 1 %}aria-describedby="pdp-minqty-{{ section.id }}"{% endif %}
+                     aria-label="{{ 'products.product.quantity' | t }}" data-mts-qty>
+              <button type="button" data-mts-qty-up aria-label="{{ 'products.product.increase' | t }}">
+                {% render 'mts-icon', name: 'plus', size: 16 %}
+              </button>
+            </div>
+
+            <button type="submit" name="add" class="btn btn--brand btn--lg pdp-buy__add"
+                    data-mts-add {% unless current_variant.available %}disabled{% endunless %}>
+              <span data-mts-add-idle>{% render 'mts-icon', name: 'cart', size: 19 %} {{ 'products.product.add_to_cart' | t }}</span>
+              <span data-mts-add-done hidden>{% render 'mts-icon', name: 'check', size: 19 %} {{ 'products.product.added_to_cart' | t }}</span>
+            </button>
+
+            {%- if settings.show_wishlist -%}
+              <button type="button" class="pdp-buy__wish" data-mts-wish="{{ product.handle }}"
+                      aria-label="{{ 'products.product.add_to_wishlist' | t }}" aria-pressed="false">
+                {% render 'mts-icon', name: 'heart', size: 20 %}
+              </button>
+            {%- endif -%}
+          </div>
+
+          {%- comment -%}
+            Say the rule, don't just enforce it. A minus button that refuses to
+            go below 6 with no explanation reads as a broken control; naming the
+            minimum turns a dead end into information.
+          {%- endcomment -%}
+          {%- if min_qty > 1 -%}
+            <p class="pdp-buy__minqty" id="pdp-minqty-{{ section.id }}">
+              {% render 'mts-icon', name: 'info', size: 14 %}
+              {{ 'products.product.min_qty' | t: n: min_qty }}
+            </p>
+          {%- endif -%}
+
+          <p class="pdp-buy__linetotal" data-mts-linetotal-wrap>
+            {{ 'products.product.total' | t }} <b class="num" data-mts-linetotal>{{ current_variant.price | money }}</b>
+          </p>
+
+          {%- comment -%}
+            BUY IT NOW — our own button, not Shopify's dynamic checkout button.
+
+            `{{ form | payment_button }}` was here, but its contents are chosen
+            by Shopify: with Shop Pay enabled it renders "Buy with Shop" in
+            Shop's purple, which is not wanted on this product page. The theme
+            cannot relabel or restyle the inside of that button — Shopify owns
+            it, because each one carries a signed wallet session.
+
+            So this is a plain button again: add to cart, then go straight to
+            /checkout. Same one-click intent, our wording, our colour, and it
+            skips the cart page rather than stopping at it.
+
+            The wallet buttons still exist on the CART page, where they are the
+            faster-payment option rather than a competing brand on the PDP.
+          {%- endcomment -%}
+          <button type="button" class="btn btn--dark btn--lg btn--block pdp-buy__buynow"
+                  data-mts-buynow {% unless current_variant.available %}disabled{% endunless %}>
+            {% render 'mts-icon', name: 'lock', size: 17 %} {{ 'products.product.buy_it_now' | t }}
+          </button>
+
+          <div class="pdp-buy__added" role="status" data-mts-added hidden>
+            {% render 'mts-icon', name: 'check', size: 18 %}
+            <span data-mts-added-text></span>
+            <a href="{{ routes.cart_url }}">{{ 'products.product.view_cart' | t }}</a>
+          </div>
+        </div>
+      {%- endform -%}
+
+      <div class="pdp-trust">
+        <ul class="pdp-trust__row">
+          <li>{% render 'mts-icon', name: 'truck', size: 18 %}<span>{{ 'products.product.trust.dispatch' | t }}</span></li>
+          <li>{% render 'mts-icon', name: 'refresh', size: 18 %}<span>{{ 'products.product.trust.returns' | t }}</span></li>
+          <li>{% render 'mts-icon', name: 'lock', size: 18 %}<span>{{ 'products.product.trust.secure' | t }}</span></li>
+          <li>{% render 'mts-icon', name: 'medal', size: 18 %}<span>{{ 'products.product.trust.price_guarantee' | t }}</span></li>
+        </ul>
+        <div class="pdp-trust__pay">
+          <span class="pdp-trust__pay-label">{{ 'products.product.trust.we_accept' | t }}</span>
+          <div class="pdp-buy__pay-marks">
+            {%- assign marks = 'visa,mastercard,amex,paypal,shop-pay' | split: ',' -%}
+            {%- for m in marks -%}
+              <img src="{{ 'mts-pay-' | append: m | append: '.svg' | asset_url }}" alt="{{ m }}" width="32" height="20" loading="lazy">
+            {%- endfor -%}
+          </div>
+        </div>
+        <div class="pdp-buy__meta">
+          <a href="{{ section.settings.shipping_url }}">
+            {{ 'products.product.trust.shipping_info' | t }} {% render 'mts-icon', name: 'chevronRight', size: 14 %}
+          </a>
+          <a href="{{ section.settings.returns_url }}">
+            {{ 'products.product.trust.returns_info' | t }} {% render 'mts-icon', name: 'chevronRight', size: 14 %}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {%- comment -%} tabs {%- endcomment -%}
+  <div class="wrap pdp__tabs" data-mts-tabs>
+    {%- comment -%}
+      Each tab label is wrapped in an <h2>. The four panels are the page's
+      top-level sections, so they belong in the outline at that level — and
+      without them the document jumped straight from the H1 to the H3s inside
+      the description, which reads as a broken hierarchy to a crawler.
+
+      The <button role="tab"> stays inside the heading rather than being
+      replaced by it: the tablist interaction, focus handling and aria-selected
+      state all still work exactly as before. A heading wrapping a control is a
+      standard accessible pattern.
+    {%- endcomment -%}
+    <div class="pdp-tabnav" role="tablist">
+      <h2 class="pdp-tabnav__h"><button role="tab" aria-selected="true" class="pdp-tabnav__btn is-active" data-mts-tab="description">{{ 'products.product.tabs.description' | t }}</button></h2>
+      <h2 class="pdp-tabnav__h"><button role="tab" aria-selected="false" class="pdp-tabnav__btn" data-mts-tab="specs">{{ 'products.product.tabs.specs' | t }}</button></h2>
+      <h2 class="pdp-tabnav__h"><button role="tab" aria-selected="false" class="pdp-tabnav__btn" data-mts-tab="reviews">{{ 'products.product.tabs.reviews' | t }}{% if rating_count > 0 %} ({{ rating_count }}){% endif %}</button></h2>
+      <h2 class="pdp-tabnav__h"><button role="tab" aria-selected="false" class="pdp-tabnav__btn" data-mts-tab="shipping">{{ 'products.product.tabs.shipping' | t }}</button></h2>
+    </div>
+
+    <div class="pdp-tabpanel" role="tabpanel">
+      <div class="pdp-desc" data-mts-panel="description">
+        {{ product.description }}
+      </div>
+
+      <div data-mts-panel="specs" hidden>
+        <div class="pdp-specgrid">
+          <table class="spec-table">
+            <tbody>
+              {%- if first_coll and first_coll.handle != 'all' -%}
+                <tr><th>{{ 'products.product.specs.category' | t }}</th><td>{{ first_coll.title }}</td></tr>
+              {%- endif -%}
+              {%- comment -%}
+                SKU removed from the spec table on request. It is an internal
+                stock code — it tells a shopper nothing and sat second, above
+                Size and Colour, which are the things they actually choose on.
+                Still shown in the buy column next to the brand chip for anyone
+                quoting a code over the phone.
+              {%- endcomment -%}
+              {%- unless product.has_only_default_variant -%}
+                {%- for option in product.options_with_values -%}
+                  <tr><th>{{ option.name }}</th><td>{{ option.values | uniq | join: ', ' }}</td></tr>
+                {%- endfor -%}
+              {%- endunless -%}
+              <tr>
+                <th>{{ 'products.product.specs.price' | t }}</th>
+                <td class="num">
+                  {%- if product.price_varies -%}{{ product.price_min | money }} – {{ product.price_max | money }}
+                  {%- else -%}{{ product.price | money }}{%- endif -%}
+                  {{ ' ' }}{{ 'products.product.inc_gst' | t }}
+                </td>
+              </tr>
+              <tr>
+                <th>{{ 'products.product.specs.availability' | t }}</th>
+                <td>{% if product.available %}{{ 'products.product.specs.in_stock' | t }}{% else %}{{ 'products.product.specs.out_of_stock' | t }}{% endif %}</td>
+              </tr>
+              {%- if product.vendor != blank -%}
+                <tr><th>{{ 'products.product.brand' | t }}</th><td>{{ product.vendor }}</td></tr>
+              {%- endif -%}
+
+              {%- comment -%}
+                The real engineering data — thickness, temperature range,
+                adhesive type, tensile strength. It used to sit in a
+                "Specifications" block inside the DESCRIPTION, so the word
+                appeared twice on the page and the tab showed only what Shopify
+                itself knows. Lifted into `custom.specs` by
+                scripts/lift_product_specs.py and rendered here, which is where
+                a buyer looks for it.
+
+                Rows already covered above (colour, size) are skipped so the
+                table never states the same thing twice.
+              {%- endcomment -%}
+              {%- assign extra_specs = product.metafields.custom.specs.value -%}
+              {%- if extra_specs -%}
+                {%- assign shown = '|' -%}
+                {%- unless product.has_only_default_variant -%}
+                  {%- for option in product.options_with_values -%}
+                    {%- assign shown = shown | append: option.name | downcase | append: '|' -%}
+                  {%- endfor -%}
+                {%- endunless -%}
+                {%- for spec in extra_specs -%}
+                  {%- assign key = spec.label | downcase | strip -%}
+                  {%- assign singular = key | remove: 's' -%}
+                  {%- unless shown contains key or shown contains singular -%}
+                    <tr><th>{{ spec.label }}</th><td>{{ spec.value }}</td></tr>
+                  {%- endunless -%}
+                {%- endfor -%}
+              {%- endif -%}
+            </tbody>
+          </table>
+
+          {%- comment -%}
+            "Recommended for" listed EVERY collection the product sits in, so a
+            hook & loop roll recommended itself for "Display Signage" and, worse,
+            for "Home page" — which is not a recommendation, it is a template.
+
+            Industry collections and the structural ones are filtered out; what
+            is left is genuine product categories. The whole block is skipped
+            when nothing survives, rather than printing an empty heading.
+          {%- endcomment -%}
+          {%- assign skip_handles = ',aerospace-defense,building-construction,display-signage,electronics-electrical,flooring,framing-insulation,glass-glazing,hvac-plumbing,joinery-kitchen-furniture,manufacturing,marine,marking-safety,nameplates,pool-spa,printing,roofing-gutters,sheathing-moisture-management,solar-energy,telecommunication,transport-automotive-rv,warehouse-packaging-logistics,windows-doors-decking,all,frontpage,bestsellers,' -%}
+          {%- capture chips -%}
+            {%- for coll in product.collections -%}
+              {%- assign needle = coll.handle | prepend: ',' | append: ',' -%}
+              {%- unless skip_handles contains needle or coll.handle == first_coll.handle -%}
+                <a href="{{ coll.url }}">{{ coll.title }}</a>
+              {%- endunless -%}
+            {%- endfor -%}
+          {%- endcapture -%}
+          {%- assign chips = chips | strip -%}
+          {%- if chips != blank -%}
+            <div class="pdp-specgrid__ind">
+              <h3>{{ 'products.product.specs.recommended_for' | t }}</h3>
+              <div class="pdp-specbox__chips">{{ chips }}</div>
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+
+      <div data-mts-panel="reviews" hidden>
+        {%- comment -%}
+          REVIEWS — rendered from our own data, not an app widget.
+
+          The 119 genuine reviews from the WordPress store live on each product
+          in `reviews.items` (a JSON list of {n,r,b,d}), with the aggregate in
+          the standard `reviews.rating` / `reviews.rating_count` metafields that
+          every review app and this theme already read.
+
+          Judge.me is installed but empty, so its widget rendered a blank box
+          here. When its import is done it can take this panel back over; until
+          then real reviews beat an empty third-party frame.
+        {%- endcomment -%}
+        {%- assign rev_items = product.metafields.reviews.items.value -%}
+        <div class="pdp-rev">
+          {%- if rev_items and rev_items.size > 0 -%}
+            {%- liquid
+              assign s5 = 0
+              assign s4 = 0
+              assign s3 = 0
+              assign s2 = 0
+              assign s1 = 0
+              for rv in rev_items
+                case rv.r
+                  when 5
+                    assign s5 = s5 | plus: 1
+                  when 4
+                    assign s4 = s4 | plus: 1
+                  when 3
+                    assign s3 = s3 | plus: 1
+                  when 2
+                    assign s2 = s2 | plus: 1
+                  else
+                    assign s1 = s1 | plus: 1
+                endcase
+              endfor
+              assign rev_total = rev_items.size
+            -%}
+
+            <div class="pdp-rev__head">
+              <div class="pdp-rev__score">
+                <b class="num">{{ rating | round: 1 }}</b>
+                {% render 'mts-stars', rating: rating, size: 17, show_count: false %}
+                <span class="pdp-rev__count num">{{ 'products.product.reviews_count' | t: count: rev_total }}</span>
+              </div>
+
+              {%- comment -%}
+                The distribution bars are not decoration: on a catalogue that is
+                almost entirely 5-star, showing the spread is what makes the
+                score look measured rather than curated.
+              {%- endcomment -%}
+              <ul class="pdp-rev__bars">
+                {%- for pair in (1..5) reversed -%}
+                  {%- liquid
+                    case pair
+                      when 5
+                        assign n = s5
+                      when 4
+                        assign n = s4
+                      when 3
+                        assign n = s3
+                      when 2
+                        assign n = s2
+                      else
+                        assign n = s1
+                    endcase
+                    assign pct = 0
+                    if rev_total > 0
+                      assign pct = n | times: 100 | divided_by: rev_total
+                    endif
+                  -%}
+                  <li class="pdp-rev__bar">
+                    <span class="pdp-rev__bar-k num">{{ pair }}</span>
+                    {% render 'mts-icon', name: 'star', size: 12 %}
+                    <span class="pdp-rev__bar-track"><span class="pdp-rev__bar-fill" style="width:{{ pct }}%"></span></span>
+                    <span class="pdp-rev__bar-n num">{{ n }}</span>
+                  </li>
+                {%- endfor -%}
+              </ul>
+
+              <button type="button" class="btn btn--brand pdp-rev__write" data-mts-rev-open>
+                {% render 'mts-icon', name: 'star', size: 16 %} Write a review
+              </button>
+            </div>
+
+            <ul class="pdp-rev__list" data-mts-rev-list>
+              {%- for rv in rev_items -%}
+                <li class="pdp-rev__item{% if forloop.index > 4 %} is-hidden{% endif %}" {% if forloop.index > 4 %}data-mts-rev-extra{% endif %}>
+                  <div class="pdp-rev__by">
+                    <span class="pdp-rev__avatar" aria-hidden="true">{{ rv.n | slice: 0 | upcase }}</span>
+                    <div class="pdp-rev__meta">
+                      <span class="pdp-rev__name">{{ rv.n }}</span>
+                      <time class="pdp-rev__date num" datetime="{{ rv.d }}">{{ rv.d | date: "%-d %b %Y" }}</time>
+                    </div>
+                    {% render 'mts-stars', rating: rv.r, size: 14, show_count: false %}
+                  </div>
+                  <p class="pdp-rev__body">{{ rv.b | newline_to_br }}</p>
+                </li>
+              {%- endfor -%}
+            </ul>
+
+            {%- if rev_total > 4 -%}
+              {%- assign more = rev_total | minus: 4 -%}
+              <button type="button" class="btn btn--ghost pdp-rev__more" data-mts-rev-more
+                      data-label-more="Show {{ more }} more review{% if more != 1 %}s{% endif %}"
+                      data-label-less="Show fewer reviews">
+                Show {{ more }} more review{% if more != 1 %}s{% endif %}
+              </button>
+            {%- endif -%}
+          {%- else -%}
+            <div class="pdp-rev__empty">
+              {% render 'mts-icon', name: 'star', size: 30 %}
+              <p>{{ 'products.product.no_reviews' | t }} — be the first to review this product.</p>
+              <button type="button" class="btn btn--brand pdp-rev__write" data-mts-rev-open>Write a review</button>
+            </div>
+          {%- endif -%}
+
+          {%- comment -%}
+            WRITE A REVIEW
+            Posts through Shopify's own contact form, which emails the store.
+            That is deliberate: with no review API connected yet, a form that
+            appeared to publish instantly would either lie or write to the
+            visitor's own browser. This one genuinely reaches someone, and the
+            review is added on moderation.
+          {%- endcomment -%}
+          <div class="pdp-rev__form" data-mts-rev-form hidden>
+            {%- form 'contact', class: 'pdp-rev__fields' -%}
+              {%- if form.posted_successfully? -%}
+                <p class="pdp-rev__sent" role="status">
+                  {% render 'mts-icon', name: 'check', size: 20 %}
+                  Thanks — your review has been sent to us and will appear once checked.
+                </p>
+              {%- else -%}
+                {{ form.errors | default_errors }}
+                <h3 class="pdp-rev__form-h">Review {{ product.title }}</h3>
+                <input type="hidden" name="contact[subject]" value="Product review — {{ product.title | escape }}">
+                <input type="hidden" name="contact[product_url]" value="{{ shop.url }}{{ product.url }}">
+
+                <fieldset class="pdp-rev__rate">
+                  <legend>Your rating</legend>
+                  {%- comment -%}
+                    Radios reversed in the DOM so a pure-CSS sibling selector can
+                    light the stars up to the chosen one; the visual order is
+                    restored with row-reverse. Works with no JavaScript at all.
+                  {%- endcomment -%}
+                  <div class="pdp-rev__stars-in">
+                    {%- for i in (1..5) reversed -%}
+                      <input type="radio" id="mts-star-{{ section.id }}-{{ i }}" name="contact[rating]" value="{{ i }}" required
+                             {% if i == 5 %}checked{% endif %}>
+                      <label for="mts-star-{{ section.id }}-{{ i }}" title="{{ i }} star{% if i != 1 %}s{% endif %}">
+                        {% render 'mts-icon', name: 'star', size: 26 %}
+                        <span class="sr-only">{{ i }} star{% if i != 1 %}s{% endif %}</span>
+                      </label>
+                    {%- endfor -%}
+                  </div>
+                </fieldset>
+
+                <label class="pdp-rev__label">Your name
+                  <input type="text" name="contact[name]" required autocomplete="name" value="{{ form.name }}">
+                </label>
+                <label class="pdp-rev__label">Email
+                  <input type="email" name="contact[email]" required autocomplete="email"
+                         inputmode="email" autocapitalize="none" spellcheck="false" value="{{ form.email }}">
+                  <span class="pdp-rev__hint">Not published — we only use it if we need to check something.</span>
+                </label>
+                <label class="pdp-rev__label">Your review
+                  <textarea name="contact[body]" rows="5" required
+                            placeholder="How did it hold up? What did you use it for?">{{ form.body }}</textarea>
+                </label>
+                <div class="pdp-rev__actions">
+                  <button type="submit" class="btn btn--brand btn--lg">Submit review</button>
+                  <button type="button" class="btn btn--ghost" data-mts-rev-cancel>Cancel</button>
+                </div>
+              {%- endif -%}
+            {%- endform -%}
+          </div>
+        </div>
+      </div>
+
+      <div class="pdp-desc pdp-ship" data-mts-panel="shipping" hidden>
+        {{ section.settings.shipping_copy }}
+      </div>
+    </div>
+  </div>
+
+  {%- assign related = section.settings.related_collection | default: first_coll.handle -%}
+  {%- assign related_coll = collections[related] -%}
+  {%- if related_coll.products.size > 1 -%}
+    <section class="section section--paper">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="section-title-wrap">
+            <span class="eyebrow">{{ 'products.product.related_eyebrow' | t }}</span>
+            <h2>{{ 'products.product.related' | t }}</h2>
+          </div>
+        </div>
+        <div class="grid-products grid-products--fit">
+          {%- assign shown = 0 -%}
+          {%- for p in related_coll.products limit: 6 -%}
+            {%- if p.handle != product.handle and shown < 4 -%}
+              {% render 'mts-product-card', product: p, index: forloop.index0 %}
+              {%- assign shown = shown | plus: 1 -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    </section>
+  {%- endif -%}
+
+  {%- comment -%} lightbox {%- endcomment -%}
+  <div class="pdp-lightbox" data-mts-lightbox role="dialog" aria-modal="true"
+       aria-label="{{ product.title | escape }} — image viewer" hidden>
+    <button class="pdp-lightbox__close" data-mts-lightbox-close aria-label="Close image viewer">
+      {% render 'mts-icon', name: 'close', size: 26 %}
+    </button>
+    <button class="pdp-lightbox__nav pdp-lightbox__nav--prev" data-mts-lightbox-prev aria-label="Previous image">
+      {% render 'mts-icon', name: 'chevronRight', size: 28 %}
+    </button>
+    <figure class="pdp-lightbox__stage">
+      {%- comment -%}
+        src is set by mts-theme.js when the lightbox opens, and the stage is
+        sized to the viewport by CSS — an intrinsic width/height here would be
+        a fiction, so the rule is disabled for this tag rather than satisfied
+        with made-up numbers.
+      {%- endcomment -%}
+      {% # theme-check-disable ImgWidthAndHeight %}
+      <img alt="{{ product.title | escape }}" data-mts-lightbox-img>
+      {% # theme-check-enable ImgWidthAndHeight %}
+      <figcaption class="num" data-mts-lightbox-count></figcaption>
+    </figure>
+    <button class="pdp-lightbox__nav pdp-lightbox__nav--next" data-mts-lightbox-next aria-label="Next image">
+      {% render 'mts-icon', name: 'chevronRight', size: 28 %}
+    </button>
+  </div>
+</main>
+
+{%- comment -%}
+  PRODUCT STRUCTURED DATA
+  Both migration checklists list this as a launch blocker: "Product schema in
+  theme: name, price, currency AUD, availability, SKU, brand, review rating"
+  and "Schema and review stars validate in Rich Results Test". Nothing on the
+  page emitted it, so products were eligible for none of it.
+
+  Review stars in Shopping and organic results are the reason the 119 migrated
+  reviews were worth carrying across at all — without aggregateRating here,
+  Google never sees them. Only real data is emitted: no aggregateRating block
+  is written for a product with no reviews, because inventing one is exactly
+  what gets a site's rich results revoked.
+{%- endcomment -%}
+{%- liquid
+  assign rev_items = product.metafields.reviews.items.value
+  assign avail = 'https://schema.org/OutOfStock'
+  if current_variant.available
+    assign avail = 'https://schema.org/InStock'
+  endif
+-%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org/",
+  "@type": "Product",
+  "name": {{ product.title | strip_html | json }},
+  "description": {{ product.description | strip_html | truncate: 900 | json }},
+  "url": {{ shop.url | append: product.url | json }},
+  {% if product.featured_media %}"image": {{ product.featured_media | image_url: width: 1200 | prepend: "https:" | json }},{% endif %}
+  {% if product.vendor != blank %}"brand": { "@type": "Brand", "name": {{ product.vendor | json }} },{% endif %}
+  {% if current_variant.sku != blank %}"sku": {{ current_variant.sku | json }},{% endif %}
+  {% if current_variant.barcode != blank %}"gtin": {{ current_variant.barcode | json }},{% endif %}
+  {% if rev_items and rev_items.size > 0 %}
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": {{ rating | json }},
+    "reviewCount": {{ rev_items.size | json }},
+    "bestRating": "5",
+    "worstRating": "1"
+  },
+  "review": [
+    {%- for rv in rev_items limit: 20 -%}
+    {
+      "@type": "Review",
+      "author": { "@type": "Person", "name": {{ rv.n | json }} },
+      "datePublished": {{ rv.d | json }},
+      "reviewBody": {{ rv.b | strip_html | json }},
+      "reviewRating": { "@type": "Rating", "ratingValue": {{ rv.r | json }}, "bestRating": "5", "worstRating": "1" }
+    }{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  ],
+  {% endif %}
+  "offers": {
+    "@type": "Offer",
+    "url": {{ shop.url | append: product.url | json }},
+    "priceCurrency": {{ cart.currency.iso_code | json }},
+    "price": {{ current_variant.price | divided_by: 100.0 | json }},
+    "availability": {{ avail | json }},
+    "itemCondition": "https://schema.org/NewCondition",
+    "seller": { "@type": "Organization", "name": {{ shop.name | json }} }
+  }
+}
+</script>
+
+{% schema %}
+{
+  "name": "Product",
+  "blocks": [{ "type": "@app" }],
+  "settings": [
+    { "type": "text", "id": "parent_label", "label": "Breadcrumb parent", "info": "e.g. \"Single-Sided Tapes\"." },
+    { "type": "url", "id": "parent_url", "label": "Breadcrumb parent link" },
+    { "type": "url", "id": "shipping_url", "label": "Shipping info link" },
+    { "type": "url", "id": "returns_url", "label": "Returns link" },
+    { "type": "text", "id": "related_collection", "label": "Related products collection handle", "info": "Leave blank to use the product's first collection." },
+    {
+      "type": "richtext",
+      "id": "shipping_copy",
+      "label": "Shipping & returns tab copy",
+      "default": "<h3>Shipping &amp; delivery</h3><p>We deliver to every part of Australia. Orders are processed within 1–2 business days — placed before our daily cut-off, they're processed the same day. Every shipment includes tracking so you can follow your parcel in real time.</p><h3>Returns &amp; exchanges</h3><p>Incorrect items we send can be returned for exchange; items ordered by mistake can be returned at your expense. Faulty or damaged items are replaced free — file a claim within 2 days of delivery with photos. Items must be returned within 30 days of delivery, and refunds are processed within 7 days of receipt.</p>"
+    }
+  ]
+}
+{% endschema %}

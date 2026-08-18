@@ -1,0 +1,61 @@
+{%- comment -%}
+  Wishlist — ported from WishlistPage in ContentPages.jsx.
+
+  Saved items live in the browser (localStorage), exactly as in the React app.
+  The grid is filled client-side by mts-theme.js, which fetches one card per
+  saved handle from the `mts-wish-card` section.
+
+  It used to pre-render the catalogue here and hide all but the saved cards.
+  That was wrong twice over: Liquid caps `collection.products` at 50, so saving
+  any of the other 81 products produced a badge count with no card to match it,
+  and every visitor paid for 50 cards of markup to see maybe three.
+
+  With nothing pre-rendered, the honest server-side state is the empty one —
+  which is also what a visitor with JS off genuinely has, since the list only
+  ever existed in their browser.
+{%- endcomment -%}
+<main id="main">
+  <div class="wrap page__crumbs">{% render 'mts-breadcrumbs', current_title: 'Wishlist' %}</div>
+
+  <div class="wrap page-hero page-hero--plain">
+    <span class="eyebrow">Saved for later</span>
+    <h1>Your wishlist</h1>
+    <p class="wishlist__count" data-mts-wish-summary>Nothing saved yet.</p>
+  </div>
+
+  <div class="wrap section--tight">
+    {%- comment -%}
+      Shown while the cards are being fetched, so the page doesn't flash the
+      empty state at someone who does have items saved.
+    {%- endcomment -%}
+    <div class="wishlist__loading" data-mts-wish-loading hidden>
+      <span class="wishlist__spinner" aria-hidden="true"></span>
+      <p>Loading your saved items…</p>
+    </div>
+
+    <div class="grid-products grid-products--5" data-mts-wish-grid hidden></div>
+
+    <div class="col__empty" data-mts-wish-empty>
+      <span class="wishlist__empty-ic">{% render 'mts-icon', name: 'heart', size: 34 %}</span>
+      <p>Your wishlist is empty. Tap the heart on any product to save it here for later.</p>
+      <a class="btn btn--brand btn--lg" href="{{ routes.all_products_collection_url }}">
+        Browse products {% render 'mts-icon', name: 'arrowRight', size: 18 %}
+      </a>
+    </div>
+
+    <div class="wishlist__foot" data-mts-wish-foot hidden>
+      <a class="btn btn--ghost" href="{{ routes.all_products_collection_url }}">
+        {% render 'mts-icon', name: 'chevronRight', size: 15, class: 'wishlist__back' %} Continue shopping
+      </a>
+    </div>
+  </div>
+</main>
+
+{% schema %}
+{
+  "name": "Wishlist",
+  "settings": [
+    { "type": "paragraph", "content": "Saved items are stored in each visitor's own browser, so there is nothing to configure here. Cards are fetched one per saved product, which means every product in the catalogue can be saved — not just the first 50." }
+  ]
+}
+{% endschema %}

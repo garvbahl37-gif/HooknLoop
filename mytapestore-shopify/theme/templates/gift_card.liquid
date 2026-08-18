@@ -1,0 +1,21 @@
+{%- comment -%} Gift card. Standalone document — it renders outside the theme layout. {%- endcomment -%}
+{% layout none %}<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ shop.name }} — gift card</title>
+    {%- comment -%} .liquid is stripped by asset_url — request it as .css {%- endcomment -%}
+    {{ 'mts-styles.css' | asset_url | stylesheet_tag }}
+  </head>
+  <body class="template-gift-card">
+    <main class="wrap mts-giftcard">
+      <img class="mts-password__logo" src="{{ 'mts-logo.png' | asset_url }}" alt="{{ shop.name }}" width="196" height="34">
+      <h1>Here's your {{ gift_card.initial_value | money }} gift card</h1>
+      <p class="num">Balance: {{ gift_card.balance | money }}</p>
+      {{ gift_card.qr_identifier }}
+      <p class="mts-giftcard__code num">{{ gift_card.code | format_code }}</p>
+      <a class="btn btn--brand btn--lg" href="{{ shop.url }}">Start shopping</a>
+    </main>
+  </body>
+</html>

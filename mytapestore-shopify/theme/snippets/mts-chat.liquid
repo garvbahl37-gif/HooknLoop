@@ -1,0 +1,89 @@
+{%- comment -%}
+  FAQ assistant — ported from ChatWidget.jsx. Deliberately honest: it is
+  labelled an automated assistant, answers only the policies the store actually
+  publishes, and hands off to a human for anything else. No LLM, no backend.
+
+  The canned answers live in the JSON block below so the copy and the links stay
+  in one editable place; mts-theme.js renders the panel from it. Links use
+  Shopify page routes rather than the React app's hash paths.
+{%- endcomment -%}
+<div class="chatw" data-mts-chat data-chat-mode="{{ settings.chat_mode | default: 'builtin' }}" data-chat-nudge="{{ settings.chat_nudge }}">
+  <script type="application/json" data-mts-chat-config>
+    {
+      "greeting": "Hi, I'm the {{ shop.name | escape }} assistant 👋 I can help with shipping, returns, bulk pricing or finding the right tape. What do you need?",
+      "phone": {{ settings.phone | default: '' | json }},
+      "email": {{ settings.email | default: '' | json }},
+      "quick": [
+        { "id": "shipping", "label": "Shipping & delivery" },
+        { "id": "bulk",     "label": "Bulk & trade pricing" },
+        { "id": "returns",  "label": "Returns policy" },
+        { "id": "track",    "label": "Track my order" },
+        { "id": "human",    "label": "Talk to a human" }
+      ],
+      "responses": {
+        "shipping": {
+          "text": "We dispatch in 1–2 business days and deliver to 3,600+ postcodes across Australia — most orders arrive within 3–5 business days. Shipping is calculated at checkout.",
+          "cta": { "label": "Shipping info", "path": "{{ routes.root_url }}pages/shipping-delivery" }
+        },
+        "returns": {
+          "text": "Easy 30-day returns on unused, unopened items. Faulty or damaged items are replaced free — just get in touch with photos within 2 days of delivery.",
+          "cta": { "label": "Returns policy", "path": "{{ routes.root_url }}pages/return-policy" }
+        },
+        "bulk": {
+          "text": "Volume discounts apply on larger orders — for trade quantities our team can put together custom pricing.",
+          "cta": { "label": "Bulk & trade pricing", "path": "{{ routes.root_url }}pages/bulk-trade" }
+        },
+        "track": {
+          "text": "I can't pull live tracking in here, but you'll get a tracking link by email the moment your order ships — check your inbox (and spam folder!).",
+          "cta": { "label": "Your account", "path": "{{ routes.account_url }}" }
+        },
+        "human": {
+          "text": "Of course! Call us on {{ settings.phone }} ({{ settings.hours }}) or email {{ settings.email }} — a real person will get back to you.",
+          "cta": { "label": "Contact us", "path": "{{ routes.root_url }}pages/contact" }
+        },
+        "price": {
+          "text": "Found a stocked line cheaper elsewhere? We'll match it — just send us the link. That's our lowest-price guarantee."
+        },
+        "hours": {
+          "text": "Our team's here {{ settings.hours }}. Outside those hours I'm still around for quick questions."
+        },
+        "default": {
+          "text": "I might not have that one memorised. For anything specific, call {{ settings.phone }} or email {{ settings.email }} and our team will sort you out.",
+          "cta": { "label": "Contact us", "path": "{{ routes.root_url }}pages/contact" }
+        }
+      }
+    }
+  </script>
+
+  {%- comment -%}
+    The "Need help?" teaser is gone by request. The launcher below is the whole
+    entry point now — it is always visible, so nothing is lost by dropping a
+    bubble that covered page content and had to be dismissed.
+  {%- endcomment -%}
+
+  <button class="chatw__launch" data-mts-chat-launch aria-label="Open chat assistant">
+    {% render 'mts-icon', name: 'chat', size: 23 %}
+    <span class="chatw__ping" data-mts-chat-ping></span>
+  </button>
+
+  <div class="chatw__panel" data-mts-chat-panel role="dialog" aria-label="Chat with {{ shop.name }}" hidden>
+    <div class="chatw__head">
+      <span class="chatw__avatar">{% render 'mts-icon', name: 'chat', size: 17 %}</span>
+      <div class="chatw__head-info">
+        <b>{{ shop.name }}</b>
+        <span><em class="chatw__dot"></em>Automated assistant · instant replies</span>
+      </div>
+      <button class="chatw__close" data-mts-chat-close aria-label="Close chat">
+        {% render 'mts-icon', name: 'close', size: 18 %}
+      </button>
+    </div>
+
+    <div class="chatw__list" data-mts-chat-list></div>
+    <div class="chatw__quick" data-mts-chat-quick></div>
+
+    <form class="chatw__form" data-mts-chat-form>
+      <input placeholder="Type a message…" aria-label="Message" data-mts-chat-input>
+      <button type="submit" aria-label="Send message" disabled>{% render 'mts-icon', name: 'send', size: 16 %}</button>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,183 @@
+{%- comment -%}
+  Resolves a colour option value to a CSS background — ported from swatchFill()
+  in lib/filters.js. OUTPUTS the value (empty when nothing sensible maps).
+
+  It has to output rather than assign: {% render %} runs in an isolated scope,
+  so a variable assigned in here would never be visible to the caller. Callers
+  wrap it in {% capture %}:
+
+      {%- capture swatch -%}{% render 'mts-swatch-fill', value: v %}{%- endcapture -%}
+      {%- assign swatch = swatch | strip -%}
+
+  Two-tone hazard/marking values ("B/Y Left", "Red/White Danger", "Fluro Orange /
+  Black") have no single flat colour, so they resolve to a real diagonal stripe
+  rather than falling back to a plain text box — same as the React version.
+
+  Params: value (the option value string)
+{%- endcomment -%}
+{%- liquid
+  assign v = value | downcase | strip
+  assign fill = ''
+
+  case v
+    when 'black'
+      assign fill = '#1a1a1a'
+    when 'white'
+      assign fill = '#ffffff'
+    when 'orange'
+      assign fill = '#df3c22'
+    when 'brown'
+      assign fill = '#6b4423'
+    when 'red'
+      assign fill = '#c0392b'
+    when 'blue'
+      assign fill = '#2b5cb8'
+    when 'navy'
+      assign fill = '#1f2d5a'
+    when 'green'
+      assign fill = '#2e7d32'
+    when 'yellow'
+      assign fill = '#e8b800'
+    when 'grey', 'gray'
+      assign fill = '#8a8a8a'
+    when 'dark grey', 'dark gray'
+      assign fill = '#4d4d4d'
+    when 'silver', 'aluminium'
+      assign fill = '#c7c7c7'
+    when 'gold'
+      assign fill = '#c9a227'
+    when 'pink'
+      assign fill = '#e35b8f'
+    when 'purple'
+      assign fill = '#7b4bb8'
+    when 'clear', 'transparent'
+      assign fill = 'linear-gradient(135deg,#eee 25%,#fff 25% 50%,#eee 50% 75%,#fff 75%)'
+  endcase
+-%}
+
+{%- comment -%}
+  Exact-match fallback. The `case` above only fires on the whole value, so a
+  real catalogue value like "Black Lumo" resolved to nothing and the card drew
+  no dot at all — a missing swatch reads as "this product has no colours",
+  which is worse than an approximate one.
+
+  Checked longest-first so "dark grey" is not swallowed by "grey", and only for
+  single-colour values: anything with a "/" is a two-tone and is handled below,
+  where it becomes a real stripe rather than one of its halves.
+{%- endcomment -%}
+{%- unless v contains '/' -%}
+  {%- liquid
+    assign probe_list = 'dark grey|dark gray|aluminium|transparent|silver|purple|orange|yellow|black|brown|clear|green|white|navy|blue|grey|gray|gold|pink|red' | split: '|'
+    for p in probe_list
+      if fill == blank and v contains p
+        case p
+          when 'black'
+            assign fill = '#1a1a1a'
+          when 'white'
+            assign fill = '#ffffff'
+          when 'orange'
+            assign fill = '#df3c22'
+          when 'brown'
+            assign fill = '#6b4423'
+          when 'red'
+            assign fill = '#c0392b'
+          when 'blue'
+            assign fill = '#2b5cb8'
+          when 'navy'
+            assign fill = '#1f2d5a'
+          when 'green'
+            assign fill = '#2e7d32'
+          when 'yellow'
+            assign fill = '#e8b800'
+          when 'dark grey', 'dark gray'
+            assign fill = '#4d4d4d'
+          when 'grey', 'gray'
+            assign fill = '#8a8a8a'
+          when 'silver', 'aluminium'
+            assign fill = '#c7c7c7'
+          when 'gold'
+            assign fill = '#c9a227'
+          when 'pink'
+            assign fill = '#e35b8f'
+          when 'purple'
+            assign fill = '#7b4bb8'
+          when 'clear', 'transparent'
+            assign fill = 'linear-gradient(135deg,#eee 25%,#fff 25% 50%,#eee 50% 75%,#fff 75%)'
+        endcase
+      endif
+    endfor
+  -%}
+{%- endunless -%}
+
+{%- if fill == blank and v contains '/' -%}
+  {%- liquid
+    assign stripped = v | remove: ' left' | remove: ' right' | replace: ' / ', '/' | replace: '/ ', '/' | replace: ' /', '/' | strip
+    assign halves = stripped | split: '/'
+  -%}
+  {%- if halves.size == 2 -%}
+    {%- liquid
+      assign c1 = ''
+      assign c2 = ''
+      for half in halves
+        assign h = half | strip
+        assign resolved = ''
+        if h contains 'black'
+          assign resolved = '#1a1a1a'
+        elsif h contains 'white'
+          assign resolved = '#ffffff'
+        elsif h contains 'yellow'
+          assign resolved = '#e8b800'
+        elsif h contains 'red'
+          assign resolved = '#c0392b'
+        elsif h contains 'green'
+          assign resolved = '#2e7d32'
+        elsif h contains 'orange' or h contains 'fluro'
+          assign resolved = '#ff6a1a'
+        else
+          assign first_letter = h | slice: 0
+          case first_letter
+            when 'b'
+              assign resolved = '#1a1a1a'
+            when 'w'
+              assign resolved = '#ffffff'
+            when 'y'
+              assign resolved = '#e8b800'
+            when 'r'
+              assign resolved = '#c0392b'
+            when 'g'
+              assign resolved = '#2e7d32'
+            when 'o'
+              assign resolved = '#ff6a1a'
+          endcase
+        endif
+        if forloop.first
+          assign c1 = resolved
+        else
+          assign c2 = resolved
+        endif
+      endfor
+      # STRIPE DIRECTION IS THE DIFFERENCE, so it has to be drawn.
+      #
+      # "R/Y Left" and "R/Y Right" are two different tapes - the hazard stripe
+      # runs the other way. Both had " left"/" right" stripped before the
+      # gradient was built, so they produced the SAME 45deg swatch and the
+      # colour row showed what looked like duplicated chips. Class 2 reflective
+      # had three such pairs, Class 1 had two.
+      #
+      # Mirroring the angle draws the actual difference instead of hiding it,
+      # which is also what the tape looks like on the roll.
+      # Angles were the wrong way round. In CSS the stripe bands run
+      # PERPENDICULAR to the gradient line, so 45deg draws "\" and 135deg
+      # draws "/" - the opposite of what reading the number suggests. "Left"
+      # therefore needs 135deg and "Right" 45deg.
+      assign stripe_angle = '135deg'
+      if v contains 'right'
+        assign stripe_angle = '45deg'
+      endif
+      if c1 != blank and c2 != blank
+        assign fill = 'repeating-linear-gradient(' | append: stripe_angle | append: ', ' | append: c1 | append: ' 0 7px, ' | append: c2 | append: ' 7px 14px)'
+      endif
+    -%}
+  {%- endif -%}
+{%- endif -%}
+{{- fill -}}

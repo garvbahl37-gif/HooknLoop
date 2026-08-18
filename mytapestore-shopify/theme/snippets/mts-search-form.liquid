@@ -1,0 +1,41 @@
+{%- comment -%}
+  Search box with the live "categories then products" dropdown, ported from the
+  SearchBox component in Header.jsx. The React version searched a local catalog
+  array; here the suggestions come from Shopify's Predictive Search API, which
+  returns both collections and products — the same two groups the panel shows.
+
+  The panel markup is built by mts-theme.js so it can re-render per keystroke;
+  this snippet ships the form and the empty container.
+
+  Params: in_drawer (bool) — the drawer instance needs its own ids.
+{%- endcomment -%}
+{%- liquid
+  assign uid = 'mts-search'
+  assign placeholder = 'general.search.placeholder' | t
+  if in_drawer
+    assign uid = 'mts-search-drawer'
+    assign placeholder = 'Search tapes…'
+  endif
+-%}
+<div class="search-ac" data-mts-search>
+  <form class="hd-search" role="search" action="{{ routes.search_url }}" method="get">
+    {% render 'mts-icon', name: 'search', size: 19, class: 'hd-search__pre' %}
+    <input
+      id="{{ uid }}"
+      type="search"
+      name="q"
+      value="{{ search.terms | escape }}"
+      aria-label="Search products"
+      placeholder="{{ placeholder | escape }}"
+      role="combobox"
+      aria-expanded="false"
+      aria-autocomplete="list"
+      aria-controls="{{ uid }}-panel"
+      autocomplete="off"
+      data-mts-search-input>
+    <input type="hidden" name="options[prefix]" value="last">
+    <button class="hd-search__btn" type="submit">{{ 'general.search.submit' | t }}</button>
+  </form>
+
+  <div class="search-ac__panel" id="{{ uid }}-panel" role="listbox" data-mts-search-panel hidden></div>
+</div>

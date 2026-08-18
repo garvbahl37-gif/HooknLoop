@@ -1,0 +1,2509 @@
+[
+  {
+    "handle": "double-sided-pe-foam-tape",
+    "title": "Double-Sided PE Foam Tape",
+    "shopify_media": 1,
+    "variants": 16,
+    "variants_linked": 0,
+    "old_variations_with_image": 16,
+    "missing_images": {}
+  },
+  {
+    "handle": "high-bond-acrylic-tape-clear",
+    "title": "Ultra High Bond Acrylic Foam Tape D/Sided \u2013 Clear",
+    "shopify_media": 5,
+    "variants": 14,
+    "variants_linked": 5,
+    "old_variations_with_image": 14,
+    "missing_images": {
+      "806": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/09/806-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "0-5mm-thick-x-6mm-x-33m",
+            "color": "clear"
+          },
+          {
+            "choose-your-size": "0-5mm-thick-x-9mm-x-33m",
+            "color": "clear"
+          },
+          {
+            "choose-your-size": "0-5mm-thick-x-24mm-x-33m",
+            "color": "clear"
+          },
+          {
+            "choose-your-size": "1mm-thick-x-9mm-x-33m",
+            "color": "clear"
+          },
+          {
+            "choose-your-size": "1mm-thick-x-18mm-x-33m",
+            "color": "clear"
+          },
+          {
+            "choose-your-size": "1mm-thick-x-24mm-x-33m",
+            "color": "clear"
+          }
+        ]
+      },
+      "801": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/09/801-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "0-5mm-thick-x-12mm-x-33m",
+            "color": "clear"
+          },
+          {
+            "choose-your-size": "0-5mm-thick-x-36mm-x-33m",
+            "color": "clear"
+          },
+          {
+            "choose-your-size": "1mm-thick-x-36mm-x-33m",
+            "color": "clear"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "double-sided-carpet-tape",
+    "title": "Carpet Tape Double Sided",
+    "shopify_media": 9,
+    "variants": 12,
+    "variants_linked": 11,
+    "old_variations_with_image": 12,
+    "missing_images": {
+      "216": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/216-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "12mm-x-25m",
+            "color": "brown"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "white-double-sided-polyester-tape",
+    "title": "White Double Sided Polyester Tape",
+    "shopify_media": 6,
+    "variants": 7,
+    "variants_linked": 6,
+    "old_variations_with_image": 7,
+    "missing_images": {
+      "232": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/232-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "06mm-x-33m",
+            "color": "white"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "double-sided-black-butyl-tape",
+    "title": "Double-Sided Butyl Tape \u2013 Kikusui",
+    "shopify_media": 5,
+    "variants": 5,
+    "variants_linked": 4,
+    "old_variations_with_image": 5,
+    "missing_images": {
+      "261": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/261-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "36mm-x-15m",
+            "color": "black"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "pvc-nitrile-foam-tape",
+    "title": "PVC Nitrile Foam Tape-Single Sided (Black)",
+    "shopify_media": 4,
+    "variants": 19,
+    "variants_linked": 8,
+    "old_variations_with_image": 19,
+    "missing_images": {
+      "5": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/5-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "12mm-thick-x-36mm-x-5-5m",
+            "color": "black"
+          },
+          {
+            "choose-your-size": "9mm-thick-x-36mm-x-6m",
+            "color": "black"
+          },
+          {
+            "choose-your-size": "6mm-thick-x-36mm-x-12m",
+            "color": "black"
+          },
+          {
+            "choose-your-size": "3mm-thick-x-36mm-x-24m",
+            "color": "black"
+          }
+        ]
+      },
+      "3": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/3-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "12mm-thick-x-18mm-x-5-5m",
+            "color": "black"
+          },
+          {
+            "choose-your-size": "9mm-thick-x-18mm-x-6m",
+            "color": "black"
+          },
+          {
+            "choose-your-size": "6mm-thick-x-18mm-x-12m",
+            "color": "black"
+          },
+          {
+            "choose-your-size": "3mm-thick-x-18mm-x-24m",
+            "color": "black"
+          }
+        ]
+      },
+      "7": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/7-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "9mm-thick-x-12mm-x-6m",
+            "color": "black"
+          },
+          {
+            "choose-your-size": "6mm-thick-x-12mm-x-12m",
+            "color": "black"
+          },
+          {
+            "choose-your-size": "3mm-thick-x-12mm-x-24m",
+            "color": "black"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "silicone-kraft-paper-tapes",
+    "title": "Silicone Kraft Paper Tape \u2013 Brown",
+    "shopify_media": 2,
+    "variants": 4,
+    "variants_linked": 1,
+    "old_variations_with_image": 4,
+    "missing_images": {
+      "17": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/17-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "24mm-x-50m",
+            "color": "brown"
+          }
+        ]
+      },
+      "117": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/117-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "48mm-x-50m",
+            "color": "brown"
+          },
+          {
+            "choose-your-size": "72mm-x-50m",
+            "color": "brown"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "eco-friendly-kraft-paper-tape-printed",
+    "title": "Eco Friendly Kraft Paper Tape Printed 50mm x 50m",
+    "shopify_media": 1,
+    "variants": 1,
+    "variants_linked": 0,
+    "old_variations_with_image": 1,
+    "missing_images": {}
+  },
+  {
+    "handle": "general-purpose-masking-tape",
+    "title": "General Purpose Masking Tape",
+    "shopify_media": 3,
+    "variants": 6,
+    "variants_linked": 3,
+    "old_variations_with_image": 6,
+    "missing_images": {
+      "120-1": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/120-1-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "12mm-x-50m",
+            "color": "white"
+          },
+          {
+            "choose-your-size": "18mm-x-50m",
+            "color": "white"
+          }
+        ]
+      },
+      "129": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/129-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "24mm-x-50m",
+            "color": "white"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "white-automotive-masking-tapes",
+    "title": "White Automotive Painters Masking Tape",
+    "shopify_media": 3,
+    "variants": 3,
+    "variants_linked": 1,
+    "old_variations_with_image": 3,
+    "missing_images": {
+      "120": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/120-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "25mm-x-50m",
+            "color": "white"
+          }
+        ]
+      },
+      "146": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/146-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "50mm-x-50m",
+            "color": "white"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "14-day-premium-masking-tape",
+    "title": "Coloured Painters Masking Tape \u2013 14 Days Removal",
+    "shopify_media": 2,
+    "variants": 3,
+    "variants_linked": 2,
+    "old_variations_with_image": 3,
+    "missing_images": {
+      "171-1": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/171-1-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "38mm-x-50m",
+            "color": "blue"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "7-day-premium-masking-tape",
+    "title": "Yellow Painters Masking Tape \u2013 7 Days Removal",
+    "shopify_media": 3,
+    "variants": 3,
+    "variants_linked": 2,
+    "old_variations_with_image": 3,
+    "missing_images": {
+      "100": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/100-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "50mm-x-50m",
+            "color": "yellow"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "protection-tape",
+    "title": "PE Protection Tape- Black x 66m",
+    "shopify_media": 1,
+    "variants": 5,
+    "variants_linked": 0,
+    "old_variations_with_image": 5,
+    "missing_images": {
+      "549": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/549-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "24mm-x-66m",
+            "color": "black"
+          },
+          {
+            "choose-your-size": "36mm-x-66m",
+            "color": "black"
+          },
+          {
+            "choose-your-size": "48mm-x-66m",
+            "color": "black"
+          },
+          {
+            "choose-your-size": "72mm-x-66m",
+            "color": "black"
+          },
+          {
+            "choose-your-size": "96mm-x-66m",
+            "color": "black"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "flashing-tape",
+    "title": "Butyl Waterproof Flashing Tape",
+    "shopify_media": 2,
+    "variants": 3,
+    "variants_linked": 0,
+    "old_variations_with_image": 3,
+    "missing_images": {}
+  },
+  {
+    "handle": "reinforced-flashing-tape",
+    "title": "Reinforced Flashing Tape",
+    "shopify_media": 2,
+    "variants": 3,
+    "variants_linked": 0,
+    "old_variations_with_image": 3,
+    "missing_images": {
+      "185": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/185-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "48mm-x-4-5m",
+            "color": "silver"
+          },
+          {
+            "choose-your-size": "72mm-x-4-5m",
+            "color": "silver"
+          },
+          {
+            "choose-your-size": "150mm-x-4-5m",
+            "color": "silver"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "glass-reinforced-mylar",
+    "title": "Mylar Tape \u2013 Glass Reinforeced",
+    "shopify_media": 1,
+    "variants": 4,
+    "variants_linked": 0,
+    "old_variations_with_image": 4,
+    "missing_images": {}
+  },
+  {
+    "handle": "fineline-masking-tape",
+    "title": "Fine Line Masking Tape",
+    "shopify_media": 1,
+    "variants": 1,
+    "variants_linked": 0,
+    "old_variations_with_image": 1,
+    "missing_images": {
+      "795": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/795-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "66mm-x-33m",
+            "color": "blue"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "double-sided-polypropylene-tape",
+    "title": "Double Sided Polypropylene Tape",
+    "shopify_media": 5,
+    "variants": 8,
+    "variants_linked": 6,
+    "old_variations_with_image": 8,
+    "missing_images": {
+      "253": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/253-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "12mm-x-25m",
+            "color": "yellow"
+          },
+          {
+            "choose-your-size": "18mm-x-25m",
+            "color": "yellow"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "double-sided-premium-tissue-tape",
+    "title": "Double-Sided Kikusui Tissue Tape",
+    "shopify_media": 1,
+    "variants": 8,
+    "variants_linked": 0,
+    "old_variations_with_image": 8,
+    "missing_images": {
+      "19018-600x600.png": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/19018-600x600.png.webp",
+        "variations": [
+          {
+            "choose-your-size": "06mm-x-50m",
+            "color": "white"
+          },
+          {
+            "choose-your-size": "09mm-x-50m",
+            "color": "white"
+          },
+          {
+            "choose-your-size": "12mm-x-50m",
+            "color": "white"
+          },
+          {
+            "choose-your-size": "18mm-x-50m",
+            "color": "white"
+          },
+          {
+            "choose-your-size": "24mm-x-50m",
+            "color": "white"
+          },
+          {
+            "choose-your-size": "36mm-x-50m",
+            "color": "white"
+          },
+          {
+            "choose-your-size": "48mm-x-50m",
+            "color": "white"
+          },
+          {
+            "choose-your-size": "72mm-x-50m",
+            "color": "white"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "double-sided-differential-adhesive-tape",
+    "title": "Removable Double-Sided Tape/Differential Adhesive",
+    "shopify_media": 4,
+    "variants": 6,
+    "variants_linked": 4,
+    "old_variations_with_image": 6,
+    "missing_images": {
+      "299": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/299-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "18mm-x-50m",
+            "color": "white"
+          },
+          {
+            "choose-your-size": "24mm-x-50m",
+            "color": "white"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "polyimide-film-kapton-tape",
+    "title": "Polyimide Film Tape | Kapton Tape",
+    "shopify_media": 1,
+    "variants": 4,
+    "variants_linked": 0,
+    "old_variations_with_image": 4,
+    "missing_images": {}
+  },
+  {
+    "handle": "biodegradable-packaging-tape",
+    "title": "Natural Rubber Packaging Tape 48mm x 50m",
+    "shopify_media": 1,
+    "variants": 1,
+    "variants_linked": 0,
+    "old_variations_with_image": 1,
+    "missing_images": {}
+  },
+  {
+    "handle": "polyethylene-foam-tape",
+    "title": "Polyethylene (PE) Foam Tape",
+    "shopify_media": 2,
+    "variants": 21,
+    "variants_linked": 14,
+    "old_variations_with_image": 21,
+    "missing_images": {
+      "322": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/09/322-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "10mm-thick-x-18mm-x-6m",
+            "color": "grey"
+          },
+          {
+            "choose-your-size": "10mm-thick-x-12mm-x-6m",
+            "color": "grey"
+          },
+          {
+            "choose-your-size": "5mm-thick-x-12mm-x-15m",
+            "color": "grey"
+          },
+          {
+            "choose-your-size": "5mm-thick-x-6mm-x-15m",
+            "color": "grey"
+          },
+          {
+            "choose-your-size": "5mm-thick-x-12mm-x-12m",
+            "color": "grey"
+          },
+          {
+            "choose-your-size": "3mm-thick-x-12mm-x-20m",
+            "color": "grey"
+          },
+          {
+            "choose-your-size": "3mm-thick-x-6mm-x-20m",
+            "color": "grey"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "economy-packaging-tape-brown",
+    "title": "Economy Packaging Tape Brown / White 48mm x 72m",
+    "shopify_media": 2,
+    "variants": 2,
+    "variants_linked": 1,
+    "old_variations_with_image": 2,
+    "missing_images": {
+      "509": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/509-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "48mm-x-72m",
+            "color": "brown"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "gaffer-tape",
+    "title": "Gaffer Tape | Gaffa Tape",
+    "shopify_media": 8,
+    "variants": 7,
+    "variants_linked": 3,
+    "old_variations_with_image": 7,
+    "missing_images": {
+      "355-1": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/355-1-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "48mm-x-55m",
+            "color": "white"
+          }
+        ]
+      },
+      "43": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/43-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "24mm-x-40m",
+            "color": "black"
+          },
+          {
+            "choose-your-size": "48mm-x-40m",
+            "color": "black"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "polyurethane-foam-tape",
+    "title": "Polyurethane(PU) Foam Tape \u2013 Single Sided",
+    "shopify_media": 1,
+    "variants": 4,
+    "variants_linked": 0,
+    "old_variations_with_image": 4,
+    "missing_images": {}
+  },
+  {
+    "handle": "clear-packaging-tape",
+    "title": "Clear Packaging Tape 48mm x 1000m",
+    "shopify_media": 1,
+    "variants": 1,
+    "variants_linked": 0,
+    "old_variations_with_image": 1,
+    "missing_images": {}
+  },
+  {
+    "handle": "coloured-electrical-tape",
+    "title": "Coloured PVC Electrical Tape \u2013 Pack of 10",
+    "shopify_media": 1,
+    "variants": 1,
+    "variants_linked": 0,
+    "old_variations_with_image": 1,
+    "missing_images": {
+      "7-1": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/7-1-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "18mm-x-20m"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "anti-slip-tread-tape",
+    "title": "Anti Slip Tape, Non Slip Adhesive Tape",
+    "shopify_media": 15,
+    "variants": 20,
+    "variants_linked": 18,
+    "old_variations_with_image": 20,
+    "missing_images": {
+      "400": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/400-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "50mm-x-18m",
+            "color": "silver"
+          }
+        ]
+      },
+      "403": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/403-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "50mm-x-18m",
+            "color": "white"
+          }
+        ]
+      },
+      "396-1": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/396-1-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "50mm-x-18m",
+            "color": "black-yellow"
+          }
+        ]
+      },
+      "394": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/394-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "150mm-x-18m",
+            "color": "black-yellow"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "reverse-wound-acid-free-tissue-tape",
+    "title": "Reverse Wound Acid Free Tissue Tape",
+    "shopify_media": 1,
+    "variants": 1,
+    "variants_linked": 0,
+    "old_variations_with_image": 1,
+    "missing_images": {
+      "355": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/355-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "12mm-x-25m",
+            "color": "white"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "reverse-wound-tissue-tape",
+    "title": "Reverse Wound Tissue Tape",
+    "shopify_media": 1,
+    "variants": 4,
+    "variants_linked": 0,
+    "old_variations_with_image": 4,
+    "missing_images": {
+      "355": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/355-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "06mm-x-25m",
+            "color": "white"
+          },
+          {
+            "choose-your-size": "09mm-x-25m",
+            "color": "white"
+          },
+          {
+            "choose-your-size": "12mm-x-25m",
+            "color": "white"
+          },
+          {
+            "choose-your-size": "18mm-x-25m",
+            "color": "white"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "class-2-reflective-tape",
+    "title": "Reflective Tape Class 2",
+    "shopify_media": 9,
+    "variants": 18,
+    "variants_linked": 14,
+    "old_variations_with_image": 18,
+    "missing_images": {
+      "untitled-3": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/Untitled-3-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "72mm-x-45m",
+            "colors": "r-y-right"
+          },
+          {
+            "choose-your-size": "48mm-x-45m",
+            "colors": "r-y-right"
+          }
+        ]
+      },
+      "untitled-1": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/Untitled-1-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "72mm-x-45m",
+            "colors": "w-r-right"
+          },
+          {
+            "choose-your-size": "48mm-x-45m",
+            "colors": "w-r-right"
+          }
+        ]
+      },
+      "untitled-2": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/Untitled-2-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "72mm-x-45m",
+            "colors": "b-y-right"
+          },
+          {
+            "choose-your-size": "48mm-x-45m",
+            "colors": "b-y-right"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "class-1-reflective-tape",
+    "title": "Reflective Tape \u2013 Class 1 High Intensity Grade",
+    "shopify_media": 7,
+    "variants": 7,
+    "variants_linked": 5,
+    "old_variations_with_image": 7,
+    "missing_images": {
+      "482": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/482-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "48mm-x-45m",
+            "colors": "white"
+          }
+        ]
+      },
+      "463": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/463-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "48mm-x-45m",
+            "colors": "b-y-left"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "class-1-reflective-tape-prismatic-grade",
+    "title": "High-Visibility Reflective Tape- Class 1 Prismatic Grade",
+    "shopify_media": 4,
+    "variants": 12,
+    "variants_linked": 9,
+    "old_variations_with_image": 12,
+    "missing_images": {
+      "399": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/399-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "48mm-x-45m",
+            "colors": "red"
+          },
+          {
+            "choose-your-size": "72mm-x-45m",
+            "colors": "red"
+          },
+          {
+            "choose-your-size": "48mm-x-5m",
+            "colors": "red"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "fibreglass-cloth-insulation-tape",
+    "title": "Fibreglass Cloth Insulation Tape",
+    "shopify_media": 1,
+    "variants": 5,
+    "variants_linked": 0,
+    "old_variations_with_image": 5,
+    "missing_images": {}
+  },
+  {
+    "handle": "pvc-packaging-tape",
+    "title": "PVC Film Packaging Tape",
+    "shopify_media": 12,
+    "variants": 13,
+    "variants_linked": 10,
+    "old_variations_with_image": 13,
+    "missing_images": {
+      "523-2": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/523-2-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "12mm-x-66m",
+            "color": "red"
+          }
+        ]
+      },
+      "520": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/520-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "12mm-x-66m",
+            "color": "green"
+          }
+        ]
+      },
+      "528": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/528-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "12mm-x-66m",
+            "color": "yellow"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "fragile-packing-tape",
+    "title": "Fragile Packing Tape- 48mm x 66m Red",
+    "shopify_media": 1,
+    "variants": 1,
+    "variants_linked": 0,
+    "old_variations_with_image": 1,
+    "missing_images": {}
+  },
+  {
+    "handle": "reinforced-foil-tape",
+    "title": "Reinforced Foil Tape",
+    "shopify_media": 7,
+    "variants": 4,
+    "variants_linked": 0,
+    "old_variations_with_image": 4,
+    "missing_images": {}
+  },
+  {
+    "handle": "acribond-accessories-hand-pads",
+    "title": "Acribond \u2013 Hand Sanding Pads",
+    "shopify_media": 1,
+    "variants": 1,
+    "variants_linked": 0,
+    "old_variations_with_image": 2,
+    "missing_images": {
+      "705": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/09/705-600x600.jpg",
+        "variations": [
+          {
+            "weight": "350gms"
+          }
+        ]
+      },
+      "706": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/706-600x600.jpg",
+        "variations": [
+          {
+            "weight": "4-litre"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "desk-tapes-dispenser",
+    "title": "Desk Tapes Dispenser",
+    "shopify_media": 1,
+    "variants": 1,
+    "variants_linked": 0,
+    "old_variations_with_image": 2,
+    "missing_images": {
+      "712": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/712-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "38m-x-50m",
+            "color": "blue"
+          },
+          {
+            "choose-your-size": "50m-x-50m",
+            "color": "blue"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "clamp-on-bench-dispenser",
+    "title": "Clamp On Bench Dispenser",
+    "shopify_media": 1,
+    "variants": 1,
+    "variants_linked": 0,
+    "old_variations_with_image": 2,
+    "missing_images": {
+      "712": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/712-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "38m-x-50m",
+            "color": "blue"
+          },
+          {
+            "choose-your-size": "50m-x-50m",
+            "color": "blue"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "tear-drop-dispenser-metal",
+    "title": "Tear Drop Dispenser Metal",
+    "shopify_media": 1,
+    "variants": 2,
+    "variants_linked": 0,
+    "old_variations_with_image": 2,
+    "missing_images": {}
+  },
+  {
+    "handle": "metal-desk-dispenser",
+    "title": "Metal Desk Dispenser",
+    "shopify_media": 1,
+    "variants": 1,
+    "variants_linked": 0,
+    "old_variations_with_image": 2,
+    "missing_images": {
+      "712": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/712-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "38m-x-50m",
+            "color": "blue"
+          },
+          {
+            "choose-your-size": "50m-x-50m",
+            "color": "blue"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "glue-dots-permanent-adhesive",
+    "title": "Glue Dots Permanent Adhesive (5000 Dots)",
+    "shopify_media": 1,
+    "variants": 1,
+    "variants_linked": 0,
+    "old_variations_with_image": 1,
+    "missing_images": {}
+  },
+  {
+    "handle": "h11-cp-pistol-grip-dispenser-50mm",
+    "title": "H11/CP Pistol Grip Dispenser 50mm",
+    "shopify_media": 1,
+    "variants": 1,
+    "variants_linked": 0,
+    "old_variations_with_image": 2,
+    "missing_images": {
+      "712": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/712-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "38m-x-50m",
+            "color": "blue"
+          },
+          {
+            "choose-your-size": "50m-x-50m",
+            "color": "blue"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "high-bond-acrylic-tape-white",
+    "title": "Ultra High Bond Acrylic Foam Tape D/Sided- White",
+    "shopify_media": 5,
+    "variants": 14,
+    "variants_linked": 0,
+    "old_variations_with_image": 14,
+    "missing_images": {
+      "805": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/09/805-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "1-1mm-thick-x-6mm-x-33m",
+            "color": "white"
+          }
+        ]
+      },
+      "783": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/09/783-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "1-1mm-thick-x-9mm-x-33m",
+            "color": "white"
+          },
+          {
+            "choose-your-size": "2mm-thick-x-9mm-x-16-5m",
+            "color": "white"
+          }
+        ]
+      },
+      "790": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/09/790-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "1-1mm-thick-x-12mm-x-33m",
+            "color": "white"
+          },
+          {
+            "choose-your-size": "1-1mm-thick-x-18mm-x-33m",
+            "color": "white"
+          },
+          {
+            "choose-your-size": "2mm-thick-x-12mm-x-16-5m",
+            "color": "white"
+          },
+          {
+            "choose-your-size": "2mm-thick-x-18mm-x-16-5m",
+            "color": "white"
+          }
+        ]
+      },
+      "801": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/09/801-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "1-1mm-thick-x-24mm-x-33m",
+            "color": "white"
+          },
+          {
+            "choose-your-size": "1-1mm-thick-x-36mm-x-33m",
+            "color": "white"
+          },
+          {
+            "choose-your-size": "2mm-thick-x-24mm-x-16-5m",
+            "color": "white"
+          },
+          {
+            "choose-your-size": "2mm-thick-x-36mm-x-16-5m",
+            "color": "white"
+          }
+        ]
+      },
+      "787": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/09/787-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "1-1mm-thick-x-48mm-x-33m",
+            "color": "white"
+          },
+          {
+            "choose-your-size": "2mm-thick-x-48mm-x-16-5m",
+            "color": "white"
+          }
+        ]
+      },
+      "789": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/09/789-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "2mm-thick-x-6mm-x-16-5m",
+            "color": "white"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "high-bond-acrylic-tape-grey",
+    "title": "Ultra High Bond Acrylic Foam Tape D/Sided- Grey",
+    "shopify_media": 5,
+    "variants": 21,
+    "variants_linked": 0,
+    "old_variations_with_image": 21,
+    "missing_images": {
+      "635-1": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/635-1-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "2mm-thick-x-48mm-x-16-5m",
+            "color": "silver"
+          },
+          {
+            "choose-your-size": "2mm-thick-x-36mm-x-16-5m",
+            "color": "silver"
+          },
+          {
+            "choose-your-size": "2mm-thick-x-24mm-x-16-5m",
+            "color": "silver"
+          },
+          {
+            "choose-your-size": "2mm-thick-x-18mm-x-16-5m",
+            "color": "silver"
+          },
+          {
+            "choose-your-size": "2mm-thick-x-12mm-x-16-5m",
+            "color": "silver"
+          },
+          {
+            "choose-your-size": "2mm-thick-x-9mm-x-16-5m",
+            "color": "silver"
+          },
+          {
+            "choose-your-size": "2mm-thick-x-6mm-x-16-5m",
+            "color": "silver"
+          },
+          {
+            "choose-your-size": "1-1mm-thick-x-48mm-x-33m",
+            "color": "silver"
+          },
+          {
+            "choose-your-size": "1-1mm-thick-x-36mm-x-33m",
+            "color": "silver"
+          },
+          {
+            "choose-your-size": "1-1mm-thick-x-24mm-x-33m",
+            "color": "silver"
+          },
+          {
+            "choose-your-size": "1-1mm-thick-x-18mm-x-33m",
+            "color": "silver"
+          },
+          {
+            "choose-your-size": "1-1mm-thick-x-12mm-x-33m",
+            "color": "silver"
+          },
+          {
+            "choose-your-size": "1-1mm-thick-x-9mm-x-33m",
+            "color": "silver"
+          },
+          {
+            "choose-your-size": "1-1mm-thick-x-6mm-x-33m",
+            "color": "silver"
+          },
+          {
+            "choose-your-size": "0-8mm-thick-x-48mm-x-66m",
+            "color": "silver"
+          },
+          {
+            "choose-your-size": "0-8mm-thick-x-36mm-x-66m",
+            "color": "silver"
+          },
+          {
+            "choose-your-size": "0-8mm-thick-x-24mm-x-66m",
+            "color": "silver"
+          },
+          {
+            "choose-your-size": "0-8mm-thick-x-18mm-x-66m",
+            "color": "silver"
+          },
+          {
+            "choose-your-size": "0-8mm-thick-x-12mm-x-66m",
+            "color": "silver"
+          },
+          {
+            "choose-your-size": "0-8mm-thick-x-6mm-x-66m",
+            "color": "silver"
+          },
+          {
+            "choose-your-size": "0-8mm-thick-x-9mm-x-66m",
+            "color": "silver"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "barrier-warning-tape",
+    "title": "Barrier Warning Tape- 4 Colours 75mm x 100m",
+    "shopify_media": 4,
+    "variants": 4,
+    "variants_linked": 3,
+    "old_variations_with_image": 4,
+    "missing_images": {
+      "537": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/537-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "75mm-x-100m",
+            "colors": "y-b"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "plain-foil-tape",
+    "title": "Plain Foil Tape",
+    "shopify_media": 3,
+    "variants": 5,
+    "variants_linked": 0,
+    "old_variations_with_image": 5,
+    "missing_images": {
+      "siver": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/siver-600x600.png",
+        "variations": [
+          {
+            "choose-your-size": "48mm-x-50m",
+            "color": "silver-2"
+          },
+          {
+            "choose-your-size": "72mm-x-50m",
+            "color": "silver-2"
+          },
+          {
+            "choose-your-size": "96mm-x-50m",
+            "color": "silver-2"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "felt-tapes-permanent-adhesive",
+    "title": "Felt Tape",
+    "shopify_media": 7,
+    "variants": 9,
+    "variants_linked": 8,
+    "old_variations_with_image": 9,
+    "missing_images": {
+      "632": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/632-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "3mm-thick-x-48mm-x-22m",
+            "color": "black"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "black-strapping-tape",
+    "title": "Strapping Tape-Black 18mm x 66m",
+    "shopify_media": 1,
+    "variants": 1,
+    "variants_linked": 0,
+    "old_variations_with_image": 1,
+    "missing_images": {
+      "549-1": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/549-1-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "18mm-x-66m",
+            "color": "black"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "utility-grade-filament-tapes",
+    "title": "Utility Grade Filament Tape",
+    "shopify_media": 1,
+    "variants": 6,
+    "variants_linked": 0,
+    "old_variations_with_image": 6,
+    "missing_images": {}
+  },
+  {
+    "handle": "structural-glazing-tape",
+    "title": "Structural Glazing Tape \u2013 High Density Closed Cell",
+    "shopify_media": 5,
+    "variants": 15,
+    "variants_linked": 1,
+    "old_variations_with_image": 15,
+    "missing_images": {
+      "645": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/645-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "5-0mm-thick-x-24mm-x-15m",
+            "color": "grey"
+          },
+          {
+            "choose-your-size": "5-0mm-thick-x-18mm-x-15m",
+            "color": "grey"
+          },
+          {
+            "choose-your-size": "3-0mm-thick-x-24mm-x-20m",
+            "color": "grey"
+          },
+          {
+            "choose-your-size": "3-0mm-thick-x-18mm-x-20m",
+            "color": "grey"
+          },
+          {
+            "choose-your-size": "1-5mm-thick-x-24mm-x-33m",
+            "color": "grey"
+          },
+          {
+            "choose-your-size": "1-5mm-thick-x-18mm-x-33m",
+            "color": "grey"
+          }
+        ]
+      },
+      "644": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/644-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "5-0mm-thick-x-12mm-x-15m",
+            "color": "grey"
+          },
+          {
+            "choose-your-size": "3-0mm-thick-x-12mm-x-20m",
+            "color": "grey"
+          },
+          {
+            "choose-your-size": "1-5mm-thick-x-12mm-x-33m",
+            "color": "grey"
+          }
+        ]
+      },
+      "643": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/643-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "5-0mm-thick-x-9mm-x-15m",
+            "color": "grey"
+          },
+          {
+            "choose-your-size": "3-0mm-thick-x-9mm-x-20m",
+            "color": "grey"
+          },
+          {
+            "choose-your-size": "1-5mm-thick-x-9mm-x-33m",
+            "color": "grey"
+          }
+        ]
+      },
+      "646": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/646-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "5-0mm-thick-x-6mm-x-15m",
+            "color": "grey"
+          },
+          {
+            "choose-your-size": "3-0mm-thick-x-6mm-x-20m",
+            "color": "grey"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "premium-strapping-tapes",
+    "title": "Premium Strapping Tape in 5 Sizes x 66m",
+    "shopify_media": 4,
+    "variants": 5,
+    "variants_linked": 4,
+    "old_variations_with_image": 5,
+    "missing_images": {
+      "549-1": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/549-1-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "12mm-x-66m",
+            "color": "black"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "cross-weave-filament-tapes",
+    "title": "Cross Weave Filament Tape | 2-Way/Bi-Directional",
+    "shopify_media": 5,
+    "variants": 9,
+    "variants_linked": 4,
+    "old_variations_with_image": 9,
+    "missing_images": {
+      "712": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/09/712-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "24mm-x-45m",
+            "color": "white"
+          },
+          {
+            "choose-your-size": "36mm-x-45m",
+            "color": "white"
+          }
+        ]
+      },
+      "714": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/09/714-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "48mm-x-45m",
+            "color": "white"
+          }
+        ]
+      },
+      "598-1": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/598-1-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "6mm-x-45m",
+            "color": "white"
+          },
+          {
+            "choose-your-size": "09mm-x-45m",
+            "color": "white"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "frog-tapes-delicate-surface",
+    "title": "FrogTape \u2013 Delicate Surface Tape",
+    "shopify_media": 1,
+    "variants": 3,
+    "variants_linked": 0,
+    "old_variations_with_image": 3,
+    "missing_images": {}
+  },
+  {
+    "handle": "frog-tapes-multi-surface",
+    "title": "FrogTape \u2013 Multi-Surface Masking Tape",
+    "shopify_media": 1,
+    "variants": 3,
+    "variants_linked": 0,
+    "old_variations_with_image": 3,
+    "missing_images": {}
+  },
+  {
+    "handle": "coloured-polypropylene-packaging-tapes",
+    "title": "Coloured Polypropylene Packing Tape \u2013 48mm x 100m",
+    "shopify_media": 1,
+    "variants": 1,
+    "variants_linked": 0,
+    "old_variations_with_image": 1,
+    "missing_images": {
+      "692": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/09/692-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "48mm-x-100m",
+            "color": "red"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "glue-dots-removable-adhesive",
+    "title": "Glue Dots Removable Adhesive (5000 Dots)",
+    "shopify_media": 1,
+    "variants": 1,
+    "variants_linked": 0,
+    "old_variations_with_image": 1,
+    "missing_images": {
+      "722": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/10/722-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "12mm"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "loop-fastener-adhesive-backed",
+    "title": "Self Adhesive Loop Roll",
+    "shopify_media": 8,
+    "variants": 6,
+    "variants_linked": 0,
+    "old_variations_with_image": 12,
+    "missing_images": {
+      "hookandlooptapemts1": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2022/01/HookandlooptapeMTS1-600x600.png",
+        "variations": [
+          {
+            "choose-your-size": "50mm-x-25m-loop",
+            "color": "white"
+          },
+          {
+            "choose-your-size": "50mm-x-25m-hook",
+            "color": "white"
+          },
+          {
+            "choose-your-size": "25mm-x-25m-loop",
+            "color": "white"
+          },
+          {
+            "choose-your-size": "25mm-x-25m-hook",
+            "color": "white"
+          },
+          {
+            "choose-your-size": "20mm-x-25m-loop",
+            "color": "white"
+          },
+          {
+            "choose-your-size": "20mm-x-25m-hook",
+            "color": "white"
+          },
+          {
+            "choose-your-size": "20mm-x-25m-hook",
+            "color": "black"
+          },
+          {
+            "choose-your-size": "20mm-x-25m-loop",
+            "color": "black"
+          },
+          {
+            "choose-your-size": "25mm-x-25m-hook",
+            "color": "black"
+          },
+          {
+            "choose-your-size": "25mm-x-25m-loop",
+            "color": "black"
+          },
+          {
+            "choose-your-size": "50mm-x-25m-hook",
+            "color": "black"
+          },
+          {
+            "choose-your-size": "50mm-x-25m-loop",
+            "color": "black"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "hook-fastener-non-adhesive",
+    "title": "Sew On Hook Roll, Non Adhesive",
+    "shopify_media": 4,
+    "variants": 4,
+    "variants_linked": 0,
+    "old_variations_with_image": 12,
+    "missing_images": {
+      "untitled-1": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2022/01/Untitled-1-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "100mm-x-25m-loop",
+            "color": "white"
+          },
+          {
+            "choose-your-size": "100mm-x-25m-hook",
+            "color": "white"
+          },
+          {
+            "choose-your-size": "50mm-x-25m-loop",
+            "color": "white"
+          },
+          {
+            "choose-your-size": "50mm-x-25m-hook",
+            "color": "white"
+          },
+          {
+            "choose-your-size": "25mm-x-25m-loop",
+            "color": "white"
+          },
+          {
+            "choose-your-size": "25mm-x-25m-hook",
+            "color": "white"
+          }
+        ]
+      },
+      "untitled-2": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2022/01/Untitled-2-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "100mm-x-25m-loop",
+            "color": "black"
+          },
+          {
+            "choose-your-size": "100mm-x-25m-hook",
+            "color": "black"
+          },
+          {
+            "choose-your-size": "25mm-x-25m-hook",
+            "color": "black"
+          },
+          {
+            "choose-your-size": "25mm-x-25m-loop",
+            "color": "black"
+          },
+          {
+            "choose-your-size": "50mm-x-25m-hook",
+            "color": "black"
+          },
+          {
+            "choose-your-size": "50mm-x-25m-loop",
+            "color": "black"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "loop-fastener-non-adhesive",
+    "title": "Sew On Loop Roll, Non Adhesive",
+    "shopify_media": 5,
+    "variants": 4,
+    "variants_linked": 0,
+    "old_variations_with_image": 12,
+    "missing_images": {
+      "untitled-1": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2022/01/Untitled-1-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "100mm-x-25m-loop",
+            "color": "white"
+          },
+          {
+            "choose-your-size": "100mm-x-25m-hook",
+            "color": "white"
+          },
+          {
+            "choose-your-size": "50mm-x-25m-loop",
+            "color": "white"
+          },
+          {
+            "choose-your-size": "50mm-x-25m-hook",
+            "color": "white"
+          },
+          {
+            "choose-your-size": "25mm-x-25m-loop",
+            "color": "white"
+          },
+          {
+            "choose-your-size": "25mm-x-25m-hook",
+            "color": "white"
+          }
+        ]
+      },
+      "untitled-2": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2022/01/Untitled-2-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "100mm-x-25m-loop",
+            "color": "black"
+          },
+          {
+            "choose-your-size": "100mm-x-25m-hook",
+            "color": "black"
+          },
+          {
+            "choose-your-size": "25mm-x-25m-hook",
+            "color": "black"
+          },
+          {
+            "choose-your-size": "25mm-x-25m-loop",
+            "color": "black"
+          },
+          {
+            "choose-your-size": "50mm-x-25m-hook",
+            "color": "black"
+          },
+          {
+            "choose-your-size": "50mm-x-25m-loop",
+            "color": "black"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "plumbers-thread-seal-tape",
+    "title": "Plumber\u2019s Thread Seal Tape",
+    "shopify_media": 1,
+    "variants": 1,
+    "variants_linked": 0,
+    "old_variations_with_image": 4,
+    "missing_images": {
+      "481": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/481-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "18mm-x-66m",
+            "color": "green"
+          },
+          {
+            "choose-your-size": "24mm-x-66m",
+            "color": "green"
+          }
+        ]
+      },
+      "315": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/315-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "36mm-x-66m",
+            "color": "green"
+          },
+          {
+            "choose-your-size": "48mm-x-66m",
+            "color": "green"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "magnetic-tapes-adhesive-backed",
+    "title": "Magnetic Tapes Adhesive Backed",
+    "shopify_media": 1,
+    "variants": 5,
+    "variants_linked": 0,
+    "old_variations_with_image": 5,
+    "missing_images": {}
+  },
+  {
+    "handle": "stretch-film-dispenser",
+    "title": "Stretch Film Dispenser",
+    "shopify_media": 1,
+    "variants": 1,
+    "variants_linked": 0,
+    "old_variations_with_image": 4,
+    "missing_images": {
+      "481": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/481-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "18mm-x-66m",
+            "color": "green"
+          },
+          {
+            "choose-your-size": "24mm-x-66m",
+            "color": "green"
+          }
+        ]
+      },
+      "315": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/315-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "36mm-x-66m",
+            "color": "green"
+          },
+          {
+            "choose-your-size": "48mm-x-66m",
+            "color": "green"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "stretch-film",
+    "title": "Stretch Film",
+    "shopify_media": 1,
+    "variants": 1,
+    "variants_linked": 0,
+    "old_variations_with_image": 4,
+    "missing_images": {
+      "481": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/481-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "18mm-x-66m",
+            "color": "green"
+          },
+          {
+            "choose-your-size": "24mm-x-66m",
+            "color": "green"
+          }
+        ]
+      },
+      "315": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/315-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "36mm-x-66m",
+            "color": "green"
+          },
+          {
+            "choose-your-size": "48mm-x-66m",
+            "color": "green"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "lane-marking",
+    "title": "Floor Marking Tape Applicator | Line Marking Machine",
+    "shopify_media": 1,
+    "variants": 1,
+    "variants_linked": 0,
+    "old_variations_with_image": 7,
+    "missing_images": {
+      "482": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/482-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "48mm-x-45m",
+            "colors": "white"
+          }
+        ]
+      },
+      "399": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/399-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "48mm-x-45m",
+            "colors": "red"
+          }
+        ]
+      },
+      "475": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/475-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "48mm-x-45m",
+            "colors": "yellow"
+          }
+        ]
+      },
+      "463": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/463-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "48mm-x-45m",
+            "colors": "b-y-left"
+          }
+        ]
+      },
+      "465": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/465-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "48mm-x-45m",
+            "colors": "b-y-right"
+          }
+        ]
+      },
+      "469": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/469-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "48mm-x-45m",
+            "colors": "w-r-left"
+          }
+        ]
+      },
+      "471": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/471-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "48mm-x-45m",
+            "colors": "w-r-right"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "heat-sealer-teflon-coated-tape",
+    "title": "Heat Sealer Tape \u2013 Teflon Coated",
+    "shopify_media": 1,
+    "variants": 4,
+    "variants_linked": 0,
+    "old_variations_with_image": 4,
+    "missing_images": {}
+  },
+  {
+    "handle": "felt-dots",
+    "title": "Felt Dots",
+    "shopify_media": 2,
+    "variants": 2,
+    "variants_linked": 1,
+    "old_variations_with_image": 2,
+    "missing_images": {
+      "523-1": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/523-1-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "3mm-thick-x-16mm-x-22m",
+            "color": "black"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "magnetic-tapes-non-adhesive",
+    "title": "Magnetic Tapes Non Adhesive",
+    "shopify_media": 1,
+    "variants": 5,
+    "variants_linked": 0,
+    "old_variations_with_image": 5,
+    "missing_images": {
+      "770": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/770-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "12mm-x-15m",
+            "color": "white"
+          },
+          {
+            "choose-your-size": "18mm-x-15m",
+            "color": "white"
+          },
+          {
+            "choose-your-size": "24mm-x-15m",
+            "color": "white"
+          },
+          {
+            "choose-your-size": "36mm-x-15m",
+            "color": "white"
+          },
+          {
+            "choose-your-size": "48mm-x-15m",
+            "color": "white"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "danger-tape",
+    "title": "Danger\u2019 Printed Barricade Tape- Red/White 75mm x 100m",
+    "shopify_media": 1,
+    "variants": 1,
+    "variants_linked": 0,
+    "old_variations_with_image": 1,
+    "missing_images": {}
+  },
+  {
+    "handle": "caution-tape",
+    "title": "Caution Printed Barricade Tape- Yellow 75mm x 100m",
+    "shopify_media": 1,
+    "variants": 1,
+    "variants_linked": 0,
+    "old_variations_with_image": 1,
+    "missing_images": {}
+  },
+  {
+    "handle": "h11-cpw-pistol-grip-dispenser-75mm",
+    "title": "H11/CPW Pistol Grip Dispenser 75mm",
+    "shopify_media": 1,
+    "variants": 1,
+    "variants_linked": 0,
+    "old_variations_with_image": 2,
+    "missing_images": {
+      "712": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/08/712-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "38m-x-50m",
+            "color": "blue"
+          },
+          {
+            "choose-your-size": "50m-x-50m",
+            "color": "blue"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "double-sided-exhibition-cloth-tape",
+    "title": "Double Sided Exhibition Cloth Tape",
+    "shopify_media": 9,
+    "variants": 12,
+    "variants_linked": 0,
+    "old_variations_with_image": 12,
+    "missing_images": {
+      "221": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2024/08/221-600x600.webp",
+        "variations": [
+          {
+            "choose-your-size": "96mm-x-25m",
+            "color": "brown"
+          }
+        ]
+      },
+      "220": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2024/08/220-600x600.webp",
+        "variations": [
+          {
+            "choose-your-size": "48mm-x-25m",
+            "color": "brown"
+          },
+          {
+            "choose-your-size": "36mm-x-25m",
+            "color": "brown"
+          }
+        ]
+      },
+      "218": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2024/08/218-600x600.webp",
+        "variations": [
+          {
+            "choose-your-size": "24mm-x-25m",
+            "color": "brown"
+          },
+          {
+            "choose-your-size": "18mm-x-25m",
+            "color": "brown"
+          }
+        ]
+      },
+      "216": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2024/08/216-600x600.webp",
+        "variations": [
+          {
+            "choose-your-size": "12mm-x-25m",
+            "color": "brown"
+          }
+        ]
+      },
+      "210": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2024/08/210-600x600.webp",
+        "variations": [
+          {
+            "choose-your-size": "12mm-x-25m",
+            "color": "white"
+          }
+        ]
+      },
+      "212": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2024/08/212-600x600.webp",
+        "variations": [
+          {
+            "choose-your-size": "18mm-x-25m",
+            "color": "white"
+          },
+          {
+            "choose-your-size": "24mm-x-25m",
+            "color": "white"
+          },
+          {
+            "choose-your-size": "36mm-x-25m",
+            "color": "white"
+          }
+        ]
+      },
+      "214": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2024/08/214-600x600.webp",
+        "variations": [
+          {
+            "choose-your-size": "48mm-x-25m",
+            "color": "white"
+          },
+          {
+            "choose-your-size": "48mm-x-4-5m",
+            "color": "white"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "velcro-hook-loop-sticky-dots",
+    "title": "Velcro\u00ae Sticky Dots Hook & Loop 900/1200 Pcs",
+    "shopify_media": 1,
+    "variants": 8,
+    "variants_linked": 0,
+    "old_variations_with_image": 8,
+    "missing_images": {}
+  },
+  {
+    "handle": "blue-electrical-tape",
+    "title": "Blue PVC Electrical Tape \u2013 Pack of 10",
+    "shopify_media": 1,
+    "variants": 1,
+    "variants_linked": 0,
+    "old_variations_with_image": 1,
+    "missing_images": {
+      "2": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2025/03/2-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "18mm-x-20m",
+            "color": "blue"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "white-electrical-tape",
+    "title": "While PVC Electrical Tape \u2013 Pack of 10",
+    "shopify_media": 1,
+    "variants": 1,
+    "variants_linked": 0,
+    "old_variations_with_image": 1,
+    "missing_images": {
+      "5": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2025/03/5-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "18mm-x-20m",
+            "color": "white"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "black-electrical-tape",
+    "title": "Black PVC Electrical Tape \u2013 Pack of 10",
+    "shopify_media": 1,
+    "variants": 1,
+    "variants_linked": 0,
+    "old_variations_with_image": 1,
+    "missing_images": {
+      "3": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2025/03/3-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "18mm-x-20m",
+            "color": "black"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "red-electrical-tape",
+    "title": "Red PVC Electrical Tape \u2013 Pack of 10",
+    "shopify_media": 1,
+    "variants": 1,
+    "variants_linked": 0,
+    "old_variations_with_image": 1,
+    "missing_images": {
+      "6": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2025/03/6-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "18mm-x-20m",
+            "color": "red"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "yellow-insulation-tape",
+    "title": "Yellow PVC Electrical Tape \u2013 Pack of 10",
+    "shopify_media": 1,
+    "variants": 1,
+    "variants_linked": 0,
+    "old_variations_with_image": 1,
+    "missing_images": {
+      "4": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2025/03/4-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "18mm-x-20m",
+            "color": "yellow"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "green-insulation-tape",
+    "title": "Green PVC Electrical Tape \u2013 Pack of 10",
+    "shopify_media": 1,
+    "variants": 1,
+    "variants_linked": 0,
+    "old_variations_with_image": 1,
+    "missing_images": {
+      "1": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2025/03/1-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "18mm-x-20m",
+            "color": "green"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "pvc-duct-tape-silver",
+    "title": "PVC Duct Tape Silver 48mm x 30m",
+    "shopify_media": 1,
+    "variants": 2,
+    "variants_linked": 0,
+    "old_variations_with_image": 2,
+    "missing_images": {
+      "duct-tape-silver": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2025/04/duct-tape-silver-600x600.png",
+        "variations": [
+          {
+            "choose-your-size": "48mm-x-30m",
+            "color": "silver"
+          },
+          {
+            "choose-your-size": "72mm-x-30m",
+            "color": "silver"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "pvc-duct-tape-black",
+    "title": "PVC Duct Tape Black 48mm x 30m",
+    "shopify_media": 1,
+    "variants": 1,
+    "variants_linked": 0,
+    "old_variations_with_image": 1,
+    "missing_images": {
+      "duct-tape-black": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2025/04/duct-tape-black-600x600.png",
+        "variations": [
+          {
+            "choose-your-size": "48mm-x-30m",
+            "color": "black"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "do-not-enter-tape",
+    "title": "Printed Danger Do Not Enter Barricade Tape Red/White 75mm x 100m",
+    "shopify_media": 1,
+    "variants": 1,
+    "variants_linked": 0,
+    "old_variations_with_image": 1,
+    "missing_images": {}
+  },
+  {
+    "handle": "house-wrap-tape",
+    "title": "House Wrap Sealing Tape- Kikusui",
+    "shopify_media": 1,
+    "variants": 3,
+    "variants_linked": 0,
+    "old_variations_with_image": 3,
+    "missing_images": {}
+  },
+  {
+    "handle": "uhmw-tape-slick-surface-tape",
+    "title": "UHMW Tape/ Slick Surface Tape",
+    "shopify_media": 1,
+    "variants": 5,
+    "variants_linked": 0,
+    "old_variations_with_image": 5,
+    "missing_images": {}
+  },
+  {
+    "handle": "fly-screen-repair-tape",
+    "title": "Fly Screen Repair Tape",
+    "shopify_media": 5,
+    "variants": 1,
+    "variants_linked": 0,
+    "old_variations_with_image": 1,
+    "missing_images": {
+      "3": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2025/07/3.jpg",
+        "variations": [
+          {
+            "choose-your-size": "50mm-x-5m",
+            "color": "silver"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "hook-loop-roll-high-temp",
+    "title": "Hook Loop Roll High Temp (Acrylic)",
+    "shopify_media": 5,
+    "variants": 8,
+    "variants_linked": 0,
+    "old_variations_with_image": 8,
+    "missing_images": {
+      "3-6": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2025/09/3-6-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "50mm-x-25m-loop",
+            "color": "white"
+          },
+          {
+            "choose-your-size": "25mm-x-25m-loop",
+            "color": "white"
+          },
+          {
+            "choose-your-size": "25mm-x-25m-loop",
+            "color": "black"
+          },
+          {
+            "choose-your-size": "50mm-x-25m-loop",
+            "color": "black"
+          }
+        ]
+      },
+      "image-12": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2025/08/Image-12-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "50mm-x-25m-hook",
+            "color": "white"
+          },
+          {
+            "choose-your-size": "25mm-x-25m-hook",
+            "color": "white"
+          },
+          {
+            "choose-your-size": "25mm-x-25m-hook",
+            "color": "black"
+          },
+          {
+            "choose-your-size": "50mm-x-25m-hook",
+            "color": "black"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "glue-dots-removable-10mm-1500-roll",
+    "title": "Glue Dots Removable 10mm \u2013 1500/Roll \u2013 ATG Dispenser Compatible",
+    "shopify_media": 1,
+    "variants": 1,
+    "variants_linked": 0,
+    "old_variations_with_image": 1,
+    "missing_images": {
+      "722": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/10/722-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "10mm"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "glue-strips-removable-35mm-5mm",
+    "title": "Glue Strips Removable 35mm x 5mm \u2013 3000 Strips/Roll",
+    "shopify_media": 1,
+    "variants": 1,
+    "variants_linked": 0,
+    "old_variations_with_image": 1,
+    "missing_images": {
+      "undefined-1": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2025/10/undefined-1.png",
+        "variations": [
+          {
+            "choose-your-size": "35mm-x-5mm"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "kikusui-joist-protection-decking-tape",
+    "title": "Kikusui Joist Protection Decking Tape",
+    "shopify_media": 2,
+    "variants": 2,
+    "variants_linked": 1,
+    "old_variations_with_image": 2,
+    "missing_images": {
+      "kikusui-joist-protection-tape-100": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2026/01/Kikusui-Joist-Protection-Tape-100.webp",
+        "variations": [
+          {
+            "choose-your-size": "100mm-x-25m",
+            "color": "black"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "handle": "high-bond-acrylic-tape-dark-grey",
+    "title": "Ultra High Bond Acrylic Foam Tape D/Sided- Dark Grey",
+    "shopify_media": 7,
+    "variants": 20,
+    "variants_linked": 0,
+    "old_variations_with_image": 21,
+    "missing_images": {
+      "821-1": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/09/821-1-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "1-5mm-thick-x-12mm-x-30m",
+            "color": "dark-silver"
+          },
+          {
+            "choose-your-size": "1-1mm-thick-x-18mm-x-33m",
+            "color": "dark-silver"
+          },
+          {
+            "choose-your-size": "0-8mm-thick-x-18mm-x-66m",
+            "color": "dark-silver"
+          },
+          {
+            "choose-your-size": "0-8mm-thick-x-12mm-x-66m",
+            "color": "dark-silver"
+          }
+        ]
+      },
+      "820": {
+        "url": "https://mytapestore.com.au/wp-content/uploads/2023/09/820-600x600.jpg",
+        "variations": [
+          {
+            "choose-your-size": "1-1mm-thick-x-6mm-x-33m",
+            "color": "dark-silver"
+          }
+        ]
+      }
+    }
+  }
+]

@@ -1,0 +1,256 @@
+{
+ "acribond-accessories": [
+  "acribond-accessories-solvent",
+  "acribond-accessories-hand-pads"
+ ],
+ "aluminium-foil-tapes": [
+  "reinforced-foil-tape",
+  "plain-foil-tape",
+  "utility-grade-filament-tapes"
+ ],
+ "atg-tapes": [
+  "general-purpose-adhesive-transfer-tape",
+  "reverse-wound-acid-free-tissue-tape",
+  "reverse-wound-tissue-tape",
+  "transfer-tapes-dispenser"
+ ],
+ "barricade-hazard-tapes": [
+  "barrier-warning-tape",
+  "danger-tape",
+  "caution-tape",
+  "do-not-enter-tape"
+ ],
+ "bumpers-tapes": [
+  "double-sided-pe-foam-tape",
+  "pvc-nitrile-foam-tape",
+  "pe-foam-bumper-tape",
+  "polyethylene-foam-tape",
+  "polyurethane-foam-tape"
+ ],
+ "butyl-tape": [
+  "double-sided-black-butyl-tape"
+ ],
+ "cloth-double-sided-tape": [
+  "double-sided-carpet-tape",
+  "double-sided-exhibition-cloth-tape"
+ ],
+ "double-sided-tape": [
+  "double-sided-pe-foam-tape",
+  "high-bond-acrylic-tape-clear",
+  "double-sided-carpet-tape",
+  "general-purpose-adhesive-transfer-tape",
+  "white-double-sided-polyester-tape",
+  "double-sided-black-butyl-tape",
+  "spacer-glazing-tape",
+  "double-sided-polypropylene-tape",
+  "double-sided-premium-tissue-tape",
+  "double-sided-acid-free-tissue-tape",
+  "double-sided-differential-adhesive-tape",
+  "adhesive-transfer-tape",
+  "utility-grade-filament-tapes",
+  "reverse-wound-acid-free-tissue-tape",
+  "reverse-wound-tissue-tape",
+  "high-bond-acrylic-tape-dark-grey",
+  "high-bond-acrylic-tape-white",
+  "high-bond-acrylic-tape-grey",
+  "structural-glazing-tape",
+  "red-double-sided-polyester-tape",
+  "double-sided-exhibition-cloth-tape",
+  "d"
+ ],
+ "duct-tape": [
+  "pvc-duct-tape-silver",
+  "pvc-duct-tape-black",
+  "utility-grade-filament-tapes"
+ ],
+ "eco-friendly-tapes": [
+  "eco-friendly-kraft-paper-tapes",
+  "eco-friendly-kraft-paper-tape-printed",
+  "biodegradable-packaging-tape"
+ ],
+ "fabric-tape": [
+  "heavy-duty-gaffer-tape",
+  "gaffer-tape",
+  "cloth-tapes"
+ ],
+ "felt-tapes-dots": [
+  "felt-tapes-permanent-adhesive",
+  "felt-dots",
+  "utility-grade-filament-tapes"
+ ],
+ "filament-tapes": [
+  "utility-grade-filament-tapes",
+  "cross-weave-filament-tapes"
+ ],
+ "flashing-tape": [
+  "flashing-tape",
+  "reinforced-flashing-tape"
+ ],
+ "foam-tape": [
+  "pvc-nitrile-foam-tape",
+  "polyethylene-foam-tape",
+  "polyurethane-foam-tape",
+  "utility-grade-filament-tapes"
+ ],
+ "foam-tape-double-sided": [
+  "double-sided-pe-foam-tape"
+ ],
+ "glazing-tapes": [
+  "spacer-glazing-tape",
+  "structural-glazing-tape",
+  "utility-grade-filament-tapes"
+ ],
+ "glue-dots": [
+  "glue-dots-permanent-adhesive",
+  "glue-dots-removable-adhesive",
+  "glue-dots-removable-10mm-1500-roll",
+  "glue-strips-removable-35mm-5mm",
+  "utility-grade-filament-tapes"
+ ],
+ "hang-tab": [
+  "hh400r-hang-tab",
+  "ht200s-hang-tab",
+  "ht450-hang-tab",
+  "hth1-hang-tab",
+  "htr1-hang-tab",
+  "ht120r-hang-tab"
+ ],
+ "hook-loop-tapes": [
+  "hook-loop-roll-adhesive-backed",
+  "sew-on-hook-loop-non-adhesive",
+  "back-to-back-black-hook-and-loop",
+  "hook-loop-adhesive-dots",
+  "hook-loop-straps-50mm-x-5m",
+  "velcro-adhesive-backed-hook-loop",
+  "velcro-hook-loop-sticky-dots",
+  "hook-loop-roll-high-temp"
+ ],
+ "hook-and-loop-dots": [
+  "hook-loop-adhesive-dots",
+  "velcro-hook-loop-sticky-dots"
+ ],
+ "magnetic-tapes": [
+  "magnetic-tapes-adhesive-backed",
+  "magnetic-tapes-non-adhesive"
+ ],
+ "masking-tape": [
+  "rendering-cloth-masking-tape",
+  "utility-grade-masking-tapes",
+  "general-purpose-masking-tape",
+  "high-performance-masking",
+  "14-day-premium-masking-tape",
+  "white-automotive-masking-tapes",
+  "7-day-premium-masking-tape",
+  "28-day-premium-masking",
+  "fineline-masking-tape",
+  "frog-tapes-delicate-surface",
+  "frog-tapes-multi-surface"
+ ],
+ "packaging-tapes": [
+  "clear-stationery-tape",
+  "biodegradable-packaging-tape",
+  "economy-packaging-tape-brown",
+  "clear-packaging-tape",
+  "pvc-packaging-tape",
+  "fragile-packing-tape",
+  "premium-polypropylene-packaging-tape",
+  "coloured-polypropylene-packaging-tapes"
+ ],
+ "paper-kraft-tape": [
+  "silicone-kraft-paper-tapes",
+  "flatback-kraft-paper-tape",
+  "eco-friendly-kraft-paper-tapes",
+  "eco-friendly-kraft-paper-tape-printed"
+ ],
+ "polyester-tape": [
+  "white-double-sided-polyester-tape",
+  "red-double-sided-polyester-tape"
+ ],
+ "protection-tape": [
+  "all-weather-repair-tape",
+  "protection-tape"
+ ],
+ "pvc-electrical-insulation-tape": [
+  "coloured-electrical-tape",
+  "blue-electrical-tape",
+  "white-electrical-tape",
+  "black-electrical-tape",
+  "red-electrical-tape",
+  "yellow-insulation-tape",
+  "green-insulation-tape"
+ ],
+ "reflective-tape": [
+  "class-2-reflective-tape",
+  "class-1-reflective-tape",
+  "class-1-reflective-tape-prismatic-grade"
+ ],
+ "safety-tape": [
+  "anti-slip-tread-tape",
+  "class-2-reflective-tape",
+  "class-1-reflective-tape",
+  "class-1-reflective-tape-prismatic-grade",
+  "floor-marking-tape",
+  "barrier-warning-tape",
+  "lane-marking",
+  "danger-tape",
+  "caution-tape",
+  "do-not-enter-tape"
+ ],
+ "specialty-tape": [
+  "all-weather-repair-tape",
+  "silicone-splicing-tape",
+  "plumbers-thread-seal-tape",
+  "stretch-film-dispenser",
+  "stretch-film",
+  "heat-sealer-teflon-coated-tape",
+  "joist-protection-tape",
+  "house-wrap-tape",
+  "uhmw-tape-slick-surface-tape",
+  "fly-screen-repair-tape",
+  "kikusui-joist-protection-decking-tape"
+ ],
+ "strapping-and-filament": [
+  "black-strapping-tape",
+  "premium-strapping-tapes"
+ ],
+ "strapping-tapes": [
+  "black-strapping-tape",
+  "premium-strapping-tapes"
+ ],
+ "tapes-dispensers": [
+  "desk-tapes-dispenser",
+  "clamp-on-bench-dispenser",
+  "tear-drop-dispenser-metal",
+  "metal-desk-dispenser",
+  "metal-bag-sealer-with-cutter",
+  "h11-cp-pistol-grip-dispenser-50mm",
+  "kit-dispenser-and-tapes",
+  "electronic-tapes-dispenser",
+  "lane-marking",
+  "transfer-tapes-dispenser",
+  "h11-rb-pistol-grip-dispenser",
+  "h11-sg-pistol-grip-dispenser",
+  "utility-grade-filament-tapes",
+  "h11-cpw-pistol-grip-dispenser-75mm"
+ ],
+ "thermal-insulation-tape": [
+  "glass-reinforced-mylar",
+  "polyimide-film-kapton-tape",
+  "polyester-insulation-tape",
+  "fibreglass-cloth-insulation-tape",
+  "plain-foil-tape"
+ ],
+ "double-sided-tissue-tape": [
+  "double-sided-premium-tissue-tape",
+  "double-sided-acid-free-tissue-tape",
+  "double-sided-differential-adhesive-tape",
+  "reverse-wound-acid-free-tissue-tape",
+  "reverse-wound-tissue-tape"
+ ],
+ "high-bond-acrylic-tape-vhp": [
+  "high-bond-acrylic-tape-clear",
+  "high-bond-acrylic-tape-dark-grey",
+  "high-bond-acrylic-tape-white",
+  "high-bond-acrylic-tape-grey"
+ ]
+}

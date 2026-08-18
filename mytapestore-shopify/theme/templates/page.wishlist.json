@@ -1,0 +1,4 @@
+{
+  "sections": { "main": { "type": "mts-wishlist", "settings": { "max_products": 150 } } },
+  "order": ["main"]
+}

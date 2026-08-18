@@ -1,0 +1,98 @@
+{%- comment -%}
+  FAQ — ported from the FAQ section in home.jsx. Accordion list beside the
+  delivery-map aside. The first item starts open, as in the React version.
+
+  <details>/<summary> would be the no-JS-friendly choice, but the design's markup
+  is a button + panel and the CSS targets .faq__item.is-open; keeping that means
+  the styling ports exactly. mts-theme.js drives it and sets aria-expanded.
+{%- endcomment -%}
+<section class="section faq">
+  <div class="wrap">
+    <div class="section-head">
+      {%- if section.settings.eyebrow != blank -%}<span class="eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
+      {%- if section.settings.heading != blank -%}<h2>{{ section.settings.heading }}</h2>{%- endif -%}
+    </div>
+
+    <div class="faq__grid">
+      <ul class="faq__list" data-mts-faq>
+        {%- for block in section.blocks -%}
+          <li class="faq__item{% if forloop.first %} is-open{% endif %}" {{ block.shopify_attributes }}>
+            <h3 class="faq__qh">
+              <button class="faq__q" aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}" data-mts-faq-q>
+                <span>{{ block.settings.question }}</span>
+                <span data-mts-faq-icon>
+                  {%- if forloop.first -%}
+                    {% render 'mts-icon', name: 'minus', size: 18 %}
+                  {%- else -%}
+                    {% render 'mts-icon', name: 'plus', size: 18 %}
+                  {%- endif -%}
+                </span>
+              </button>
+            </h3>
+            <div class="faq__a" data-mts-faq-a {% unless forloop.first %}hidden{% endunless %}>
+              <p>{{ block.settings.answer }}</p>
+            </div>
+          </li>
+        {%- endfor -%}
+      </ul>
+
+      {%- if section.settings.show_map -%}
+        <aside class="faq__map">
+          {%- if section.settings.map_image != blank -%}
+            <img src="{{ section.settings.map_image | image_url: width: 1000 }}" alt="{{ section.settings.map_alt | escape }}" loading="lazy" width="1000" height="760">
+          {%- else -%}
+            <img src="{{ 'mts-australia-map.jpg' | asset_url }}" alt="{{ section.settings.map_alt | escape }}" loading="lazy" width="1000" height="760">
+          {%- endif -%}
+          <div class="faq__map-copy">
+            <span class="faq__map-badge">{% render 'mts-icon', name: 'pin', size: 15 %} {{ section.settings.map_badge }}</span>
+            <b>{{ section.settings.map_title }}</b>
+            <p>{{ section.settings.map_text }}</p>
+          </div>
+        </aside>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "FAQ",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Good to know" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Frequently asked questions" },
+    { "type": "checkbox", "id": "show_map", "label": "Show the delivery map aside", "default": true },
+    { "type": "image_picker", "id": "map_image", "label": "Map image" },
+    { "type": "text", "id": "map_alt", "label": "Map alt text", "default": "Map of Australia showing our nationwide delivery coverage" },
+    { "type": "text", "id": "map_badge", "label": "Map badge", "default": "Australia-wide delivery" },
+    { "type": "text", "id": "map_title", "label": "Map title", "default": "We deliver to 3,600+ postcodes" },
+    {
+      "type": "textarea", "id": "map_text", "label": "Map text",
+      "default": "Sydney, Melbourne, Brisbane, Perth, Adelaide, Darwin and everywhere in between — most orders arrive in 2–3 business days."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "qa",
+      "name": "Question",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Question" },
+        { "type": "textarea", "id": "answer", "label": "Answer" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ",
+      "blocks": [
+        { "type": "qa", "settings": { "question": "How quickly can I receive my tape order in Australia?", "answer": "We dispatch Australia-wide to 3,600+ postcodes, and most orders arrive within 2–3 business days once dispatched, with express options available at checkout." } },
+        { "type": "qa", "settings": { "question": "Can you deliver adhesive tape all over Australia?", "answer": "Yes — we deliver to Melbourne, Sydney, Brisbane, Perth, Adelaide, Darwin and more than 3,600 postcodes right across the country." } },
+        { "type": "qa", "settings": { "question": "What industries do you supply adhesive tape to?", "answer": "From construction, automotive and marine to signage, packaging, electronics, HVAC and healthcare — browse our industry pages to find the right tape for your sector." } },
+        { "type": "qa", "settings": { "question": "Do you offer bulk or wholesale pricing?", "answer": "Yes. Get in touch for volume pricing — larger orders unlock better rates and priority support." } },
+        { "type": "qa", "settings": { "question": "Can I track my adhesive tape order online?", "answer": "Absolutely — you'll receive tracking as soon as your order ships, so you can follow it right to your door." } },
+        { "type": "qa", "settings": { "question": "What payment methods do you accept?", "answer": "We accept all major cards (Visa, Mastercard, Amex), PayPal and Shop Pay through a secure, encrypted checkout." } },
+        { "type": "qa", "settings": { "question": "What types of adhesive tape can I buy online?", "answer": "Double-sided, foam, foil, duct, hook & loop, packaging, safety, masking and specialty tapes — plus dispensers — over 130 lines held in stock." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

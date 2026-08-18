@@ -1,0 +1,266 @@
+[
+  {
+    "id": 121,
+    "description": "",
+    "name": "Categories Menu",
+    "slug": "categories-menu",
+    "meta": [],
+    "acf": [],
+    "locations": [
+      "mobile-menu"
+    ],
+    "auto_add": false,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wp/v2/menus/121",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wp/v2/menus"
+        }
+      ],
+      "about": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wp/v2/taxonomies/nav_menu"
+        }
+      ],
+      "wp:post_type": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wp/v2/menu-items?menus=121"
+        }
+      ],
+      "wp:menu-location": [
+        {
+          "embeddable": true,
+          "href": "https://mytapestore.com.au/wp-json/wp/v2/menu-locations/mobile-menu"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
+  },
+  {
+    "id": 787,
+    "description": "",
+    "name": "Industries",
+    "slug": "industries",
+    "meta": [],
+    "acf": [],
+    "locations": [],
+    "auto_add": false,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wp/v2/menus/787",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wp/v2/menus"
+        }
+      ],
+      "about": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wp/v2/taxonomies/nav_menu"
+        }
+      ],
+      "wp:post_type": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wp/v2/menu-items?menus=787"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
+  },
+  {
+    "id": 560,
+    "description": "",
+    "name": "Mobile menu",
+    "slug": "mobile-menu",
+    "meta": [],
+    "acf": [],
+    "locations": [],
+    "auto_add": false,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wp/v2/menus/560",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wp/v2/menus"
+        }
+      ],
+      "about": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wp/v2/taxonomies/nav_menu"
+        }
+      ],
+      "wp:post_type": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wp/v2/menu-items?menus=560"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
+  },
+  {
+    "id": 123,
+    "description": "",
+    "name": "Primary Menu",
+    "slug": "primary-menu",
+    "meta": [],
+    "acf": [],
+    "locations": [
+      "primary"
+    ],
+    "auto_add": false,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wp/v2/menus/123",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wp/v2/menus"
+        }
+      ],
+      "about": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wp/v2/taxonomies/nav_menu"
+        }
+      ],
+      "wp:post_type": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wp/v2/menu-items?menus=123"
+        }
+      ],
+      "wp:menu-location": [
+        {
+          "embeddable": true,
+          "href": "https://mytapestore.com.au/wp-json/wp/v2/menu-locations/primary"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
+  },
+  {
+    "id": 124,
+    "description": "",
+    "name": "Topbar Menu",
+    "slug": "topbar-menu",
+    "meta": [],
+    "acf": [],
+    "locations": [
+      "topbar-menu"
+    ],
+    "auto_add": false,
+    "_links": {
+      "self": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wp/v2/menus/124",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wp/v2/menus"
+        }
+      ],
+      "about": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wp/v2/taxonomies/nav_menu"
+        }
+      ],
+      "wp:post_type": [
+        {
+          "href": "https://mytapestore.com.au/wp-json/wp/v2/menu-items?menus=124"
+        }
+      ],
+      "wp:menu-location": [
+        {
+          "embeddable": true,
+          "href": "https://mytapestore.com.au/wp-json/wp/v2/menu-locations/topbar-menu"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
+  }
+]

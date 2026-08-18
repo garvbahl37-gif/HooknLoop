@@ -18,86 +18,20 @@
             "cta_link": "/collections/all",
             "cta2_label": "Find the Right Product",
             "cta2_link": "/collections/all",
+            "banner_asset": "hnl-hero-banner-1.webp",
+            "mobile_lead": "Australia-wide trade supply — cut to length, dispatched in 1–2 days.",
+            "tiles_brands": "VELCRO® Brand > /search?q=VELCRO%C2%AE+Brand&type=product | HooknLoop > /collections/all",
+            "tiles_cats": "Self-Adhesive > /products/self-adhesive-hook-and-loop-roll | Sew-On > /products/sew-on-hook-and-loop-fastener | Dots > /products/hook-and-loop-dots | Straps & Ties > /products/hook-and-loop-adjustable-strap",
+            "tile_all_label": "Shop all products",
+            "tile_all_link": "/collections/all",
             "asset_image": "hnl-self-adhesive-roll-1.jpg",
             "tag": "BEST SELLER",
             "price_from": "24.46"
           }
-        },
-        "s2": {
-          "type": "slide",
-          "settings": {
-            "eyebrow": "Built for Demanding Applications",
-            "title": "Industrial Strength.",
-            "accent": "Reliable Grip.",
-            "sub": "High-performance hook & loop for metal, plastic, equipment, vehicles and outdoor applications.",
-            "spec": "Heat-resistant|Moisture-proof|Heavy-duty",
-            "cta_label": "Shop Heavy Duty",
-            "cta_link": "/products/heavy-duty-adhesive-hook-and-loop",
-            "cta2_label": "View Industrial Solutions",
-            "cta2_link": "/collections/all",
-            "asset_image": "hnl-heavy-duty-adhesive-1.webp",
-            "tag": "INDUSTRIAL",
-            "price_from": "55.43"
-          }
-        },
-        "s3": {
-          "type": "slide",
-          "settings": {
-            "eyebrow": "Tested for Real-World Use",
-            "title": "Premium Quality",
-            "accent": "Products",
-            "sub": "Every product is chosen for material quality, performance testing and long-term reliability — trade-grade hook & loop, held in stock in Australia.",
-            "spec": "Performance-tested|Long-term hold|AU-stocked",
-            "cta_label": "Shop the Range",
-            "cta_link": "/collections/all",
-            "cta2_label": "Why Choose Us",
-            "cta2_link": "/pages/about-us",
-            "asset_image": "hnl-hook-and-loop-dots-1.jpg",
-            "tag": "PREMIUM GRADE",
-            "price_from": "66.74"
-          }
-        },
-        "s4": {
-          "type": "slide",
-          "settings": {
-            "eyebrow": "Fast Australia-Wide Delivery",
-            "title": "Delivered Fast,",
-            "accent": "Australia-Wide.",
-            "sub": "Dispatched in 1-2 business days from our Australian warehouse - metro, regional and everywhere in between, with free shipping over $300.",
-            "spec": "1-2 day dispatch|Metro & regional|Free over $300",
-            "cta_label": "Shop the Range",
-            "cta_link": "/collections/all",
-            "cta2_label": "Shipping & Delivery",
-            "cta2_link": "/pages/shipping-delivery",
-            "asset_image": "hnl-australia-network.webp",
-            "tag": "AUSTRALIA-WIDE",
-            "is_photo": true
-          }
-        },
-        "s5": {
-          "type": "slide",
-          "settings": {
-            "eyebrow": "Trade, Commercial & Wholesale",
-            "title": "Order More.",
-            "accent": "Save More.",
-            "sub": "Bulk pricing, reliable stock, custom widths and tailored fastening solutions for Australian businesses.",
-            "spec": "Custom widths|Volume pricing|Priority dispatch",
-            "cta_label": "Request a Bulk Quote",
-            "cta_link": "/pages/bulk-orders",
-            "cta2_label": "Explore Bulk Orders",
-            "cta2_link": "/pages/bulk-orders",
-            "asset_image": "hnl-hooknloop-cartons.webp",
-            "tag": "BULK & WHOLESALE",
-            "is_photo": true
-          }
         }
       },
       "block_order": [
-        "s1",
-        "s2",
-        "s3",
-        "s4",
-        "s5"
+        "s1"
       ],
       "settings": {
         "trust_items": "",

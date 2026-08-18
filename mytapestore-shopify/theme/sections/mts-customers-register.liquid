@@ -1,0 +1,30 @@
+<main id="main">
+  <div class="wrap page__crumbs">{% render 'mts-breadcrumbs', current_title: 'Create account' %}</div>
+  <section class="page-hero">
+    <div class="wrap">
+      <span class="eyebrow eyebrow--onink">Account</span>
+      <h1>{{ 'customer.register.title' | t }}</h1>
+    </div>
+  </section>
+  <div class="wrap mts-auth">
+    <div class="contact__form">
+      {%- form 'create_customer' -%}
+        {{ form.errors | default_errors }}
+        <div class="contact__row">
+          <label>{{ 'customer.register.first_name' | t }}<input type="text" name="customer[first_name]" autocomplete="given-name"></label>
+          <label>{{ 'customer.register.last_name' | t }}<input type="text" name="customer[last_name]" autocomplete="family-name"></label>
+        </div>
+        <label>{{ 'customer.register.email' | t }}<input type="email" name="customer[email]" required autocomplete="email"></label>
+        <label>{{ 'customer.register.password' | t }}<input type="password" name="customer[password]" required autocomplete="new-password"></label>
+        <button class="btn btn--brand btn--lg" type="submit">{{ 'customer.register.submit' | t }}</button>
+      {%- endform -%}
+      <p class="mts-auth__note">
+        {{ 'customer.register.already' | t }} <a href="{{ routes.account_login_url }}">{{ 'customer.login.sign_in' | t }}</a>
+      </p>
+    </div>
+  </div>
+</main>
+
+{% schema %}
+{ "name": "Register" }
+{% endschema %}

@@ -1,0 +1,626 @@
+{%- comment -%}
+  HooknLoop — Order confirmation
+  ==============================
+  Paste into: Settings > Notifications > Order confirmation > Edit code.
+
+  DESIGN NOTE
+  A works docket, not a lifestyle receipt. These buyers are trades, workshops
+  and procurement people who read dockets and invoices all day, and HooknLoop's
+  own product labels are engineering spec cards — checkbox grids, HOOK / LOOP,
+  percentage ticks. So every piece of DATA here is monospace (order number,
+  quantities, money, addresses) and only the prose is proportional. Numbers land
+  in columns that scan, and the register matches the paperwork this order will
+  sit beside.
+
+  One flare: the 6px orange band under the masthead, which reads as a strip of
+  the product laid across the page. Everything else stays navy and grey so that
+  band and the CTA are the only things that raise their voice.
+
+  DELIBERATELY ABSENT
+  No estimated delivery date. That was removed at the source (Settings >
+  Shipping and delivery > Estimated delivery dates = Off) because the manual
+  range promised up to 22 Aug on metro orders. Do not reintroduce it here — a
+  date in the email that the warehouse cannot hit costs more than no date.
+
+  SCOPE
+  Handles single-shipment orders of simple products, which is every order this
+  store takes. It does NOT handle bundles, nested line items or split carts the
+  way Shopify's stock template does. If those are ever sold, revisit.
+
+  Editing this marks the notification as customised, so it stops inheriting
+  Shopify's future updates to this email. That is the trade for controlling it.
+{%- endcomment -%}
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="color-scheme" content="light only">
+  <meta name="supported-color-schemes" content="light only">
+  <title>Order {{ order_name }} confirmed</title>
+  <style type="text/css">
+    body,table,td,a { -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; }
+    table,td { mso-table-lspace:0pt; mso-table-rspace:0pt; }
+    img { -ms-interpolation-mode:bicubic; border:0; height:auto; line-height:100%; outline:none; text-decoration:none; }
+    body { margin:0 !important; padding:0 !important; width:100% !important; background:#f4f7fb; }
+    a { color:#b8460a; }
+
+    /* The docket collapses to one column on a phone. Addresses stack rather
+       than shrink, because a squeezed address is a misread address. */
+    @media only screen and (max-width:600px){
+      .full { width:100% !important; }
+      .px   { padding-left:22px !important; padding-right:22px !important; }
+      .stack { display:block !important; width:100% !important; }
+      .stack-gap { height:22px !important; line-height:22px !important; font-size:22px !important; }
+      .btn a { display:block !important; text-align:center !important; }
+      .h1 { font-size:27px !important; line-height:1.18 !important; }
+    }
+  </style>
+</head>
+<body style="margin:0; padding:0; background:#f4f7fb;">
+
+  {%- comment -%} Preheader: the inbox preview line. Says the one thing worth knowing. {%- endcomment -%}
+  <div style="display:none; font-size:1px; line-height:1px; max-height:0; max-width:0; opacity:0; overflow:hidden; mso-hide:all; color:#f4f7fb;">
+    Order {{ order_name }} is confirmed. We're getting it ready to ship — tracking follows shortly.
+  </div>
+
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f4f7fb;">
+    <tr>
+      <td align="center" style="padding:0 12px;">
+
+        <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" class="full"
+               style="width:600px; max-width:600px; margin:26px 0; background:#ffffff; border-radius:14px; overflow:hidden;">
+
+          <!-- ══ MASTHEAD ══════════════════════════════════════════════════ -->
+          {%- comment -%}
+            White, not navy, and that is the logo's decision rather than a
+            preference. The HooknLoop mark is royal blue with an orange "n" and
+            a grey .COM.AU — drawn for white. On a navy field the blue letters
+            sink into the background and the grey domain disappears entirely.
+            A masthead that hides the logo is not a masthead, so the field is
+            white and the orange rule below carries the separation instead.
+          {%- endcomment -%}
+          <tr>
+            <td style="background:#ffffff; padding:26px 30px 22px;" class="px">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  {%- comment -%}
+                    shop.email_logo_url is whatever is set under Settings >
+                    Notifications > branding. It is empty on this store, which
+                    is why the masthead came through blank — and the theme logo
+                    is no help because it is an SVG, which Gmail and Outlook
+                    both refuse to render.
+
+                    So the fallback is a real PNG from Shopify Files
+                    (logo_5.png, 389x69, blue-on-white) hardcoded here. The
+                    Shopify setting still wins if it is ever filled in; this
+                    only guarantees the masthead is never empty again.
+
+                    Served at 180px wide from a 389px source, so it stays sharp
+                    on retina. width/height are attributes as well as CSS
+                    because Outlook ignores the CSS.
+                  {%- endcomment -%}
+                  <td align="left" valign="middle">
+                    {%- if shop.email_logo_url %}
+                      <img src="{{ shop.email_logo_url }}" alt="{{ shop.name }}" width="{{ shop.email_logo_width | default: 180 }}" style="display:block; max-width:200px; border:0;">
+                    {%- else %}
+                      <img src="https://cdn.shopify.com/s/files/1/0975/4509/3489/files/logo_5.png?v=1767767497"
+                           alt="HooknLoop" width="180" height="32"
+                           style="display:block; width:180px; height:32px; border:0;">
+                    {%- endif %}
+                  </td>
+                  {%- comment -%}
+                    The order number is the datum a trade buyer quotes back to us
+                    on the phone, so it is set like a job number — mono, right,
+                    with a quiet label above it — not buried in the body copy.
+                  {%- endcomment -%}
+                  <td align="right" valign="middle">
+                    <div style="font-family:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace; font-size:9.5px; font-weight:600; letter-spacing:0.16em; color:#5a6b8c; text-transform:uppercase;">Order</div>
+                    <div style="font-family:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace; font-size:17px; font-weight:700; letter-spacing:0.02em; color:#142548; padding-top:3px;">{{ order_name }}</div>
+                    {%- if po_number %}
+                      <div style="font-family:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace; font-size:10px; color:#5a6b8c; padding-top:4px;">PO {{ po_number }}</div>
+                    {%- endif %}
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          {%- comment -%}
+            A hairline, not the orange band that was here. The band was meant to
+            read as a strip of tape laid across the docket, but at full width and
+            6px it fought the logo for attention the moment the eye landed —
+            the first thing seen should be the mark, not a stripe under it.
+
+            A 1px rule in the same grey as the table hairlines below does the
+            one job actually needed: separating the masthead from the message.
+            That leaves the CTA as the only orange on the page, which is where
+            the emphasis belongs.
+          {%- endcomment -%}
+          <tr><td style="border-top:1px solid #e7ecf4; font-size:0; line-height:0;">&nbsp;</td></tr>
+
+          <!-- ══ MESSAGE ═══════════════════════════════════════════════════ -->
+          <tr>
+            <td style="padding:30px 30px 0;" class="px">
+              <h1 class="h1" style="margin:0; font-family:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif; font-size:31px; line-height:1.14; font-weight:800; letter-spacing:-0.02em; color:#142548;">
+                {%- if customer.first_name -%}Thanks, {{ customer.first_name }} —{%- else -%}Thanks —{%- endif -%}<br>your order is confirmed.
+              </h1>
+
+              <p style="margin:15px 0 0; font-family:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif; font-size:16px; line-height:1.62; color:#5a6b8c;">
+                {%- if has_pending_payment -%}
+                  {%- if buyer_action_required -%}
+                    We'll confirm your order as soon as your payment completes.
+                  {%- else -%}
+                    Your payment is processing. We'll email you the moment it clears.
+                  {%- endif -%}
+                {%- elsif payment_charged_on_fulfillment -%}
+                  We've received your order. Your payment method is charged when the order is ready to go out, and we'll let you know when it ships.
+                {%- elsif requires_shipping -%}
+                  {%- case delivery_method -%}
+                    {%- when 'pick-up' -%}
+                      We're getting your order ready. You'll get an email when it's ready to collect.
+                    {%- when 'local' -%}
+                      We're getting your order ready for delivery.
+                    {%- else -%}
+                      We're getting your order ready to ship. You'll get tracking as soon as it's on its way.
+                  {%- endcase -%}
+                {%- else -%}
+                  We're processing your order now.
+                {%- endif -%}
+              </p>
+
+              {%- if delivery_instructions != blank %}
+                <p style="margin:14px 0 0; font-family:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif; font-size:14px; line-height:1.6; color:#5a6b8c;">
+                  <strong style="color:#142548;">Delivery notes:</strong> {{ delivery_instructions }}
+                </p>
+              {%- endif %}
+
+              {%- comment -%}
+                Manual payment instructions — bank transfer details and the
+                like. Shopify's original renders these as a bare table; here
+                they get the same panel treatment as the tracking number,
+                because if an order is waiting on a transfer these numbers are
+                the single most important thing in the email.
+              {%- endcomment -%}
+              {%- for transaction in transactions %}
+                {%- if transaction.show_buyer_pending_payment_instructions? %}
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f4f7fb; border-radius:12px; margin-top:18px;">
+                    <tr>
+                      <td style="padding:18px 20px;">
+                        <div style="font-family:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif; font-size:14px; line-height:1.6; color:#142548;">{{ transaction.buyer_pending_payment_notice }}</div>
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:12px; font-family:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace; font-size:12.5px;">
+                          {%- for instruction in transaction.buyer_pending_payment_instructions %}
+                            <tr>
+                              <td style="padding:4px 0; color:#5a6b8c;">{{ instruction.header }}</td>
+                              <td align="right" style="padding:4px 0; color:#142548; font-weight:700;">{{ instruction.value }}</td>
+                            </tr>
+                          {%- endfor %}
+                          <tr>
+                            <td style="padding:4px 0; color:#5a6b8c;">Amount</td>
+                            <td align="right" style="padding:4px 0; color:#142548; font-weight:700;">{{ transaction.amount | money }}</td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                {%- endif %}
+              {%- endfor %}
+
+              {%- comment -%}
+                Gift cards are emailed separately, so the order confirmation
+                says so rather than leaving someone hunting for a code that was
+                never in this message.
+              {%- endcomment -%}
+              {%- assign gift_card_line_items = line_items | where: "gift_card" -%}
+              {%- assign found_gift_card_with_recipient_email = false -%}
+              {%- for line_item in gift_card_line_items -%}
+                {%- if line_item.properties["__shopify_send_gift_card_to_recipient"] and line_item.properties["Recipient email"] -%}
+                  {%- assign found_gift_card_with_recipient_email = true -%}
+                  {%- break -%}
+                {%- endif -%}
+              {%- endfor -%}
+              {%- if found_gift_card_with_recipient_email %}
+                <p style="margin:14px 0 0; font-family:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif; font-size:14px; line-height:1.6; color:#5a6b8c;">Your gift card recipient will get an email with their code.</p>
+              {%- elsif gift_card_line_items.first %}
+                <p style="margin:14px 0 0; font-family:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif; font-size:14px; line-height:1.6; color:#5a6b8c;">You'll get a separate email for any gift cards.</p>
+              {%- endif %}
+            </td>
+          </tr>
+
+          <!-- ══ CTA ═══════════════════════════════════════════════════════ -->
+          <tr>
+            <td style="padding:22px 30px 0;" class="px">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0" class="btn">
+                <tr>
+                  {%- comment -%}
+                    "Track your order" is deliberate.
+
+                    Nothing has shipped when this email sends, so there is no
+                    tracking behind the link yet. But order_status_url is a
+                    permanent page, and this email is the only place the
+                    customer will ever have that link — they come back to it
+                    days later, once there IS tracking on it. Labelling it for
+                    the moment it is sent would be labelling it for the least
+                    important visit.
+                  {%- endcomment -%}
+                  <td align="center" bgcolor="#e87722" style="border-radius:10px;">
+                    <a href="{{ order_status_url | default: shop.url }}"
+                       style="display:inline-block; padding:15px 30px; font-family:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif; font-size:15.5px; font-weight:800; letter-spacing:0.005em; color:#142548; text-decoration:none; border-radius:10px;">
+                      Track your order &rarr;
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- ══ ORDER DOCKET ══════════════════════════════════════════════ -->
+          <tr>
+            <td style="padding:30px 30px 0;" class="px">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"
+                     style="border-top:2px solid #142548;">
+                {%- for line in subtotal_line_items %}
+                  <tr>
+                    <td valign="top" width="62" style="padding:15px 14px 15px 0; border-bottom:1px solid #e7ecf4;">
+                      {%- if line.image %}
+                        <img src="{{ line | img_url: 'compact_cropped' }}" width="62" height="62" alt="" style="display:block; width:62px; height:62px; border-radius:8px; background:#f4f7fb;">
+                      {%- else %}
+                        <div style="width:62px; height:62px; border-radius:8px; background:#f4f7fb;">&nbsp;</div>
+                      {%- endif %}
+                    </td>
+                    <td valign="top" style="padding:15px 12px 15px 0; border-bottom:1px solid #e7ecf4;">
+                      <div style="font-family:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif; font-size:15px; font-weight:700; line-height:1.4; color:#142548;">
+                        {{ line.title | default: line.product.title }}
+                      </div>
+                      {%- if line.variant.title and line.variant.title != 'Default Title' %}
+                        <div style="font-family:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace; font-size:11.5px; color:#5a6b8c; padding-top:5px;">{{ line.variant.title }}</div>
+                      {%- endif %}
+                      {%- if line.selling_plan_allocation %}
+                        <div style="font-family:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace; font-size:11.5px; color:#5a6b8c; padding-top:4px;">{{ line.selling_plan_allocation.selling_plan.name }}</div>
+                      {%- endif %}
+                      {%- for discount_allocation in line.discount_allocations %}
+                        {%- if discount_allocation.discount_application.target_selection != 'all' %}
+                          <div style="font-family:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace; font-size:11px; font-weight:700; color:#1a8449; padding-top:5px;">
+                            {{ discount_allocation.discount_application.title | upcase }} &minus;{{ discount_allocation.amount | money }}
+                          </div>
+                        {%- endif %}
+                      {%- endfor %}
+                      {%- comment -%}
+                        Line item properties — cut-to-length notes, uploaded
+                        files, anything captured on the product page. This store
+                        offers custom cutting, so these carry real instructions
+                        and have to survive into the confirmation.
+                      {%- endcomment -%}
+                      {%- for property in line.properties -%}
+                        {%- assign property_first_char = property.first | slice: 0 -%}
+                        {%- if property.last != blank and property_first_char != '_' %}
+                          <div style="font-family:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace; font-size:11.5px; line-height:1.55; color:#5a6b8c; padding-top:5px;">
+                            <span style="color:#142548;">{{ property.first }}:</span>
+                            {% if property.last contains '/uploads/' %}<a href="{{ property.last }}" style="color:#b8460a;">{{ property.last | split: '/' | last }}</a>{% else %}{{ property.last }}{% endif %}
+                          </div>
+                        {%- endif %}
+                      {%- endfor %}
+
+                      {%- if line.refunded_quantity > 0 %}
+                        <div style="font-family:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace; font-size:10.5px; font-weight:700; letter-spacing:0.1em; color:#8a3a0c; text-transform:uppercase; padding-top:6px;">Refunded &times;{{ line.refunded_quantity }}</div>
+                      {%- endif %}
+
+                      {%- comment -%} Quantity reads as a multiplier, the way a packing slip writes it. {%- endcomment -%}
+                      <div style="font-family:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace; font-size:12px; font-weight:700; color:#142548; padding-top:7px;">&times;&nbsp;{{ line.quantity }}</div>
+                    </td>
+                    <td valign="top" align="right" style="padding:15px 0; border-bottom:1px solid #e7ecf4; white-space:nowrap;">
+                      {%- if line.original_line_price != line.final_line_price %}
+                        <div style="font-family:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace; font-size:12px; color:#8194b5; text-decoration:line-through;">{{ line.original_line_price | money }}</div>
+                      {%- endif %}
+                      <div style="font-family:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace; font-size:14.5px; font-weight:700; color:#142548; padding-top:2px;">
+                        {%- if line.final_line_price > 0 -%}{{ line.final_line_price | money }}{%- else -%}Free{%- endif -%}
+                      </div>
+                      {%- comment -%}
+                        Unit pricing — "$4.20 / m" and the like. Tape sold by
+                        the metre is exactly what this filter exists for, so it
+                        stays rather than being dropped as an edge case.
+                      {%- endcomment -%}
+                      {%- if line.unit_price_measurement %}
+                        <div style="font-family:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace; font-size:11px; color:#5a6b8c; padding-top:4px;">
+                          {{ line.unit_price | unit_price_with_measurement: line.unit_price_measurement }}
+                        </div>
+                      {%- endif %}
+                    </td>
+                  </tr>
+                {%- endfor %}
+              </table>
+            </td>
+          </tr>
+
+          <!-- ══ TOTALS ════════════════════════════════════════════════════ -->
+          <tr>
+            <td style="padding:18px 30px 0;" class="px">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"
+                     style="font-family:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace; font-size:13.5px; color:#5a6b8c;">
+                {%- comment -%}
+                  Every line Shopify's own template shows, kept in the same
+                  order. The design changed; the accounting did not. Each row is
+                  conditional, so an order with no duties or no discount simply
+                  omits those lines rather than printing a row of zeros.
+                {%- endcomment -%}
+                <tr>
+                  <td style="padding:5px 0;">Subtotal</td>
+                  <td align="right" style="padding:5px 0; color:#142548;">{{ subtotal_price | money }}</td>
+                </tr>
+
+                {%- comment -%}
+                  Discount codes are named, because "-$5.00" with no code is the
+                  line people query. Line-item discounts already appear on their
+                  item, so only order-wide and shipping ones are repeated here.
+                {%- endcomment -%}
+                {%- for discount_application in discount_applications %}
+                  {%- if discount_application.total_allocated_amount > 0 and discount_application.target_selection != 'explicit' %}
+                    <tr>
+                      <td style="padding:5px 0; color:#1a8449;">
+                        Discount
+                        {%- if discount_application.title %} <span style="font-weight:700;">{{ discount_application.title | upcase }}</span>{%- endif -%}
+                      </td>
+                      <td align="right" style="padding:5px 0; color:#1a8449; font-weight:700;">&minus;{{ discount_application.total_allocated_amount | money }}</td>
+                    </tr>
+                  {%- endif %}
+                {%- endfor %}
+
+                {%- if requires_shipping %}
+                  <tr>
+                    <td style="padding:5px 0;">Shipping{% if shipping_method %} &middot; {{ shipping_method.title }}{% endif %}</td>
+                    <td align="right" style="padding:5px 0; color:#142548;">
+                      {%- if shipping_price > 0 -%}{{ shipping_price | money }}{%- else -%}Free{%- endif -%}
+                    </td>
+                  </tr>
+                {%- endif %}
+
+                {%- if total_duties %}
+                  <tr>
+                    <td style="padding:5px 0;">Duties</td>
+                    <td align="right" style="padding:5px 0; color:#142548;">{{ total_duties | money }}</td>
+                  </tr>
+                {%- endif %}
+
+                {%- comment -%}
+                  One "Taxes" line, not a row per tax_line.
+
+                  Looping tax_lines is right for the US, where an order can
+                  carry State Tax, County Tax and City Tax that a buyer may need
+                  itemised. Australian orders carry a single GST, so the loop
+                  produced one row either way — but named inconsistently, and it
+                  would start splitting into State/County rows the moment a US
+                  order came through. The live email this replaces shows a
+                  single "Taxes" line; this keeps that.
+                {%- endcomment -%}
+                {%- comment -%}
+                  "Includes GST", not "Taxes", when tax is inclusive.
+
+                  Every order on this store is taxes_included: true — subtotal
+                  plus shipping already equals the total, and GST sits inside
+                  it. A row labelled "Taxes" in a column of numbers that add up
+                  to the total reads as an extra charge, and a trade buyer
+                  checking the arithmetic finds it does not add up.
+
+                  Naming the tax line ("Includes GST $3.31") also gives business
+                  customers the figure they need for BAS without opening the
+                  invoice. Falls back to plain "Taxes" if tax is ever charged on
+                  top, which is what an export order would do.
+                {%- endcomment -%}
+                {%- if tax_price > 0 %}
+                  <tr>
+                    <td style="padding:5px 0;">
+                      {%- if taxes_included -%}
+                        Includes {{ tax_lines.first.title | default: 'tax' }}
+                      {%- else -%}
+                        Taxes
+                      {%- endif -%}
+                    </td>
+                    <td align="right" style="padding:5px 0; color:#142548;">{{ tax_price | money }}</td>
+                  </tr>
+                {%- endif %}
+
+                <tr><td colspan="2" style="padding-top:9px;"><div style="border-top:2px solid #142548; font-size:0; line-height:0;">&nbsp;</div></td></tr>
+                <tr>
+                  <td style="padding:11px 0 0; font-family:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif; font-size:16px; font-weight:800; color:#142548;">Total</td>
+                  <td align="right" style="padding:11px 0 0; font-size:20px; font-weight:700; color:#142548;">{{ total_price | money_with_currency }}</td>
+                </tr>
+
+                {%- if total_discounts > 0 %}
+                  <tr>
+                    <td colspan="2" align="right" style="padding:7px 0 0; font-family:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif; font-size:13.5px; font-weight:700; color:#1a8449;">
+                      You saved {{ total_discounts | money }}
+                    </td>
+                  </tr>
+                {%- endif %}
+
+                {%- comment -%}
+                  Only shown when it differs from the total — on a deposit or a
+                  partial payment, "total paid today" is the number the customer
+                  needs, and repeating it when it equals the total is noise.
+                {%- endcomment -%}
+                {%- if total_paid and total_paid != total_price %}
+                  <tr><td colspan="2" style="padding-top:9px;"><div style="border-top:1px solid #e7ecf4; font-size:0; line-height:0;">&nbsp;</div></td></tr>
+                  <tr>
+                    <td style="padding:10px 0 0; font-family:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif; font-size:14px; font-weight:700; color:#142548;">Total paid today</td>
+                    <td align="right" style="padding:10px 0 0; font-size:15px; font-weight:700; color:#142548;">{{ total_paid | money_with_currency }}</td>
+                  </tr>
+                {%- endif %}
+
+                {%- comment -%}
+                  Shopify's original repeats the card here as a per-transaction
+                  breakdown — "Visa ending in 4242 · $519.18" — and then again
+                  under Customer information. That breakdown exists to split a
+                  payment across two methods (gift card plus card, or two
+                  cards). Every order this store takes is a single payment, so
+                  it was printing the same card twice for no added information.
+
+                  The card now appears once, under Customer information, where
+                  someone reconciling a statement looks for it. If split
+                  payments ever start happening, restore the loop here — that is
+                  the case it was written for.
+                {%- endcomment -%}
+              </table>
+            </td>
+          </tr>
+
+          <!-- ══ ADDRESSES ═════════════════════════════════════════════════ -->
+          <tr>
+            <td style="padding:30px 30px 34px;" class="px">
+              <div style="border-top:1px solid #e7ecf4; padding-top:24px;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    {%- if requires_shipping and shipping_address %}
+                      <td class="stack" valign="top" width="50%" style="padding-right:14px;">
+                        <div style="font-family:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace; font-size:10px; font-weight:700; letter-spacing:0.16em; color:#b8460a; text-transform:uppercase; padding-bottom:9px;">Shipping to</div>
+                        <div style="font-family:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace; font-size:12.5px; line-height:1.72; color:#5a6b8c;">
+                          <span style="color:#142548; font-weight:700;">{{ shipping_address.name }}</span><br>
+                          {% if shipping_address.company != blank %}{{ shipping_address.company }}<br>{% endif %}
+                          {{ shipping_address.address1 }}<br>
+                          {% if shipping_address.address2 != blank %}{{ shipping_address.address2 }}<br>{% endif %}
+                          {{ shipping_address.city }} {{ shipping_address.province_code }} {{ shipping_address.zip }}<br>
+                          {{ shipping_address.country }}
+                        </div>
+                      </td>
+                      <td class="stack-gap" style="font-size:0; line-height:0; height:0;">&nbsp;</td>
+                    {%- endif %}
+                    {%- if billing_address %}
+                      <td class="stack" valign="top" width="50%">
+                        <div style="font-family:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace; font-size:10px; font-weight:700; letter-spacing:0.16em; color:#b8460a; text-transform:uppercase; padding-bottom:9px;">Billed to</div>
+                        <div style="font-family:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace; font-size:12.5px; line-height:1.72; color:#5a6b8c;">
+                          <span style="color:#142548; font-weight:700;">{{ billing_address.name }}</span><br>
+                          {% if billing_address.company != blank %}{{ billing_address.company }}<br>{% endif %}
+                          {{ billing_address.address1 }}<br>
+                          {% if billing_address.address2 != blank %}{{ billing_address.address2 }}<br>{% endif %}
+                          {{ billing_address.city }} {{ billing_address.province_code }} {{ billing_address.zip }}<br>
+                          {{ billing_address.country }}
+                        </div>
+                      </td>
+                    {%- endif %}
+                  </tr>
+                </table>
+
+                {%- comment -%}
+                  Payment method and shipping method, the two fields Shopify's
+                  own template carries under Customer information. They are the
+                  detail people check when reconciling a statement or querying
+                  which service they paid for, so they stay.
+                {%- endcomment -%}
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="padding-top:24px;">
+                  <tr>
+                    <td class="stack" valign="top" width="50%" style="padding-right:14px;">
+                      <div style="font-family:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace; font-size:10px; font-weight:700; letter-spacing:0.16em; color:#b8460a; text-transform:uppercase; padding-bottom:9px;">Payment</div>
+                      <div style="font-family:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace; font-size:12.5px; line-height:1.72; color:#5a6b8c;">
+                        {%- for transaction in transactions -%}
+                          {%- if transaction.status == 'success' and transaction.kind != 'refund' and transaction.kind != 'void' -%}
+                            {%- if transaction.payment_details.credit_card_company -%}
+                              {{ transaction.payment_details.credit_card_company }} ending in {{ transaction.payment_details.credit_card_last_four }}<br>
+                            {%- else -%}
+                              {{ transaction.gateway_display_name | default: transaction.gateway }}<br>
+                            {%- endif -%}
+                          {%- endif -%}
+                        {%- endfor -%}
+                      </div>
+                    </td>
+                    <td class="stack-gap" style="font-size:0; line-height:0; height:0;">&nbsp;</td>
+                    {%- if requires_shipping and shipping_method %}
+                      <td class="stack" valign="top" width="50%">
+                        <div style="font-family:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace; font-size:10px; font-weight:700; letter-spacing:0.16em; color:#b8460a; text-transform:uppercase; padding-bottom:9px;">Shipping method</div>
+                        <div style="font-family:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace; font-size:12.5px; line-height:1.72; color:#5a6b8c;">
+                          {{ shipping_method.title }}
+                        </div>
+                      </td>
+                    {%- endif %}
+                  </tr>
+                </table>
+
+                {%- comment -%}
+                  The line Shopify's original closes on. It belongs here rather
+                  than in the footer: this is where someone finishes reading the
+                  detail and finds a discrepancy.
+                {%- endcomment -%}
+                <div style="border-top:1px solid #e7ecf4; margin-top:24px; padding-top:18px; font-family:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif; font-size:13.5px; line-height:1.6; color:#5a6b8c;">
+                  Any questions? Reply to this email or contact us at
+                  <a href="mailto:info@hooknloop.com.au?subject=Order%20{{ order_name | url_encode }}" style="color:#b8460a; font-weight:700; text-decoration:none;">info@hooknloop.com.au</a>.
+                </div>
+              </div>
+            </td>
+          </tr>
+
+          <!-- ══ FOOTER ════════════════════════════════════════════════════ -->
+          {%- comment -%}
+            The footer carries the contact details now, so it is built to be
+            used rather than skimmed past. A trade buyer chasing an order wants
+            a phone number, not a help centre — so the number is the largest
+            thing here, set in mono at heading size and wired as a tel: link so
+            it dials on a phone. The email sits under it as the written-record
+            alternative for anyone forwarding to accounts.
+
+            The reversed logo anchors it, and the tagline sits under the mark
+            rather than in a second column — the two-column version left a
+            narrow measure that broke the phone number across two lines.
+          {%- endcomment -%}
+          <tr>
+            <td style="background:#142548; padding:32px 30px;" class="px">
+
+              {%- comment -%}
+                The reversed logo, not the blue one. hnl-email-logo-footer.png
+                is the white mark with the orange "n" — the blue version would
+                vanish on navy exactly as it did in the masthead.
+              {%- endcomment -%}
+              <img src="https://cdn.shopify.com/s/files/1/0975/4509/3489/files/hnl-email-logo-footer.png?v=1786003221"
+                   alt="HooknLoop" width="164" height="29"
+                   style="display:block; width:164px; height:29px; border:0;">
+
+              <div style="font-family:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif; font-size:13.5px; line-height:1.62; color:#8194b5; padding-top:14px; max-width:430px;">
+                Australian hook &amp; loop specialists — tapes, strips, dots and fasteners, stocked and dispatched locally.
+              </div>
+
+              <div style="border-top:1px solid rgba(255,255,255,0.13); margin-top:22px; padding-top:22px;">
+
+                {%- comment -%}
+                  Phone and email sit on one line at a size that cannot wrap.
+                  The previous version set the number at 19px inside a 55%
+                  column, which broke it across two lines mid-number — a phone
+                  number that wraps is a phone number nobody dials.
+                {%- endcomment -%}
+                <div style="font-family:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace; font-size:10px; font-weight:700; letter-spacing:0.16em; color:#f0842a; text-transform:uppercase; padding-bottom:12px;">Need a hand?</div>
+
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <td class="stack" valign="middle" style="white-space:nowrap; padding-right:18px;">
+                      <a href="tel:+61340616287" style="font-family:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace; font-size:16px; font-weight:700; color:#ffffff; text-decoration:none; white-space:nowrap;">+61&nbsp;3&nbsp;4061&nbsp;6287</a>
+                    </td>
+                    <td class="stack-gap" style="font-size:0; line-height:0; height:0;">&nbsp;</td>
+                    <td class="stack" valign="middle" align="right" style="white-space:nowrap;">
+                      <a href="mailto:info@hooknloop.com.au?subject=Order%20{{ order_name | url_encode }}" style="font-family:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif; font-size:14px; color:#c9d3e6; text-decoration:none; border-bottom:1px solid rgba(201,211,230,0.38); white-space:nowrap;">info@hooknloop.com.au</a>
+                    </td>
+                  </tr>
+                </table>
+
+              </div>
+
+              <div style="border-top:1px solid rgba(255,255,255,0.13); margin-top:22px; padding-top:16px;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <td align="left">
+                      <a href="{{ shop.url }}" style="font-family:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif; font-size:13px; font-weight:700; color:#ffffff; text-decoration:none;">hooknloop.com.au</a>
+                    </td>
+                    <td align="right" style="font-family:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace; font-size:10.5px; letter-spacing:0.05em; color:#8194b5; white-space:nowrap;">
+                      Order {{ order_name }}
+                    </td>
+                  </tr>
+                </table>
+              </div>
+
+            </td>
+          </tr>
+
+        </table>
+
+      </td>
+    </tr>
+  </table>
+
+</body>
+</html>

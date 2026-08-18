@@ -106,6 +106,34 @@
 
     {% render 'inline-style' %}
 
+    {%- comment -%}
+      Preload the homepage hero's first slide.
+
+      That image is the Largest Contentful Paint element, but it lives roughly
+      40KB deep in a 269KB document, behind six stylesheets. On throttled mobile
+      the preload scanner reached it so late that 75% of LCP (3.7s of 4.9s) was
+      Load Delay — time the image spent not yet requested. Declaring it up here,
+      ahead of the stylesheets, moves discovery into the first chunk of HTML.
+
+      This must stay in sync with slide 1's image in the hero section, which is
+      why it uses the same filename that hnl-hero.liquid falls back to. If the
+      first slide's image is changed in the theme editor, update it here too —
+      a stale entry costs a wasted ~32KB fetch and forfeits the LCP head start.
+
+      The media query is not decoration. The hero banner is a desktop-only
+      element — phones get the section's navy gradient and are handed a 1x1
+      transparent GIF by the <picture> in hnl-hero.liquid, so preloading the
+      photograph on mobile would download 160KB that nothing ever paints, on
+      the connection least able to afford it and ahead of the stylesheets that
+      block first paint. 921px is one pixel above the 920px breakpoint the hero
+      restacks at, so exactly one of the two treatments is ever preloaded.
+    {%- endcomment -%}
+    {%- if request.page_type == 'index' -%}
+      <link rel="preload" as="image" fetchpriority="high"
+            media="(min-width: 921px)"
+            href="{{ 'hnl-hero-banner-1.webp' | asset_url }}">
+    {%- endif -%}
+
     {{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}
     {{ 'glightbox.min.css' | asset_url | stylesheet_tag }}
     {{ 'theme.css' | asset_url | stylesheet_tag }}

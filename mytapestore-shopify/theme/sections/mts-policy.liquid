@@ -1,0 +1,77 @@
+{%- comment -%}
+  Shop policy pages (privacy, terms, refund, shipping).
+
+  Without a policy template Shopify renders these with its own bare fallback:
+  no page chrome, no measure limit, and 18,000 characters of legal text set full
+  width — which is what made the privacy policy unreadable.
+
+  Legal prose is a different typographic problem to marketing copy: it is long,
+  scanned rather than read, and its structure IS the navigation. So this template
+  constrains the measure, gives headings real hierarchy, and keeps a table of
+  contents-ish rhythm through generous heading spacing. The body comes from
+  Settings → Policies, so the merchant edits it in one place.
+{%- endcomment -%}
+<main id="main">
+  <div class="wrap page__crumbs">{% render 'mts-breadcrumbs', current_title: policy.title %}</div>
+
+  <section class="page-hero">
+    <div class="wrap">
+      <span class="eyebrow eyebrow--onink">{{ section.settings.eyebrow }}</span>
+      <h1>{{ policy.title }}</h1>
+    </div>
+  </section>
+
+  <div class="wrap mts-policy">
+    <article class="mts-policy__body rte" data-mts-policy-body>
+      {{ policy.body }}
+    </article>
+
+    {%- comment -%}
+      The sidebar is one sticky column, not two floating boxes.
+
+      The contents list is built by mts-theme.js from the headings in the body
+      rather than authored here, because the body is merchant HTML from
+      Settings → Policies — there is no way to know its sections at build time,
+      and asking someone to maintain a second copy of them guarantees the two
+      drift apart. If the policy has fewer than three headings the script
+      removes this block entirely, so a short refund policy does not get a
+      table of contents listing one item.
+    {%- endcomment -%}
+    <div class="mts-policy__side">
+      <nav class="mts-policy__toc" data-mts-policy-toc hidden aria-labelledby="policy-toc-h">
+        <h2 class="mts-policy__toc-h" id="policy-toc-h">{{ section.settings.toc_title }}</h2>
+        <ol class="mts-policy__toc-list" data-mts-policy-toc-list></ol>
+      </nav>
+
+      {%- if section.settings.show_help -%}
+        <aside class="mts-policy__help">
+          <h2>{{ section.settings.help_title }}</h2>
+          <p>{{ section.settings.help_text }}</p>
+          <div class="mts-policy__help-actions">
+            {%- if settings.phone != blank -%}
+              <a class="btn btn--brand" href="tel:{{ settings.phone_href | default: settings.phone | remove: ' ' }}">
+                {% render 'mts-icon', name: 'phone', size: 16 %} {{ settings.phone }}
+              </a>
+            {%- endif -%}
+            <a class="btn btn--ghost" href="{{ routes.root_url }}pages/contact">Contact us</a>
+          </div>
+        </aside>
+      {%- endif -%}
+    </div>
+  </div>
+</main>
+
+{% schema %}
+{
+  "name": "Policy",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Customer care" },
+    { "type": "text", "id": "toc_title", "label": "Contents title", "default": "On this page",
+      "info": "The list itself is built automatically from the policy's headings." },
+    { "type": "checkbox", "id": "show_help", "label": "Show the help panel", "default": true },
+    { "type": "text", "id": "help_title", "label": "Help title", "default": "Questions about this policy?" },
+    { "type": "textarea", "id": "help_text", "label": "Help text",
+      "default": "Our team can walk you through any of it — call us or send a message and we'll come back to you within one business day." }
+  ]
+}
+{% endschema %}

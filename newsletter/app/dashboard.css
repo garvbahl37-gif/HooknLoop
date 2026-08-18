@@ -50,8 +50,9 @@
 @keyframes rise { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
 
 /* ── Grid ──────────────────────────────────────────────────── */
-.grid { display: grid; grid-template-columns: minmax(320px, 400px) minmax(0, 1fr); gap: 22px; align-items: start; }
-@media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+.grid { display: grid; grid-template-columns: minmax(340px, 440px) minmax(0, 1fr); gap: 22px; align-items: start; }
+.col-left { display: flex; flex-direction: column; gap: 22px; min-width: 0; }
+@media (max-width: 900px) { .grid { grid-template-columns: 1fr; } .preview { position: static !important; } }
 
 /* ── Panels / cards ────────────────────────────────────────── */
 .panel {
@@ -128,7 +129,7 @@
 .btn--ai:disabled { opacity: .55; cursor: default; }
 
 /* ── Email preview (client-chrome frame) ───────────────────── */
-.preview { min-width: 0; }
+.preview { min-width: 0; position: sticky; top: 88px; }
 .preview__frame { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-card); box-shadow: var(--sh-md); overflow: hidden; }
 .preview__bar { display: flex; align-items: center; gap: 7px; padding: 11px 14px; border-bottom: 1px solid var(--line); background: var(--surface-2); }
 .preview__dots { display: flex; gap: 6px; }

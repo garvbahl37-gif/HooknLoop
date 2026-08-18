@@ -1,0 +1,96 @@
+{
+  "type": "footer",
+  "name": "Footer",
+  "sections": {
+    "value-props": {
+      "type": "mts-value-props",
+      "blocks": {
+        "v1": {
+          "type": "prop",
+          "settings": {
+            "title": "Fast delivery Australia-wide",
+            "text": "Dispatched in 1–2 business days to 3,600+ postcodes.",
+            "packaged_icon": "fast-delivery"
+          }
+        },
+        "v2": {
+          "type": "prop",
+          "settings": {
+            "title": "Secure payment",
+            "text": "Checkout safely with major cards, PayPal and Shop Pay.",
+            "packaged_icon": "secure-payment"
+          }
+        },
+        "v3": {
+          "type": "prop",
+          "settings": {
+            "title": "Lowest-price guarantee",
+            "text": "Find a stocked line cheaper and we’ll match it.",
+            "packaged_icon": "price"
+          }
+        },
+        "v4": {
+          "type": "prop",
+          "settings": {
+            "title": "Australian owned",
+            "text": "Local stock, local support and honest advice.",
+            "packaged_icon": "flag-australia"
+          }
+        }
+      },
+      "block_order": [
+        "v1",
+        "v2",
+        "v3",
+        "v4"
+      ],
+      "settings": {
+        "eyebrow": "Why My Tape Store",
+        "heading": "Buy with confidence"
+      }
+    },
+    "footer": {
+      "type": "mts-footer",
+      "blocks": {
+        "c1": {
+          "type": "menu",
+          "settings": {
+            "heading": "Shop tapes",
+            "menu": "footer-shop",
+            "more_text": "All products"
+          }
+        },
+        "c2": {
+          "type": "menu",
+          "settings": {
+            "heading": "Information",
+            "menu": "footer-information"
+          }
+        },
+        "c3": {
+          "type": "menu",
+          "settings": {
+            "heading": "Customer care",
+            "menu": "footer"
+          }
+        }
+      },
+      "block_order": [
+        "c1",
+        "c2",
+        "c3"
+      ],
+      "settings": {
+        "blurb": "Australia's adhesive tape specialists. Double-sided, foam, duct, foil, hook & loop, safety and packaging tapes — plus dispensers — direct to your doorstep, Australia-wide.",
+        "show_newsletter": true,
+        "newsletter_heading": "Trade tips & tape deals — no spam.",
+        "show_payment_marks": true,
+        "show_hours": false
+      }
+    }
+  },
+  "order": [
+    "value-props",
+    "footer"
+  ]
+}

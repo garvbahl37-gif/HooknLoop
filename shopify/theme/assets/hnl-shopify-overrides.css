@@ -1732,3 +1732,31 @@ body.drawer-open {
 }
 .sugg__all:hover { text-decoration: underline; text-underline-offset: 2px; }
 .sugg__empty { margin: 0; padding: 14px 10px; color: var(--muted-ink); font-size: 14px; }
+
+/* ── Buy it now ───────────────────────────────────────────────────────────
+   STAGED, DELIBERATELY NOT LIVE. Uncomment and re-run shopify/build-css.sh to
+   ship it.
+
+   This button is no longer Shop Pay, so it no longer wears Shop's purple.
+   That purple is Shop's brand and it promises the Shop flow — a shopper who
+   presses it expecting to sign in, or expecting Shop's wallet, would be
+   reading a colour that now means something else. Navy keeps it clearly
+   secondary to the orange Add to cart while still reading as a real button.
+
+   It is held back because it was written during the hero work and never
+   pushed, so it would have ridden along with the single-banner release as an
+   unrequested change to the primary purchase button on every product page.
+   Product-page colour belongs in its own release, tested on its own.
+
+.pdp__buynow {
+  background: var(--navy);
+}
+.pdp__buynow:hover {
+  background: #0d1a38;
+}
+.pdp__buynow[disabled] {
+  opacity: 0.72;
+  cursor: default;
+  transform: none;
+}
+*/

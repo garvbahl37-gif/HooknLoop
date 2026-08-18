@@ -43,7 +43,7 @@
   <div class="wrap pdp__grid">
     <div class="pdp__gallery">
       <div class="pdp__stage" data-hnl-stage>
-        <span class="pdp__flag">{{ section.settings.stock_flag }}</span>
+        <span class="pdp__flag" data-hnl-flag{% unless product_variant.available %} hidden{% endunless %}>{{ section.settings.stock_flag }}</span>
         {%- if product.featured_image -%}
           <img src="{{ product.featured_image | image_url: width: 1200 }}"
                alt="{{ product.featured_image.alt | default: product.title | escape }}"
@@ -269,11 +269,34 @@
           <p class="pdp__bulknote" data-hnl-bulk-note hidden></p>
 
           {%- comment -%}
-            Shopify's own accelerated checkout — Shop Pay and whatever else this
-            store has enabled. React faked this with a styled button; the real
-            one actually completes a purchase.
+            Buy it now — the cart's checkout, reached in one press instead of
+            three.
+
+            This stands in for {{ form | payment_button }}, which rendered "Buy
+            with Shop". That button handed the shopper to Shop's own flow and
+            asked them to sign in with a Shop account before it would accept the
+            order — a login wall in front of a purchase they had already decided
+            to make. Checkout from the cart never asks for that; it goes straight
+            to billing details. So this button does exactly what the cart does,
+            without the detour through the cart.
+
+            It submits the same form as Add to cart, so variant, quantity and
+            bulk pricing carry through unchanged. The only difference is where
+            the JS sends you once the item is in.
+
+            Shop Pay is untouched as a payment method — anyone who wants it can
+            still pick it at checkout. What is gone is being asked to log in
+            before you are allowed to buy. Turning on show_dynamic_checkout in
+            the theme editor restores the original button.
           {%- endcomment -%}
-          {{ form | payment_button }}
+          {%- if section.settings.show_dynamic_checkout -%}
+            {{ form | payment_button }}
+          {%- else -%}
+            <button type="submit" class="pdp__buynow" data-hnl-buynow>
+              <span data-hnl-buynow-label>Buy it now</span>
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </button>
+          {%- endif -%}
         </div>
       {%- endform -%}
 
@@ -562,6 +585,9 @@
     root.querySelector('[data-hnl-variant-id]').value = v.id;
     setAll('[data-hnl-sku]', function (e) { e.textContent = v.sku || '—'; });
     setAll('[data-hnl-avail]', function (e) { e.textContent = v.available ? 'In stock' : 'Out of stock'; });
+    /* the gallery flag only ever claims stock — pull it the moment a sold-out
+       variant is selected, so it can never contradict the buy button */
+    setAll('[data-hnl-flag]', function (e) { e.hidden = !v.available; });
     setAll('[data-hnl-total]', function (e) { e.textContent = money(v.price * qty); });
 
     var price = root.querySelector('[data-hnl-price]');
@@ -719,12 +745,45 @@
     }
   }
 
+  {%- comment -%}
+    Which button submitted decides where the shopper lands: Add to cart opens
+    the drawer, Buy it now goes to checkout. e.submitter carries that, but it is
+    missing on older Safari, so the press is also recorded on the way in.
+  {%- endcomment -%}
+  var buyNowPressed = false;
+  setAll('[data-hnl-buynow]', function (b) {
+    b.addEventListener('click', function () { buyNowPressed = true; });
+  });
+
+  function setBuyNowBusy(on) {
+    setAll('[data-hnl-buynow]', function (b) {
+      var lbl = b.querySelector('[data-hnl-buynow-label]');
+      if (on) {
+        if (lbl && !b.hasAttribute('data-hnl-buynow-restore')) {
+          b.setAttribute('data-hnl-buynow-restore', lbl.innerHTML);
+          lbl.innerHTML = 'Taking you to checkout…';
+        }
+        b.disabled = true;
+      } else {
+        if (lbl && b.hasAttribute('data-hnl-buynow-restore')) {
+          lbl.innerHTML = b.getAttribute('data-hnl-buynow-restore');
+          b.removeAttribute('data-hnl-buynow-restore');
+        }
+        b.disabled = false;
+      }
+    });
+  }
+
   if (form) {
     form.addEventListener('submit', function (e) {
       /* Second press: honour the label and go to the cart. */
       /* No special case while the confirmation is showing — pressing again
          adds another one, which is what a button reading "Add to cart" should
          do. The drawer is where the cart and checkout live. */
+      var toCheckout = buyNowPressed ||
+        !!(e.submitter && e.submitter.hasAttribute('data-hnl-buynow'));
+      buyNowPressed = false;
+
       if (!window.fetch) return;                 /* let the browser post it */
       e.preventDefault();
 
@@ -742,7 +801,9 @@
         Buttons are no longer disabled. The green state is the feedback, and
         disabling was what made a slow connection feel broken.
       {%- endcomment -%}
-      setAdded(true);
+      /* "Added to cart" would be the wrong promise on the way to checkout — the
+         shopper is leaving this page, so that button says where it is going. */
+      if (toCheckout) { setBuyNowBusy(true); } else { setAdded(true); }
 
       fetch('/cart/add.js', {
         method: 'POST',
@@ -752,6 +813,9 @@
       })
         .then(function (r) { return r.ok ? r.json() : r.json().then(function (j) { throw new Error(j.description || 'Could not add to cart'); }); })
         .then(function () {
+          /* Straight to checkout — the same destination as the cart drawer's
+             checkout button, just without the stop in between. */
+          if (toCheckout) { window.location.href = '/checkout'; return; }
           /* The drawer reads /cart.js itself and refreshes the badge from the
              same payload, so the two cannot disagree. */
           document.dispatchEvent(new CustomEvent('hnl:cart:open'));
@@ -760,6 +824,7 @@
           /* Never strand the shopper: undo the optimistic confirmation and
              fall back to a real form post. */
           setAdded(false);
+          setBuyNowBusy(false);
           console.warn('[hnl] add to cart failed, posting form', err);
           form.submit();
         });
@@ -890,6 +955,7 @@
     { "type": "text", "id": "stock_flag", "label": "Gallery flag", "default": "In stock · ships in 1–2 days" },
     { "type": "collection", "id": "related_collection", "label": "Related products from", "info": "Defaults to all products." },
     { "type": "textarea", "id": "spec_note", "label": "Specifications note", "info": "Optional. Left empty so nothing shows under the spec table; add text here to bring a note back." },
+    { "type": "checkbox", "id": "show_dynamic_checkout", "label": "Show Shop Pay / \"Buy with Shop\" buttons", "default": false, "info": "Off by default. \"Buy with Shop\" makes shoppers sign in to a Shop account before it will accept the order; the normal cart checkout asks for billing details directly and needs no login." },
 
     { "type": "header", "content": "Buy more & save" },
     { "type": "checkbox", "id": "show_bulk", "label": "Show the volume ladder", "default": true },

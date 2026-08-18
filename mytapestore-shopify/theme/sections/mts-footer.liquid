@@ -1,0 +1,197 @@
+{%- comment -%}
+  Footer — ported from mytapestore-redesign/src/components/Footer.jsx.
+  Brand column + three link columns, the newsletter box, then the payment/legal bar.
+
+  The React footer hard-coded its link lists from the catalogue; here each column
+  is a block backed by a Shopify menu so it stays editable.
+{%- endcomment -%}
+
+<footer class="ft grain">
+  <div class="wrap ft-main">
+    <div class="ft-col ft-col--brand">
+      <a href="{{ routes.root_url }}" class="ft-logo">
+        {%- if settings.logo_light != blank -%}
+          <img src="{{ settings.logo_light | image_url: width: 376 }}" alt="{{ shop.name }}" class="ft-logo__img" width="188" height="32">
+        {%- else -%}
+          <img src="{{ 'mts-logo-light.png' | asset_url }}" alt="{{ shop.name }}" class="ft-logo__img" width="188" height="32">
+        {%- endif -%}
+      </a>
+      {%- if section.settings.blurb != blank -%}
+        <p class="ft-blurb">{{ section.settings.blurb }}</p>
+      {%- endif -%}
+      <ul class="ft-contact">
+        {%- if settings.phone != blank -%}
+          <li>
+            <span class="ft-contact__ic">{% render 'mts-icon', name: 'phone', size: 16 %}</span>
+            <a href="tel:{{ settings.phone_href | default: settings.phone | remove: ' ' }}">{{ settings.phone }}</a>
+          </li>
+        {%- endif -%}
+        {%- if settings.email != blank -%}
+          <li>
+            <span class="ft-contact__ic">{% render 'mts-icon', name: 'mail', size: 16 %}</span>
+            <a href="mailto:{{ settings.email }}">{{ settings.email }}</a>
+          </li>
+        {%- endif -%}
+        {%- comment -%}
+          Opening hours are off in the footer by design. The `hours` setting is
+          NOT removed — the contact page and the chat assistant both quote it —
+          this only controls whether the footer repeats it.
+        {%- endcomment -%}
+        {%- if section.settings.show_hours and settings.hours != blank -%}
+          <li>
+            <span class="ft-contact__ic">{% render 'mts-icon', name: 'clock', size: 16 %}</span>
+            <span>{{ settings.hours }}</span>
+          </li>
+        {%- endif -%}
+      </ul>
+
+      {%- liquid
+        assign socials = ''
+        if settings.social_facebook != blank
+          assign socials = socials | append: 'facebook|Facebook|' | append: settings.social_facebook | append: '::'
+        endif
+        if settings.social_instagram != blank
+          assign socials = socials | append: 'instagram|Instagram|' | append: settings.social_instagram | append: '::'
+        endif
+        if settings.social_youtube != blank
+          assign socials = socials | append: 'youtube|YouTube|' | append: settings.social_youtube | append: '::'
+        endif
+        if settings.social_x != blank
+          assign socials = socials | append: 'x|X|' | append: settings.social_x | append: '::'
+        endif
+        if settings.social_linkedin != blank
+          assign socials = socials | append: 'linkedin|LinkedIn|' | append: settings.social_linkedin | append: '::'
+        endif
+      -%}
+      {%- if socials != blank -%}
+        <ul class="ft-social">
+          {%- assign social_list = socials | split: '::' -%}
+          {%- for s in social_list -%}
+            {%- if s != blank -%}
+              {%- assign parts = s | split: '|' -%}
+              <li>
+                <a href="{{ parts[2] }}" aria-label="{{ parts[1] }}" rel="noopener" target="_blank">
+                  {% render 'mts-icon', name: parts[0], size: 18 %}
+                </a>
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
+
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'menu' -%}
+        {%- comment -%}
+          The heading is a button INSIDE the h4, not instead of it — the
+          accordion pattern that keeps the document outline intact while making
+          the group tappable. It renders as a plain heading on desktop; phones
+          get the toggle (see initFooterAccordion). Panels ship open, so a
+          crawler or a JS-off visitor sees the full link list.
+        {%- endcomment -%}
+        <div class="ft-col" {{ block.shopify_attributes }}>
+          <h4>
+            <button type="button" class="ft-col__toggle" data-mts-ftacc aria-expanded="true">
+              <span>{{ block.settings.heading }}</span>
+              {% render 'mts-icon', name: 'chevronDown', size: 18, class: 'ft-col__chev' %}
+            </button>
+          </h4>
+          <ul data-mts-ftpanel>
+            {%- for link in linklists[block.settings.menu].links -%}
+              <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+            {%- endfor -%}
+            {%- if block.settings.more_text != blank -%}
+              <li><a href="{{ block.settings.more_url | default: routes.all_products_collection_url }}" class="ft-more">{{ block.settings.more_text }} &rarr;</a></li>
+            {%- endif -%}
+          </ul>
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+
+  {%- if section.settings.show_newsletter -%}
+    <div class="ft-signup">
+      <div class="wrap">
+        <div class="ft-signup__box">
+          <div class="ft-signup__copy">
+            <span class="ft-signup__badge">{% render 'mts-icon', name: 'mail', size: 14 %} {{ 'general.newsletter.label' | t }}</span>
+            <p class="ft-signup__title">{{ section.settings.newsletter_heading }}</p>
+          </div>
+          {%- form 'customer', class: 'ft-signup__form' -%}
+            {%- if form.posted_successfully? -%}
+              <p class="ft-signup__done">{% render 'mts-icon', name: 'check', size: 17 %} {{ 'general.newsletter.success' | t }}</p>
+            {%- else -%}
+              <input type="hidden" name="contact[tags]" value="newsletter">
+              <input type="email" name="contact[email]" required
+                placeholder="{{ 'general.newsletter.placeholder' | t }}"
+                aria-label="{{ 'general.newsletter.placeholder' | t }}"
+                value="{{ form.email }}">
+              <button class="btn btn--brand" type="submit">{{ 'general.newsletter.submit' | t }}</button>
+            {%- endif -%}
+          {%- endform -%}
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+
+  <div class="ft-bottom">
+    <div class="wrap ft-bottom__row">
+      <p class="num">
+        {{ shop.name }} &copy; {{ 'now' | date: '%Y' }} &middot; All rights reserved
+        {%- if settings.abn != blank %} &middot; ABN {{ settings.abn }}{% endif -%}
+      </p>
+      {%- if section.settings.show_payment_marks -%}
+        <div class="ft-pay__marks">
+          {%- assign marks = 'visa,mastercard,amex,paypal,shop-pay,discover' | split: ',' -%}
+          {%- for m in marks -%}
+            <img src="{{ 'mts-pay-' | append: m | append: '.svg' | asset_url }}" alt="{{ m }}" width="38" height="24" loading="lazy">
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "blurb",
+      "label": "Brand blurb",
+      "default": "Australia's adhesive tape specialists. Double-sided, foam, duct, foil, hook & loop, safety and packaging tapes — plus dispensers — direct to your doorstep, Australia-wide."
+    },
+    { "type": "checkbox", "id": "show_hours", "label": "Show opening hours", "default": false,
+      "info": "The hours themselves live in Theme settings \u2192 Contact, and are still used on the contact page and by the chat assistant." },
+    { "type": "checkbox", "id": "show_newsletter", "label": "Show newsletter signup", "default": true },
+    {
+      "type": "text",
+      "id": "newsletter_heading",
+      "label": "Newsletter heading",
+      "default": "Trade tips & tape deals — no spam."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_marks",
+      "label": "Show payment marks",
+      "default": true,
+      "info": "Uses the packaged marks from the design rather than Shopify's, so the footer matches the redesign exactly."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "menu",
+      "name": "Link column",
+      "limit": 3,
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Information" },
+        { "type": "link_list", "id": "menu", "label": "Menu", "default": "footer" },
+        { "type": "text", "id": "more_text", "label": "Trailing link text", "info": "Optional — renders as an accented \"All products →\" style link." },
+        { "type": "url", "id": "more_url", "label": "Trailing link URL" }
+      ]
+    }
+  ],
+  "enabled_on": { "groups": ["footer"] }
+}
+{% endschema %}

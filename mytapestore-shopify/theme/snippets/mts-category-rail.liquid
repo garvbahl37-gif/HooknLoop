@@ -1,0 +1,90 @@
+{%- comment -%}
+  "Shop by category" — a dropdown rather than the long scrolling list the React
+  version used.
+
+  The scroll rail worked when it sat beside a short grid, but with 62 categories
+  it meant scrolling inside a scrolling page to find anything, and on a collection
+  page the visitor already knows roughly what they want. A dropdown collapses
+  that to one click, keeps the grouped structure (Double-Sided / Single-Sided /
+  Dispensers) as optgroup-style headings, and shows the current category as the
+  closed-state label.
+
+  Built as a button + panel rather than a bare <select> so the group headings,
+  product counts and the active state can be styled — a native select allows none
+  of that. Keyboard and screen-reader behaviour is wired in mts-theme.js:
+  ArrowUp/Down, Home/End, Escape, type-ahead, and focus return.
+
+  Params: menu_handle, active_handle
+{%- endcomment -%}
+{%- liquid
+  assign rail_menu = linklists[menu_handle]
+  assign current_label = 'All categories'
+  assign total = 0
+  for group in rail_menu.links
+    for link in group.links
+      assign total = total | plus: 1
+      assign parts = link.url | split: '/'
+      assign h = parts | last | split: '?' | first
+      if active_handle != blank and h == active_handle
+        assign current_label = link.title
+      endif
+    endfor
+  endfor
+-%}
+
+<aside class="rail rail--select" aria-label="Shop by category" data-mts-rail>
+  <div class="rail__head">{% render 'mts-icon', name: 'grid', size: 16 %} {{ 'collections.filters.rail_heading' | t }}</div>
+
+  <div class="rail-dd" data-mts-dd>
+    <button type="button" class="rail-dd__toggle" data-mts-dd-toggle
+            aria-haspopup="listbox" aria-expanded="false" aria-controls="mts-cat-list">
+      <span class="rail-dd__label" data-mts-dd-label>{{ current_label }}</span>
+      <span class="rail-dd__caret">{% render 'mts-icon', name: 'chevronDown', size: 16 %}</span>
+    </button>
+
+    <div class="rail-dd__panel" id="mts-cat-list" role="listbox"
+         aria-label="{{ 'collections.filters.rail_heading' | t }}" data-mts-dd-panel hidden>
+      <div class="rail-dd__search">
+        {% render 'mts-icon', name: 'search', size: 15 %}
+        <input type="text" placeholder="{{ 'collections.filters.rail_search' | t }}"
+               aria-label="{{ 'collections.filters.rail_search' | t }}" data-mts-rail-input>
+      </div>
+
+      <div class="rail-dd__scroll" data-mts-rail-list>
+        <p class="rail__none" data-mts-rail-none hidden></p>
+
+        <a href="{{ routes.all_products_collection_url }}" class="rail-dd__opt" role="option"
+           data-mts-rail-item data-name="all products">
+          <span>All products</span>
+        </a>
+
+        {%- for group in rail_menu.links -%}
+          {%- if group.links.size > 0 -%}
+            <div class="rail-dd__group" data-mts-rail-sect>
+              <div class="rail-dd__group-label">{{ group.title }}</div>
+              {%- for link in group.links -%}
+                {%- liquid
+                  assign _parts = link.url | split: '/'
+                  assign _handle = _parts | last | split: '?' | first
+                  assign coll = collections[_handle]
+                  assign is_active = false
+                  if active_handle != blank and _handle == active_handle
+                    assign is_active = true
+                  endif
+                -%}
+                <a href="{{ link.url }}" class="rail-dd__opt{% if is_active %} is-active{% endif %}"
+                   role="option" aria-selected="{% if is_active %}true{% else %}false{% endif %}"
+                   data-mts-rail-item data-name="{{ link.title | downcase | escape }}">
+                  <span>{{ link.title }}</span>
+                  {%- if coll.all_products_count > 0 -%}
+                    <b class="num">{{ coll.all_products_count }}</b>
+                  {%- endif -%}
+                </a>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</aside>

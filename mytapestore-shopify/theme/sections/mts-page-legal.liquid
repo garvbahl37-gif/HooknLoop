@@ -1,0 +1,88 @@
+{%- comment -%}
+  Long-form legal PAGE — terms & conditions, returns, shipping.
+
+  Why this exists alongside mts-policy:
+  Shopify splits legal content across two different objects. The privacy policy
+  is a shop POLICY (Settings → Policies, served at /policies/...), while terms &
+  conditions on this store is an ordinary PAGE. They render through completely
+  different templates but they are the same reading problem, so they get the
+  same treatment rather than one being left as a wall of text.
+
+  mts-page.liquid is deliberately not reused: it sets `page.content` full-measure
+  with no navigation, which is right for About Us at 544 characters and wrong for
+  terms at 5,000. Splitting the template rather than adding a conditional keeps
+  the generic page generic.
+
+  The contents list is built by mts-theme.js from the headings actually present —
+  the same code path as the policy pages, keyed off `data-mts-policy-body` — so
+  there is one implementation to maintain, not two. Fewer than three headings and
+  it removes itself.
+{%- endcomment -%}
+<main id="main">
+  <div class="wrap page__crumbs">{% render 'mts-breadcrumbs' %}</div>
+
+  <section class="page-hero">
+    <div class="wrap">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="eyebrow eyebrow--onink">{{ section.settings.eyebrow }}</span>
+      {%- endif -%}
+      <h1>{{ page.title }}</h1>
+      {%- if section.settings.intro != blank -%}
+        <p>{{ section.settings.intro }}</p>
+      {%- endif -%}
+    </div>
+  </section>
+
+  <div class="wrap mts-policy">
+    <article class="mts-policy__body rte" data-mts-policy-body>
+      {%- if section.settings.updated != blank -%}
+        {%- comment -%}
+          A legal document with no date is one a reader cannot trust — "which
+          version am I agreeing to?" is the first question terms have to answer.
+        {%- endcomment -%}
+        <p class="mts-policy__updated">{{ section.settings.updated }}</p>
+      {%- endif -%}
+      {{ page.content }}
+    </article>
+
+    <div class="mts-policy__side">
+      <nav class="mts-policy__toc" data-mts-policy-toc hidden aria-labelledby="policy-toc-h">
+        <h2 class="mts-policy__toc-h" id="policy-toc-h">{{ section.settings.toc_title }}</h2>
+        <ol class="mts-policy__toc-list" data-mts-policy-toc-list></ol>
+      </nav>
+
+      {%- if section.settings.show_help -%}
+        <aside class="mts-policy__help">
+          <h2>{{ section.settings.help_title }}</h2>
+          <p>{{ section.settings.help_text }}</p>
+          <div class="mts-policy__help-actions">
+            {%- if settings.phone != blank -%}
+              <a class="btn btn--brand" href="tel:{{ settings.phone_href | default: settings.phone | remove: ' ' }}">
+                {% render 'mts-icon', name: 'phone', size: 16 %} {{ settings.phone }}
+              </a>
+            {%- endif -%}
+            <a class="btn btn--ghost" href="{{ routes.root_url }}pages/contact">Contact us</a>
+          </div>
+        </aside>
+      {%- endif -%}
+    </div>
+  </div>
+</main>
+
+{% schema %}
+{
+  "name": "Legal page",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Customer care" },
+    { "type": "textarea", "id": "intro", "label": "Hero intro" },
+    { "type": "text", "id": "updated", "label": "Last updated line", "info": "e.g. Last updated 15 August 2026" },
+    { "type": "text", "id": "toc_title", "label": "Contents title", "default": "On this page",
+      "info": "The list is built automatically from the page's headings." },
+    { "type": "checkbox", "id": "show_help", "label": "Show the help panel", "default": true },
+    { "type": "text", "id": "help_title", "label": "Help title", "default": "Questions about this?" },
+    { "type": "textarea", "id": "help_text", "label": "Help text",
+      "default": "Our team can walk you through any of it — call us or send a message and we'll come back to you within one business day." }
+  ],
+  "presets": [{ "name": "Legal page" }]
+}
+{% endschema %}

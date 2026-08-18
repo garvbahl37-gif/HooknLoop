@@ -1,0 +1,4 @@
+{
+  "sections": { "main": { "type": "mts-list-collections", "settings": {} } },
+  "order": ["main"]
+}

@@ -1,0 +1,55 @@
+{%- comment -%}
+  Collection index — reuses the category-tile vocabulary from the home page's
+  CategoryShowcase so /collections matches the rest of the store.
+{%- endcomment -%}
+<main id="main">
+  <div class="wrap page__crumbs">{% render 'mts-breadcrumbs', current_title: 'Collections' %}</div>
+
+  <section class="page-hero">
+    <div class="wrap">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="eyebrow eyebrow--onink">{{ section.settings.eyebrow }}</span>
+      {%- endif -%}
+      <h1>{{ section.settings.heading | default: 'All categories' }}</h1>
+      {%- if section.settings.intro != blank -%}<p>{{ section.settings.intro }}</p>{%- endif -%}
+    </div>
+  </section>
+
+  <div class="wrap section">
+    <div class="catx">
+      {%- for coll in collections -%}
+        {%- if coll.all_products_count > 0 -%}
+          <a href="{{ coll.url }}" class="catx__card">
+            <div class="catx__imgwrap">
+              {%- if coll.image -%}
+                <img src="{{ coll.image | image_url: width: 480 }}" alt="{{ coll.title | escape }}" loading="lazy" width="240" height="240">
+              {%- elsif coll.products.first.featured_media -%}
+                <img src="{{ coll.products.first.featured_media | image_url: width: 480 }}" alt="{{ coll.title | escape }}" loading="lazy" width="240" height="240">
+              {%- else -%}
+                {{ 'collection-1' | placeholder_svg_tag }}
+              {%- endif -%}
+            </div>
+            <div class="catx__body">
+              <div class="catx__text">
+                <b>{{ coll.title }}</b>
+                <span class="num">{{ 'collections.general.products_count' | t: count: coll.all_products_count }}</span>
+              </div>
+              <span class="catx__arrow">{% render 'mts-icon', name: 'arrowRight', size: 16 %}</span>
+            </div>
+          </a>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</main>
+
+{% schema %}
+{
+  "name": "Collections list",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Our adhesive tapes collection" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Shop by category" },
+    { "type": "textarea", "id": "intro", "label": "Intro" }
+  ]
+}
+{% endschema %}
