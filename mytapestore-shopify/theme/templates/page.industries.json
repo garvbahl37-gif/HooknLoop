@@ -1,0 +1,14 @@
+{
+  "sections": {
+    "main": {
+      "type": "mts-industries-index",
+      "settings": {
+        "menu": "industries",
+        "eyebrow": "The right tape for the job",
+        "heading": "Tapes by industry",
+        "intro": "From construction and marine to signage, manufacturing and healthcare — find the adhesive tapes trusted in your line of work. Browse 26 industries below."
+      }
+    }
+  },
+  "order": ["main"]
+}

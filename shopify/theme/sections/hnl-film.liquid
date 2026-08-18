@@ -1,0 +1,142 @@
+{%- comment -%}
+  Brand film — port of storefront/src/sections/BrandFilm.jsx
+
+  The loading discipline is the whole point of this section, so it's preserved
+  exactly. The React comment explains why, and it still applies here:
+
+    - no <source> until the section is near the viewport, so someone who
+      bounces off the hero downloads nothing;
+    - phones get the 3.5MB 854x480 encode, and only after a deliberate tap — a
+      phone on mobile data should never spend megabytes on a video it didn't
+      ask for;
+    - desktop gets hnl-film-desktop.mp4: 1280x720 at 1.44 Mbps, two-pass x264
+      from the 1080p master. Desktop was previously served the MOBILE file,
+      which is 854x480 at 377 kbps and looked exactly as bad as that sounds on
+      a 920px-wide frame;
+    - desktop autoplays muted but pauses once scrolled out of view, so we never
+      decode frames nobody is looking at;
+    - prefers-reduced-motion never autoplays anywhere.
+
+  preload="none" plus a late-attached source is what makes that true; setting
+  autoplay with preload="metadata" downloads the lot regardless.
+{%- endcomment -%}
+
+<section class="film" aria-labelledby="film-h">
+  <div class="wrap film__wrap">
+    <div class="sec-head">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="sec-eyebrow sec-eyebrow--orange">{{ section.settings.eyebrow }}</span>
+      {%- endif -%}
+      <h2 id="film-h" class="sec-h2 sec-h2--light">{{ section.settings.heading }}</h2>
+    </div>
+
+    <div class="film__frame"
+         data-hnl-film
+         data-src-desktop="{{ section.settings.video_url | default: '' }}{% if section.settings.video_url == blank %}{{ 'hnl-film-desktop.mp4' | asset_url }}{% endif %}"
+         data-src-mobile="{{ 'hnl-film-mobile.mp4' | asset_url }}">
+      <video class="film__video"
+             muted loop playsinline preload="none"
+             poster="{{ 'hnl-film-poster.webp' | asset_url }}"
+             aria-label="{{ section.settings.video_label | escape }}"></video>
+
+      <button class="film__resume" data-hnl-film-play aria-label="Play the film">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l12-7L8 5Z"/></svg>
+      </button>
+
+      <button class="film__sound" data-hnl-film-sound aria-label="Unmute the film" hidden>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9H4Z"/><path d="M22 9l-5 5M17 9l5 5"/></svg>
+      </button>
+    </div>
+
+    {%- if section.settings.story != blank -%}
+      <figure class="film__story">
+        <span class="film__story-mark" aria-hidden="true">&ldquo;</span>
+        <blockquote class="film__story-text">{{ section.settings.story }}</blockquote>
+        <figcaption class="film__story-by">{{ section.settings.story_by }}</figcaption>
+      </figure>
+    {%- endif -%}
+
+    {%- if section.settings.tag_lead != blank or section.settings.tag_accent != blank -%}
+      <p class="film__tag">{{ section.settings.tag_lead }} <span>{{ section.settings.tag_accent }}</span></p>
+    {%- endif -%}
+  </div>
+</section>
+
+<script>
+(function () {
+  var frame = document.querySelector('[data-hnl-film]');
+  if (!frame) return;
+  var video = frame.querySelector('.film__video');
+  var playBtn = frame.querySelector('[data-hnl-film-play]');
+  var soundBtn = frame.querySelector('[data-hnl-film-sound]');
+
+  var phone  = window.matchMedia('(max-width: 640px)').matches;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var armed = false, wantsPlay = false;
+
+  function arm() {
+    if (armed) return;
+    var s = document.createElement('source');
+    s.src = phone ? frame.dataset.srcMobile : frame.dataset.srcDesktop;
+    s.type = 'video/mp4';
+    video.appendChild(s);
+    video.load();
+    armed = true;
+  }
+
+  function play() {
+    wantsPlay = true;
+    arm();
+    video.play().then(function () {
+      playBtn.hidden = true;
+      soundBtn.hidden = false;
+    }).catch(function () { playBtn.hidden = false; });
+  }
+
+  /* Desktop only: attach the source once we're within 300px, then autoplay. */
+  if (!phone && !reduce && 'IntersectionObserver' in window) {
+    var armObserver = new IntersectionObserver(function (entries) {
+      if (entries[0].isIntersecting) { wantsPlay = true; arm(); play(); armObserver.disconnect(); }
+    }, { rootMargin: '300px' });
+    armObserver.observe(frame);
+
+    /* Pause once it leaves the viewport so we stop decoding offscreen frames. */
+    new IntersectionObserver(function (entries) {
+      if (!armed) return;
+      if (entries[0].isIntersecting && wantsPlay) { video.play().catch(function () {}); }
+      else { video.pause(); }
+    }, { threshold: 0.2 }).observe(frame);
+  }
+
+  playBtn.addEventListener('click', play);
+
+  soundBtn.addEventListener('click', function () {
+    video.muted = !video.muted;
+    soundBtn.setAttribute('aria-label', video.muted ? 'Unmute the film' : 'Mute the film');
+    soundBtn.innerHTML = video.muted
+      ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9H4Z"/><path d="M22 9l-5 5M17 9l5 5"/></svg>'
+      : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9H4Z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a9 9 0 0 1 0 12"/></svg>';
+  });
+
+  video.addEventListener('play', function () { playBtn.hidden = true; });
+  video.addEventListener('pause', function () { if (!wantsPlay) playBtn.hidden = false; });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "HooknLoop film",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Our story · 60 seconds" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Turns out the smallest connections hold the most." },
+    { "type": "url", "id": "video_url", "label": "Full-quality video URL", "info": "Optional. Upload the 16MB master to Content > Files and paste its URL here; the 3.5MB theme asset is used until you do (theme assets cap out well below 16MB)." },
+    { "type": "text", "id": "video_label", "label": "Video aria-label", "default": "HooknLoop brand film — Made to connect" },
+    { "type": "richtext", "id": "story", "label": "Founder story" },
+    { "type": "text", "id": "story_by", "label": "Story attribution", "default": "Founder, HooknLoop" },
+    { "type": "text", "id": "tag_lead", "label": "Tagline" },
+    { "type": "text", "id": "tag_accent", "label": "Tagline accent", "info": "Leave both tagline fields empty to hide the line entirely." }
+  ],
+  "presets": [{ "name": "HooknLoop film" }]
+}
+{% endschema %}

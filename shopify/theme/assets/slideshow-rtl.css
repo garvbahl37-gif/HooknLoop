@@ -1,0 +1,19 @@
+.hero__slider--inner:hover .swiper-button-next.slideshow--nav-button {
+  left: 30px;
+  right: auto;
+}
+.swiper-button-prev.slideshow--nav-button {
+  left: auto;
+  right: 0;
+}
+.swiper-button-next.slideshow--nav-button {
+  right: auto;
+  left: 0;
+}
+.hero__slider--inner:hover .swiper-button-prev.slideshow--nav-button {
+  right: 30px;
+  left: auto;
+}
+.slideshow--nav-button > svg {
+  transform: rotate(-180deg);
+}

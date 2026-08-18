@@ -1,0 +1,19 @@
+/*
+ * HooknLoop 404. The React router had no 404 route; this follows the
+ * redesign's page shell.
+ */
+{
+  "sections": {
+    "hnl_404": {
+      "type": "hnl-404",
+      "settings": {
+        "eyebrow": "Page not found",
+        "title": "That page has moved on",
+        "lead": "The link is dead, but the tape isn't. Search below or browse the full range."
+      }
+    }
+  },
+  "order": [
+    "hnl_404"
+  ]
+}

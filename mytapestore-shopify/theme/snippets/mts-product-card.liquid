@@ -1,0 +1,323 @@
+{%- comment -%}
+  Catalogue card — ported from ProductCard.jsx. Matted product frame, display-face
+  pricing, full-width CTA.
+
+  React → Shopify mapping:
+    p.onSale            → compare_at_price > price
+    p.inStock           → product.available
+    hasRange(p)         → product.price_varies
+    p.type == variable  → more than one variant (→ "Choose options")
+    bestseller          → product carries settings.bestseller_tag
+    p.rating/p.reviews  → the standard reviews.rating / reviews.rating_count metafields
+    sizeCount           → distinct Size values with a trailing "Hook"/"Loop" dropped,
+                          matching the regex the React card used
+
+  The whole card is clickable in the React version (onClick on the <article>);
+  mts-theme.js reproduces that from data-mts-card-href so the markup and the CSS
+  stay identical.
+
+  Params: product (required)
+{%- endcomment -%}
+{%- liquid
+  assign on_sale = false
+  if product.compare_at_price > product.price
+    assign on_sale = true
+  endif
+
+  assign is_variable = false
+  unless product.has_only_default_variant
+    assign is_variable = true
+  endunless
+
+  assign bestseller = false
+  if settings.bestseller_tag != blank and product.tags contains settings.bestseller_tag
+    assign bestseller = true
+  endif
+
+  assign rating = product.metafields.reviews.rating.value.rating
+  assign rating_count = product.metafields.reviews.rating_count.value
+
+  # distinct sizes, ignoring the Hook/Loop suffix — "20mm x 25m Hook" and
+  # "20mm x 25m Loop" are one size, which is what the card counts.
+  assign size_terms = ''
+  for opt in product.options_with_values
+    assign opt_name = opt.name | downcase
+    if opt_name contains 'size'
+      for v in opt.values
+        assign base = v | remove_last: ' Hook' | remove_last: ' Loop'
+        assign size_terms = size_terms | append: base | append: '~'
+      endfor
+    endif
+  endfor
+  assign size_count = 0
+  if size_terms != blank
+    assign size_count = size_terms | split: '~' | uniq | size
+  endif
+
+  # The label used to be product.collections.first — whatever order Shopify
+  # returned — so products advertised themselves as "Display Signage" or
+  # "Building & Construction". Take the first collection that is in the CATEGORY
+  # menu instead; anything else never becomes a label.
+  assign card_cat = nil
+-%}
+{%- comment -%}
+  The exclusion list is READ FROM THE INDUSTRIES MENU, not hardcoded.
+  It used to be a literal list and had drifted four collections behind the menu
+  — airconditioning-refrigeration-tapes, picture-framing-tapes,
+  tapes-for-school-library and tapes-for-visual-arts-entertainment were all
+  missing — so a duct tape happily labelled itself "Airconditioning
+  Refrigeration Tapes". Reading the menu means adding an industry collection can
+  never reintroduce that, and the literals below are only a floor in case the
+  menu is renamed or absent.
+{%- endcomment -%}
+{%- assign cat_handles = ',all,frontpage,bestsellers,' -%}
+{%- for ind in linklists.industries.links -%}
+  {%- if ind.url contains '/collections/' -%}
+    {%- assign ind_handle = ind.url | split: '/collections/' | last | split: '?' | first | split: '#' | first -%}
+    {%- assign cat_handles = cat_handles | append: ind_handle | append: ',' -%}
+  {%- endif -%}
+{%- endfor -%}
+{%- for coll in product.collections -%}
+  {%- if card_cat == nil -%}
+    {%- assign needle = coll.handle | prepend: ',' | append: ',' -%}
+    {%- unless cat_handles contains needle -%}
+      {%- assign card_cat = coll -%}
+    {%- endunless -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- comment -%}
+  data-opt-* carries this product's option values for the derived Colour/Size
+  filters (see mts-filter-panel). Values are pipe-delimited and lower-cased so a
+  match is a simple substring test with delimiters, never a fuzzy one.
+{%- endcomment -%}
+{%- liquid
+  assign opt_colour = ''
+  assign opt_size = ''
+  assign colour_values = blank
+  for opt in product.options_with_values
+    assign oname = opt.name | downcase
+    if oname contains 'colour' or oname contains 'color'
+      assign opt_colour = opt.values | uniq | join: '|' | downcase
+      assign colour_values = opt.values | uniq
+    elsif oname contains 'size'
+      assign opt_size = opt.values | uniq | join: '|' | downcase
+    endif
+  endfor
+-%}
+<article class="pc" data-mts-card data-mts-card-href="{{ product.url | within: collection }}"
+         data-opt-colour="|{{ opt_colour }}|" data-opt-size="|{{ opt_size }}|">
+  <div class="pc__media">
+    {%- if product.featured_media -%}
+      {%- comment -%}
+        PERFORMANCE: a collection page renders up to 48 of these. Serving one
+        fixed 600px file to every card ships far more bytes than any card needs
+        — the frame is ~300px on desktop and roughly half the viewport on
+        mobile. srcset + sizes lets the browser pick the smallest file that
+        still looks sharp, including on 2x screens.
+
+        `index` is passed by the caller: the first row is what the user sees
+        first, so it loads eagerly and everything below stays lazy.
+      {%- endcomment -%}
+      {%- assign eager = false -%}
+      {%- if index and index < 5 -%}{%- assign eager = true -%}{%- endif -%}
+      <img
+        src="{{ product.featured_media | image_url: width: 400 }}"
+        srcset="{{ product.featured_media | image_url: width: 200 }} 200w,
+                {{ product.featured_media | image_url: width: 300 }} 300w,
+                {{ product.featured_media | image_url: width: 400 }} 400w,
+                {{ product.featured_media | image_url: width: 600 }} 600w,
+                {{ product.featured_media | image_url: width: 800 }} 800w"
+        sizes="(min-width: 1280px) 300px, (min-width: 960px) 24vw, (min-width: 640px) 32vw, 46vw"
+        alt="{{ product.featured_media.alt | default: product.title | escape }}"
+        width="300" height="300"
+        decoding="async"
+        {% if eager %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}>
+    {%- else -%}
+      {{ 'product-1' | placeholder_svg_tag: 'pc__placeholder' }}
+    {%- endif -%}
+
+    <div class="pc__badges">
+      {%- if bestseller -%}
+        <span class="tag tag--best">{% render 'mts-icon', name: 'star', size: 11 %} {{ 'products.product.bestseller' | t }}</span>
+      {%- endif -%}
+      {%- if on_sale -%}
+        <span class="tag tag--sale">{{ 'products.product.sale' | t }}</span>
+      {%- endif -%}
+      {%- comment -%}
+        Only the EXCEPTION gets a badge over the image. "In stock" is true of
+        almost every line here, so as a filled green pill it shouted on every
+        card, competed with the product photo and told the shopper nothing.
+        It moved into the body as a quiet dot; out-of-stock stays a badge,
+        because that one genuinely changes what you do next.
+      {%- endcomment -%}
+      {%- unless product.available -%}
+        <span class="tag tag--out">{{ 'products.product.out_of_stock_badge' | t }}</span>
+      {%- endunless -%}
+    </div>
+
+    {%- if settings.show_wishlist -%}
+      <button class="pc__wish" data-mts-wish="{{ product.handle }}"
+              aria-label="{{ 'products.product.add_to_wishlist' | t }}" aria-pressed="false">
+        {% render 'mts-icon', name: 'heart', size: 18 %}
+      </button>
+    {%- endif -%}
+  </div>
+
+  <div class="pc__body">
+    {%- comment -%}
+      The category label is suppressed on a collection page. Standing on the
+      Butyl Tape page and reading "BUTYL TAPE" above every single card tells the
+      shopper nothing they don't already know — it is a whole extra line of
+      shouting per card, and it pushes the product name down.
+
+      It still shows everywhere the context ISN'T given: home page grids, search
+      results, cart upsell and the wishlist, where "which kind of tape is this?"
+      is a real question. `collection` is only set on collection templates, so
+      it doubles as the test.
+
+      DO NOT go back to testing the `collection` global here: {% render %} is
+      scope-isolated and `collection` is NOT visible inside it, so the test was
+      always true and the label never hid. The caller passes `hide_cat` instead.
+    {%- endcomment -%}
+    {%- if card_cat and card_cat.handle != 'all' and hide_cat != true -%}
+      <span class="pc__cat">{{ card_cat.title }}</span>
+    {%- endif -%}
+
+    <h3 class="pc__name"><a href="{{ product.url | within: collection }}">{{ product.title }}</a></h3>
+
+    <div class="pc__rating">
+      {%- if rating -%}
+        {% render 'mts-stars', rating: rating, count: rating_count, size: 14 %}
+      {%- endif -%}
+      {%- comment -%}
+        The "·" is a SEPARATOR between the star rating and the size count, but
+        it was printed unconditionally — so on the many products with no reviews
+        yet the card opened with a dangling "· 5 sizes". It now only appears
+        when there is actually something to its left.
+      {%- endcomment -%}
+      {%- if size_count > 1 -%}
+        <span class="pc__sizes num">{% if rating %}· {% endif %}{{ 'products.product.sizes_count' | t: count: size_count }}</span>
+      {%- endif -%}
+      {%- if product.available -%}
+        <span class="pc__stock"><i class="pc__stock-dot"></i>{{ 'products.product.in_stock_badge' | t }}</span>
+      {%- endif -%}
+    </div>
+
+    <div class="pc__foot">
+      <div class="pc__price">
+        {%- if product.price_varies -%}
+          <span class="pc__from">{{ 'products.product.from' | t }}</span> <b class="num">{{ product.price_min | money }}</b>
+        {%- else -%}
+          <b class="num">{{ product.price | money }}</b>
+        {%- endif -%}
+        <span class="pc__gst">{{ 'products.product.inc_gst' | t }}</span>
+      </div>
+
+      {%- comment -%}
+        COLOUR DOTS — the colours this product comes in, under the price.
+
+        Values come from the Colour option, the same source the card already
+        uses for its `data-opt-colour` filter payload, so a dot and the filter
+        can never disagree about what colours exist.
+
+        A value only earns a dot if mts-swatch-fill can resolve it to a real
+        colour; unresolvable ones (e.g. "Assorted") are counted into the
+        overflow rather than drawn as an empty box pretending to be a colour.
+
+        Capped at 6 so a 14-colour product cannot push the CTA out of line and
+        break the grid's even card heights.
+
+        Decorative-but-informative: the row carries one aria-label naming every
+        colour, and the individual dots are aria-hidden — otherwise a screen
+        reader announces six unlabelled list items. Colour is never the ONLY
+        carrier of this information; the value is in the label and on the PDP.
+      {%- endcomment -%}
+      {%- if colour_values != blank and colour_values.size > 0 -%}
+        {%- liquid
+          assign dots = ''
+          assign shown = 0
+          # `opt.values` yields ProductOptionValue DROPS, not strings, so
+          # `| join` renders them as "[ProductOptionValueDrop]". Filters that
+          # take a string (downcase, escape) coerce fine, which is why the dot
+          # titles were right while the aria-label was garbage. Build the label
+          # by appending each value through a filter instead of joining.
+          # `append` coerces the drop to its name; `strip`/`join` do not — which
+          # is exactly why the dot titles were correct while the label was not.
+          assign colour_names = ''
+          for v in colour_values
+            unless forloop.first
+              assign colour_names = colour_names | append: ', '
+            endunless
+            assign colour_names = colour_names | append: v
+          endfor
+          for v in colour_values
+            capture fill
+              render 'mts-swatch-fill', value: v
+            endcapture
+            assign fill = fill | strip
+            if fill != blank and shown < 6
+              assign dots = dots | append: fill | append: '~~' | append: v | append: '||'
+              assign shown = shown | plus: 1
+            endif
+          endfor
+          assign extra = colour_values.size | minus: shown
+        -%}
+        {%- if shown > 0 -%}
+          <div class="pc__colours" aria-label="{{ 'products.product.available_colours' | t: colours: colour_names }}">
+            {%- assign dot_list = dots | split: '||' -%}
+            {%- for d in dot_list -%}
+              {%- assign parts = d | split: '~~' -%}
+              <span class="pc__dot" style="background:{{ parts[0] }}" title="{{ parts[1] | escape }}" aria-hidden="true"></span>
+            {%- endfor -%}
+            {%- if extra > 0 -%}
+              <span class="pc__dot-more num" aria-hidden="true">+{{ extra }}</span>
+            {%- endif -%}
+            {%- comment -%}
+              The swatches say WHICH; this says HOW MANY. Without it a row of
+              four discs is decoration — a shopper still has to count them to
+              learn anything. It also gives the row a text baseline to align
+              to, so it sits with the price instead of floating.
+            {%- endcomment -%}
+            <span class="pc__colours-n">
+              {{ 'products.product.colours_count' | t: count: colour_values.size }}
+            </span>
+          </div>
+        {%- endif -%}
+      {%- endif -%}
+
+      {%- if product.available -%}
+        {%- if is_variable -%}
+          {%- comment -%}
+            Labelled "Add to cart" on request, but it stays an <a> to the
+            product page rather than becoming a quick-add button.
+
+            These products have real, price-changing options — 24mm x 50m and
+            96mm x 50m of the same tape are different sizes at different
+            prices. A card-level quick-add would have to pick a variant on the
+            shopper's behalf, and picking the first one silently is how a
+            customer ends up with the wrong width and a return. So the label
+            reads as the intent and the click goes where the size is chosen.
+          {%- endcomment -%}
+          <a class="pc__cta" href="{{ product.url | within: collection }}">
+            {{ 'products.product.add_to_cart' | t }} {% render 'mts-icon', name: 'arrowRight', size: 15 %}
+          </a>
+        {%- else -%}
+          {%- comment -%}
+            Quick-add has to honour the product's minimum order quantity too.
+            Adding 1 of a 6-minimum tape from a collection card would put an
+            unsellable line in the cart that nothing downstream corrects.
+          {%- endcomment -%}
+          {%- assign quick_min = product.metafields.mts.volume_tiers.value.min | default: 1 -%}
+          <button class="pc__cta" type="button"
+                  data-mts-quick-add="{{ product.selected_or_first_available_variant.id }}"
+                  data-mts-quick-qty="{{ quick_min }}">
+            {{ 'products.product.add_to_cart' | t }} {% render 'mts-icon', name: 'arrowRight', size: 15 %}
+          </button>
+        {%- endif -%}
+      {%- else -%}
+        <button class="pc__cta pc__cta--out" type="button" disabled>{{ 'products.product.sold_out' | t }}</button>
+      {%- endif -%}
+    </div>
+  </div>
+</article>

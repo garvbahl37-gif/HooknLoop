@@ -1,0 +1,100 @@
+<style>
+    .header__topbar {
+      padding: 1rem 0;
+      color: rgba(var(--color-foreground));
+  }
+    li.header__topbar--contact__info--list {
+      list-style: none;
+    }
+
+    ul.header__topbar--contact__info--flex {
+      margin: 0;
+      padding: 0;
+    }
+    a.contact__info--list-item {
+      display: flex;
+      align-items: center;
+    }
+    .header__topbar--contact__info--list + .header__topbar--contact__info--list {
+      margin-left: 20px;
+    }
+
+    a.contact__info--list-item > svg {
+      width: 25px;
+      margin-right: 5px;
+    }
+    .list-social__link .icon {
+      height: 1.8rem;
+      width: 1.8rem;
+      }
+    .list-social__link+.list-social__link {
+        margin-left: 15px;
+    }
+</style>
+
+<div class="header__topbar d-sm-none color-{{ block.settings.topbar_color_scheme }} gradient">
+  <div class="{{ container }} {% unless section.settings.show_offset %}padding--narrow-header{% endunless %}">
+    <div class="row align-items-center">
+      <div class="col-lg-3 col-md-6">
+        {% render 'localization-form',
+          form_currency_id: 'headerCountryForm-2',
+          form_language_id: 'headerLanguageForm-2',
+          dropdown_position: 'dropdown__bottom--left-position',
+          enable_country_selector: true,
+          enable_language_selector: true,
+          place: 'header'
+        %}
+      </div>
+
+      <div class="col-lg-6 d-none d-md-block">
+        <div class="header__topbar--contact__info">
+          <ul class="header__topbar--contact__info--flex d-flex justify-content-center">
+            {%- if block.settings.show_phone -%}
+              <li class="header__topbar--contact__info--list">
+                <a class="contact__info--list-item" href="tel:{{ block.settings.phone_text }}">
+                  <svg
+                    class="header__topbar4--contact__info--svg"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="feather feather-phone-call"
+                  >
+                    <path d="M15.05 5A5 5 0 0 1 19 8.95M15.05 1A9 9 0 0 1 23 8.94m-1 7.98v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                  </svg>
+                  <span>{{ block.settings.phone_text }}</span>
+                </a>
+              </li>
+            {%- endif -%}
+
+            {%- if block.settings.show_email -%}
+              <li class="header__topbar--contact__info--list">
+                <a class="contact__info--list-item" href="mailto:{{ block.settings.email_text }}">
+                  <svg
+                    class="header__topbar4--contact__info--svg"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="15"
+                    viewBox="0 0 18 15"
+                  >
+                    <path d="M18.2,4H3.8A1.837,1.837,0,0,0,2.009,5.875L2,17.125A1.844,1.844,0,0,0,3.8,19H18.2A1.844,1.844,0,0,0,20,17.125V5.875A1.844,1.844,0,0,0,18.2,4Zm0,13.125H3.8V7.75L11,12.438,18.2,7.75ZM11,10.563,3.8,5.875H18.2Z" transform="translate(-2 -4)" fill="currentColor"/>
+                  </svg>
+                  <span>{{ block.settings.email_text }}</span>
+                </a>
+              </li>
+            {%- endif -%}
+          </ul>
+        </div>
+      </div>
+
+      {%- if block.settings.social_media_enable -%}
+        {%- render 'social-media', className: 'col-lg-3 col-md-6 text-right flex-grow-1' -%}
+      {%- endif -%}
+    </div>
+  </div>
+</div>

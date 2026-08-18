@@ -1,0 +1,177 @@
+{% comment %}
+  Shopify Wishlist
+  Usage:
+    - Create a new page in the Shopify admin
+      - Admin > Online store > Pages > Add page
+    - Set the new page's template to: 'page.wishlist' (this template)
+    - Do NOT remove the `grid-wishlist` attribute
+
+  Notes:
+  - The grid will be populated with product cards using Javascript
+  - Any content inside of the `[grid-wishlist]` element will be completely replaced by the product cards
+
+  Tip:
+  - Place a loading element inside the `[grid-wishlist]` element and it will automatically be removed once the product cards have loaded
+  - Add any liquid code before/after the grid element
+{% endcomment %}
+
+{{ 'component-rating.css' | asset_url | stylesheet_tag }}
+{{ 'countdown-timer.css' | asset_url | stylesheet_tag }}
+{{ 'stock-countdwon.css' | asset_url | stylesheet_tag }}
+{{ 'product-tooltip.css' | asset_url | stylesheet_tag }}
+{{ 'section-title.css' | asset_url | stylesheet_tag }}
+{{ 'product-card.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign container = ''
+  if section.settings.container == 'container'
+    assign container = 'container'
+  elsif section.settings.container == 'container-fluid'
+    assign container = 'container-fluid'
+  else
+    assign container = 'container-fluid px-0'
+  endif
+-%}
+<style>
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.mobile_padding_top }}px;
+    padding-bottom: {{ section.settings.mobile_padding_bottom }}px;
+  }
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+</style>
+
+<section class="wishlist section-{{ section.id }}-padding" id="wishlist">
+  <div class="{{ container }}">
+    <div class="wishlist-page">
+      <div class="row row-cols-lg-4 row-cols-md-3 row-cols-sm-2 row-cols-1" grid-wishlist></div>
+      <div class="row wishlist-grid--empty-list">
+        <div class="col-12">
+          <div class="empty-list--info text-center">
+            <h2 class="empty-list--text {{ section.settings.heading_size }}">{{ section.settings.heading }}</h2>
+            <a class="button button--medium" href="{{ routes.all_products_collection_url }}">
+              {{- section.settings.button_label -}}
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  .wishlist_exists .row.wishlist-grid--empty-list {
+    display: none;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Wishlist Listing",
+  "settings": [
+    {
+        "type": "select",
+        "id": "container",
+        "label": "Page width",
+        "default": "container-fluid",
+        "options": [
+          {
+            "value": "container",
+            "label": "Boxed"
+          },
+          {
+            "value": "container-fluid",
+            "label": "Full width"
+          }
+        ]
+      },
+    {
+      "type": "text",
+      "id": "heading",
+      "default": "Empty Wishlist",
+      "label": "t:sections.featured-collection.settings.title.label"
+    },
+    {
+       "type": "select",
+       "id": "heading_size",
+       "options": [
+         {
+           "value": "h4",
+           "label": "Small"
+         },
+         {
+           "value": "h3",
+           "label": "Medium"
+         },
+         {
+           "value": "h2",
+           "label": "Large"
+         }
+       ],
+       "default": "h2",
+       "label": "Heading size"
+     },
+    {
+          "type": "text",
+          "id": "button_label",
+          "default": "Continue Browsing",
+          "label": "Continue button lable"
+        },
+    {
+    "type": "header",
+    "content": "Section padding"
+  },
+  {
+        "type": "paragraph",
+        "content": "Desktop"
+      },
+      {
+        "type": "range",
+        "id": "padding_top",
+        "min": 0,
+        "max": 150,
+        "step": 5,
+        "unit": "px",
+        "label": "Padding top",
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "min": 0,
+        "max": 150,
+        "step": 5,
+        "unit": "px",
+        "label": "Padding bottom",
+        "default": 0
+      },
+{
+        "type": "paragraph",
+        "content": "Mobile"
+      },
+{
+        "type": "range",
+        "id": "mobile_padding_top",
+        "min": 0,
+        "max": 150,
+        "step": 5,
+        "unit": "px",
+        "label": "Padding top",
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "mobile_padding_bottom",
+        "min": 0,
+        "max": 150,
+        "step": 5,
+        "unit": "px",
+        "label": "Padding bottom",
+        "default": 0
+      }
+  ]
+}
+{% endschema %}

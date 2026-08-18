@@ -1,0 +1,603 @@
+
+{{ 'component-grid.css' | asset_url | stylesheet_tag }}
+{{ 'component-image-with-text.css' | asset_url | stylesheet_tag }}
+{{ 'shop-the-look.css' | asset_url | stylesheet_tag }}
+{{ 'lookbook.css' | asset_url | stylesheet_tag }}
+<link rel="stylesheet" href="{{ 'component-price.css' | asset_url }}" media="print" onload="this.media='all'">
+<noscript>{{ 'component-price.css' | asset_url | stylesheet_tag }}</noscript>
+
+<link rel="stylesheet" href="{{ 'component-rte.css' | asset_url }}" media="print" onload="this.media='all'">
+<noscript>{{ 'component-rte.css' | asset_url | stylesheet_tag }}</noscript>
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.mobile_padding_top }}px;
+    padding-bottom: {{ section.settings.mobile_padding_bottom }}px;
+    --padding-top: {{ section.settings.mobile_padding_top }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+      --padding-top: {{ section.settings.padding_top }}px;
+    }
+  }
+       :root{
+      --grid-desktop-vertical-spacing: 20px;
+      --grid-desktop-horizontal-spacing: 20px;
+      --grid-mobile-vertical-spacing: 20px;
+      --grid-mobile-horizontal-spacing: 20px;
+    }
+  .placeholder .lookbook__shop--product-wrapper {
+      --color-background: 255, 255, 255;
+  }
+    #MainContent > :first-child .section--top-space-{{ section.id }} {
+      padding-top: calc(var(--header-height) * var(--transparent-header-show) + var(--padding-top));
+    }
+{%- endstyle -%}
+
+{%- liquid
+  assign productShowXl = section.settings.products_show_on_xl
+  assign productShowSm = section.settings.products_show_on_sm
+
+  assign container = ''
+  assign page_offset = false
+  if section.settings.container == 'container'
+    assign container = 'container'
+  elsif section.settings.container == 'container-fluid'
+    assign container = 'container-fluid'
+    unless section.settings.show_offset
+      assign page_offset = true
+    endunless
+  else
+    assign container = 'container-fluid px-0'
+  endif
+-%}
+
+<div class="image-with-text section--top-space-{{ section.id }} section-{{ section.id }}-padding">
+  <div class="{{ container }} {% if page_offset %}p-0{% endif %}">
+    <div class="image-with-text__grid color-{{ section.settings.color_scheme }}">
+      <div class="grid {% unless section.settings.space %}grid--gapless{% endunless %} grid--{{ productShowXl }}-col-desktop grid--{{ productShowSm }}-col-tablet-down grid--2-col-tablet-only">
+        {%- for block in section.blocks -%}
+          {% case block.type %}
+            {%- when 'lookbook' -%}
+              <div class="grid__item" {{ block.shopify_attributes }}>
+                <div
+                  class="lookbook--media media--{{ section.settings.image_ratio }} {% if block.settings.image != blank %}media{% else %}placeholder{% endif %} {% if section.settings.round_corner %}rounded--image{% endif %}"
+                  {% if section.settings.image_ratio == 'adapt' and block.settings.image != blank %}
+                    style="padding-bottom: {{ 1 | divided_by: block.settings.image.aspect_ratio | times: 100 }}%;"
+                  {% endif %}
+                >
+                  {%- if block.settings.image != blank -%}
+                    {%- capture sizes -%}
+                      (min-width: 992px) {% if section.blocks.size <= 2 %} {{ settings.container_lg_width }}px{% else %}{{ settings.container_lg_width | minus: 60 | divided_by: 3 }}px{% endif %}, (min-width: 750px) {% if section.blocks.size == 1 %}calc(100vw - 60px){% else %}550px{% endif %}, calc(100vw - 30px)
+                      {%- endcapture -%}
+                    {{
+                      block.settings.image
+                      | image_url: width: 1500
+                      | image_tag: loading: 'lazy', sizes: sizes, widths: '165, 360, 535, 750, 1070, 1500'
+                    }}
+                  {%- else -%}
+                    {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg-2' }}
+                  {%- endif -%}
+
+                  {% render 'lookbook-product',
+                    product: block.settings.product_1,
+                    hotspot_x: block.settings.p1_hotspot_x,
+                    hotspot_y: block.settings.p1_hotspot_y,
+                    quick_shop: block.settings.p1_quick_shop,
+                    block: block
+                  %}
+
+                  {% render 'lookbook-product',
+                    product: block.settings.product_2,
+                    hotspot_x: block.settings.p2_hotspot_x,
+                    hotspot_y: block.settings.p2_hotspot_y,
+                    quick_shop: block.settings.p2_quick_shop,
+                    block: block
+                  %}
+
+                  {% render 'lookbook-product',
+                    product: block.settings.product_3,
+                    hotspot_x: block.settings.p3_hotspot_x,
+                    hotspot_y: block.settings.p3_hotspot_y,
+                    quick_shop: block.settings.p3_quick_shop,
+                    block: block
+                  %}
+
+                  {% render 'lookbook-product',
+                    product: block.settings.product_4,
+                    hotspot_x: block.settings.p4_hotspot_x,
+                    hotspot_y: block.settings.p4_hotspot_y,
+                    quick_shop: block.settings.p4_quick_shop,
+                    block: block
+                  %}
+
+                  {% render 'lookbook-product',
+                    product: block.settings.product_5,
+                    hotspot_x: block.settings.p5_hotspot_x,
+                    hotspot_y: block.settings.p5_hotspot_y,
+                    quick_shop: block.settings.p5_quick_shop,
+                    block: block
+                  %}
+                </div>
+              </div>
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Lookbook",
+  "disabled_on": {
+      "groups": ["header","footer"]
+    },
+  "class": "section",
+  "settings": [
+     {
+        "type": "select",
+        "id": "container",
+        "label": "Page width",
+        "default": "container-fluid",
+        "options": [
+          {
+            "value": "container",
+            "label": "Boxed"
+          },
+          {
+            "value": "container-fluid",
+            "label": "Full width"
+          }
+        ]
+      },
+     {
+       "type": "checkbox",
+       "id": "show_offset",
+       "label": "Enable Offset (left & right)",
+       "info": "It will work if you select the \"Full width\" of the page",
+       "default": true
+     },
+    {
+      "type": "header",
+      "content": "Section header"
+    },
+     {
+      "type": "inline_richtext",
+      "id": "subtitle",
+      "default": "Subtitle",
+      "label": "Subheading"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "default": "Instagra shop",
+      "label": "t:sections.featured-collection.settings.title.label"
+    },
+    {
+      "type": "select",
+      "id": "heading_position",
+      "options": [
+        {
+          "value": "top",
+          "label": "Top"
+        },
+        {
+          "value": "bottom",
+          "label": "Bottom"
+        }
+      ],
+      "default": "bottom",
+      "label": "Heading position"
+    },
+    {
+      "type": "select",
+      "id": "text_center",
+      "options": [
+        {
+          "value": "right",
+          "label": "Right"
+        },
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        }
+      ],
+      "default": "center",
+      "label": "Alignment"
+    },
+    {
+       "type": "checkbox",
+       "id": "border_line",
+       "label": "Enable border line",
+       "default": true
+     },
+    {
+        "type": "header",
+        "content": "Lookbook card"
+      },
+    {
+        "type": "select",
+        "id": "image_ratio",
+        "options": [
+          {
+            "value": "adapt",
+            "label": "Adapt"
+          },
+          {
+            "value": "square",
+            "label": "t:sections.multicolumn.settings.image_ratio.options__3.label"
+          },
+          {
+            "value": "portrait",
+            "label": "t:sections.multicolumn.settings.image_ratio.options__2.label"
+          },
+          {
+            "value": "landscape",
+            "label": "Landscape"
+          },
+          {
+            "value": "custom_1_5",
+            "label": "Custom - 1:5"
+          },
+          {
+            "value": "custom_1_7",
+            "label": "Custom - 1:7"
+          },
+          {
+            "value": "custom_1_9",
+            "label": "Custom - 1:9"
+          },
+          {
+            "value": "custom_2_1",
+            "label": "Custom - 2:1"
+          }
+        ],
+        "default": "adapt",
+        "label": "t:sections.multicolumn.settings.image_ratio.label"
+      },
+    {
+        "type": "checkbox",
+        "id": "round_corner",
+        "label": "Round corner",
+        "default": true
+      },
+    {
+        "type": "checkbox",
+        "id": "space",
+        "label": "Space between",
+        "default": true
+      },
+     {
+        "type": "header",
+        "content": "Layout"
+      },
+     {
+        "type": "select",
+        "id": "products_show_on_xl",
+        "label": "Number of columns on desktop",
+        "options": [
+          {
+            "value": "1",
+            "label": "1"
+          },
+          {
+            "value": "2",
+            "label": "2"
+          },
+          {
+            "value": "3",
+            "label": "3"
+          },
+          {
+            "value": "4",
+            "label": "4"
+          },
+          {
+            "value": "5",
+            "label": "5"
+          },
+          {
+            "value": "6",
+            "label": "6"
+          }
+        ],
+        "default": "2"
+      },
+     {
+        "type": "select",
+        "id": "products_show_on_sm",
+        "label": "Number of columns on mobile",
+        "options": [
+          {
+            "value": "1",
+            "label": "1"
+          },
+          {
+            "value": "2",
+            "label": "2"
+          }
+        ],
+        "default": "1"
+      },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+          "type": "paragraph",
+          "content": "Desktop"
+        },
+        {
+          "type": "range",
+          "id": "padding_top",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "unit": "px",
+          "label": "Padding top",
+          "default": 70
+        },
+        {
+          "type": "range",
+          "id": "padding_bottom",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "unit": "px",
+          "label": "Padding bottom",
+          "default": 70
+        },
+		{
+          "type": "paragraph",
+          "content": "Mobile"
+        },
+		{
+          "type": "range",
+          "id": "mobile_padding_top",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "unit": "px",
+          "label": "Padding top",
+          "default": 50
+        },
+        {
+          "type": "range",
+          "id": "mobile_padding_bottom",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "unit": "px",
+          "label": "Padding bottom",
+          "default": 50
+        }
+  ],
+  "blocks": [
+    {
+      "type": "lookbook",
+      "name": "Lookbook",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:sections.image-with-text.settings.image.label"
+        },
+        {
+          "type": "header",
+          "content": "Hotspot color"
+        },
+        {
+          "type": "color",
+          "id": "background_1",
+          "label": "Background 1",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color_background",
+          "id": "background_2_gradient",
+          "label": "Background 2 gradient"
+        },
+        {
+          "type": "header",
+          "content": "PRODUCT 1"
+        },
+        {
+          "type": "product",
+          "id": "product_1",
+          "label": "Select product"
+        },
+        {
+          "type": "checkbox",
+          "id": "p1_quick_shop",
+          "label": "Enable quick shop",
+          "default": true
+        },
+        {
+          "type": "range",
+          "id": "p1_hotspot_x",
+          "min": 5,
+          "max": 95,
+          "step": 1,
+          "default": 15,
+          "unit": "%",
+          "label": "Horizontal position"
+        },
+        {
+          "type": "range",
+          "id": "p1_hotspot_y",
+          "min": 5,
+          "max": 95,
+          "step": 1,
+          "default": 15,
+          "unit": "%",
+          "label": "Vertical  position"
+        },
+        {
+          "type": "header",
+          "content": "PRODUCT 2"
+        },
+        {
+          "type": "product",
+          "id": "product_2",
+          "label": "Select product"
+        },
+        {
+          "type": "checkbox",
+          "id": "p2_quick_shop",
+          "label": "Enable quick shop",
+          "default": true
+        },
+        {
+          "type": "range",
+          "id": "p2_hotspot_x",
+          "min": 5,
+          "max": 95,
+          "step": 1,
+          "default": 25,
+          "unit": "%",
+          "label": "Horizontal position"
+        },
+        {
+          "type": "range",
+          "id": "p2_hotspot_y",
+          "min": 5,
+          "max": 95,
+          "step": 1,
+          "default": 40,
+          "unit": "%",
+          "label": "Vertical  position"
+        },
+        {
+          "type": "header",
+          "content": "PRODUCT 3"
+        },
+        {
+          "type": "product",
+          "id": "product_3",
+          "label": "Select product"
+        },
+        {
+          "type": "checkbox",
+          "id": "p3_quick_shop",
+          "label": "Enable quick shop",
+          "default": true
+        },
+        {
+          "type": "range",
+          "id": "p3_hotspot_x",
+          "min": 5,
+          "max": 95,
+          "step": 1,
+          "default": 30,
+          "unit": "%",
+          "label": "Horizontal position"
+        },
+        {
+          "type": "range",
+          "id": "p3_hotspot_y",
+          "min": 5,
+          "max": 95,
+          "step": 1,
+          "default": 45,
+          "unit": "%",
+          "label": "Vertical  position"
+        },
+        {
+          "type": "header",
+          "content": "PRODUCT 4"
+        },
+        {
+          "type": "product",
+          "id": "product_4",
+          "label": "Select product"
+        },
+        {
+          "type": "checkbox",
+          "id": "p4_quick_shop",
+          "label": "Enable quick shop",
+          "default": true
+        },
+        {
+          "type": "range",
+          "id": "p4_hotspot_x",
+          "min": 5,
+          "max": 95,
+          "step": 1,
+          "default": 35,
+          "unit": "%",
+          "label": "Horizontal position"
+        },
+        {
+          "type": "range",
+          "id": "p4_hotspot_y",
+          "min": 5,
+          "max": 95,
+          "step": 1,
+          "default": 55,
+          "unit": "%",
+          "label": "Vertical  position"
+        },
+        {
+          "type": "header",
+          "content": "PRODUCT 5"
+        },
+        {
+          "type": "product",
+          "id": "product_5",
+          "label": "Select product"
+        },
+        {
+          "type": "checkbox",
+          "id": "p5_quick_shop",
+          "label": "Enable quick shop",
+          "default": true
+        },
+        {
+          "type": "range",
+          "id": "p5_hotspot_x",
+          "min": 5,
+          "max": 95,
+          "step": 1,
+          "default": 55,
+          "unit": "%",
+          "label": "Horizontal position"
+        },
+        {
+          "type": "range",
+          "id": "p5_hotspot_y",
+          "min": 5,
+          "max": 95,
+          "step": 1,
+          "default": 70,
+          "unit": "%",
+          "label": "Vertical  position"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Lookbook",
+      "blocks": [
+         {
+            "type": "lookbook"
+         },
+        {
+            "type": "lookbook"
+         },
+        {
+            "type": "lookbook"
+         }
+      ]
+    }
+  ]
+}
+{% endschema %}

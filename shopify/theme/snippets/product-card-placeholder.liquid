@@ -1,0 +1,17 @@
+{% comment %}
+  Renders a product card placeholder
+
+  Usage:
+  {% render 'product-card-placeholder' %}
+{% endcomment %}
+<div class="{{ productItem }}">
+  <div
+    class="mb-15 placeholder placeholder_svg_parent card--client-height {% if corner_radius %}product--corner-radius-true{% endif %}"
+    style="padding-bottom: 100%"
+  >
+    {{ product_item | placeholder_svg_tag: 'placeholder-svg-2' }}
+  </div>
+
+  
+
+</div>

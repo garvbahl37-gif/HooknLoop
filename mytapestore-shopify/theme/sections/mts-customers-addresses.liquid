@@ -1,0 +1,59 @@
+<main id="main">
+  <div class="wrap page__crumbs">{% render 'mts-breadcrumbs', current_title: 'Addresses' %}</div>
+  <div class="wrap acct">
+    {% render 'mts-account-sidebar', active: 'addresses' %}
+    <div class="acct__main acct__panel" data-mts-addresses>
+      <h2>{{ 'customer.addresses.title' | t }}</h2>
+      <p class="acct__lede">Saved addresses are offered at checkout.</p>
+    {%- paginate customer.addresses by 10 -%}
+      <button type="button" class="btn btn--brand btn--lg" data-mts-address-toggle="new">
+        {{ 'customer.addresses.add_new' | t }}
+      </button>
+
+      <div class="contact__form mts-address-form" id="address-new" hidden>
+        {%- form 'customer_address', customer.new_address -%}
+          {{ form.errors | default_errors }}
+          {% render 'mts-address-fields', form: form %}
+          <button class="btn btn--brand btn--lg" type="submit">{{ 'customer.addresses.add' | t }}</button>
+          <button class="mts-auth__toggle" type="button" data-mts-address-toggle="new">{{ 'customer.addresses.cancel' | t }}</button>
+        {%- endform -%}
+      </div>
+
+      {%- for address in customer.addresses -%}
+        <div class="mts-address">
+          {%- if address == customer.default_address -%}
+            <span class="tag tag--best">Default</span>
+          {%- endif -%}
+          {{ address | format_address }}
+          <div class="mts-address__actions">
+            <button type="button" class="mts-auth__toggle" data-mts-address-toggle="{{ address.id }}">
+              {{ 'customer.addresses.edit' | t }}
+            </button>
+            {%- form 'customer_address', address -%}
+              <button type="button" class="mts-auth__toggle" data-mts-address-delete
+                      data-url="{{ address.url }}" data-confirm="{{ 'customer.addresses.delete_confirm' | t }}">
+                {{ 'customer.addresses.delete' | t }}
+              </button>
+            {%- endform -%}
+          </div>
+
+          <div class="contact__form mts-address-form" id="address-{{ address.id }}" hidden>
+            {%- form 'customer_address', address -%}
+              {{ form.errors | default_errors }}
+              {% render 'mts-address-fields', form: form %}
+              <button class="btn btn--brand btn--lg" type="submit">{{ 'customer.addresses.update' | t }}</button>
+              <button class="mts-auth__toggle" type="button" data-mts-address-toggle="{{ address.id }}">{{ 'customer.addresses.cancel' | t }}</button>
+            {%- endform -%}
+          </div>
+        </div>
+      {%- endfor -%}
+
+      {%- if paginate.pages > 1 -%}{% render 'mts-pagination', paginate: paginate %}{%- endif -%}
+    {%- endpaginate -%}
+    </div>
+  </div>
+</main>
+
+{% schema %}
+{ "name": "Addresses" }
+{% endschema %}

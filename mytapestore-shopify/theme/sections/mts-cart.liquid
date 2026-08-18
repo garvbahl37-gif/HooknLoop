@@ -1,0 +1,350 @@
+{%- comment -%}
+  Cart — ported from CartPage.jsx, backed by the real Shopify cart instead of
+  localStorage. Free-shipping progress bar, line items with quantity steppers,
+  the summary rail, and the bestseller upsell.
+
+  The React "Estimated delivery" and "GST included" rows are copy, not computed
+  values — they stay copy here (section settings) rather than pretending to be
+  a live quote. Real shipping is calculated at checkout.
+{%- endcomment -%}
+{%- liquid
+  assign threshold = settings.free_shipping_threshold | times: 100
+  assign remaining = threshold | minus: cart.total_price
+  assign pct = 0
+  if threshold > 0
+    assign pct = cart.total_price | times: 100 | divided_by: threshold
+    if pct > 100
+      assign pct = 100
+    endif
+  endif
+-%}
+
+{%- if cart.item_count == 0 -%}
+  <main id="main" class="wrap cart-empty">
+    <span class="cart-empty__icon">{% render 'mts-icon', name: 'cart', size: 44 %}</span>
+    <h1>{{ 'cart.general.empty' | t }}</h1>
+    <p>{{ 'cart.general.empty_subtext' | t }}</p>
+    <a class="btn btn--brand btn--lg" href="{{ routes.all_products_collection_url }}">
+      {{ 'cart.general.shop_the_range' | t }} {% render 'mts-icon', name: 'arrowRight', size: 18 %}
+    </a>
+
+    {%- assign upsell = collections[section.settings.upsell_collection] -%}
+    {%- if upsell.products.size > 0 -%}
+      <section class="cart-upsell">
+        <h2>{{ 'cart.general.upsell_bestsellers' | t }}</h2>
+        <div class="grid-products grid-products--fit">
+          {%- for p in upsell.products limit: 4 -%}
+            {% render 'mts-product-card', product: p, index: forloop.index0 %}
+          {%- endfor -%}
+        </div>
+      </section>
+    {%- endif -%}
+  </main>
+
+{%- else -%}
+  <main id="main" class="cart">
+    <div class="wrap cart__crumbs">{% render 'mts-breadcrumbs' %}</div>
+
+    <div class="wrap cart__layout">
+      <div class="cart__items">
+        <div class="cart__head">
+          <h1>{{ 'cart.general.title' | t }} <span class="num" data-mts-cart-items>{{ 'cart.general.items_count' | t: count: cart.item_count }}</span></h1>
+          <form action="{{ routes.cart_clear_url }}" method="post">
+            <button class="cart__clear" type="submit">{{ 'cart.general.clear' | t }}</button>
+          </form>
+        </div>
+
+        {%- comment -%}
+          The free-shipping progress bar is OFF until the threshold is decided.
+          It is gated rather than deleted: the moment a number is agreed, tick
+          the setting and it returns with the bar, the copy and the JS that
+          repaints it after every cart change — all of which still work.
+
+          Leaving it on would have been the worse call. It advertises "spend
+          $X for free shipping" against a threshold nobody has committed to,
+          which is a promise at checkout, the single worst place to be wrong.
+        {%- endcomment -%}
+        {%- if section.settings.show_free_shipping_bar and threshold > 0 -%}
+          <div class="cart-ship{% if remaining <= 0 %} is-done{% endif %}">
+            <p class="cart-ship__msg" data-mts-ship-msg>
+              {%- if remaining <= 0 -%}
+                {% render 'mts-icon', name: 'check', size: 16 %}
+                {{ 'cart.general.free_shipping_unlocked' | t }}
+              {%- else -%}
+                {% render 'mts-icon', name: 'truck', size: 16 %}
+                {%- assign remaining_money = remaining | money -%}
+                {{ 'cart.general.free_shipping_remaining' | t: amount: remaining_money }}
+              {%- endif -%}
+            </p>
+            <div class="cart-ship__track"><div class="cart-ship__fill" data-mts-ship-fill style="width: {{ pct }}%"></div></div>
+          </div>
+        {%- endif -%}
+
+        <form action="{{ routes.cart_url }}" method="post" novalidate data-mts-cart-form>
+          <ul class="cart__list">
+            {%- for item in cart.items -%}
+              <li class="cart-line" data-mts-line="{{ forloop.index }}" data-key="{{ item.key }}">
+                <a href="{{ item.url }}" class="cart-line__img">
+                  {%- if item.image -%}
+                    <img src="{{ item.image | image_url: width: 180 }}" alt="{{ item.title | escape }}" width="90" height="90">
+                  {%- endif -%}
+                </a>
+                <div class="cart-line__info">
+                  <a href="{{ item.url }}" class="cart-line__name">{{ item.product.title }}</a>
+                  {%- unless item.product.has_only_default_variant -%}
+                    <span class="cart-line__variant">{{ item.variant.title | replace: ' / ', ' · ' }}</span>
+                  {%- endunless -%}
+                  {%- if item.sku != blank -%}
+                    <span class="cart-line__sku num">{{ 'products.product.sku' | t }}: {{ item.sku }}</span>
+                  {%- endif -%}
+                  <span class="cart-line__unit num">{{ item.final_price | money }} <em>{{ 'products.product.inc_gst' | t }}</em></span>
+                  {%- if item.line_level_discount_allocations.size > 0 -%}
+                    {%- for allocation in item.line_level_discount_allocations -%}
+                      {%- comment -%}
+                        Print a short label, not the whole discount title. The
+                        titles have to be unique across all 20 automatic
+                        discounts, so they carry qualifiers like "on cloth &
+                        duct tape" — 50 characters that wrapped to six lines in
+                        the narrow mobile column and turned the badge into a
+                        blob. The percentage is the part a shopper needs; the
+                        full title stays in the tooltip.
+                      {%- endcomment -%}
+                      {%- assign disc_pct = allocation.discount_application.title | split: '%' | first -%}
+                      <span class="cart-line__discount" title="{{ allocation.discount_application.title | escape }}">
+                        <span aria-hidden="true">&#127881;</span>
+                        <span class="cart-line__discount-label">
+                          {%- if disc_pct.size < 3 -%}{{ disc_pct }}% bulk saving{%- else -%}Bulk saving{%- endif -%}
+                        </span>
+                        <b>&minus;{{ allocation.amount | money }}</b>
+                      </span>
+                    {%- endfor -%}
+                  {%- else -%}
+                    {%- comment -%}
+                      No saving on this line yet. If the product publishes bands,
+                      say exactly how many more units earn the next one — a bare
+                      "bulk discounts available" tells a shopper nothing they can
+                      act on.
+                    {%- endcomment -%}
+                    {%- assign bands = item.product.metafields.mts.volume_tiers.value.bands -%}
+                    {%- if bands -%}
+                      {%- assign nxt = 0 -%}{%- assign nxt_off = 0 -%}
+                      {%- for b in bands -%}
+                        {%- if b.off > 0 and b.from > item.quantity and nxt == 0 -%}
+                          {%- assign nxt = b.from -%}{%- assign nxt_off = b.off -%}
+                        {%- endif -%}
+                      {%- endfor -%}
+                      {%- if nxt > 0 -%}
+                        {%- assign need = nxt | minus: item.quantity -%}
+                        <span class="cart-line__nudge">
+                          Add {{ need }} more to save {{ nxt_off | round }}%
+                        </span>
+                      {%- endif -%}
+                    {%- endif -%}
+                  {%- endif -%}
+                </div>
+                {%- comment -%}
+                  The minimum has to hold here as well. Enforcing it only on the
+                  product page would be decorative — a shopper adds 6, opens the
+                  cart, presses minus five times and checks out with 1.
+                {%- endcomment -%}
+                {%- assign line_min = item.product.metafields.mts.volume_tiers.value.min | default: 1 -%}
+                <div class="cart-line__qty">
+                  <div class="qty" role="group" aria-label="{{ 'products.product.quantity' | t }}">
+                    <button type="button" data-mts-line-down
+                            {% if line_min > 1 and item.quantity <= line_min %}disabled aria-disabled="true"{% endif %}
+                            aria-label="{{ 'products.product.decrease' | t }}">
+                      {% render 'mts-icon', name: 'minus', size: 15 %}
+                    </button>
+                    <input class="num" type="text" inputmode="numeric" name="updates[]" value="{{ item.quantity }}"
+                           data-mts-line-min="{{ line_min }}"
+                           aria-label="{{ 'products.product.quantity' | t }}" data-mts-line-qty>
+                    <button type="button" data-mts-line-up aria-label="{{ 'products.product.increase' | t }}">
+                      {% render 'mts-icon', name: 'plus', size: 15 %}
+                    </button>
+                  </div>
+                  {%- if line_min > 1 -%}
+                    <span class="cart-line__min">{{ 'products.product.min_qty' | t: n: line_min }}</span>
+                  {%- endif -%}
+                </div>
+                <div class="cart-line__total num" data-mts-line-total>{{ item.final_line_price | money }}</div>
+                <a class="cart-line__remove" href="{{ item.url_to_remove }}" data-mts-line-remove
+                   aria-label="{{ 'cart.general.remove' | t: title: item.title }}">
+                  {% render 'mts-icon', name: 'close', size: 18 %}
+                </a>
+              </li>
+            {%- endfor -%}
+          </ul>
+          <noscript><button type="submit" class="btn btn--ghost">Update cart</button></noscript>
+        </form>
+
+        <a class="cart__continue" href="{{ routes.all_products_collection_url }}">
+          {% render 'mts-icon', name: 'chevronRight', size: 15, class: 'cart__continue-icon' %}
+          {{ 'cart.general.continue_shopping' | t }}
+        </a>
+
+        {%- comment -%}
+          "Frequently bought together" is OFF by default. On a cart page the
+          visitor has already decided; a grid of more products competes with the
+          checkout button rather than helping. The empty-cart bestsellers block
+          above is untouched — there, suggestions are the whole point.
+        {%- endcomment -%}
+        {%- assign upsell = collections[section.settings.upsell_collection] -%}
+        {%- if section.settings.show_upsell and upsell.products.size > 0 -%}
+          <section class="cart-upsell">
+            <h2>{{ 'cart.general.upsell_together' | t }}</h2>
+            <div class="grid-products grid-products--fit">
+              {%- comment -%}
+                Don't upsell what's already in the cart. Precomputed as a padded
+                id string because a filter chain can't be used inside a condition.
+              {%- endcomment -%}
+              {%- assign in_cart_ids = '' -%}
+              {%- for item in cart.items -%}
+                {%- assign in_cart_ids = in_cart_ids | append: ',' | append: item.product_id | append: ',' -%}
+              {%- endfor -%}
+              {%- assign shown = 0 -%}
+              {%- for p in upsell.products limit: 8 -%}
+                {%- assign needle = ',' | append: p.id | append: ',' -%}
+                {%- unless in_cart_ids contains needle -%}
+                  {%- if shown < 4 and p.available -%}
+                    {% render 'mts-product-card', product: p, index: forloop.index0 %}
+                    {%- assign shown = shown | plus: 1 -%}
+                  {%- endif -%}
+                {%- endunless -%}
+              {%- endfor -%}
+            </div>
+          </section>
+        {%- endif -%}
+      </div>
+
+      <aside class="cart__summary">
+        <h2>{{ 'cart.general.order_summary' | t }}</h2>
+        <dl class="cart__sum-rows">
+          <div>
+            <dt>{{ 'cart.general.subtotal' | t }} <span data-mts-cart-items>{{ 'cart.general.items_count' | t: count: cart.item_count }}</span></dt>
+            <dd class="num" data-mts-cart-subtotal>{{ cart.items_subtotal_price | money }}</dd>
+          </div>
+          {%- if cart.cart_level_discount_applications.size > 0 -%}
+            {%- for discount in cart.cart_level_discount_applications -%}
+              <div>
+                <dt>{{ discount.title }}</dt>
+                <dd class="num">−{{ discount.total_allocated_amount | money }}</dd>
+              </div>
+            {%- endfor -%}
+          {%- endif -%}
+
+          {%- comment -%}
+            Bulk savings are allocated per line, not at cart level, so they never
+            appear in cart_level_discount_applications. cart.total_discount is
+            the only figure that captures the whole saving — without this row a
+            shopper who just earned 15% sees a smaller subtotal and no reason
+            why. The row is always in the DOM so the cart JS can reveal it
+            without re-rendering; it is hidden while the saving is zero.
+          {%- endcomment -%}
+          <div class="cart__saved" data-mts-saved-row{% if cart.total_discount == 0 %} hidden{% endif %}>
+            <dt><span aria-hidden="true">&#127881;</span> {{ 'cart.general.you_saved' | t }}</dt>
+            <dd class="num" data-mts-cart-saved>&minus;{{ cart.total_discount | money }}</dd>
+          </div>
+          <div>
+            <dt>{{ 'cart.general.shipping' | t }}</dt>
+            <dd>
+              {%- if section.settings.show_free_shipping_bar and threshold > 0 and cart.total_price >= threshold -%}
+                <span class="cart__free-tag">{{ 'cart.general.free' | t }}</span>
+              {%- else -%}
+                {{ 'cart.general.shipping_calculated' | t }}
+              {%- endif -%}
+            </dd>
+          </div>
+          <div>
+            <dt>{{ 'cart.general.estimated_delivery' | t }}</dt>
+            <dd>{{ section.settings.delivery_estimate }}</dd>
+          </div>
+          <div>
+            <dt>{{ 'cart.general.gst' | t }}</dt>
+            <dd class="cart__sum-note">{{ 'cart.general.gst_note' | t }}</dd>
+          </div>
+        </dl>
+
+        <div class="cart__total">
+          <span>{{ 'cart.general.total' | t }}</span>
+          <b class="num" data-mts-cart-total>{{ cart.total_price | money }}</b>
+        </div>
+
+        <form action="{{ routes.cart_url }}" method="post" novalidate>
+          <button type="submit" name="checkout" class="btn btn--brand btn--lg btn--block cart__checkout">
+            {% render 'mts-icon', name: 'lock', size: 18 %} {{ 'cart.general.checkout' | t }}
+          </button>
+
+          {%- comment -%}
+            Wallet buttons — Shop Pay, PayPal, Apple Pay, Google Pay.
+
+            `content_for_additional_checkout_buttons` is the cart-page
+            counterpart to `payment_button` on the product form. It only outputs
+            anything once the matching providers are switched on in
+            Settings > Payments, so the divider is wrapped in the same check
+            rather than left to render an empty "or" with nothing under it.
+          {%- endcomment -%}
+          {%- if additional_checkout_buttons -%}
+            <div class="cart__express">
+              <span class="cart__express-or">{{ 'cart.general.express_or' | t }}</span>
+              {{ content_for_additional_checkout_buttons }}
+            </div>
+          {%- endif -%}
+        </form>
+
+        <ul class="cart__trust">
+          <li>{% render 'mts-icon', name: 'lock', size: 15 %} {{ 'cart.general.trust.secure' | t }}</li>
+          <li>{% render 'mts-icon', name: 'truck', size: 15 %} {{ 'cart.general.trust.dispatch' | t }}</li>
+          <li>{% render 'mts-icon', name: 'refresh', size: 15 %} {{ 'cart.general.trust.returns' | t }}</li>
+        </ul>
+
+        <div class="cart__pay">
+          {%- assign marks = 'visa,mastercard,amex,paypal' | split: ',' -%}
+          {%- for m in marks -%}
+            <img src="{{ 'mts-pay-' | append: m | append: '.svg' | asset_url }}" alt="{{ m }}" width="35" height="22" loading="lazy">
+          {%- endfor -%}
+          <span class="cart__pay-badge">{% render 'mts-icon', name: 'shieldCheck', size: 13 %} SSL secured</span>
+        </div>
+      </aside>
+    </div>
+
+    {%- comment -%}
+      STICKY CHECKOUT — mobile only.
+
+      `.cart__summary` is sticky on desktop but drops to position:static below
+      860px (correctly — a sticky sidebar on a narrow screen would eat the
+      viewport). The side effect is that on a phone the Checkout button sits
+      under the whole line-item list, so a shopper with six items has to scroll
+      past all of them to buy.
+
+      The total reuses `data-mts-cart-total`, which the cart JS updates with
+      `$$(...).forEach` — every matching node, not the first — so this stays in
+      step with quantity changes for free, with no extra wiring.
+    {%- endcomment -%}
+    <div class="cart-stickybar" data-mts-cart-sticky>
+      <div class="cart-stickybar__total">
+        <span>{{ 'cart.general.total' | t }}</span>
+        <b class="num" data-mts-cart-total>{{ cart.total_price | money }}</b>
+      </div>
+      <form action="{{ routes.cart_url }}" method="post" novalidate>
+        <button type="submit" name="checkout" class="btn btn--brand cart-stickybar__cta">
+          {% render 'mts-icon', name: 'lock', size: 16 %} {{ 'cart.general.checkout' | t }}
+        </button>
+      </form>
+    </div>
+  </main>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Cart",
+  "settings": [
+    { "type": "checkbox", "id": "show_free_shipping_bar",
+      "label": "Show the free-shipping progress bar", "default": false,
+      "info": "Off until a free-shipping threshold is decided. The threshold itself lives in Theme settings \u2192 Shipping." },
+    { "type": "checkbox", "id": "show_upsell", "label": "Show \"Frequently bought together\"", "default": false,
+      "info": "Off by default \u2014 on a cart page it competes with the checkout button. The empty-cart suggestions are separate and always show." },
+    { "type": "collection", "id": "upsell_collection", "label": "Suggestions collection", "info": "Used for the empty-cart bestsellers, and for \"Frequently bought together\" when enabled above." },
+    { "type": "text", "id": "delivery_estimate", "label": "Estimated delivery copy", "default": "3–5 business days" }
+  ]
+}
+{% endschema %}

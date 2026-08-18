@@ -1,0 +1,49 @@
+{%- comment -%}
+  Create account. Replaces Suruchi's main-register.
+
+  Deliberately short: name, email, password. Every extra field here costs
+  sign-ups, and the trade details we actually want (company, ABN, PO number)
+  are collected on the bulk-order form where they are relevant.
+{%- endcomment -%}
+
+{% render 'hnl-account-shell', part: 'open', nav: false,
+   eyebrow: 'Your account', title: 'Create an Account',
+   subtitle: 'Reorder in a couple of clicks, and keep every invoice in one place.' %}
+
+<div class="acct__solo is-ready">
+  {%- form 'create_customer', class: 'acct__card acct__form' -%}
+    {%- if form.errors -%}
+      <p class="acct__err" role="alert">{{ form.errors | default_errors }}</p>
+    {%- endif -%}
+
+    <div class="acct__row2">
+      <label class="fld">
+        <span>First name</span>
+        <input type="text" name="customer[first_name]" autocomplete="given-name" value="{{ form.first_name }}" placeholder="First name">
+      </label>
+      <label class="fld">
+        <span>Last name</span>
+        <input type="text" name="customer[last_name]" autocomplete="family-name" value="{{ form.last_name }}" placeholder="Last name">
+      </label>
+    </div>
+
+    <label class="fld">
+      <span>Email</span>
+      <input type="email" name="customer[email]" autocomplete="email" required value="{{ form.email }}" placeholder="you@company.com.au">
+    </label>
+
+    <label class="fld">
+      <span>Password</span>
+      <input type="password" name="customer[password]" autocomplete="new-password" required minlength="5" placeholder="At least 5 characters">
+    </label>
+
+    <button type="submit" class="btn btn--primary acct__submit">Create account</button>
+    <p class="acct__alt">Already have one? <a href="{{ routes.account_login_url }}">Sign in</a></p>
+  {%- endform -%}
+</div>
+
+{% render 'hnl-account-shell', part: 'close' %}
+
+{% schema %}
+{ "name": "HooknLoop register", "settings": [] }
+{% endschema %}

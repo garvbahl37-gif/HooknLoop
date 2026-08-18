@@ -1,0 +1,24 @@
+/*
+Theme Name: My Tape Store
+Theme URI: https://mytapestore.com.au
+Author: My Tape Store
+Description: Purpose-built WooCommerce theme for mytapestore.com.au — the React redesign (mytapestore-redesign) ported to WordPress at exact visual parity, sharing one source of truth with the Shopify theme. Loads no vendor stylesheet.
+Version: 0.1.0
+Requires at least: 6.4
+Tested up to: 6.9
+Requires PHP: 8.1
+License: Proprietary
+Text Domain: mytapestore
+Tags: e-commerce, woocommerce
+*/
+
+/*
+ * Intentionally empty.
+ *
+ * WordPress requires this file to exist and to carry the header above, but the
+ * actual design lives in assets/mts-styles.css, which is GENERATED from
+ * mytapestore-redesign/src/styles by scripts/build-css.sh.
+ *
+ * Do not add rules here. Anything written here is outside the parity contract
+ * and will silently diverge from the Shopify theme and the React source.
+ */

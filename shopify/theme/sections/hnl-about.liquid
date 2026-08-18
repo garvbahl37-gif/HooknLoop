@@ -1,0 +1,189 @@
+{%- comment -%}
+  About Us — a designed page rather than the generic hnl-page prose shell.
+
+  The copy still lives in page.content, so it stays editable in Shopify admin
+  and this section owns only the furniture around it: a photo hero, a distilled
+  set of value cards, a pull quote and one call to action. That split is
+  deliberate — hardcoding six paragraphs of brand copy into Liquid would mean
+  every wording tweak becomes a theme deploy.
+
+  The hero photo is an image_picker rather than a bundled asset because the
+  shot lives in Shopify Files. With no image chosen the hero falls back to the
+  brand's navy gradient, so the page is never broken-looking while the picture
+  is being chosen.
+
+  One orange flare per screen: that is the CTA. The hero rule and the quote
+  mark are the calm-warmth supporting notes, not competing accents.
+{%- endcomment -%}
+
+{%- comment -%}
+  Handle gate — every section listed in page.json renders for every page that
+  uses the template, so each one gates itself. Without this the About hero
+  would appear on the contact, blog, policy and industry pages too.
+{%- endcomment -%}
+{%- liquid
+  assign hnl_gate = section.settings.page_handle | strip
+  assign hnl_show = false
+  if hnl_gate == page.handle
+    assign hnl_show = true
+  endif
+-%}
+
+{%- if hnl_show -%}
+<div id="main" class="page abt">
+  {%- comment -%}
+    The warehouse shot ships as a theme asset so it travels with the theme and
+    survives a publish — a Files pick would live in theme settings, which is
+    easy to lose track of. The image_picker still wins if one is chosen, so the
+    photo can be swapped in the editor without a deploy.
+
+    Only the picked image gets a srcset: image_url/widths work on Shopify-hosted
+    image objects, not on a theme asset, so the bundled fallback is served at
+    its native 1672px. It is 352KB, which is why it is the one image on the page
+    that loads eagerly.
+  {%- endcomment -%}
+  <header class="abt__hero">
+    <div class="wrap abt__hero-inner">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="abt__eyebrow">{{ section.settings.eyebrow }}</span>
+      {%- endif -%}
+      <h1 class="abt__h1">{{ section.settings.heading | default: page.title }}</h1>
+      {%- if section.settings.lead != blank -%}
+        <p class="abt__lead">{{ section.settings.lead }}</p>
+      {%- endif -%}
+    </div>
+  </header>
+
+  {%- comment -%}
+    .wrap carries both the page gutter (24px padding) and `margin: 0 auto`, so
+    it must stay a plain container. Putting it on the component itself made the
+    stat panel paint its background out through the gutter, and gave the prose
+    an auto-centred left margin while the quote below it sat on the gutter edge.
+  {%- endcomment -%}
+  {%- if section.settings.stats != blank -%}
+    <div class="wrap">
+      <div class="abt__stats">
+        {%- assign rows = section.settings.stats | newline_to_br | split: '<br />' -%}
+        {%- for row in rows -%}
+          {%- assign bits = row | strip | split: '|' -%}
+          {%- if bits.size >= 2 -%}
+            <div class="abt__stat">
+              <b>{{ bits[0] | strip }}</b>
+              <span>{{ bits[1] | strip }}</span>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- if page.content != blank -%}
+    <div class="wrap">
+      <div class="abt__prose">
+        {{ page.content }}
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- comment -%}
+    The warehouse shot as its own figure rather than a hero backdrop. Behind
+    the H1 it was a texture with a scrim over it; given a frame and room of its
+    own it is actually looked at, and the type above it is read on a clean
+    ground instead of over a photograph.
+  {%- endcomment -%}
+  <figure class="wrap abt__figure">
+    {%- if section.settings.image != blank -%}
+      {{ section.settings.image
+         | image_url: width: 2400
+         | image_tag:
+             class: 'abt__figure-img',
+             sizes: '(min-width: 1280px) 1232px, 100vw',
+             widths: '600, 900, 1200, 1600, 2000, 2400',
+             alt: section.settings.image.alt | default: shop.name,
+             loading: 'lazy' }}
+    {%- else -%}
+      <img class="abt__figure-img"
+           src="{{ 'hnl-about-hero.jpg' | asset_url }}"
+           alt="The HooknLoop warehouse at dawn, with a HooknLoop truck at the loading docks"
+           width="1672" height="941"
+           loading="lazy" decoding="async">
+    {%- endif -%}
+    {%- if section.settings.caption != blank -%}
+      <figcaption>{{ section.settings.caption }}</figcaption>
+    {%- endif -%}
+  </figure>
+
+  {%- assign value_blocks = 0 -%}
+  {%- for block in section.blocks -%}
+    {%- if block.type == 'value' -%}{%- assign value_blocks = value_blocks | plus: 1 -%}{%- endif -%}
+  {%- endfor -%}
+
+  {%- if value_blocks > 0 -%}
+    <section class="wrap abt__values" aria-label="What we stand for">
+      {%- if section.settings.values_heading != blank -%}
+        <h2 class="abt__h2">{{ section.settings.values_heading }}</h2>
+      {%- endif -%}
+      <div class="abt__grid">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'value' -%}
+            <article class="abt__card" {{ block.shopify_attributes }}>
+              <h3>{{ block.settings.title }}</h3>
+              <p>{{ block.settings.body }}</p>
+            </article>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </section>
+  {%- endif -%}
+
+  {%- if section.settings.cta_label != blank -%}
+    <div class="wrap abt__cta">
+      <a class="btn btn--primary" href="{{ section.settings.cta_link | default: '/collections/all' }}">
+        {{ section.settings.cta_label }}
+      </a>
+      {%- if section.settings.cta_note != blank -%}
+        <span class="abt__cta-note">{{ section.settings.cta_note }}</span>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+</div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "HooknLoop about",
+  "settings": [
+    { "type": "text", "id": "page_handle", "label": "Only show on page handle", "info": "Required — this section renders only on the page whose handle matches." },
+    { "type": "header", "content": "Hero" },
+    { "type": "image_picker", "id": "image", "label": "Hero photo", "info": "Falls back to a navy gradient when empty." },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "About HooknLoop" },
+    { "type": "text", "id": "heading", "label": "Heading", "info": "Defaults to the page title." },
+    { "type": "textarea", "id": "lead", "label": "Lead line", "default": "The right fastening solution should be simple to find, easy to order and dependable when you need it." },
+
+    { "type": "header", "content": "Stat strip" },
+    { "type": "textarea", "id": "stats", "label": "Stats", "info": "One per line: Value | Caption", "default": "Australian | Owned and operated\nGST | Tax invoice on every order\n1–2 days | Typical dispatch\n6 years | Supplying the trades" },
+
+    { "type": "header", "content": "Photo" },
+    { "type": "text", "id": "caption", "label": "Caption", "info": "Optional. Sits under the photo." },
+
+    { "type": "header", "content": "Values" },
+    { "type": "text", "id": "values_heading", "label": "Heading", "default": "What You Can Expect" },
+
+    { "type": "header", "content": "Call to action" },
+    { "type": "text", "id": "cta_label", "label": "Button label", "default": "Shop the range" },
+    { "type": "url", "id": "cta_link", "label": "Button link" },
+    { "type": "text", "id": "cta_note", "label": "Note beside the button", "info": "Leave empty for just the button." }
+  ],
+  "blocks": [
+    {
+      "type": "value",
+      "name": "Value",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "textarea", "id": "body", "label": "Body" }
+      ]
+    }
+  ],
+  "max_blocks": 6
+}
+{% endschema %}

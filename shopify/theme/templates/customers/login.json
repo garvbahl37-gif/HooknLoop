@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "main": {
+      "type": "hnl-login",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

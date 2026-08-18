@@ -1,0 +1,15 @@
+{
+  "sections": {
+    "main": {
+      "type": "mts-account-page",
+      "settings": {
+        "view": "orders",
+        "signed_out_heading": "Sign in to My Tape Store",
+        "signed_out_text": "Sign in to see your orders, saved addresses and wishlist in one place."
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

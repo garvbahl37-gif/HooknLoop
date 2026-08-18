@@ -1,0 +1,431 @@
+{% liquid
+  assign theme_rtl = false
+  if settings.enable_rtl and settings.langauges_rtl == blank
+    assign theme_rtl = true
+  endif
+
+  if settings.enable_rtl and settings.langauges_rtl != blank
+    assign rtl_languages = settings.langauges_rtl | split: ','
+    for language in rtl_languages
+      if language == request.locale.iso_code
+        assign theme_rtl = true
+      endif
+    endfor
+  endif
+%}
+<!doctype html>
+<html
+  class="no-js"
+  lang="en-au"
+  
+  {% if theme_rtl %}
+    dir="rtl"
+  {% endif %}
+>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="">
+    <link rel="canonical" href="{{ canonical_url }}">
+    <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+
+    
+
+    {%- if settings.favicon != blank -%}
+      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+    {%- endif -%}
+
+    {%- if settings.use_custom_body_font == false or settings.use_custom_heading_font == false -%}
+      {%- unless settings.type_header_font.system? and settings.type_body_font.system? -%}
+        <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
+      {%- endunless -%}
+    {%- endif -%}
+
+    {%- comment -%}
+      Shopify's automatic "All" collection has no record in admin, so there is
+      nowhere to give it a title or description — both have to come from the
+      theme. It was rendering as the single word "All" with no description,
+      despite being what the footer's "Browse All Products" points at.
+
+      Scoped to that one handle, and only when the merchant has not set
+      something themselves, so a real collection is never overridden.
+    {%- endcomment -%}
+    {%- liquid
+      assign meta_title = page_title
+      assign meta_desc = page_description
+      if request.page_type == 'collection' and collection.handle == 'all'
+        if collection.title == 'All' or meta_title == 'All'
+          assign meta_title = 'All Hook & Loop Products | HooknLoop Australia'
+        endif
+        if meta_desc == blank
+          assign meta_desc = 'Browse the full HooknLoop range: self-adhesive and sew-on hook and loop, VELCRO® Brand, fire retardant tapes, dots and reusable straps. Australian stock, fast dispatch.'
+        endif
+      endif
+    -%}
+
+    <title>
+      {{ meta_title }}
+      {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
+      {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+
+      {%- unless meta_title contains shop.name %} {% endunless -%}
+    </title>
+
+    {% if meta_desc %}
+      <meta name="description" content="{{ meta_desc | escape }}">
+    {% endif %}
+
+    {% render 'meta-tags' %}
+
+    {%- comment -%}
+      swiper-bundle is 132KB and was the only script here without `defer`, so
+      it blocked parsing on every page — the single biggest render-blocking
+      item in the head.
+
+      It is deferred AND moved first, not just deferred in place. Deferred
+      scripts run in document order, so leaving it at its old position would
+      have put it after theme.js, whose custom elements call `new Swiper` when
+      they upgrade. Ordering it ahead of theme.js keeps that dependency intact
+      while still unblocking the parser.
+    {%- endcomment -%}
+    <script src="{{ 'swiper-bundle.min.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'utility.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'loadMore.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'custom.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'slideshow.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'tab-active.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'counter-up.js' | asset_url }}" defer="defer"></script>
+
+    {%- unless template.name == 'product' -%}
+      <script src="{{ 'product-variant.js' | asset_url }}" defer="defer"></script>
+    {%- endunless -%}
+
+    {{ content_for_header }}
+
+    {% render 'inline-style' %}
+
+    {%- comment -%}
+      Preload the homepage hero's first slide.
+
+      That image is the Largest Contentful Paint element, but it lives roughly
+      40KB deep in a 269KB document, behind six stylesheets. On throttled mobile
+      the preload scanner reached it so late that 75% of LCP (3.7s of 4.9s) was
+      Load Delay — time the image spent not yet requested. Declaring it up here,
+      ahead of the stylesheets, moves discovery into the first chunk of HTML.
+
+      This must stay in sync with slide 1's image in the hero section, which is
+      why it uses the same filename that hnl-hero.liquid falls back to. If the
+      first slide's image is changed in the theme editor, update it here too —
+      a stale entry costs a wasted ~32KB fetch and forfeits the LCP head start.
+
+      The media query is not decoration. The hero banner is a desktop-only
+      element — phones get the section's navy gradient and are handed a 1x1
+      transparent GIF by the <picture> in hnl-hero.liquid, so preloading the
+      photograph on mobile would download 160KB that nothing ever paints, on
+      the connection least able to afford it and ahead of the stylesheets that
+      block first paint. 921px is one pixel above the 920px breakpoint the hero
+      restacks at, so exactly one of the two treatments is ever preloaded.
+    {%- endcomment -%}
+    {%- if request.page_type == 'index' -%}
+      <link rel="preload" as="image" fetchpriority="high"
+            media="(min-width: 921px)"
+            href="{{ 'hnl-hero-banner-1.webp' | asset_url }}">
+    {%- endif -%}
+
+    {{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}
+    {{ 'glightbox.min.css' | asset_url | stylesheet_tag }}
+    {{ 'theme.css' | asset_url | stylesheet_tag }}
+    {%- comment -%}
+      HooknLoop redesign. Loaded AFTER theme.css so its tokens and section
+      styles win over Suruchi's defaults. Only affects markup using the hnl-*
+      sections; every stock Suruchi section renders exactly as before.
+    {%- endcomment -%}
+    {{ 'hnl-redesign.css' | asset_url | stylesheet_tag }}
+    {%- if theme_rtl -%}
+      {{ 'rtl.css' | asset_url | stylesheet_tag }}
+    {%- endif -%}
+
+    {%- unless settings.type_body_font.system? -%}
+      <link rel="preload" as="font" href="{{ settings.type_body_font | font_url }}" type="font/woff2" crossorigin>
+    {%- endunless -%}
+    {%- unless settings.type_header_font.system? -%}
+      <link rel="preload" as="font" href="{{ settings.type_header_font | font_url }}" type="font/woff2" crossorigin>
+    {%- endunless -%}
+
+    <script>
+      document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+    </script>
+
+    <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "w7uqy3mfzt");
+</script>
+
+
+  
+
+   <!-- Google tag (gtag.js) -->
+   <script async src="https://www.googletagmanager.com/gtag/js?id=G-EZ4X9N68LE"></script>
+   <script>   window.dataLayer = window.dataLayer || [];   function gtag(){dataLayer.push(arguments);}   gtag('js', new Date());   gtag('config', 'G-EZ4X9N68LE'); </script>
+    
+
+     
+  {%- comment -%}
+    Trailing slashes are stripped, so /pages/about-us/ becomes /pages/about-us.
+
+    This replaces an earlier script that did the exact opposite — it ADDED a
+    slash to every URL, which meant every page on the site rendered once and
+    then threw that render away, and it sent every visitor to the form Shopify
+    does not treat as canonical.
+
+    Direction matters here: Shopify's own canonical tag emits the URL without a
+    trailing slash, so this now agrees with it instead of fighting it. Both
+    forms return 200 (measured), so the two were live as duplicate URLs.
+
+    Shopify has no server-side trailing-slash rule, and a real 301 would mean
+    one hand-made URL redirect per path — unmaintainable as products come and
+    go. This covers every URL including ones that do not exist yet.
+
+    Three guards, all load-bearing:
+      - the root "/" is left alone, or it would strip itself and loop
+      - it runs inline in <head>, before the body paints, so the redirect
+        happens instead of a visible flash of the wrong URL
+      - replace(), not assign(), so the slashed URL never enters history and
+        Back does not bounce the visitor through it
+
+    Only fires for a URL that actually has a trailing slash. Every internal
+    link and every canonical already points at the clean form, so in normal
+    browsing this costs nothing — it exists for old bookmarks and for links
+    the previous script sent out into the world.
+  {%- endcomment -%}
+  <script>
+    (function () {
+      var p = window.location.pathname;
+      if (p.length > 1 && p.charAt(p.length - 1) === '/') {
+        var clean = p.replace(/\/+$/, '');
+        if (clean && clean !== p) {
+          window.location.replace(clean + window.location.search + window.location.hash);
+        }
+      }
+    })();
+  </script>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["Organization", "Store", "OnlineStore"],
+      "@id": "https://hooknloop.com.au/#organization",
+      "name": "HooknLoop",
+      "url": "https://hooknloop.com.au/",
+      "description": "Australia’s trusted supplier of premium hook and loop fastening solutions for businesses and consumers.",
+      "telephone": "+61 3 4061 6287",
+      "email": "info@hooknloop.com.au",
+      "identifier": "ABN 93878995217",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Level-5/111 Cecil St",
+        "addressLocality": "South Melbourne",
+        "addressRegion": "VIC",
+        "postalCode": "3205",
+        "addressCountry": "AU"
+      },
+      "contactPoint": [
+        {
+          "@type": "ContactPoint",
+          "telephone": "+61 3 4061 6287",
+          "contactType": "customer support",
+          "areaServed": "AU",
+          "availableLanguage": ["en"]
+        }
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://hooknloop.com.au/#website",
+      "url": "https://hooknloop.com.au/",
+      "name": "HooknLoop",
+      "publisher": {
+        "@id": "https://hooknloop.com.au/#organization"
+      },
+      "inLanguage": "en-AU"
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://hooknloop.com.au/#webpage",
+      "url": "https://hooknloop.com.au/",
+      "name": "Shop Hook and Loop Tapes, Strips, Fasteners | HooknLoop.com.au",
+      "isPartOf": {
+        "@id": "https://hooknloop.com.au/#website"
+      },
+      "about": {
+        "@id": "https://hooknloop.com.au/#organization"
+      },
+      "inLanguage": "en-AU"
+    }
+  ]
+}
+</script>
+
+
+<style>
+#shopify-chat {display:none !important;}
+#shopify-element-wrapper .activator-nudge.activator-nudge--right .activator {display:none !important;}
+</style> 
+
+
+  </head>
+
+  <body class="gradient">
+    {% comment %}
+      <a class="skip-to-content-link button visually-hidden" href="#MainContent">
+        {{ 'accessibility.skip_to_text' | t }}
+      </a>
+    {% endcomment %}
+
+    {%- render 'quick_view_modal' -%}
+
+    {%- sections 'header-group' -%}
+
+    {%- comment -%}
+      Rendered here rather than inside each section so every template gets the
+      trail from one place — the redesign has eleven content sections and they
+      would drift. The snippet decides for itself when to stay quiet (homepage,
+      cart).
+    {%- endcomment -%}
+    {% render 'hnl-breadcrumbs' %}
+
+    <main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">
+      {{ content_for_layout }}
+    </main>
+
+    {% sections 'footer-group' %}
+
+    {%- comment -%}
+      Rendered here, outside every section, so a Quick Add on the homepage or a
+      collection can open the same drawer the product page uses.
+    {%- endcomment -%}
+    {% render 'hnl-cart-drawer' %}
+
+    {% section 'color-swatches' %}
+    <ul hidden>
+      <li id="a11y-refresh-page-message">{{ 'accessibility.refresh_page' | t }}</li>
+    </ul>
+
+    <script>
+      window.theme = window.theme || {};
+      window.theme.settings = {
+        enable_remove_token_popup: {{ settings.enable_remove_token_popup | json }}
+      };
+
+      window.routes = {
+        cart_add_url: '{{ routes.cart_add_url }}',
+        cart_change_url: '{{ routes.cart_change_url }}',
+        cart_update_url: '{{ routes.cart_update_url }}',
+        predictive_search_url: '{{ routes.predictive_search_url }}'
+      };
+
+      window.cartStrings = {
+        error: `{{ 'sections.cart.cart_error' | t }}`,
+        quantityError: `{{ 'sections.cart.cart_quantity_error_html' | t }}`
+      }
+      
+      window.variantStrings = {
+        addToCart: `{{ 'products.product.add_to_cart' | t }}`,
+        soldOut: `{{ 'products.product.sold_out' | t }}`,
+        unavailable: `{{ 'products.product.unavailable' | t }}`,
+        unavailable_with_option: `{{ 'products.product.value_unavailable' | t: option_value: '[value]' }}`,
+        preorder: `{{ 'products.product.preorder' | t }}`,
+        nostock: `{{ 'products.product.out_of_stock' | t }}`,
+        discountLabel: `{{ 'products.product.discount_label' | t }}`
+      }
+
+
+      window.accessibilityStrings = {
+        imageAvailable: `{{ 'products.product.media.image_available' | t: index: '[index]' }}`,
+        shareSuccess: `{{ 'general.share.success_message' | t }}`,
+        pauseSlideshow: `{{ 'sections.slideshow.pause_slideshow' | t }}`,
+        playSlideshow: `{{ 'sections.slideshow.play_slideshow' | t }}`,
+      }
+     
+      window.countdown = {
+        days: `{{ 'products.product.countdown_timer.days' | t }}`,
+        Hours: `{{ 'products.product.countdown_timer.hours' | t }}`,
+        minutes: `{{ 'products.product.countdown_timer.minutes' | t }}`,
+        second: `{{ 'products.product.countdown_timer.seconds' | t }}`,
+        daysClass: `Days`,
+        HoursClass: `Hrs`,
+        minutesClass: `Min`,
+        secondClass: `Sec`
+      }
+      
+      window.shipping = {
+      	country_label: `{{ 'general.shipping_calculator.country_label' | t }}`,
+        wrong_message: `{{ 'general.shipping_calculator.wrong_message'| t }}`
+      }
+    </script>
+
+    {%- if settings.cart_type == 'drawer' -%}
+      <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
+
+    <script src="{{ 'faq-collapse.js' | asset_url }}" defer="defer"></script>
+
+    {%- if settings.show_all_wishlist -%}
+      <script src="{{ 'wishlist.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
+
+    {%- if settings.show_all_compare -%}
+      <script src="{{ 'compare.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
+
+    {%- if settings.predictive_search_enabled -%}
+      <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
+
+    {%- if settings.show_quick_view_button or settings.show_cart_button -%}
+      <script src="{{ 'quick_view_modal.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
+
+    {%- if content_for_layout contains 'glightbox' -%}
+      <script src="{{ 'glightbox.min.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
+
+    {%- if content_for_layout contains 'glightbox' -%}
+      <script src="{{ 'welcome-video.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
+
+    <script src="{{ 'color-swatch-variant.js' | asset_url }}" defer="defer"></script>
+
+    <script src="{{ 'lookbook-slider.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'timeline-slider.js' | asset_url }}" defer="defer"></script>
+
+    {%- if settings.back_top_enable -%}
+      {%- render 'back-to-top' -%}
+    {%- endif -%}
+
+    {%- comment -%}
+      HooknLoop floating actions — call FAB, chat panel and the "Stuck? Call us"
+      teaser, ported from the React FloatingActions component.
+    {%- endcomment -%}
+    {%- render 'hnl-floating' -%}
+
+    {%- comment -%}
+      Quick Add popup, rendered once and opened by any product card.
+    {%- endcomment -%}
+    {%- render 'hnl-quick-add' -%}
+
+    {%- comment -%}
+      Newsletter popup. Self-gating: waits, remembers a dismissal, and stands
+      down on cart/checkout/account.
+    {%- endcomment -%}
+    {%- render 'hnl-signup-popup' -%}
+  </body>
+</html>

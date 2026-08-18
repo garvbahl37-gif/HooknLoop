@@ -1,0 +1,24 @@
+<main id="main">
+  <section class="page-hero">
+    <div class="wrap">
+      <span class="eyebrow eyebrow--onink">Account</span>
+      <h1>{{ 'customer.activate_account.title' | t }}</h1>
+      <p>{{ 'customer.activate_account.subtext' | t }}</p>
+    </div>
+  </section>
+  <div class="wrap mts-auth">
+    <div class="contact__form">
+      {%- form 'activate_customer_password' -%}
+        {{ form.errors | default_errors }}
+        <label>{{ 'customer.activate_account.password' | t }}<input type="password" name="customer[password]" required autocomplete="new-password"></label>
+        <label>{{ 'customer.activate_account.password_confirm' | t }}<input type="password" name="customer[password_confirmation]" required autocomplete="new-password"></label>
+        <button class="btn btn--brand btn--lg" type="submit">{{ 'customer.activate_account.submit' | t }}</button>
+        <button class="mts-auth__toggle" type="submit" name="decline">{{ 'customer.activate_account.cancel' | t }}</button>
+      {%- endform -%}
+    </div>
+  </div>
+</main>
+
+{% schema %}
+{ "name": "Activate account" }
+{% endschema %}

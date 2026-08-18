@@ -1,0 +1,1060 @@
+<link rel="stylesheet" href="{{ 'component-rte.css' | asset_url }}" media="print" onload="this.media='all'">
+<noscript>{{ 'component-rte.css' | asset_url | stylesheet_tag }}</noscript>
+
+{{ 'promo-banner.css' | asset_url | stylesheet_tag }}
+{{ 'component-rating.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .rating {
+    display: inline-block;
+    margin: 0;
+  }
+  .promo--banner-product-card .rating-star {
+    --letter-spacing: 0.7;
+    --font-size: 2;
+  }
+      .section-{{ section.id }}-padding {
+       padding-top: {{ section.settings.mobile_padding_top }}px;
+       padding-bottom: {{ section.settings.mobile_padding_bottom }}px;
+        --padding-top: {{ section.settings.mobile_padding_top }}px;
+     }
+     @media screen and (min-width: 750px) {
+       .section-{{ section.id }}-padding {
+         padding-top: {{ section.settings.padding_top }}px;
+         padding-bottom: {{ section.settings.padding_bottom }}px;
+         --padding-top: {{ section.settings.padding_top }}px;
+       }
+     }
+     #MainContent > :first-child .section--top-space-{{ section.id }} {
+       padding-top: calc(var(--header-height) * var(--transparent-header-show) + var(--padding-top));
+     }
+{%- endstyle -%}
+
+{% liquid
+  assign container = ''
+  assign page_offset = false
+  if section.settings.container == 'container'
+    assign container = 'container'
+  elsif section.settings.container == 'container-fluid'
+    assign container = 'container-fluid'
+    unless section.settings.show_offset
+      assign page_offset = true
+    endunless
+  else
+    assign container = 'container-fluid px-0'
+  endif
+
+  if section.settings.border_type == 'solid'
+    assign border_class = 'promo--banner-border'
+  elsif section.settings.border_type == 'outline'
+    assign border_class = 'promo--banner-border-outline'
+  endif
+%}
+<div class="promo--banner-wrapper section--top-space-{{ section.id }} section-{{ section.id }}-padding">
+  <div class="{{ container }} {% if page_offset %}p-0{% endif %}">
+    <div class="promo--banner-inner promo--banner-height-{{ section.settings.height }} {% if section.settings.border %}{{ border_class }}{% endif %} {% if section.blocks.size == 1 %} not-promo--banner-grid{% endif %} color-{{ section.settings.color_scheme }} gradient {% if section.settings.round_corner %} rounded--box{% endif %}">
+      {% for block in section.blocks %}
+        {% case block.type %}
+          {% when 'text' %}
+            <!-- Promo Banner Content -->
+            <div
+              class="promo--banner-content promo--banner-text-padding-{{ block.settings.card_padding_type }} promo--banner-content-{{ block.settings.content_alignment }}"
+              {{ block.shopify_attributes }}
+            >
+              <div class="promo--banner-content--subheading">{{ block.settings.subheading }}</div>
+              <h2 class="promo--banner-content--heading {{ block.settings.heading_size }} mb-0">
+                {{ block.settings.heading }}
+              </h2>
+              <div class="promo--banner-content-text rte ">
+                {{ block.settings.text }}
+              </div>
+
+              {% liquid
+                case block.settings.button_type
+                  when 'primary'
+                    assign button_class = 'button button--primary'
+                  when 'secondary'
+                    assign button_class = 'button button--secondary'
+                  when 'icon'
+                    assign button_class = 'link with--icon'
+                  else
+                    assign button_class = 'link'
+                endcase
+              %}
+              {% if block.settings.link_label != blank %}
+                <div class="promo--banner-content--button">
+                  <a
+                    class="{{ button_class }} {% unless block.settings.button_type == "icon" %} button--{{ block.settings.button_size }} {% endunless %} {% if block.settings.button_icon %} button--with-icon{% endif %}"
+                    {% if block.settings.link == blank %}
+                      role="link" aria-disabled="true"
+                    {% else %}
+                      href="{{ block.settings.link }}"
+                    {% endif %}
+                  >
+                    {{- block.settings.link_label | escape }}
+                    {% if block.settings.button_icon %}
+                      <span class="button--icon button--icon-right"> {% render 'icon-chevron-right' %}</span>
+                    {% endif %}
+                  </a>
+                </div>
+              {% endif %}
+            </div>
+            <!-- Promo Banner Content ./ -->
+
+          {% when 'image' %}
+            <!-- Promo banner media -->
+            <div class="promo--banner-media-wrapper" {{ block.shopify_attributes }}>
+              {% if block.settings.banner_link != blank and block.settings.image != blank %}
+                <a href="{{ block.settings.banner_link }}" class="promo--banner-media-link">
+              {% endif %}
+              <div
+                class="promo--banner-media promo-banner-height-{{ block.settings.mobile_banner_height }}-mobile  {% if block.settings.image != blank %} media{% else %} placeholder{% endif %}"
+                {% if block.settings.mobile_banner_height == 'adapt' and block.settings.image != blank %}
+                  style="
+                    {%- if block.settings.mobile_image != blank -%} --mobile-image-ratio: {{ 1 | divided_by: block.settings.mobile_image.aspect_ratio | times: 100 }}%;{%- endif -%}
+                    --main-image-ratio: {{ 1 | divided_by: block.settings.image.aspect_ratio | times: 100 }}%;
+                  "
+                {% endif %}
+              >
+                {%- if block.settings.image != blank -%}
+                  {%- capture sizes -%}{% if section.blocks.size == 1  %} (min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 }}px, (min-width: 750px) calc(100vw - 130px) {% else %}(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | divided_by: 2 }}px, (min-width: 750px) calc((100vw - 130px) / 2){% endif %}, calc(100vw - 50px){%- endcapture -%}
+                  {% liquid
+                    assign desktop_image_class = ''
+                    if block.settings.mobile_image != blank
+                      assign desktop_image_class = 'promo--banner-card-desktop-image'
+                    endif
+                  %}
+
+                  {{
+                    block.settings.image
+                    | image_url: width: 1500
+                    | image_tag:
+                      loading: 'lazy',
+                      sizes: sizes,
+                      widths: '165, 360, 535, 750, 1070, 1500, 1700, 2200, 3000',
+                      class: desktop_image_class
+                  }}
+                  {% if block.settings.mobile_image != blank %}
+                    {{
+                      block.settings.mobile_image
+                      | image_url: width: 1420
+                      | image_tag:
+                        loading: 'lazy',
+                        sizes: sizes,
+                        widths: '165, 360, 535, 750, 1070, 1500, 1700, 2200, 3000',
+                        class: 'promo-banner--card-mobile-image'
+                    }}
+                  {% endif %}
+                {%- else -%}
+                  {{ 'detailed-apparel-1' | placeholder_svg_tag: 'placeholder-svg-new' }}
+                {%- endif -%}
+              </div>
+              {% if block.settings.banner_link != blank and block.settings.image != blank %}
+                </a>
+              {% endif %}
+            </div>
+            <!-- Promo banner media ./ -->
+          {% when 'video' %}
+            <div class="promo--banner-media-wrapper" {{ block.shopify_attributes }}>
+              {% render 'promo-banner-video', block: block %}
+            </div>
+          {% when 'product_list' %}
+            <div class="promo--banner-media-wrapper promo__banner--product-list" {{ block.shopify_attributes }}>
+              {%- for product in block.settings.product_list -%}
+                {% render 'promo-banner-product',
+                  product_card_product: product,
+                  block: block,
+                  show_link: block.settings.show_link
+                %}
+              {%- else -%}
+                {%- assign a = 1 -%}
+                {%- for i in (1..4) -%}
+                  {%- liquid
+                    assign product_item = 'product-apparel-' | append: a
+                    assign a = a | plus: 1
+                  -%}
+                  <div class="promo--banner-product-media product--media-placeholder">
+                    <div class="promo--banner-product-placeholder">
+                      {{ product_item | placeholder_svg_tag: 'promo--banner-product-placeholder-svg' }}
+                    </div>
+                  </div>
+                {%- endfor -%}
+              {%- endfor -%}
+            </div>
+          {% when 'product' %}
+            <div
+              class="promo--banner-media-wrapper promo__banner--product  promo--banner-product-padding-{{ block.settings.card_padding_type }}"
+              {{ block.shopify_attributes }}
+            >
+              {% if block.settings.product != blank %}
+                {% render 'promo-banner-product-card',
+                  product_card_product: block.settings.product,
+                  block: block,
+                  show_title: block.settings.show_title,
+                  show_price: block.settings.show_price,
+                  show_rating: block.settings.show_product_rating,
+                  show_button: block.settings.show_button
+                %}
+              {% else %}
+                <div class="promo--banner-product-card">
+                  <div class="promo--banner-product-media product--media-placeholder">
+                    {{ 'product-apparel-1' | placeholder_svg_tag: 'promo--banner-product-placeholder-svg' }}
+                  </div>
+                  <div class="promo--banner-product-card-content-inner">
+                    <div class="h5 mb-0">Product Title</div>
+                    <span class="h6  mb-0 product-placeholder--price">$29.99 <s>$99.99</s></span>
+                  </div>
+                </div>
+              {% endif %}
+            </div>
+          {% when 'countdown_timer' %}
+            <div class="promo--banner-countdown-timer-wrapper" {{ block.shopify_attributes }}>
+              {%- liquid
+                assign countdown_timer = block.settings.countdown_year | append: '-' | append: block.settings.countdown_month | append: '-' | append: block.settings.countdown_days
+                assign countdown_timer_convert = countdown_timer | date: '%s'
+                assign today_date = 'now' | date: '%s'
+
+                assign timer = false
+                if countdown_timer_convert > today_date
+                  assign timer = true
+                endif
+              -%}
+              <countdown-timer>
+                {% if timer %}
+                  <div
+                    class="promo--banner-countdown-timer d-flex countdown--timer-{{ block.settings.timer_style }} countdown--font-{{ block.settings.timer_size }}"
+                    data-countdown="{{ block.settings.countdown_year }}-{{ block.settings.countdown_month }}-{{ block.settings.countdown_days }}"
+                  >
+                    <div class="countdown__item Days">
+                      <span class="countdown__number">- -</span>
+                      <span class="countdown__text">{{ 'products.product.countdown_timer.days' | t }}</span>
+                    </div>
+                    <div class="countdown__item Hrs">
+                      <span class="countdown__number">- -</span>
+                      <span class="countdown__text">{{ 'products.product.countdown_timer.hours' | t }}</span>
+                    </div>
+                    <div class="countdown__item Min">
+                      <span class="countdown__number">- -</span>
+                      <span class="countdown__text">{{ 'products.product.countdown_timer.minutes' | t }}</span>
+                    </div>
+                    <div class="countdown__item Sec">
+                      <span class="countdown__number">- -</span>
+                      <span class="countdown__text">{{ 'products.product.countdown_timer.seconds' | t }}</span>
+                    </div>
+                  </div>
+                {% else %}
+                  <div class="promo--banner-countdown-timer d-flex  countdown--timer-{{ block.settings.timer_style }} countdown--font-{{ block.settings.timer_size }}">
+                    <div class="countdown__item Days">
+                      <span class="countdown__number">00</span>
+                      <span class="countdown__text">{{ 'products.product.countdown_timer.days' | t }}</span>
+                    </div>
+                    <div class="countdown__item Hrs">
+                      <span class="countdown__number">00</span>
+                      <span class="countdown__text">{{ 'products.product.countdown_timer.hours' | t }}</span>
+                    </div>
+                    <div class="countdown__item Min">
+                      <span class="countdown__number">00</span>
+                      <span class="countdown__text">{{ 'products.product.countdown_timer.minutes' | t }}</span>
+                    </div>
+                    <div class="countdown__item Sec">
+                      <span class="countdown__number">00</span>
+                      <span class="countdown__text">{{ 'products.product.countdown_timer.seconds' | t }}</span>
+                    </div>
+                  </div>
+                {% endif %}
+              </countdown-timer>
+            </div>
+        {% endcase %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Promo banner",
+  "class": "promo--banner-section",
+  "max_blocks": 3,
+  "tag": "section",
+  "settings": [
+    {
+        "type": "select",
+        "id": "container",
+        "label": "Page width",
+        "default": "container",
+        "info": "It will affect on the larger screen",
+        "options": [
+          {
+            "value": "container",
+            "label": "Boxed"
+          },
+          {
+            "value": "container-fluid",
+            "label": "Full width"
+          }
+        ]
+      },
+    {
+       "type": "checkbox",
+       "id": "show_offset",
+       "label": "Enable horizontal space",
+       "default": true,
+        "info": "It will work if you select the \"Full width\" of the page width"
+     },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+        "type": "select",
+        "id": "height",
+        "options": [
+          {
+            "value": "small",
+            "label": "t:sections.image-with-text.settings.height.options__2.label"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "large",
+            "label": "t:sections.image-with-text.settings.height.options__3.label"
+          }
+        ],
+        "default": "small",
+        "label": "Banner height on desktop"
+      },
+    {
+      "type": "checkbox",
+      "id": "border",
+      "label": "Enable border",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "border_type",
+      "options": [
+        {
+          "value": "solid",
+          "label": "Outside solid"
+        },
+        {
+          "value": "outline",
+          "label": "Inside outline"
+        }
+      ],
+      "default": "solid",
+      "label": "Border type"
+    },
+    {
+        "type": "checkbox",
+        "id": "round_corner",
+        "default": true,
+        "label": "Round corner"
+      },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+          "type": "paragraph",
+          "content": "Desktop"
+        },
+        {
+          "type": "range",
+          "id": "padding_top",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "unit": "px",
+          "label": "Padding top",
+          "default": 50
+        },
+        {
+          "type": "range",
+          "id": "padding_bottom",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "unit": "px",
+          "label": "Padding bottom",
+          "default": 50
+        },
+		{
+          "type": "paragraph",
+          "content": "Mobile"
+        },
+		{
+          "type": "range",
+          "id": "mobile_padding_top",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "unit": "px",
+          "label": "Padding top",
+          "default": 50
+        },
+        {
+          "type": "range",
+          "id": "mobile_padding_bottom",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "unit": "px",
+          "label": "Padding bottom",
+          "default": 50
+        },
+     {
+          "type": "header",
+          "content": "Colors"
+        },
+        {
+              "type": "color_scheme",
+              "id": "color_scheme",
+              "label": "t:sections.all.colors.label",
+              "default": "background-1"
+            }
+  ],
+   "blocks": [
+      {
+        "type": "text",
+        "name": "Text",
+        "settings": [
+          {
+            "type": "text",
+            "id": "subheading",
+            "default": "Promo Description",
+            "label": "Subheading"
+          },
+          {
+            "type": "text",
+            "id": "heading",
+            "default": "Promo banner",
+            "label": "Heading"
+          },
+          {
+            "type": "select",
+            "id": "heading_size",
+            "options": [
+               {
+                "value": "h4",
+                "label": "Extra-small"
+              },
+              {
+                "value": "h3",
+                "label": "Small"
+              },
+              {
+                "value": "h2",
+                "label": "Medium"
+              },
+              {
+                "value": "h1",
+                "label": "Large"
+              },
+              {
+                "value": "h0",
+                "label": "Extra-large"
+              }
+            ],
+            "default": "h1",
+            "label": "Heading size"
+          },
+          {
+            "type": "richtext",
+            "id": "text",
+            "label": "Description"
+          },
+         {
+          "type": "text",
+          "id": "link_label",
+          "label": "Button label",
+          "default": "Button label"
+        },
+        {
+           "type": "checkbox",
+           "id": "button_icon",
+           "label": "Use arrow icon",
+           "default": true
+         },
+		{
+          "type": "select",
+          "id": "button_type",
+          "label": "Button type",
+          "default": "icon",
+          "options": [
+            {
+              "value": "primary",
+              "label": "Solid button"
+            },
+            {
+              "value": "secondary",
+              "label": "Outline button"
+            },
+            {
+              "value": "icon",
+              "label": "Link button"
+            }
+          ]
+        },
+		{
+              "type": "select",
+              "id": "button_size",
+              "label": "Button size",
+              "default": "small",
+			  "info": "Works on the solid/outline button",
+              "options": [
+                {
+                  "value": "large",
+                  "label": "Large"
+                },
+                {
+                  "value": "medium",
+                  "label": "Medium"
+                },
+				        {
+                  "value": "small",
+                  "label": "Small"
+                }
+              ]
+            },
+          {
+            "type": "url",
+            "id": "link",
+            "label": "t:sections.multicolumn.blocks.column.settings.link.label"
+          },
+          {
+            "type": "select",
+            "id": "content_alignment",
+            "options": [
+              {
+                "value": "left",
+                "label": "t:sections.image-with-text.settings.mobile_content_alignment.options__1.label"
+              },
+              {
+                "value": "center",
+                "label": "t:sections.image-with-text.settings.mobile_content_alignment.options__2.label"
+              },
+              {
+                "value": "right",
+                "label": "t:sections.image-with-text.settings.mobile_content_alignment.options__3.label"
+              }
+            ],
+            "default": "center",
+            "label": "Desktop content alignment"
+          },
+          {
+            "type": "select",
+            "id": "card_padding_type",
+            "options": [
+              {
+                "value": "large",
+                "label": "Large"
+              },
+              {
+                "value": "medium",
+                "label": "Medium"
+              },
+              {
+                "value": "small",
+                "label": "Small"
+              }
+            ],
+            "default": "small",
+            "label": "Card padding type on desktop"
+          }
+        ]
+      },
+     {
+        "type": "image",
+        "name": "Image",
+        "settings": [
+             {
+              "type": "image_picker",
+              "id": "image",
+              "label": "Image"
+            },
+            {
+              "type": "url",
+              "id": "banner_link",
+              "label": "Image link"
+            },
+            {
+              "type": "header",
+              "content": "Mobile settings"
+            },
+          {
+              "type": "image_picker",
+              "id": "mobile_image",
+              "label": "Image on mobile"
+            },
+            {
+              "type": "select",
+              "id": "mobile_banner_height",
+              "options": [
+                {
+                 "value": "adapt",
+                 "label": "Adapt to image"
+                },
+                {
+                  "value": "small",
+                  "label": "t:sections.image-with-text.settings.height.options__2.label"
+                },
+                {
+                  "value": "medium",
+                  "label": "Medium"
+                },
+                {
+                  "value": "large",
+                  "label": "t:sections.image-with-text.settings.height.options__3.label"
+                }
+              ],
+              "default": "adapt",
+              "label": "Image height"
+            }
+        ]
+     },
+     {
+        "type": "product_list",
+        "name": "Product list",
+        "settings": [
+            {
+              "type": "product_list",
+              "id": "product_list",
+              "label": "Products",
+              "limit": 4
+            },
+            {
+               "type": "checkbox",
+               "id": "show_link",
+               "label": "Enable product link",
+               "default": true
+             }
+        ]
+      },
+     {
+        "type": "product",
+        "name": "Product",
+        "settings": [
+             {
+              "type": "product",
+              "id": "product",
+              "label": "Select product"
+            },
+            {
+               "type": "checkbox",
+               "id": "show_title",
+               "default": true,
+               "label": "Show title"
+             },
+             {
+               "type": "checkbox",
+               "id": "show_price",
+               "default": true,
+               "label": "Show price"
+             },
+           {
+             "type": "checkbox",
+             "id": "show_product_rating",
+             "default": false,
+             "label": "Show product rating"
+           },
+          {
+              "type": "header",
+              "content": "Button settings"
+            },
+            {
+             "type": "checkbox",
+             "id": "show_button",
+             "default": true,
+             "label": "Show button"
+           },
+            {
+              "type": "text",
+              "id": "link_label",
+              "label": "Button label",
+              "default": "Button label"
+            },
+            {
+               "type": "checkbox",
+               "id": "button_icon",
+               "label": "Use arrow icon",
+               "default": true
+             },
+    		{
+            "type": "select",
+            "id": "button_type",
+            "label": "Button type",
+            "default": "icon",
+            "options": [
+              {
+                "value": "primary",
+                "label": "Solid button"
+              },
+              {
+                "value": "secondary",
+                "label": "Outline button"
+              },
+              {
+                "value": "icon",
+                "label": "Link button"
+              }
+            ]
+          },
+      		{
+                "type": "select",
+                "id": "button_size",
+                "label": "Button size",
+                "default": "small",
+  			  "info": "Works on the solid/outline button",
+                "options": [
+                  {
+                    "value": "large",
+                    "label": "Large"
+                  },
+                  {
+                    "value": "medium",
+                    "label": "Medium"
+                  },
+  				        {
+                    "value": "small",
+                    "label": "Small"
+                  }
+                ]
+              },
+          {
+            "type": "select",
+            "id": "card_padding_type",
+            "options": [
+              {
+                "value": "large",
+                "label": "Large"
+              },
+              {
+                "value": "medium",
+                "label": "Medium"
+              },
+              {
+                "value": "small",
+                "label": "Small"
+              }
+            ],
+            "default": "small",
+            "label": "Card padding type on desktop"
+          }
+        ]
+      },
+       {
+        "type": "countdown_timer",
+        "name": "Countdown timer",
+        "settings": [
+            {
+              "type": "number",
+              "id": "countdown_year",
+               "label": "Year",
+              "info": "Write the year in the following format: 2024",
+              "placeholder": "2024"
+            },
+            {
+                "type": "select",
+                "id": "countdown_month",
+                "label": "Month",
+                "options": [
+                  {
+                    "value": "01",
+                    "label": "Jan"
+                  },
+                  {
+                    "value": "02",
+                    "label": "Feb"
+                  },
+                  {
+                    "value": "03",
+                    "label": "Mar"
+                  },
+                  {
+                    "value": "04",
+                    "label": "Apr"
+                  },
+                  {
+                    "value": "05",
+                    "label": "May"
+                  },
+                  {
+                    "value": "06",
+                    "label": "Jun"
+                  },
+                  {
+                    "value": "07",
+                    "label": "Jul"
+                  },
+                  {
+                    "value": "08",
+                    "label": "Aug"
+                  },
+                  {
+                    "value": "09",
+                    "label": "Sept"
+                  },
+                  {
+                    "value": "10",
+                    "label": "Oct"
+                  },
+                  {
+                    "value": "11",
+                    "label": "Nov"
+                  },
+                  {
+                    "value": "12",
+                    "label": "Dec"
+                  }
+                ],
+                "default": "01"
+              },
+            {
+              "type": "select",
+              "id": "countdown_days",
+              "label": "Day",
+              "options": [
+                {
+                  "value": "01",
+                  "label": "1"
+                },
+                {
+                  "value": "02",
+                  "label": "2"
+                },
+                {
+                  "value": "03",
+                  "label": "3"
+                },
+                {
+                  "value": "04",
+                  "label": "4"
+                },
+                {
+                  "value": "05",
+                  "label": "5"
+                },
+                {
+                  "value": "06",
+                  "label": "6"
+                },
+                {
+                  "value": "07",
+                  "label": "7"
+                },
+                {
+                  "value": "08",
+                  "label": "8"
+                },
+                {
+                  "value": "09",
+                  "label": "9"
+                },
+                {
+                  "value": "10",
+                  "label": "10"
+                },
+                {
+                  "value": "11",
+                  "label": "11"
+                },
+                {
+                  "value": "12",
+                  "label": "12"
+                },
+                {
+                  "value": "13",
+                  "label": "13"
+                },
+                {
+                  "value": "14",
+                  "label": "14"
+                },
+                {
+                  "value": "15",
+                  "label": "15"
+                },
+                {
+                  "value": "16",
+                  "label": "16"
+                },
+                {
+                  "value": "17",
+                  "label": "17"
+                },
+                {
+                  "value": "18",
+                  "label": "18"
+                },
+                {
+                  "value": "19",
+                  "label": "19"
+                },
+                {
+                  "value": "20",
+                  "label": "20"
+                },
+                {
+                  "value": "21",
+                  "label": "21"
+                },
+                {
+                  "value": "22",
+                  "label": "22"
+                },
+                {
+                  "value": "23",
+                  "label": "23"
+                },
+                {
+                  "value": "24",
+                  "label": "24"
+                },
+                {
+                  "value": "25",
+                  "label": "25"
+                },
+                {
+                  "value": "26",
+                  "label": "26"
+                },
+                {
+                  "value": "27",
+                  "label": "27"
+                },
+                {
+                  "value": "28",
+                  "label": "28"
+                },
+                {
+                  "value": "29",
+                  "label": "29"
+                },
+                {
+                  "value": "30",
+                  "label": "30"
+                },
+                {
+                  "value": "31",
+                  "label": "31"
+                }
+              ],
+              "default": "01"
+            },
+            {
+              "type": "header",
+              "content": "Timer"
+            },
+            {
+              "type": "select",
+              "id": "timer_style",
+              "label": "Timer style",
+              "default": "box",
+              "options": [
+                {
+                  "value": "box",
+                  "label": "Box border"
+                },
+                {
+                  "value": "border",
+                  "label": "Line border"
+                },
+                {
+                  "value": "colon",
+                  "label": "Colon icon"
+                }
+            ]
+          },
+          {
+              "type": "select",
+              "id": "timer_size",
+              "label": "Font size",
+              "default": "small",
+              "options": [
+                {
+                  "value": "small",
+                  "label": "Small"
+                },
+                {
+                  "value": "medium",
+                  "label": "Medium"
+                },
+                {
+                  "value": "large",
+                  "label": "Large"
+                }
+            ]
+          }
+        ]
+      },
+     {
+        "type": "video",
+        "name": "Video",
+        "settings": [
+             {
+                "type": "image_picker",
+                "id": "cover_image",
+                "label": "t:sections.video.settings.cover_image.label"
+              },
+               {
+                "type": "header",
+                "content": "t:sections.video.settings.header__1.content"
+              },
+              {
+                "type": "video",
+                "id": "video",
+                "label": "t:sections.video.settings.video.label"
+              },
+              {
+                "type": "header",
+                "content": "t:sections.video.settings.header__2.content"
+              },
+              {
+                "type": "paragraph",
+                "content": "t:sections.video.settings.paragraph.content"
+              },
+              {
+                "type": "video_url",
+                "id": "video_url",
+                "accept": [
+                  "youtube",
+                  "vimeo"
+                ],
+                "default": "https:\/\/www.youtube.com\/watch?v=_9VUPq3SxOc",
+                "label": "t:sections.video.settings.video_url.label",
+                "placeholder": "t:sections.video.settings.video_url.placeholder",
+                "info": "t:sections.video.settings.video_url.info"
+             },
+            {
+              "type": "checkbox",
+              "id": "enable_video_looping",
+              "label": "t:sections.video.settings.enable_video_looping.label",
+              "default": false
+            },
+            {
+              "type": "text",
+              "id": "description",
+              "label": "t:sections.video.settings.description.label",
+              "info": "t:sections.video.settings.description.info"
+            }
+        ]
+      }
+   ],
+  "presets": [
+    {
+      "name": "Promo banner",
+      "blocks":[
+          {
+            "type": "text"
+          },
+          {
+            "type": "image"
+          }
+      ]
+    }
+  ]
+}
+{% endschema %}

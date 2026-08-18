@@ -1,0 +1,72 @@
+{%- comment -%}
+  Why HooknLoop value tiles — port of WhyUs() from sections/Basic.jsx
+  Icons are inline SVG, same set as the React VIcon component.
+{%- endcomment -%}
+
+{%- capture icon_truck -%}<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6h11v11H2zM13 9h4l3 3v5h-7"/><circle cx="6" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg>{%- endcapture -%}
+{%- capture icon_lock -%}<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10.5" width="15" height="10" rx="2"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/></svg>{%- endcapture -%}
+{%- capture icon_trade -%}<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h18v4H3zM5 7v14h14V7M9 11h6"/></svg>{%- endcapture -%}
+{%- capture icon_stock -%}<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l9-4 9 4-9 4-9-4Z"/><path d="M3 7v10l9 4 9-4V7"/></svg>{%- endcapture -%}
+{%- capture icon_invoice -%}<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h9l3 3v17l-3-2-3 2-3-2-3 2V2Z"/><path d="M9 8h6M9 12h6"/></svg>{%- endcapture -%}
+{%- capture icon_pin -%}<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s7-6 7-12a7 7 0 0 0-14 0c0 6 7 12 7 12Z"/><circle cx="12" cy="10" r="2.5"/></svg>{%- endcapture -%}
+
+<section class="why" aria-labelledby="why-h">
+  <div class="wrap">
+    <div class="sec-head">
+      {%- if section.settings.eyebrow != blank -%}<span class="sec-eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
+      <h2 id="why-h" class="sec-h2">{{ section.settings.heading }}</h2>
+    </div>
+
+    <div class="why__grid">
+      {%- for block in section.blocks -%}
+        <div class="why__tile" {{ block.shopify_attributes }}>
+          <span class="why__icn">
+            {%- case block.settings.icon -%}
+              {%- when 'truck' -%}{{ icon_truck }}
+              {%- when 'lock' -%}{{ icon_lock }}
+              {%- when 'trade' -%}{{ icon_trade }}
+              {%- when 'stock' -%}{{ icon_stock }}
+              {%- when 'invoice' -%}{{ icon_invoice }}
+              {%- else -%}{{ icon_pin }}
+            {%- endcase -%}
+          </span>
+          <h3 class="why__t">{{ block.settings.title }}</h3>
+          <p class="why__b">{{ block.settings.body }}</p>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "HooknLoop why us",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Why HooknLoop" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Six reasons trade buyers reorder" }
+  ],
+  "blocks": [
+    {
+      "type": "tile",
+      "name": "Tile",
+      "settings": [
+        {
+          "type": "select", "id": "icon", "label": "Icon", "default": "truck",
+          "options": [
+            { "value": "truck", "label": "Delivery" },
+            { "value": "lock", "label": "Secure payment" },
+            { "value": "trade", "label": "Trade / bulk" },
+            { "value": "stock", "label": "Stock" },
+            { "value": "invoice", "label": "Invoice" },
+            { "value": "pin", "label": "Australian" }
+          ]
+        },
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "textarea", "id": "body", "label": "Body" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "HooknLoop why us" }]
+}
+{% endschema %}

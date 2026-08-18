@@ -1,0 +1,39 @@
+/*
+ * HooknLoop PDP — mirrors ProductPage.jsx in storefront/src/pages.
+ * Suruchi's original product template is preserved in git at the pristine
+ * backup commit.
+ *
+ * FAQ blocks removed: they were generic questions I wrote, not the store's.
+ * The real per-product FAQs live in snippets/hnl-product-faqs.liquid, scraped
+ * from hooknloop.com.au. Blocks added here still work as a fallback for a
+ * product that has none of its own.
+ */
+{
+  "sections": {
+    "hnl_product": {
+      "type": "hnl-product",
+      "settings": {
+        "eyebrow": "Australian stock · fast dispatch",
+        "stock_flag": "In stock · ships in 1–2 days",
+        "show_bulk": true,
+        "bulk_eyebrow": "Trade & bulk pricing",
+        "bulk_heading": "Buy more & save",
+        "bulk_sub": "The more you order, the less you pay — volume discounts apply automatically at checkout, no code needed.",
+        "bulk_tiers": "Buy 5+ | 5%\nBuy 10+ | 10%\nBuy 20+ | 20%\nBuy 50+ | 30%",
+        "returns_note": "14-day returns policy"
+      },
+      "blocks": {
+        "judgeme_reviews": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "judgeme_reviews"
+      ]
+    }
+  },
+  "order": [
+    "hnl_product"
+  ]
+}

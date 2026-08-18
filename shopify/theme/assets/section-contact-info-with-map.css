@@ -1,0 +1,31 @@
+.contact--info-with-map-grid {
+  display: grid;
+  gap: 3rem;
+}
+
+.contact--info--list-item {
+  display: grid;
+  grid-template-columns: 3rem auto;
+  gap: 2rem;
+}
+
+.contact--info--list-item + .contact--info--list-item {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(var(--color-foreground), 0.1);
+}
+.contact__info--icon > svg {
+  width: 2.2rem;
+  color: rgba(var(--color-foreground));
+}
+@media only screen and (min-width: 750px) {
+  .contact--info-with-map-grid:not(.contact__info--map-first) {
+    grid-template-columns: 41.66666667% auto;
+  }
+  .contact--info-with-map-grid.contact__info--map-first {
+    grid-template-columns: auto 41.66666667%;
+  }
+}
+.contact--info-wrapper.contact__info--text-last {
+  order: 2;
+}

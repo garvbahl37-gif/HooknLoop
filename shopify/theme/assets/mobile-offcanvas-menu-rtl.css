@@ -1,0 +1,14 @@
+.offcanvas__sub_menu_item {
+  padding: 15px 30px 15px 0;
+}
+span.offcanvas__menu_text__icon {
+  margin-left: 0;
+  margin-right: 10px;
+}
+.offcanvas__menu_item .header__actions_btn_cart_num {
+  right: 12px;
+  left: auto;
+}
+.offcanvas__footer .button--icon-right > svg {
+  transform: inherit;
+}

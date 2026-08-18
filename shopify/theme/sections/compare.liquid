@@ -1,0 +1,300 @@
+{{ 'component-rating.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign container = ''
+  if section.settings.container == 'container'
+    assign container = 'container'
+  elsif section.settings.container == 'container-fluid'
+    assign container = 'container-fluid'
+  else
+    assign container = 'container-fluid px-0'
+  endif
+-%}
+<style>
+    .table-responsive {
+      overflow-y: hidden;
+    }
+
+    .table-responsive {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .table {
+      width: 100%;
+      margin-bottom: 1rem;
+      color: #212529;
+      vertical-align: top;
+      border: 1px solid #dee2e6;
+  }
+    .table-compare thead {
+      height: 0;
+      opacity: 0;
+    }
+    .table>thead {
+      vertical-align: bottom;
+    }
+    tbody, td, tfoot, th, thead, tr {
+      border-color: inherit;
+      border-style: solid;
+      text-align: center;
+    }
+    .table-compare thead th {
+      padding: 0;
+    }
+    .table-compare th {
+      text-align: left;
+      padding-right: 2.5rem;
+      font-weight: 500;
+      color: #999;
+    }
+    .table-compare td, .table-compare th {
+      min-width: 13.625rem;
+      padding: 1.25rem 0.625rem;
+      border-color: transparent;
+    }
+    .table>:not(:first-child) {
+      border-top: 2px solid #ddd;
+    }
+    .table>:not(:first-child) {
+      border-top: 2px solid #ddd;
+    }
+    .table>tbody {
+      vertical-align: inherit;
+    }
+    .table>:not(caption)>*>* {
+      padding: .5rem .5rem;
+      background-color: var(--bs-table-bg);
+      border-bottom-width: 1px;
+      box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
+    }
+   .table-compare .cp_prd-thumb td {
+      min-width: 218px;
+      width: calc((100vw - 218px)/ 5);
+      max-width: 25%;
+    }
+     .table-compare tr:nth-child(2n+2) {
+          background-color: #f5f5f5;
+      }
+
+     .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.mobile_padding_top }}px;
+      padding-bottom: {{ section.settings.mobile_padding_bottom }}px;
+    }
+    @media screen and (min-width: 750px) {
+      .section-{{ section.id }}-padding {
+        padding-top: {{ section.settings.padding_top }}px;
+        padding-bottom: {{ section.settings.padding_bottom }}px;
+      }
+    }
+    .compare-page:not(.compare_exists) .table-responsive.table-compare {
+          display: none;
+      }
+    button.cp_remove--button.compare__remove--btn {
+        background: rgba(var(--color-button),var(--alpha-button-background));
+        color: rgb(var(--color-button-text)) !important;
+        border: none;
+        width: 4rem;
+        height: 4rem;
+        border-radius: 50%;
+        line-height: 1;
+    }
+    button.cp_remove--button.compare__remove--btn:hover {
+        background: rgba(var(--color-base-accent-2));
+        color: rgba(var(--color-base-solid-button-labels))!important;
+    }
+    .product__card--media-wrapper {
+      position: relative;
+  }
+
+  .product__card--media-wrapper wishlist-item {
+      position: absolute;
+      right: 15px;
+      top: 15px;
+      transition: .3s;
+  }
+  button.compare--product__wishlist {
+      background: rgba(var(--color-background));
+      border: none;
+      width: 4rem;
+      height: 4rem;
+      line-height: 1;
+      border-radius: 50%;
+      box-shadow: 0 0 1rem rgba(var(--color-foreground), 0.08);
+      transition: var(--transition);
+  }
+    button.compare--product__wishlist:hover {
+      background: rgba(var(--color-base-accent-2));
+      color: rgba(var(--color-base-solid-button-labels))!important;
+  }
+    .compare__product--footer {
+      padding: 2rem 0 0;
+  }
+
+    .cp_prd-price .price {
+        justify-content: center;;
+    }
+    .compare__remove--btn > * {
+      pointer-events: none;
+    }
+    td.cp_prd-availability {
+      color: rgba(var(--color-base-accent-1));
+      font-weight: 600;
+    }
+    .compare__product--footer .button.loading:after {
+      top: 10px;
+      left: 48%;
+      transform: translateX(-50%);
+  }
+  .table-compare th {
+      color: rgba(var(--color-foreground));
+      font-weight: 600;
+  }
+  .cp_prd_buy--proudct button.loading::after {
+      left: 45%;
+      transform: translateX(-50%);
+      top: 10px;
+  }
+</style>
+
+<section class="compare customer-page theme-default-margin section-{{ section.id }}-padding" id="compare">
+  <div class="{{ container }}">
+    <div class="compare-page">
+      <div class="table-responsive table-compare">
+        <table class="table" id="compare-content">
+          <thead>
+            <tr>
+              <th></th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="cp_prd-thumb">
+              <th scope="col" style="width: 218px;vertical-align: middle;">Product</th>
+            </tr>
+            <tr class="cp_prd-price">
+              <th scope="col" style="width: 218px;">Price</th>
+            </tr>
+            <tr class="cp_prd-availability">
+              <th scope="col" style="width: 218px;">Availability</th>
+            </tr>
+
+            <tr class="cp_prd_description">
+              <th scope="col" style="width: 218px">Description</th>
+            </tr>
+
+            <tr class="cp_prd-brand">
+              <th scope="col" style="width: 218px;">Brand</th>
+            </tr>
+
+            <tr class="cp_prd_buy--proudct">
+              <th scope="col" style="width: 218px;"></th>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="row compare-grid--empty-list">
+        <div class="col-12">
+          <div class="empty-list--info text-center">
+            <h1 class="empty-list--text black">Empty Compare</h1>
+            <a class="button button--medium" href="{{ routes.all_products_collection_url }}">Continue Browsing</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  .compare_exists .row.compare-grid--empty-list {
+    display: none;
+  }
+  .product__details .product__details_single_info + .product__details_single_info {
+    border-top: 1px solid #ddd;
+  }
+  .product__details_single_info {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 3px;
+  }
+
+  .product__details_info_head {text-transform: capitalize;}
+  .product__details_info_head {
+    font-weight: 600;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Compare listing",
+  "settings": [
+      {
+      "type": "select",
+      "id": "container",
+      "label": "Page width",
+      "default": "container-fluid",
+      "options": [
+        {
+          "value": "container",
+          "label": "Boxed"
+        },
+        {
+          "value": "container-fluid",
+          "label": "Full width"
+        }
+      ]
+    },
+    {
+  "type": "header",
+  "content": "Section padding"
+},
+     {
+        "type": "paragraph",
+        "content": "Desktop"
+      },
+      {
+        "type": "range",
+        "id": "padding_top",
+        "min": 0,
+        "max": 150,
+        "step": 5,
+        "unit": "px",
+        "label": "Padding top",
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "min": 0,
+        "max": 150,
+        "step": 5,
+        "unit": "px",
+        "label": "Padding bottom",
+        "default": 0
+      },
+{
+        "type": "paragraph",
+        "content": "Mobile"
+      },
+{
+        "type": "range",
+        "id": "mobile_padding_top",
+        "min": 0,
+        "max": 150,
+        "step": 5,
+        "unit": "px",
+        "label": "Padding top",
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "mobile_padding_bottom",
+        "min": 0,
+        "max": 150,
+        "step": 5,
+        "unit": "px",
+        "label": "Padding bottom",
+        "default": 0
+      }
+  ]
+}
+{% endschema %}

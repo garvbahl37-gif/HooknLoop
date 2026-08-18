@@ -1,0 +1,22 @@
+/*
+ * Customer service — carries AboutPage()'s hero and CTA. There is no
+ * /pages/about-us on this store, so this is where 'About us' and
+ * 'Why choose us' point.
+ */
+{
+  "sections": {
+    "hnl_page": {
+      "type": "hnl-page",
+      "settings": {
+        "eyebrow": "Australian owned",
+        "center": true,
+        "narrow": true,
+        "cta_label": "Shop the range",
+        "cta_link": "/collections/all"
+      }
+    }
+  },
+  "order": [
+    "hnl_page"
+  ]
+}

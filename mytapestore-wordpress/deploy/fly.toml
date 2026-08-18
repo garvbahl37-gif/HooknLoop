@@ -1,0 +1,48 @@
+# fly launch --no-deploy   then   fly deploy
+#
+# Secrets (never in this file):
+#   fly secrets set REVIEW_USER=review REVIEW_PASS='<long random string>'
+#
+# Volume, once:
+#   fly volumes create mts_data --region syd --size 1
+
+app            = "mytapestore-draft"
+primary_region = "syd"          # the store is AU; syd bills slightly above the
+                                # ams rates quoted on fly.io/docs/about/pricing
+
+[build]
+  dockerfile = "deploy/Dockerfile"
+
+[env]
+  SITE_URL  = "https://mytapestore-draft.fly.dev"
+  SEED_MODE = "image"           # laptop is the source of truth; flip to
+                                # "persist" the moment anyone edits in wp-admin
+
+[http_service]
+  internal_port        = 80
+  force_https          = true
+
+  # THE line that matters for "always-on". Fly's default for a new app is
+  # auto_stop_machines = "stop" / min_machines_running = 0, which is exactly the
+  # spin-down behaviour being avoided. Turning both off keeps the machine up.
+  auto_stop_machines   = "off"
+  auto_start_machines  = false
+  min_machines_running = 1
+
+  [[http_service.checks]]
+    grace_period  = "30s"       # generous: SEED_MODE=image copies ~280 MB on boot
+    interval      = "30s"
+    method        = "GET"
+    timeout       = "5s"
+    path          = "/healthz"  # exempt from basic auth in apache-site.conf;
+                                # any other path returns 401 and fails the check
+
+[[vm]]
+  size   = "shared-cpu-1x"
+  memory = "512mb"              # 256mb OOMs in wp-admin; 1gb if the reviewer
+                                # will spend time in the WooCommerce dashboard
+
+[mounts]
+  source       = "mts_data"
+  destination  = "/var/www/data"
+  initial_size = "1gb"

@@ -1,0 +1,173 @@
+{%- comment -%}
+  Contact page — port of ContactPage() in storefront/src/pages/ContentPages.jsx
+
+  React's form flipped a `sent` flag and dropped the message on the floor. This
+  one is Shopify's {% form 'contact' %}, which emails the store's sender address
+  — so a customer who fills it in actually reaches someone.
+
+  The map is an iframe to Google Maps, as in React. It is lazy-loaded so it costs
+  nothing until scrolled to.
+{%- endcomment -%}
+
+{%- comment -%}
+  Handle gate. The Theme Access token cannot assign template suffixes (that is
+  Admin API territory), so every page on this store uses the default `page`
+  template. templates/page.json therefore lists ALL the page sections, and each
+  renders only for the handle it belongs to. Leave `page_handle` empty to make a
+  section render on any page — which is what the generic fallback does.
+
+  If you later assign a real template suffix in Shopify admin, clear this
+  setting and the section renders unconditionally, as Shopify intends.
+{%- endcomment -%}
+{%- assign hnl_gate = section.settings.page_handle | strip -%}
+{%- if hnl_gate == blank or hnl_gate == page.handle -%}
+<div id="main" class="page">
+  <div class="page__hero page__hero--center">
+    <div class="wrap">
+      <span class="sec-eyebrow sec-eyebrow--orange">{{ section.settings.eyebrow }}</span>
+      <h1 class="page__hero-h1">{{ section.settings.title | default: page.title }}</h1>
+      <p class="page__hero-lead">{{ section.settings.lead }}</p>
+    </div>
+  </div>
+
+  <div class="wrap page__two">
+    <div class="page__prose">
+      <div class="contact__cards">
+        {%- if section.settings.phone != blank -%}
+          <a class="contact__card" href="tel:{{ section.settings.phone | replace: ' ', '' }}">
+            <span>Call</span><b>{{ section.settings.phone }}</b><em>{{ section.settings.phone_note }}</em>
+          </a>
+        {%- endif -%}
+        {%- if section.settings.email != blank -%}
+          <a class="contact__card" href="mailto:{{ section.settings.email }}">
+            <span>Email</span><b>{{ section.settings.email }}</b><em>{{ section.settings.email_note }}</em>
+          </a>
+        {%- endif -%}
+        {%- if section.settings.address != blank -%}
+          <a class="contact__card" href="https://maps.google.com/?q={{ section.settings.address | append: ', ' | append: section.settings.address_sub | url_encode }}" target="_blank" rel="noopener noreferrer">
+            <span>Visit us</span><b>{{ section.settings.address }}</b><em>{{ section.settings.address_sub }}</em>
+          </a>
+        {%- endif -%}
+        {%- if section.settings.abn != blank -%}
+          <div class="contact__card">
+            <span>Business</span><b>{{ section.settings.abn }}</b><em>{{ section.settings.abn_note }}</em>
+          </div>
+        {%- endif -%}
+      </div>
+
+      {%- assign has_social = false -%}
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'social' -%}{%- assign has_social = true -%}{%- endif -%}
+      {%- endfor -%}
+      {%- if has_social -%}
+        <div class="contact__social">
+          <span class="contact__social-lbl">Follow us</span>
+          <div class="contact__social-row">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'social' -%}
+                <a href="{{ block.settings.url }}" target="_blank" rel="noopener noreferrer"
+                   class="contact__social-btn" aria-label="{{ block.settings.network | escape }}" {{ block.shopify_attributes }}>
+                  {% render 'hnl-social-icon', network: block.settings.network %}
+                </a>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="page__card">
+      {%- form 'contact', id: 'hnl-contact-form' -%}
+        {%- if form.posted_successfully? -%}
+          <div class="form__ok" role="status">
+            <b>Message sent</b>
+            <span>{{ section.settings.success_note }}</span>
+          </div>
+        {%- else -%}
+          <h2>{{ section.settings.form_heading }}</h2>
+
+          {%- if form.errors -%}
+            <p class="fld__err" role="alert">
+              {{ form.errors | default_errors }}
+            </p>
+          {%- endif -%}
+
+          <label class="fld"><span>Name</span>
+            <input type="text" name="contact[name]" required placeholder="Your name" value="{{ form.name }}">
+          </label>
+          <label class="fld"><span>Email</span>
+            <input type="email" name="contact[email]" required placeholder="you@email.com" value="{{ form.email }}">
+          </label>
+          <label class="fld"><span>Phone</span>
+            <input type="tel" name="contact[phone]" placeholder="Your phone number" value="{{ form.phone }}">
+          </label>
+          <label class="fld"><span>Message</span>
+            <textarea name="contact[body]" rows="4" required placeholder="How can we help?">{{ form.body }}</textarea>
+          </label>
+
+          <button type="submit" class="btn btn--primary" style="width:100%">Send message</button>
+        {%- endif -%}
+      {%- endform -%}
+    </div>
+  </div>
+
+  {%- if section.settings.map_query != blank -%}
+    <div class="wrap contact__map">
+      <iframe
+        title="{{ shop.name }} — {{ section.settings.map_query | escape }}"
+        src="https://maps.google.com/maps?q={{ section.settings.map_query | url_encode }}&t=&z=15&ie=UTF8&iwloc=&output=embed"
+        loading="lazy"
+        allowfullscreen
+        referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+  {%- endif -%}
+</div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "HooknLoop contact",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "page_handle", "label": "Only show on page handle", "info": "Leave empty to show on every page using this template." },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "We're here to help" },
+    { "type": "text", "id": "title", "label": "Heading", "info": "Defaults to the page title." },
+    { "type": "textarea", "id": "lead", "label": "Lead", "default": "Talk to a real person in Australia about products, bulk pricing or an existing order." },
+
+    { "type": "header", "content": "Details" },
+    { "type": "text", "id": "phone", "label": "Phone", "default": "+61 3 4061 6287" },
+    { "type": "text", "id": "phone_note", "label": "Phone note", "default": "Mon–Fri, Australian business hours" },
+    { "type": "text", "id": "email", "label": "Email", "default": "info@hooknloop.com.au" },
+    { "type": "text", "id": "email_note", "label": "Email note", "default": "Replies within 1 business day" },
+    { "type": "text", "id": "address", "label": "Address line 1", "default": "111 Cecil St" },
+    { "type": "text", "id": "address_sub", "label": "Address line 2", "default": "South Melbourne VIC 3205" },
+    { "type": "text", "id": "abn", "label": "ABN", "default": "ABN 93 878 995 217" },
+    { "type": "text", "id": "abn_note", "label": "ABN note", "default": "GST tax invoice on every order" },
+
+    { "type": "header", "content": "Form" },
+    { "type": "text", "id": "form_heading", "label": "Form heading", "default": "Send us a message" },
+    { "type": "text", "id": "success_note", "label": "Success note", "default": "We'll get back to you within 1 business day." },
+
+    { "type": "header", "content": "Map" },
+    { "type": "text", "id": "map_query", "label": "Map location", "default": "111 Cecil St, South Melbourne VIC 3205" }
+  ],
+  "blocks": [
+    {
+      "type": "social",
+      "name": "Social link",
+      "settings": [
+        { "type": "select", "id": "network", "label": "Network", "default": "facebook",
+          "options": [
+            { "value": "facebook", "label": "Facebook" },
+            { "value": "instagram", "label": "Instagram" },
+            { "value": "pinterest", "label": "Pinterest" },
+            { "value": "linkedin", "label": "LinkedIn" },
+            { "value": "youtube", "label": "YouTube" }
+          ] },
+        { "type": "url", "id": "url", "label": "URL" }
+      ]
+    }
+  ],
+  "max_blocks": 6
+}
+{% endschema %}

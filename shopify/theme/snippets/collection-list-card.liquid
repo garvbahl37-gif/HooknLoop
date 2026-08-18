@@ -1,0 +1,55 @@
+<a{% if collection.all_products_count > 0 %} href="{{ collection.url }}"{% endif %}
+   class="{% if collection.featured_image != blank %} card--media{% else %}{% if section.settings.image_ratio != 'adapt' %} card--stretch{% endif %}{% endif %} collection__card mb-30"
+   >
+  <div class="card--stretch">
+    <div class="collection__media--wrap">
+      {%- if collection.featured_image != blank -%}
+      <div class="media media--{{ section.settings.image_ratio }} media--hover-effect overflow-hidden"
+           {% if section.settings.image_ratio == 'adapt' %}style="padding-bottom: {{ 1 | divided_by: collection.featured_image.aspect_ratio | times: 100 }}%;"{% endif %}>
+        <img
+             srcset="{%- if collection.featured_image.width >= 165 -%}{{ collection.featured_image | img_url: '165x' }} 165w,{%- endif -%}
+                     {%- if collection.featured_image.width >= 360 -%}{{ collection.featured_image | img_url: '360x' }} 360w,{%- endif -%}
+                     {%- if collection.featured_image.width >= 535 -%}{{ collection.featured_image | img_url: '535x' }} 535w,{%- endif -%}
+                     {%- if collection.featured_image.width >= 750 -%}{{ collection.featured_image | img_url: '750x' }} 750w,{%- endif -%}
+                     {%- if collection.featured_image.width >= 1000 -%}{{ collection.featured_image | img_url: '1000x' }} 1000w,{%- endif -%}
+                     {%- if collection.featured_image.width >= 1500 -%}{{ collection.featured_image | img_url: '1500x' }} 1500w,{%- endif -%}
+             		   {%- if collection.featured_image.width >= 1780 -%}{{ collection.featured_image | img_url: '1780x' }} 1780w,{%- endif -%}
+                     {%- if collection.featured_image.width >= 2000 -%}{{ collection.featured_image | img_url: '2000x' }} 2000w,{%- endif -%}
+                     {%- if collection.featured_image.width >= 3000 -%}{{ collection.featured_image | img_url: '3000x' }} 3000w,{%- endif -%}
+                     {%- if collection.featured_image.width >= 3840 -%}{{ collection.featured_image | img_url: '3840x' }} 3840w,{%- endif -%}
+                     {{ collection.featured_image | img_url: 'master' }} {{ collection.featured_image.width }}w"
+             src="{{ collection.featured_image | img_url: '1500x' }}"
+             sizes="(min-width: 768px) {% if columns > 1 %}calc((100vw - 10rem) / 2){% else %}calc(100vw - 10rem){% endif %},
+                calc(100vw - 3rem)"
+             
+             alt="{{ collection.title | escape }}"
+             height="{{ collection.featured_image.height | divided_by: collection.featured_image.aspect_ratio }}"
+             width="{{ collection.featured_image.width  }}"
+             loading="lazy"
+             >
+      </div>
+      {%- else -%}
+      <div class="placeholder_svg_parent" style="padding-bottom: 100%">
+        {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+        {{ 'collection-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+      </div>
+      {%- endif -%}
+      <div class="collection-overlay-card"></div>
+    </div>
+
+
+    {%- if collection != blank -%}
+    <div class="collection__card_text {{ title_position }} d-flex justify-content-between align-items-center color-{{ section.settings.color_scheme }} {% if section.settings.column == "5" %} column__five--design {% endif %}">
+      <h5 class="collection__title mb-0">{{- collection.title -}}</h5>
+      {%- if product_count -%}
+      <span class="collection__product_count">({{ collection.products_count }} {{ 'sections.collection_list.items' | t }})</span>  
+      {%- endif -%}
+    </div>
+    {%- else -%}
+    <div class="collection__card_text placeholder__position d-flex justify-content-between align-items-center color-{{ section.settings.color_scheme }} {% if section.settings.column == "5" %} column__five--design {% endif %}">
+      <h5 class="collection__title mb-0">{{ 'sections.collection_list.default_title' | t }}</h5>
+    </div>
+    {%- endif -%}
+  </div>
+
+</a>

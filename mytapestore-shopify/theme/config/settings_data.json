@@ -1,0 +1,54 @@
+{
+  "current": {
+    "brand_colour": "#df3c22",
+    "phone": "+61 3 4061 6287",
+    "phone_href": "+61340616287",
+    "email": "info@mytapestore.com.au",
+    "hours": "Mon–Fri · 9:00 AM – 5:00 PM AEST",
+    "abn": "93 878 995 217",
+    "free_shipping_threshold": 100,
+    "show_volume_tiers": true,
+    "show_wishlist": true,
+    "bestseller_tag": "bestseller",
+    "popup_enabled": true,
+    "popup_delay": 10,
+    "popup_snooze": 30,
+    "popup_title": "Join our newsletter",
+    "popup_text": "New stock, bulk pricing and the occasional job-site tip. Unsubscribe anytime.",
+    "popup_cta": "Subscribe",
+    "chat_mode": "app",
+    "chat_nudge": false,
+    "blocks": {
+      "14947870889598929745": {
+        "type": "shopify://apps/smartbot/blocks/app-embed/d9407b81-7d3e-4612-91c3-2020086e2073",
+        "disabled": false,
+        "settings": {}
+      },
+      "14060646107696862457": {
+        "type": "shopify://apps/judge-me-reviews/blocks/judgeme_core/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+        "disabled": false,
+        "settings": {}
+      }
+    },
+    "content_for_index": [],
+    "social_facebook": "https://www.facebook.com/mytapestore",
+    "social_instagram": "https://www.instagram.com/my_tape_store",
+    "social_youtube": "https://www.youtube.com/@Mytapestore",
+    "social_x": "https://x.com/mytapestore",
+    "social_linkedin": "https://www.linkedin.com/company/mytapestore",
+    "storefront_token": "c43ce8e0e94b4963acffe3069fc52870",
+    "custom_auth": true,
+    "splash_enabled": true,
+    "home_meta_description": "Shop premium adhesive tapes online at My Tape Store. Double-sided, foam, foil, masking, packaging and safety tapes — trade-grade brands, fast Australia-wide delivery.",
+    "default_collection_banner": "shopify://shop_images/mts-products-banner.jpg"
+  },
+  "presets": {
+    "My Tape Store": {
+      "brand_colour": "#df3c22",
+      "free_shipping_threshold": 100,
+      "show_volume_tiers": false,
+      "show_wishlist": true,
+      "bestseller_tag": "bestseller"
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{%- comment -%}
+  404 — the React app had no dedicated 404 (its router fell through to Home), so
+  this uses the design's page-hero + empty-state vocabulary rather than inventing
+  a new one.
+{%- endcomment -%}
+<main id="main">
+  <section class="page-hero">
+    <div class="wrap">
+      <span class="eyebrow eyebrow--onink">404</span>
+      <h1>{{ 'general.404.title' | t }}</h1>
+      <p>{{ 'general.404.subtext' | t }}</p>
+      <div class="page-hero__cta">
+        <a class="btn btn--brand btn--lg" href="{{ routes.all_products_collection_url }}">
+          {{ 'general.404.link' | t }} {% render 'mts-icon', name: 'arrowRight', size: 18 %}
+        </a>
+        <a class="btn btn--ghost btn--lg" href="{{ routes.root_url }}">Back to home</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap search__head">
+    <form class="search__box" role="search" action="{{ routes.search_url }}" method="get">
+      <input type="search" name="q" placeholder="Search tapes, brands or sizes…" aria-label="Search products">
+      <button class="btn btn--brand" type="submit">
+        {% render 'mts-icon', name: 'search', size: 18 %} {{ 'general.search.submit' | t }}
+      </button>
+    </form>
+  </div>
+</main>
+
+{% schema %}
+{ "name": "404" }
+{% endschema %}

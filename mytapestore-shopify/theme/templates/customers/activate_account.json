@@ -1,0 +1,4 @@
+{
+  "sections": { "main": { "type": "mts-customers-activate-account", "settings": {} } },
+  "order": ["main"]
+}

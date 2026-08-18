@@ -1,0 +1,117 @@
+{%- comment -%}
+  City / location page — Melbourne, Sydney, Brisbane, Perth, Adelaide, Darwin.
+
+  THE FORM IS THE POINT OF THIS TEMPLATE.
+  These pages arrived carrying a WordPress Contact Form 7 form that posted to
+  `/melbourne-vic/#wpcf7-f7186-p6956-o1` — an endpoint that does not exist on
+  Shopify. A shopper could fill in "Get a quote", press send, and nothing
+  reached the store. Seven live pages were doing that.
+
+  The dead markup has been stripped from the page body; this renders a real
+  `{% form 'contact' %}` in its place, which Shopify delivers to the store's
+  contact email. Same fields, same intent, but it actually sends.
+
+  Layout is two columns on desktop: the location copy at a readable measure,
+  and the quote form in a sticky panel beside it, because on a page whose whole
+  job is generating an enquiry the form should never scroll out of reach.
+{%- endcomment -%}
+<main id="main">
+  <div class="wrap page__crumbs">{% render 'mts-breadcrumbs' %}</div>
+
+  <section class="page-hero">
+    <div class="wrap">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="eyebrow eyebrow--onink">{{ section.settings.eyebrow }}</span>
+      {%- endif -%}
+      <h1>{{ page.title }}</h1>
+      {%- if section.settings.intro != blank -%}
+        <p>{{ section.settings.intro }}</p>
+      {%- endif -%}
+    </div>
+  </section>
+
+  <div class="wrap loc">
+    <article class="loc__body rte">
+      {{ page.content }}
+    </article>
+
+    <aside class="loc__side">
+      <div class="loc__form" id="quote">
+        <span class="eyebrow">{{ section.settings.form_eyebrow }}</span>
+        <h2>{{ section.settings.form_heading }}</h2>
+        <p class="loc__form-lede">{{ section.settings.form_text }}</p>
+
+        {%- form 'contact', class: 'loc__fields' -%}
+          {%- if form.posted_successfully? -%}
+            <p class="loc__sent" role="status">
+              {% render 'mts-icon', name: 'check', size: 20 %}
+              {{ 'contact.form.success' | t }}
+            </p>
+          {%- else -%}
+            {{ form.errors | default_errors }}
+            <label>
+              {{ 'contact.form.name' | t }}
+              <input type="text" name="contact[name]" required autocomplete="name"
+                     value="{{ form.name }}">
+            </label>
+            <label>
+              {{ 'contact.form.email' | t }}
+              <input type="email" name="contact[email]" required autocomplete="email"
+                     inputmode="email" autocapitalize="none" spellcheck="false"
+                     value="{{ form.email }}">
+            </label>
+            <label>
+              {{ 'contact.form.phone' | t }}
+              {%- comment -%}
+                Not required. The original marked phone mandatory, which loses
+                enquiries from anyone who would rather be emailed — and the
+                store can always ask.
+              {%- endcomment -%}
+              <input type="tel" name="contact[phone]" autocomplete="tel"
+                     value="{{ form.phone }}">
+            </label>
+            <label>
+              {{ 'contact.form.message' | t }}
+              <textarea name="contact[body]" rows="4"
+                        placeholder="{{ section.settings.message_hint }}">{{ form.body }}</textarea>
+            </label>
+            <button class="btn btn--brand btn--lg btn--block" type="submit">
+              {{ section.settings.form_cta }}
+            </button>
+            <p class="loc__form-note">
+              {% render 'mts-icon', name: 'lock', size: 13 %}
+              We reply within one business day. No marketing without asking.
+            </p>
+          {%- endif -%}
+        {%- endform -%}
+      </div>
+
+      {%- if settings.phone != blank -%}
+        <div class="loc__call">
+          <span>Prefer to talk?</span>
+          <a class="btn btn--ghost btn--block" href="tel:{{ settings.phone_href | default: settings.phone | remove: ' ' }}">
+            {% render 'mts-icon', name: 'phone', size: 16 %} {{ settings.phone }}
+          </a>
+        </div>
+      {%- endif -%}
+    </aside>
+  </div>
+</main>
+
+{% schema %}
+{
+  "name": "Location page",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Local delivery" },
+    { "type": "textarea", "id": "intro", "label": "Hero intro" },
+    { "type": "text", "id": "form_eyebrow", "label": "Form eyebrow", "default": "Trade enquiries" },
+    { "type": "text", "id": "form_heading", "label": "Form heading", "default": "Get a quote" },
+    { "type": "textarea", "id": "form_text", "label": "Form intro",
+      "default": "Tell us what you need and we'll come back with pricing, including bulk rates." },
+    { "type": "text", "id": "message_hint", "label": "Message placeholder",
+      "default": "Which tape, what width and length, and how many rolls?" },
+    { "type": "text", "id": "form_cta", "label": "Submit button", "default": "Request a quote" }
+  ],
+  "presets": [{ "name": "Location page" }]
+}
+{% endschema %}

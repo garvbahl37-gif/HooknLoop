@@ -1,0 +1,52 @@
+/*
+ * HooknLoop header group — replaces Suruchi's announcement-bar + header with
+ * the ported React header. The original is in git at the pristine backup commit.
+ */
+{
+  "type": "header",
+  "name": "Header",
+  "sections": {
+    "hnl_header": {
+      "type": "hnl-header",
+      "blocks": {
+        "m_products": {
+          "type": "menu",
+          "settings": {
+            "label": "Products",
+            "item_labels": "Self Adhesive Hook and Loop|Sew On Hook and Loop|Dots, Coins|Adjustable Straps|Back to Back / Double Sided|Material Handling Straps|Heavy Duty|For Fabric",
+            "item_handles": "self-adhesive-hook-and-loop-roll|sew-on-hook-and-loop-fastener|hook-and-loop-dots|hook-and-loop-adjustable-strap|double-sided-hook-and-loop|heavy-duty-hook-and-loop-strap|heavy-duty-adhesive-hook-and-loop|hook-and-loop-for-fabric"
+          }
+        },
+        "m_velcro": {
+          "type": "menu",
+          "settings": {
+            "label": "VELCRO® Brand",
+            "item_labels": "VELCRO® Adhesive Hook and Loop|VELCRO® Dots (VELCOIN®)",
+            "item_handles": "velcro-self-adhesive-hook-and-loop-roll|velcoin-hook-and-loop-sticky-dots"
+          }
+        },
+        "m_fr": {
+          "type": "menu",
+          "settings": {
+            "label": "Fire Retardant",
+            "item_labels": "Adhesive|Sew On",
+            "item_handles": "fire-retardant-adhesive-hook-and-loop|fire-retardant-sew-on-hook-and-loop"
+          }
+        },
+        "l_bulk": {
+          "type": "link",
+          "settings": { "label": "Bulk Order", "url": "/pages/bulk-orders" }
+        }
+      },
+      "block_order": ["m_products", "m_velcro", "m_fr", "l_bulk"],
+      "settings": {
+        "promo_lead": "Fast Australia-wide delivery",
+        "promo_hl1": "Free shipping over $300",
+        "promo_opt": "Best price in Australia",
+        "promo_hl2": "★ 5-star rated store",
+        "search_placeholder": "Search our store"
+      }
+    }
+  },
+  "order": ["hnl_header"]
+}

@@ -1,0 +1,46 @@
+{%- comment -%}
+  Account sidebar — ported from AcctSidebar in ContentPages.jsx.
+
+  The React version switched tabs in place; Shopify's classic account area is
+  page-based (/account, /account/addresses, /account/orders/:id), so the tabs
+  become links and `active` marks the current page instead.
+
+  Params: active — 'overview' | 'orders' | 'addresses' | 'details'
+{%- endcomment -%}
+{%- liquid
+  assign display_name = customer.name | strip
+  if display_name == blank
+    assign display_name = customer.email
+  endif
+  assign initial = display_name | default: 'A' | strip | slice: 0 | upcase
+-%}
+<aside class="acct__side">
+  <div class="acct__profile">
+    <span class="acct__avatar">{{ initial }}</span>
+    <b>{{ customer.name | default: 'Your account' }}</b>
+    {%- if customer.email != blank -%}
+      <span class="num">{{ customer.email }}</span>
+    {%- endif -%}
+  </div>
+
+  <nav class="acct__nav">
+    <a class="acct__nav-item{% if active == 'overview' %} is-active{% endif %}" href="{{ routes.root_url }}pages/account">
+      {% render 'mts-icon', name: 'grid', size: 17 %}<span>Dashboard</span>
+    </a>
+    <a class="acct__nav-item{% if active == 'orders' %} is-active{% endif %}" href="{{ routes.root_url }}pages/account#orders">
+      {% render 'mts-icon', name: 'layers', size: 17 %}<span>Orders</span>
+    </a>
+    <a class="acct__nav-item{% if active == 'addresses' %} is-active{% endif %}" href="{{ routes.root_url }}pages/account#addresses">
+      {% render 'mts-icon', name: 'mapPin', size: 17 %}<span>Addresses</span>
+    </a>
+    <a class="acct__nav-item{% if active == 'details' %} is-active{% endif %}" href="{{ routes.root_url }}pages/account#details">
+      {% render 'mts-icon', name: 'user', size: 17 %}<span>Account details</span>
+    </a>
+    <a class="acct__nav-item" href="{{ routes.root_url }}pages/wishlist">
+      {% render 'mts-icon', name: 'heart', size: 17 %}<span>Wishlist</span>
+    </a>
+    <a class="acct__nav-item acct__nav-item--out" href="{{ routes.account_logout_url }}">
+      {% render 'mts-icon', name: 'close', size: 17 %}<span>Sign out</span>
+    </a>
+  </nav>
+</aside>

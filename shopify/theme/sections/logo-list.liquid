@@ -1,0 +1,375 @@
+{{ 'component-grid.css' | asset_url | stylesheet_tag }}
+{{ 'component-mobile-scrolling.css' | asset_url | stylesheet_tag }}
+{{ 'logo-list.css' | asset_url | stylesheet_tag }}
+{{ 'component-slider-navigation.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+    .section-{{ section.id }}-padding {
+        padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+        padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+      }
+
+      @media screen and (min-width: 750px) {
+        .section-{{ section.id }}-padding {
+          padding-top: {{ section.settings.padding_top }}px;
+          padding-bottom: {{ section.settings.padding_bottom }}px;
+        }
+      }
+    :root {
+      --grid-desktop-vertical-spacing: 20px;
+      --grid-desktop-horizontal-spacing: 20px;
+      --grid-mobile-vertical-spacing: 20px;
+      --grid-mobile-horizontal-spacing: 20px;
+  }
+{%- endstyle -%}
+
+{%- liquid
+  assign productShowXl = section.settings.products_show_on_xl
+  assign productShowSm = section.settings.products_show_on_sm
+
+  assign container = ''
+  if section.settings.container == 'container'
+    assign container = 'container'
+  elsif section.settings.container == 'container-fluid'
+    assign container = 'container-fluid'
+  else
+    assign container = 'container-fluid px-0'
+  endif
+
+  assign slider_enable = false
+  if section.settings.layout == 'slider'
+    assign slider_enable = true
+  endif
+
+  assign grid_item = ''
+  if section.settings.layout == 'grid'
+    assign grid_item = 'grid__item'
+  elsif section.settings.layout == 'slider'
+    assign grid_item = 'swiper-slide'
+  endif
+-%}
+
+{%- capture container_class -%}
+{%- if slider_enable -%}
+logo--list__slider hero__slider--activation swiper
+{%- else -%}
+grid grid--{{ productShowXl }}-col-desktop grid--{{ productShowSm }}-col-tablet-down
+{%- endif -%}
+{%- endcapture -%}
+
+<div
+  class="brand__logo--section color-{{ section.settings.color_scheme }}"
+  data-section-id="{{ section.id }}"
+  data-section-type="slideShow"
+  id="slideshow__{{ section.id }}"
+  {%- if slider_enable -%}
+    data-slide-autoplay="{{ section.settings.auto_rotate }}"
+    data-autoplay-duration="{{ section.settings.change_slides_speed }}000"
+    data-slide-loop="{{ section.settings.enable_loop }}"
+    data-slideshow="{%- if section.settings.space -%}20{%- else -%}0{%- endif -%}"
+    data-slidesperview="{{ productShowXl }}"
+    data-samlldesktopview="{{ productShowXl }}"
+    data-show-tablet="{{ productShowSm }}"
+    data-show-mobile="{{ productShowSm }}"
+  {% endif %}
+>
+  <div class="{{ container }}">
+    {% if section.settings.mobile_stack == false and section.settings.layout != 'slider' %}
+      <div class="mobile--scoller">
+      <div class="mobile--scoller-inner">
+    {% endif %}
+    <div class="brand__logo--section__inner {{ container_class }} section-{{ section.id }}-padding">
+      {%- if slider_enable -%}<div class="swiper-wrapper">{% endif %}
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'logo' -%}
+            <div class="logo--list-item {{ grid_item }}" {{ block.shopify_attributes }}>
+              <div class="brand__logo--items">
+                <a href="{{ block.settings.url }}" class="header__logo_link">
+                  {%- if block.settings.logo != blank -%}
+                    {%- assign image_size = section.settings.logo_width | append: 'x' -%}
+                    <img
+                      srcset="{{ block.settings.logo | img_url: image_size }} 1x, {{ block.settings.logo | img_url: image_size, scale: 2 }} 2x"
+                      src="{{ block.settings.logo | img_url: image_size }}"
+                      loading="lazy"
+                      class="brand__logo--items__thumbnail--img"
+                      width="{{ block.settings.logo.width }}"
+                      height="{{ block.settings.logo.height }}"
+                      alt="{{ block.settings.logo.alt | default: shop.name | escape }}"
+                    >
+                  {%- else -%}
+                    <span class="h5">{{ shop.name }}</span>
+                  {%- endif -%}
+                </a>
+              </div>
+            </div>
+        {%- endcase -%}
+      {%- endfor -%}
+      {%- if slider_enable -%}</div>{% endif %}
+      {%- if slider_enable and section.settings.show_navigation -%}
+        <div class="swiper__nav--btn swiper-button-prev  component--slider--nav color-{{ section.settings.color_scheme_navigation }}">
+          {% render 'icon-arrow-left' %}
+        </div>
+        <div class="swiper__nav--btn swiper-button-next component--slider--nav color-{{ section.settings.color_scheme_navigation }}">
+          {% render 'icon-arrow-right' %}
+        </div>
+      {%- endif -%}
+    </div>
+
+    {% if section.settings.mobile_stack == false and section.settings.layout != 'slider' %}
+      </div>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+ {
+   "name": "Logo list",
+   "settings": [
+	{
+        "type": "select",
+        "id": "container",
+        "label": "Page width",
+        "default": "container-fluid",
+        "options": [
+          {
+            "value": "container",
+            "label": "Boxed"
+          },
+          {
+            "value": "container-fluid",
+            "label": "Full width"
+          }
+        ]
+      },
+	{
+         "type": "range",
+         "id": "logo_width",
+         "min": 50,
+         "max": 250,
+         "step": 10,
+         "default": 100,
+         "unit": "t:sections.header.settings.logo_width.unit",
+         "label": "t:sections.header.settings.logo_width.label"
+       },
+      {
+        "type": "header",
+        "content": "Layout"
+      },
+      {
+        "type": "select",
+        "id": "layout",
+        "options": [
+          {
+            "value": "grid",
+            "label": "Grid"
+          },
+          {
+            "value": "slider",
+            "label": "Slider"
+          }
+        ],
+        "default": "grid",
+        "label": "Desktop layout"
+      },
+     {
+        "type": "select",
+        "id": "products_show_on_xl",
+        "label": "Number of columns on desktop",
+        "options": [
+          {
+            "value": "1",
+            "label": "1"
+          },
+          {
+            "value": "2",
+            "label": "2"
+          },
+          {
+            "value": "3",
+            "label": "3"
+          },
+          {
+            "value": "4",
+            "label": "4"
+          },
+          {
+            "value": "5",
+            "label": "5"
+          },
+          {
+            "value": "6",
+            "label": "6"
+          }
+        ],
+        "default": "5"
+      },
+     {
+        "type": "select",
+        "id": "products_show_on_sm",
+        "label": "Number of columns on mobile",
+        "options": [
+          {
+            "value": "1",
+            "label": "1"
+          },
+          {
+            "value": "2",
+            "label": "2"
+          }
+        ],
+        "default": "2"
+      },
+       {
+           "type": "checkbox",
+           "id": "mobile_stack",
+           "label": "Stack on mobile",
+           "default": false,
+           "info": "This is only applicable to the Grid layout."
+       },
+     {
+      "type": "header",
+        "content": "Slider settings"
+      },
+  	{
+        "type": "checkbox",
+        "id": "auto_rotate",
+        "label": "Auto-rotate slides",
+        "default": false
+      },
+      {
+        "type": "range",
+        "id": "change_slides_speed",
+        "min": 2,
+        "max": 9,
+        "step": 1,
+        "unit": "s",
+        "label": "Change slides every",
+        "default": 3
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_loop",
+        "label": "Slider loop",
+        "default": true
+      },
+      {
+          "type": "checkbox",
+          "id": "show_navigation",
+          "label": "Show navigation",
+          "default": false
+      },
+     {
+        "type": "color_scheme",
+        "id": "color_scheme_navigation",
+        "label": "t:sections.all.colors.label",
+        "default": "accent-1"
+      },
+	{
+     "type": "header",
+     "content": "Section padding"
+   },
+   {
+         "type": "paragraph",
+         "content": "Desktop"
+       },
+       {
+         "type": "range",
+         "id": "padding_top",
+         "min": 0,
+         "max": 150,
+         "step": 5,
+         "unit": "px",
+         "label": "Padding top",
+         "default": 50
+       },
+       {
+         "type": "range",
+         "id": "padding_bottom",
+         "min": 0,
+         "max": 150,
+         "step": 5,
+         "unit": "px",
+         "label": "Padding bottom",
+         "default": 50
+       },
+	{
+         "type": "paragraph",
+         "content": "Mobile"
+       },
+	{
+         "type": "range",
+         "id": "mobile_padding_top",
+         "min": 0,
+         "max": 150,
+         "step": 5,
+         "unit": "px",
+         "label": "Padding top",
+         "default": 50
+       },
+       {
+         "type": "range",
+         "id": "mobile_padding_bottom",
+         "min": 0,
+         "max": 150,
+         "step": 5,
+         "unit": "px",
+         "label": "Padding bottom",
+         "default": 50
+       },
+     {
+     "type": "header",
+     "content": "Colors"
+   },
+
+        {
+        "type": "color_scheme",
+        "id": "color_scheme",
+        "label": "t:sections.all.colors.label",
+        "default": "accent-1"
+      }
+
+],
+"blocks": [
+       {
+         "type": "logo",
+         "name": "logo",
+         "settings": [
+		{
+             "type": "image_picker",
+             "id": "logo",
+             "label": "Logo image"
+           },
+		{
+             "type": "url",
+             "id": "url",
+             "label": "Logo link"
+             }
+         ]
+       }
+   ],
+"presets": [
+   {
+     "name": "Logo list",
+     "blocks": [
+       {
+         "type": "logo"
+       },
+       {
+         "type": "logo"
+       },
+       {
+         "type": "logo"
+       },
+	{
+         "type": "logo"
+       },
+	{
+         "type": "logo"
+       }
+     ]
+   }
+ ]
+ }
+{% endschema %}

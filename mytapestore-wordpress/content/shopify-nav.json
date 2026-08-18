@@ -1,0 +1,266 @@
+[
+ {
+  "handle": "foam-tape-double-sided",
+  "label": "Foam Tape Double Sided"
+ },
+ {
+  "handle": "high-bond-acrylic-tape-vhp",
+  "label": "Ultra High Bond Tape"
+ },
+ {
+  "handle": "cloth-double-sided-tape",
+  "label": "Cloth Double Sided Tape"
+ },
+ {
+  "handle": "butyl-tape",
+  "label": "Butyl Tape"
+ },
+ {
+  "handle": "glazing-tapes",
+  "label": "Glazing Tapes"
+ },
+ {
+  "handle": "double-sided-tissue-tape",
+  "label": "Tissue Tape"
+ },
+ {
+  "handle": "polyester-tape",
+  "label": "Polyester Tape"
+ },
+ {
+  "handle": "atg-tapes",
+  "label": "ATG Tapes"
+ },
+ {
+  "handle": "double-sided-tape",
+  "label": "Double Sided Tape"
+ },
+ {
+  "handle": "all",
+  "label": "View all double-sided tape"
+ },
+ {
+  "handle": "aluminium-foil-tapes",
+  "label": "Aluminium Foil Tape"
+ },
+ {
+  "handle": "barricade-hazard-tapes",
+  "label": "Barricade Hazard Tapes"
+ },
+ {
+  "handle": "bumpers-tapes",
+  "label": "Bumpers Tapes"
+ },
+ {
+  "handle": "duct-tape",
+  "label": "Duct Tape"
+ },
+ {
+  "handle": "eco-friendly-tapes",
+  "label": "Eco Friendly Tapes"
+ },
+ {
+  "handle": "fabric-tape",
+  "label": "Fabric Tape"
+ },
+ {
+  "handle": "felt-tapes-dots",
+  "label": "Felt Tape & Dots"
+ },
+ {
+  "handle": "foam-tape",
+  "label": "Foam Tape \u2013 Single Sided"
+ },
+ {
+  "handle": "flashing-tape",
+  "label": "Flashing Tape"
+ },
+ {
+  "handle": "filament-tapes",
+  "label": "Filament Tape"
+ },
+ {
+  "handle": "glue-dots",
+  "label": "Glue Dots"
+ },
+ {
+  "handle": "hang-tab",
+  "label": "Hang Tab"
+ },
+ {
+  "handle": "hook-loop-tapes",
+  "label": "Hook & Loop Tape"
+ },
+ {
+  "handle": "hook-and-loop-dots",
+  "label": "Hook and Loop Dots"
+ },
+ {
+  "handle": "packaging-tapes",
+  "label": "Packaging Tapes"
+ },
+ {
+  "handle": "paper-kraft-tape",
+  "label": "Paper Tape"
+ },
+ {
+  "handle": "protection-tape",
+  "label": "Protection Tape"
+ },
+ {
+  "handle": "pvc-electrical-insulation-tape",
+  "label": "PVC Electrical Insulation Tape"
+ },
+ {
+  "handle": "masking-tape",
+  "label": "Masking Tape"
+ },
+ {
+  "handle": "magnetic-tapes",
+  "label": "Magnetic Tapes"
+ },
+ {
+  "handle": "reflective-tape",
+  "label": "Reflective Tape"
+ },
+ {
+  "handle": "safety-tape",
+  "label": "Safety Tapes"
+ },
+ {
+  "handle": "strapping-tapes",
+  "label": "Strapping Tapes"
+ },
+ {
+  "handle": "specialty-tape",
+  "label": "Specialty Tape"
+ },
+ {
+  "handle": "thermal-insulation-tape",
+  "label": "Thermal Insulation Tape"
+ },
+ {
+  "handle": "acribond-accessories",
+  "label": "Acribond Accessories"
+ },
+ {
+  "handle": "all",
+  "label": "View all single-sided tapes"
+ },
+ {
+  "handle": "tapes-dispensers",
+  "label": "Tape Dispensers"
+ },
+ {
+  "handle": "tapes-dispensers",
+  "label": "View all dispensers & accessories"
+ },
+ {
+  "handle": "aerospace-defense",
+  "label": "Aerospace Defense"
+ },
+ {
+  "handle": "airconditioning-refrigeration-tapes",
+  "label": "Airconditioning Refrigeration Tapes"
+ },
+ {
+  "handle": "building-construction",
+  "label": "Building & Construction"
+ },
+ {
+  "handle": "display-signage",
+  "label": "Display Signage"
+ },
+ {
+  "handle": "electronics-electrical",
+  "label": "Electronics & Electrical"
+ },
+ {
+  "handle": "flooring",
+  "label": "Flooring"
+ },
+ {
+  "handle": "framing-insulation",
+  "label": "Framing & Insulation"
+ },
+ {
+  "handle": "glass-glazing",
+  "label": "Glass & Glazing"
+ },
+ {
+  "handle": "hvac-plumbing",
+  "label": "HVAC & Plumbing"
+ },
+ {
+  "handle": "joinery-kitchen-furniture",
+  "label": "Joinery Kitchen Furniture"
+ },
+ {
+  "handle": "manufacturing",
+  "label": "Manufacturing"
+ },
+ {
+  "handle": "marine",
+  "label": "Marine"
+ },
+ {
+  "handle": "marking-safety",
+  "label": "Marking Safety"
+ },
+ {
+  "handle": "nameplates",
+  "label": "Nameplates"
+ },
+ {
+  "handle": "picture-framing-tapes",
+  "label": "Picture Framing Tapes"
+ },
+ {
+  "handle": "pool-spa",
+  "label": "Pool & Spa"
+ },
+ {
+  "handle": "printing",
+  "label": "Printing"
+ },
+ {
+  "handle": "roofing-gutters",
+  "label": "Roofing & Gutters"
+ },
+ {
+  "handle": "sheathing-moisture-management",
+  "label": "Sheathing & Moisture Management"
+ },
+ {
+  "handle": "solar-energy",
+  "label": "Solar Energy"
+ },
+ {
+  "handle": "tapes-for-school-library",
+  "label": "Tapes For School Library"
+ },
+ {
+  "handle": "tapes-for-visual-arts-entertainment",
+  "label": "Tapes for Visual, Arts & Entertainment"
+ },
+ {
+  "handle": "telecommunication",
+  "label": "Telecommunication"
+ },
+ {
+  "handle": "transport-automotive-rv",
+  "label": "Transport Automotive RV"
+ },
+ {
+  "handle": "warehouse-packaging-logistics",
+  "label": "Warehouse Packaging Logistics"
+ },
+ {
+  "handle": "windows-doors-decking",
+  "label": "Windows Doors & Decking"
+ },
+ {
+  "handle": "all",
+  "label": "All Products"
+ }
+]

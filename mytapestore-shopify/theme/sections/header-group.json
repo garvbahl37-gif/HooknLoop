@@ -1,0 +1,64 @@
+{
+  "type": "header",
+  "name": "Header",
+  "sections": {
+    "header": {
+      "type": "mts-header",
+      "blocks": {
+        "f1": {
+          "type": "feature",
+          "settings": {
+            "text": "Fast delivery across Australia",
+            "packaged_icon": "truck",
+            "icon": "truck",
+            "icon_size": 19,
+            "icon_colour": true
+          }
+        },
+        "f2": {
+          "type": "feature",
+          "settings": {
+            "text": "Secure checkout",
+            "packaged_icon": "secure",
+            "icon": "lock",
+            "icon_size": 18,
+            "icon_colour": false
+          }
+        },
+        "f3": {
+          "type": "feature",
+          "settings": {
+            "text": "Lowest-price guarantee",
+            "icon": "medal",
+            "icon_size": 19,
+            "packaged_icon": "best-price",
+            "icon_colour": false
+          }
+        },
+        "f4": {
+          "type": "feature",
+          "settings": {
+            "text": "Australian owned",
+            "icon": "flag",
+            "icon_size": 18,
+            "packaged_icon": "flag-au",
+            "icon_colour": true
+          }
+        }
+      },
+      "block_order": [
+        "f1",
+        "f2",
+        "f3",
+        "f4"
+      ],
+      "settings": {
+        "menu": "main-menu",
+        "columns_threshold": 10
+      }
+    }
+  },
+  "order": [
+    "header"
+  ]
+}

@@ -1,0 +1,16 @@
+/*
+ * HooknLoop cart — mirrors CartPage.jsx in storefront/src/pages, with the
+ * mock checkout replaced by Shopify's real one.
+ */
+{
+  "sections": {
+    "hnl_cart": {
+      "type": "hnl-cart",
+      "settings": {
+        "free_ship_threshold": 300,
+        "trust": "✓ GST tax invoice on every order\n✓ Dispatched 1–2 business days Australia-wide\n✓ Ordered the wrong side? We'll sort it"
+      }
+    }
+  },
+  "order": ["hnl_cart"]
+}

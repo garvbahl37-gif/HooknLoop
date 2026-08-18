@@ -1,0 +1,13 @@
+{%- comment -%}
+  Proper display names for the social networks. Liquid's `capitalize` gives
+  "Linkedin" and "Youtube", which are wrong as brand names and get read aloud
+  that way by a screen reader.
+{%- endcomment -%}
+{%- case network -%}
+  {%- when 'facebook' -%}Facebook
+  {%- when 'instagram' -%}Instagram
+  {%- when 'pinterest' -%}Pinterest
+  {%- when 'linkedin' -%}LinkedIn
+  {%- when 'youtube' -%}YouTube
+  {%- else -%}{{ network | capitalize }}
+{%- endcase -%}

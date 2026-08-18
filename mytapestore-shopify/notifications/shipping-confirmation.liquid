@@ -1,0 +1,180 @@
+{% comment %}
+  MY TAPE STORE — SHIPPING CONFIRMATION
+  Paste into: Settings > Notifications > Shipping confirmation > Edit code.
+
+  This email has ONE job: get the customer to the tracking page. Everything else
+  is secondary, so tracking is the first thing under the headline and the only
+  filled button. The item list is deliberately compact — they already saw it on
+  the confirmation; here it exists to answer "is this the parcel I think it is",
+  and for partial shipments, "which bit is this".
+{% endcomment %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="supported-color-schemes" content="light dark">
+<title>{{ shop.name }} — order {{ order.name }} has shipped</title>
+<style>
+  body { margin:0 !important; padding:0 !important; width:100% !important; }
+  img { border:0; line-height:100%; outline:none; text-decoration:none; }
+  table { border-collapse:collapse !important; }
+  a { color:#b32f18; }
+  .mts-shell { width:600px; }
+  @media only screen and (max-width:620px) {
+    .mts-shell { width:100% !important; }
+    .mts-pad { padding-left:22px !important; padding-right:22px !important; }
+    .mts-stack { display:block !important; width:100% !important; }
+    .mts-stack-gap { display:block !important; width:100% !important; height:20px !important; }
+    .mts-h1 { font-size:23px !important; }
+    .mts-cta a { display:block !important; }
+    .mts-track { font-size:15px !important; word-break:break-all !important; }
+  }
+  @media (prefers-color-scheme: dark) {
+    .mts-body { background:#141312 !important; }
+    .mts-card { background:#1d1b19 !important; }
+    .mts-ink { color:#f2efec !important; }
+    .mts-muted { color:#a49d96 !important; }
+    .mts-rule { border-color:#332f2b !important; }
+    .mts-soft { background:#231f1c !important; }
+    /* Masthead stays white in dark mode: the logo is charcoal and brand red on
+       transparent, so an inverted ground makes it vanish. */
+    .mts-mast { background:#ffffff !important; }
+  }
+</style>
+</head>
+<body class="mts-body" style="margin:0; padding:0; background:#f3f1ee; -webkit-font-smoothing:antialiased;">
+
+<div style="display:none; font-size:1px; color:#f3f1ee; line-height:1px; max-height:0; max-width:0; opacity:0; overflow:hidden;">
+  Order {{ order.name }} is on its way{% if fulfillment.tracking_number %} — tracking {{ fulfillment.tracking_number }}{% endif %}.
+</div>
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f3f1ee;">
+<tr><td align="center" style="padding:28px 12px 44px 12px;">
+<table role="presentation" class="mts-shell" width="600" cellpadding="0" cellspacing="0" style="width:600px; max-width:600px;">
+
+  <tr><td class="mts-mast" style="background:#ffffff; border-radius:12px 12px 0 0; padding:26px 34px 22px 34px; border-bottom:3px solid #df3c22;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
+      <td align="left" valign="middle" style="font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+        <img src="https://cdn.shopify.com/s/files/1/0783/2017/3161/files/mytapestore-checkout-logo-420.png?v=1786910098"
+             alt="{{ shop.name }}" width="176" height="31"
+             style="display:block; width:176px; max-width:176px; height:auto; border:0;">
+      </td>
+      <td align="right" valign="middle" style="font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:11px; font-weight:700; letter-spacing:1.4px; text-transform:uppercase; color:#8a8078;">
+        Order {{ order.name }}
+      </td>
+    </tr></table>
+  </td></tr>
+
+  <tr><td class="mts-card mts-pad" style="background:#ffffff; padding:38px 34px 0 34px; font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+    <div style="display:inline-block; background:#e6f0ea; color:#2b6b4f; font-size:11px; font-weight:700; letter-spacing:1.3px; text-transform:uppercase; padding:6px 11px; border-radius:6px;">
+      {% if fulfillment.item_count < order.line_items.size %}Part of your order shipped{% else %}Shipped{% endif %}
+    </div>
+    <h1 class="mts-h1 mts-ink" style="margin:16px 0 0 0; font-size:27px; line-height:1.22; font-weight:700; color:#1f1f1f; letter-spacing:-0.5px;">
+      {% if order.customer.first_name %}{{ order.customer.first_name }}, it's{% else %}It's{% endif %} on the way.
+    </h1>
+    <p class="mts-muted" style="margin:11px 0 0 0; font-size:15px; line-height:1.6; color:#5d5651;">
+      {% if fulfillment.item_count < order.line_items.size %}
+        {{ fulfillment.item_count }} of your {{ order.line_items.size }} items {% if fulfillment.item_count == 1 %}has{% else %}have{% endif %} shipped. We'll email again when the rest follows.
+      {% else %}
+        Your order is on its way.
+      {% endif %}
+    </p>
+  </td></tr>
+
+  {% if fulfillment.tracking_number %}
+  <tr><td class="mts-card mts-pad" style="background:#ffffff; padding:24px 34px 0 34px; font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="mts-soft" style="background:#f6f4f1; border-radius:10px;">
+      <tr><td style="padding:18px 20px;">
+        <div class="mts-muted" style="font-size:11px; font-weight:700; letter-spacing:1.4px; text-transform:uppercase; color:#8a8078;">
+          {% if fulfillment.tracking_company %}{{ fulfillment.tracking_company }} tracking{% else %}Tracking number{% endif %}
+        </div>
+        <div class="mts-ink mts-track" style="font-size:17px; font-weight:700; color:#1f1f1f; margin-top:6px; letter-spacing:0.4px;">
+          {% for tracking_number in fulfillment.tracking_numbers %}
+            {% if fulfillment.tracking_urls[forloop.index0] %}
+              <a href="{{ fulfillment.tracking_urls[forloop.index0] }}" style="color:#b32f18; text-decoration:none;">{{ tracking_number }}</a>
+            {% else %}{{ tracking_number }}{% endif %}{% unless forloop.last %}<br>{% endunless %}
+          {% endfor %}
+        </div>
+      </td></tr>
+    </table>
+  </td></tr>
+  {% endif %}
+
+  <tr><td class="mts-card mts-pad" style="background:#ffffff; padding:22px 34px 30px 34px; font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+    <table role="presentation" cellpadding="0" cellspacing="0" class="mts-cta"><tr>
+      <td style="background:#df3c22; border-radius:7px;">
+        <a href="{% if fulfillment.tracking_url %}{{ fulfillment.tracking_url }}{% else %}{{ order.order_status_url }}{% endif %}" style="display:inline-block; padding:14px 28px; font-size:15px; font-weight:600; color:#ffffff; text-decoration:none;">Track this parcel</a>
+      </td>
+      <td width="12">&nbsp;</td>
+      <td>
+        <a href="{{ order.order_status_url }}" class="mts-muted" style="display:inline-block; padding:14px 4px; font-size:14px; font-weight:600; color:#5d5651; text-decoration:underline;">View order</a>
+      </td>
+    </tr></table>
+  </td></tr>
+
+  <tr><td class="mts-card mts-pad" style="background:#ffffff; padding:0 34px; font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="mts-rule" style="border-top:1px solid #e6e1da;">
+      <tr><td style="padding:20px 0 14px 0;">
+        <span class="mts-muted" style="font-size:11px; font-weight:700; letter-spacing:1.4px; text-transform:uppercase; color:#8a8078;">In this parcel</span>
+      </td></tr>
+      {% for line in fulfillment.fulfillment_line_items %}
+      <tr><td style="padding:0 0 13px 0;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
+          <td width="52" valign="top" style="padding-right:13px;">
+            {% if line.line_item.image %}
+              <img src="{{ line.line_item | img_url: 'compact_cropped' }}" alt="" width="52" height="52" class="mts-soft" style="display:block; width:52px; height:52px; border-radius:7px; background:#f3f1ee;">
+            {% endif %}
+          </td>
+          <td valign="top" style="font-size:14px; line-height:1.5;">
+            <div class="mts-ink" style="font-weight:600; color:#1f1f1f;">{{ line.line_item.title }}</div>
+            {% if line.line_item.variant_title and line.line_item.variant_title != 'Default Title' %}
+              <div class="mts-muted" style="color:#6d6660; font-size:13px; margin-top:2px;">{{ line.line_item.variant_title }}</div>
+            {% endif %}
+            {% if line.line_item.sku != blank %}
+              <div class="mts-muted" style="color:#8a8078; font-size:12px; margin-top:3px;">SKU {{ line.line_item.sku }}</div>
+            {% endif %}
+          </td>
+          <td valign="top" align="right" class="mts-muted" style="font-size:13.5px; color:#5d5651; white-space:nowrap;">Qty {{ line.quantity }}</td>
+        </tr></table>
+      </td></tr>
+      {% endfor %}
+    </table>
+  </td></tr>
+
+  <tr><td class="mts-card mts-pad" style="background:#ffffff; padding:0 34px 34px 34px; font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif; border-radius:0 0 12px 12px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="mts-rule" style="border-top:1px solid #e6e1da;"><tr>
+      <td valign="top" style="padding:20px 0 0 0;">
+        <div class="mts-muted" style="font-size:11px; font-weight:700; letter-spacing:1.4px; text-transform:uppercase; color:#8a8078; margin-bottom:8px;">Delivering to</div>
+        <div class="mts-ink" style="font-size:14px; line-height:1.6; color:#1f1f1f;">
+          {{ order.shipping_address | format_address }}
+        </div>
+      </td>
+    </tr></table>
+  </td></tr>
+
+  <tr><td style="padding:20px 0 0 0;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="mts-soft" style="background:#eceae6; border-radius:12px;">
+      <tr><td class="mts-pad" style="padding:22px 30px; font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+        <div class="mts-ink" style="font-size:15px; font-weight:600; color:#1f1f1f;">Parcel not arrived?</div>
+        <div class="mts-muted" style="font-size:14px; line-height:1.6; color:#5d5651; margin-top:5px;">
+          Tracking can take a few hours to show its first scan. If it hasn't moved after two business days, reply to this email and we'll chase the carrier for you.
+          <br>Or email <a href="mailto:info@mytapestore.com.au" style="color:#b32f18; text-decoration:underline;">info@mytapestore.com.au</a>
+        </div>
+      </td></tr>
+    </table>
+  </td></tr>
+
+  <tr><td style="padding:24px 30px 0 30px; font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif; text-align:center;">
+    <div class="mts-muted" style="font-size:12.5px; line-height:1.65; color:#8a8078;">
+      {{ shop.name }}<br>
+      <a href="{{ shop.url }}" style="color:#8a8078; text-decoration:underline;">{{ shop.domain }}</a>
+    </div>
+  </td></tr>
+
+</table>
+</td></tr>
+</table>
+</body>
+</html>

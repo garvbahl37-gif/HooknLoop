@@ -1,0 +1,274 @@
+/*
+ * HooknLoop homepage — mirrors Landing() in storefront/src/App.jsx.
+ * Original Suruchi homepage preserved in git at the pristine backup commit.
+ */
+{
+  "sections": {
+    "hnl_hero": {
+      "type": "hnl-hero",
+      "blocks": {
+        "s1": {
+          "type": "slide",
+          "settings": {
+            "eyebrow": "Premium Australian Supplier",
+            "title": "Hook and Loop Tape,",
+            "accent": "Strips & Fasteners",
+            "bullets": "Trusted Australian distributor of premium products|100,000+ metres in stock for fast delivery|Custom cutting & manufacturing available|Fast Australia-wide shipping",
+            "cta_label": "Shop All Products",
+            "cta_link": "/collections/all",
+            "cta2_label": "Find the Right Product",
+            "cta2_link": "/collections/all",
+            "banner_asset": "hnl-hero-banner-1.webp",
+            "mobile_lead": "Australia-wide trade supply — cut to length, dispatched in 1–2 days.",
+            "tiles_brands": "VELCRO® Brand > /search?q=VELCRO%C2%AE+Brand&type=product | HooknLoop > /collections/all",
+            "tiles_cats": "Self-Adhesive > /products/self-adhesive-hook-and-loop-roll | Sew-On > /products/sew-on-hook-and-loop-fastener | Dots > /products/hook-and-loop-dots | Straps & Ties > /products/hook-and-loop-adjustable-strap",
+            "tile_all_label": "Shop all products",
+            "tile_all_link": "/collections/all",
+            "asset_image": "hnl-self-adhesive-roll-1.jpg",
+            "tag": "BEST SELLER",
+            "price_from": "24.46"
+          }
+        }
+      },
+      "block_order": [
+        "s1"
+      ],
+      "settings": {
+        "trust_items": "",
+        "duration": 5000,
+        "cta_fallback": "/pages/customer-service"
+      }
+    },
+    "hnl_onestop": {
+      "type": "hnl-onestop",
+      "blocks": {
+        "t1": {
+          "type": "tile",
+          "settings": {
+            "title": "Dots & Coins",
+            "product_handle": "hook-and-loop-dots",
+            "asset_image": "hnl-ls-dots.webp",
+            "fallback_link": "/collections/all"
+          }
+        },
+        "t2": {
+          "type": "tile",
+          "settings": {
+            "title": "Self-Adhesive",
+            "product_handle": "self-adhesive-hook-and-loop-roll",
+            "asset_image": "hnl-ls-adhesive.webp",
+            "fallback_link": "/collections/all"
+          }
+        },
+        "t3": {
+          "type": "tile",
+          "settings": {
+            "title": "Sew-On",
+            "product_handle": "sew-on-hook-and-loop-fastener",
+            "asset_image": "hnl-ls-sew-on.webp",
+            "fallback_link": "/collections/all"
+          }
+        },
+        "t4": {
+          "type": "tile",
+          "settings": {
+            "title": "Straps & Cable Ties",
+            "product_handle": "hook-and-loop-adjustable-strap",
+            "asset_image": "hnl-ls-straps.webp",
+            "fallback_link": "/collections/all"
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3",
+        "t4"
+      ],
+      "settings": {
+        "eyebrow": "Shop by category",
+        "heading": "Australia's One-Stop Shop for Hook and Loop Tapes",
+        "sub": "Welcome to HooknLoop.com.au, your trusted Australian destination for premium hook and loop tape solutions. We specialise exclusively in this fastening system, making it simple to find the right product for home, commercial, industrial, and DIY use."
+      }
+    },
+    "hnl_bestsellers": {
+      "type": "hnl-bestsellers",
+      "settings": {
+        "eyebrow": "Featured Collection",
+        "heading": "Best Sellers & Offers",
+        "count": 12
+      }
+    },
+    "hnl_trusted": {
+      "type": "hnl-trusted",
+      "settings": {
+        "eyebrow": "B2C & B2B - Australia-wide",
+        "h1": "Trusted Hook and Loop Supplier for B2C & B2B Customers",
+        "p1": "Proudly serving both B2C and B2B customers across Australia, we focus on quality products that work in real-world conditions. Every product offered at HooknLoop.com.au is carefully selected based on material quality, performance testing, and long-term reliability.",
+        "h2": "Wholesale, Bulk & Discounted Hook and Loop Supplies",
+        "p2": "With a large range of fasteners, tapes, straps and accessories held in stock, we offer competitive pricing for retail, trade and commercial buyers. Buy hook and loop tape by the roll, in bulk, or at wholesale rates - with volume discounts on larger orders.",
+        "cta_label": "Read more",
+        "cta_link": "/pages/customer-service",
+        "image_alt": "Hook-and-loop tape beside a map of Australia and HooknLoop delivery boxes on a pallet",
+        "proof_score": "4.87 / 5",
+        "proof_text": "Serving B2C & B2B across Australia",
+        "more_copy": "<p>We stock a complete range of fastening products, providing both globally recognised and cost-effective options in one place. From regular and temporary use to heavy-duty fastening, our solutions perform across a wide range of applications.</p><p>Our range includes adhesive-backed tape, sew-on rolls, sticky dots, self-gripping hook and loop fasteners, and straps. For mounting items, organising cables, securing signage, arranging displays, and accomplishing textile or upholstery projects with finesse, our products are perfect buy.</p><p>For premium fastening products that stick securely and stay in place for a long time, hooknloop.com.au is your destination. Our adhesive fasteners are suitable for fabric, walls, plastic, metal, wood, and other common surfaces. We have adhesive hook and loop fasteners in varied strengths, widths, and lengths to match your needs for various surfaces and settings.</p><p>We also have our sew-on options that deliver durability and flexibility for textile use without relying on adhesives.</p><p>The selection of the right fastener depends on the factor- how and where it will be used. At HooknLoop.com.au, we help customers make informed decisions by matching the correct product to the intended application.</p>"
+      }
+    },
+    "hnl_why": {
+      "type": "hnl-why",
+      "blocks": {
+        "w1": {
+          "type": "tile",
+          "settings": {
+            "icon": "truck",
+            "title": "Fast Australian shipping",
+            "body": "Speedy delivery Australia-wide, dispatched in 1-2 business days."
+          }
+        },
+        "w2": {
+          "type": "tile",
+          "settings": {
+            "icon": "lock",
+            "title": "Secure payment",
+            "body": "Safe checkout with SSL encryption - Shop Pay, PayPal, Visa & Amex."
+          }
+        },
+        "w3": {
+          "type": "tile",
+          "settings": {
+            "icon": "trade",
+            "title": "Bulk & trade pricing",
+            "body": "Volume breaks and account terms for tradies and OEMs."
+          }
+        },
+        "w4": {
+          "type": "tile",
+          "settings": {
+            "icon": "stock",
+            "title": "Huge range in stock",
+            "body": "Twelve product ranges held in our Australian warehouse - self-adhesive, sew-on, dots, straps, double-sided and genuine VELCRO Brand."
+          }
+        },
+        "w5": {
+          "type": "tile",
+          "settings": {
+            "icon": "invoice",
+            "title": "GST tax invoice",
+            "body": "A compliant Australian tax invoice on every order."
+          }
+        },
+        "w6": {
+          "type": "tile",
+          "settings": {
+            "icon": "pin",
+            "title": "Australian owned",
+            "body": "Australian warehouse, dispatched Australia-wide in 1-2 business days."
+          }
+        }
+      },
+      "block_order": [
+        "w1",
+        "w2",
+        "w3",
+        "w4",
+        "w5",
+        "w6"
+      ],
+      "settings": {
+        "eyebrow": "Why HooknLoop",
+        "heading": "Six reasons trade buyers reorder"
+      }
+    },
+    "hnl_reviews": {
+      "type": "hnl-reviews",
+      "blocks": {
+        "r1": {
+          "type": "review",
+          "settings": {
+            "name": "Tom W.",
+            "location": "Hobart, TAS",
+            "quote": "I'm a high school design tech teacher and we order from HooknLoop for student projects. The self-adhesive rolls are great because kids can cut exactly what they need. Pricing is reasonable for our budget and they don't mind doing tax invoices for the school which makes purchasing easy. The quality means student projects actually work properly instead of falling apart!"
+          }
+        },
+        "r2": {
+          "type": "review",
+          "settings": {
+            "name": "Sarah M.",
+            "location": "Melbourne, VIC",
+            "quote": "Bought some of the VELCRO brand stuff from HooknLoop for a boat cover repair. Wasn't sure if it'd handle the salt and UV but it's been 8 months and still going strong. Bit more expensive than the generic but worth it for marine use. Arrived in 3 days which saved me missing a weekend trip. Cheers!"
+          }
+        },
+        "r3": {
+          "type": "review",
+          "settings": {
+            "name": "Dave T.",
+            "location": "Brisbane, QLD",
+            "quote": "Been using HooknLoop for our upholstery business for about 18 months now. The adhesive backed stuff is honestly better than what we were getting from our previous supplier at nearly double the price. Sticks properly and the hook side doesn't wear out after a few uses like the cheap rubbish. Fast delivery too which helps when we're in a rush on projects."
+          }
+        },
+        "r4": {
+          "type": "review",
+          "settings": {
+            "name": "Jessica L.",
+            "location": "Sydney, NSW",
+            "quote": "Ordered the heavy duty straps for cable management in our server room. Absolute game changer! We've tried a few different brands over the years but these HooknLoop ones are genuinely reusable - been opening and closing them for 6 months and they still grip like new. Will definitely be back for more."
+          }
+        },
+        "r5": {
+          "type": "review",
+          "settings": {
+            "name": "Mark R.",
+            "location": "Adelaide, SA",
+            "quote": "I make baby carriers and bibs as a small home business, so I go through a fair bit of sew-on hook and loop. HooknLoop's quality is consistent which is really important when you're selling to customers. The 25mm width is perfect for what I need and it washes well without pilling. Customer service helped me work out bulk pricing too which was appreciated."
+          }
+        },
+        "r6": {
+          "type": "review",
+          "settings": {
+            "name": "Rachel K.",
+            "location": "Perth, WA",
+            "quote": "Needed some for a DIY camper van conversion project. Bought the adhesive dots for cupboard doors and the back-to-back tape for securing things while driving. Six months of rough Aussie roads and it's all still holding strong. Even the adhesive in the summer heat hasn't failed. Really impressed with HooknLoop's gear."
+          }
+        }
+      },
+      "block_order": [
+        "r1",
+        "r2",
+        "r3",
+        "r4",
+        "r5",
+        "r6"
+      ],
+      "settings": {
+        "eyebrow": "Reviews",
+        "heading": "What our customers say",
+        "score": "4.87",
+        "count": "15",
+        "all_label": "Read all 15 reviews",
+        "all_link": "/collections/all"
+      }
+    },
+    "hnl_film": {
+      "type": "hnl-film",
+      "settings": {
+        "eyebrow": "Our story · 60 seconds",
+        "heading": "Turns out the smallest connections hold the most.",
+        "video_label": "HooknLoop brand film — Made to connect",
+        "story": "<p>Six years ago, HooknLoop began in a single garage warehouse with one simple promise: to make sourcing hook and loop tape effortless.</p><p>Since then, every order, every project and every customer relationship has helped shape who we are today. We're proud to supply premium hook and loop solutions across Australia, supporting more than 26 industries—from construction to education—across both the public and private sectors, from small retail orders to large-scale wholesale requirements.</p><p>No matter the size of the connection, we believe it matters. Thank you for trusting us to be part of yours.</p>",
+        "story_by": "Founder, HooknLoop",
+        "tag_lead": "",
+        "tag_accent": ""
+      }
+    }
+  },
+  "order": [
+    "hnl_hero",
+    "hnl_onestop",
+    "hnl_bestsellers",
+    "hnl_trusted",
+    "hnl_why",
+    "hnl_reviews",
+    "hnl_film"
+  ]
+}

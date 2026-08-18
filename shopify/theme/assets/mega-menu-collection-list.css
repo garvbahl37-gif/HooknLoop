@@ -1,0 +1,27 @@
+.mega__menu--collection-list:only-child {
+  flex-grow: 1;
+}
+.mega__menu--collection-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+}
+.collection--list--thumbnail .collection__card {
+  display: block;
+}
+.mega__menu--collection-list .product__categories--content__left {
+  margin-top: 1.5rem;
+}
+.collection--list-item:hover .product__categories--content__maintitle {
+  text-decoration: underline;
+  text-underline-offset: 0.2rem;
+}
+.mega__menu--wrapper--column.mega__menu--collection-list-two-rows {
+  display: grid;
+  gap: 2rem;
+}
+.mega__menu--wrapper--column.mega__menu--collection-inline {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: auto auto;
+}

@@ -1,0 +1,85 @@
+{%- liquid
+  assign minimum_qty_value = false
+  unless show_always
+    if current_variant.inventory_quantity <= minimum_amount_value
+      assign minimum_qty_value = true
+    endif
+  endunless
+
+  assign low_stock_qty = low_stock_value
+-%}
+
+{%- if product.selected_or_first_available_variant.inventory_management == 'shopify' -%}
+  {%- if show_always or minimum_qty_value -%}
+    <div
+      class="product__inventory {{ custom_class }}"
+      style="
+        --in-stock: {{ in_stock_color.red }}, {{ in_stock_color.green }}, {{ in_stock_color.blue }};
+        --out-of-stock: {{ out_of_stock_color.red }}, {{ out_of_stock_color.green }}, {{ out_of_stock_color.blue }};
+        --low-stock: {{ low_stock_color.red }}, {{ low_stock_color.green }}, {{ low_stock_color.blue }};
+        --continue-selling: {{ continue_selling_color.red }}, {{ continue_selling_color.green }}, {{ continue_selling_color.blue }};
+      "
+    >
+      {%- if product.selected_or_first_available_variant.inventory_quantity > 0 -%}
+        {%- if product.selected_or_first_available_variant.inventory_quantity <= low_stock_qty -%}
+          {% if bullet_point %}
+            <svg width="15" height="15" aria-hidden="true">
+              <circle cx="7.5" cy="7.5" r="7.5" fill="rgba(var(--low-stock), 0.3)"/>
+              <circle cx="7.5" cy="7.5" r="5" stroke="rgb(255, 255, 255)" stroke-width="1" fill="rgba(var(--low-stock))"/>
+            </svg>
+          {% endif %}
+          {%- if show_inventory_quantity -%}
+            <span style="--color-foreground: var(--low-stock)">
+              {{-
+                'products.product.inventory_low_stock_show_count'
+                | t: quantity: product.selected_or_first_available_variant.inventory_quantity
+              -}}
+            </span>
+          {%- else -%}
+            <span style="--color-foreground: var(--low-stock)">{{- 'products.product.inventory_low_stock' | t -}}</span>
+          {%- endif -%}
+        {%- else -%}
+          {% if bullet_point %}
+            <svg width="15" height="15" aria-hidden="true">
+              <circle cx="7.5" cy="7.5" r="7.5" fill="rgba(var(--in-stock), 0.3)"/>
+              <circle cx="7.5" cy="7.5" r="5" stroke="rgb(255, 255, 255)" stroke-width="1" fill="rgba(var(--in-stock))" />
+            </svg>
+          {% endif %}
+          {%- if show_inventory_quantity -%}
+            <span style="--color-foreground: var(--in-stock);">
+              {{-
+                'products.product.inventory_in_stock_show_count'
+                | t: quantity: product.selected_or_first_available_variant.inventory_quantity
+              -}}
+            </span>
+          {%- else -%}
+            <span style="--color-foreground: var(--in-stock);">{{- 'products.product.inventory_in_stock' | t -}}</span>
+          {%- endif -%}
+        {%- endif -%}
+
+      {%- else -%}
+        {%- if product.selected_or_first_available_variant.inventory_policy == 'continue' -%}
+          {% if bullet_point %}
+            <svg width="15" height="15" aria-hidden="true">
+              <circle cx="7.5" cy="7.5" r="7.5" fill="rgba(var(--continue-selling), 0.3)"/>
+              <circle cx="7.5" cy="7.5" r="5" stroke="rgb(255, 255, 255)" stroke-width="1" fill="rgba(var(--continue-selling))"/>
+            </svg>
+          {% endif %}
+          <span style="--color-foreground: var(--continue-selling)">
+            {{- 'products.product.inventory_out_of_stock_continue_selling' | t -}}
+          </span>
+        {%- else -%}
+          {% if bullet_point %}
+            <svg width="15" height="15" aria-hidden="true">
+              <circle cx="7.5" cy="7.5" r="7.5" fill="rgba(var(--out-of-stock), 0.3)"/>
+              <circle cx="7.5" cy="7.5" r="5" stroke="rgb(255, 255, 255)" stroke-width="1" fill="rgba(var(--out-of-stock))"/>
+            </svg>
+          {% endif %}
+          <span style="--color-foreground: var(--out-of-stock)">
+            {{- 'products.product.inventory_out_of_stock' | t -}}
+          </span>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+{%- endif -%}

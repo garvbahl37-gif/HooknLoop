@@ -1,0 +1,23 @@
+/*
+ * Privacy policy — copy lifted verbatim from POLICIES in ContentPages.jsx.
+ * Each clause is a block, so legal wording is edited in the theme editor.
+ */
+{
+  "sections": {
+    "hnl_policy": {
+      "type": "hnl-policy",
+      "settings": {
+        "eyebrow": "Your data",
+        "highlights": "",
+        "help_heading": "Need a hand?",
+        "help_body": "Talk to a real person in Australia about your order, delivery or a return.",
+        "help_email": "info@hooknloop.com.au",
+        "help_phone": "+61 3 4061 6287",
+        "other_links": "Shipping & Delivery | /pages/shipping-delivery\nReturns & Exchanges | /pages/return-policy\nPrivacy Policy | /pages/privacy-policy\nTerms & Conditions | /pages/terms-conditions"
+      }
+    }
+  },
+  "order": [
+    "hnl_policy"
+  ]
+}

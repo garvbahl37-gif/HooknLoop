@@ -1,0 +1,981 @@
+{%- comment -%}
+  Product page — port of storefront/src/pages/ProductPage.jsx
+
+  The React PDP was driven by a hardcoded catalog (sizes, colours, a `hookLoop`
+  boolean). This one is driven by the store's real variants, which turned out to
+  map onto the same three controls exactly:
+
+      option "Size"           -> .pdp__pills
+      option "Color"/"Colour" -> .pdp__swatches
+      option "Hook or Loop?"  -> .pdp__seg   (Both carries the Recommended flag)
+
+  The "a single side can't fasten on its own" prompt that used to sit under the
+  segmented control is gone. The Recommended flag on Both already carries that
+  point without interrupting a shopper who knows they only want one side —
+  which, for a store selling to trade, is a common and legitimate choice.
+
+  Anything else falls back to pills, so a product with a fourth option still
+  renders correctly instead of losing a control.
+
+  Description: React hardcoded PRODUCT_COPY, PRODUCT_DETAILS and their spec
+  tables — but that content was scraped from this very store, and product.description
+  already carries all of it (description, key features, common applications,
+  specifications). Rendering the real field keeps one source of truth and lets
+  the merchant edit copy without a deploy. The spec table below it is built from
+  data Shopify actually holds (SKU, options, availability), not a second copy.
+
+  Pricing is Shopify's. React computed "both = single x 2" in JS; here Both is a
+  real variant with its own price, so the arithmetic disappears.
+{%- endcomment -%}
+
+{%- liquid
+  assign product_variant = product.selected_or_first_available_variant
+  assign hl_option_index = 0
+  for opt in product.options_with_values
+    assign nm = opt.name | downcase
+    if nm contains 'hook' or nm contains 'loop'
+      assign hl_option_index = forloop.index
+    endif
+  endfor
+-%}
+
+<div id="main" class="pdp">
+  <div class="wrap pdp__grid">
+    <div class="pdp__gallery">
+      <div class="pdp__stage" data-hnl-stage>
+        <span class="pdp__flag" data-hnl-flag{% unless product_variant.available %} hidden{% endunless %}>{{ section.settings.stock_flag }}</span>
+        {%- if product.featured_image -%}
+          <img src="{{ product.featured_image | image_url: width: 1200 }}"
+               alt="{{ product.featured_image.alt | default: product.title | escape }}"
+               width="1200" height="1200" data-hnl-main>
+        {%- endif -%}
+      </div>
+
+      {%- if product.images.size > 1 -%}
+        <div class="pdp__thumbs">
+          {%- for image in product.images -%}
+            <button class="pdp__thumb {% if forloop.first %}is-on{% endif %}"
+                    data-hnl-thumb
+                    data-image-id="{{ image.id }}"
+                    data-full="{{ image | image_url: width: 1200 }}"
+                    aria-label="Image {{ forloop.index }}">
+              <img src="{{ image | image_url: width: 200 }}" alt="" width="200" height="200" loading="lazy">
+            </button>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="pdp__buy">
+      <span class="pdp__eyebrow">{{ section.settings.eyebrow }}</span>
+      <h1 class="pdp__title">{{ product.title }}</h1>
+      {%- comment -%}
+        Vendor removed from this line. It printed "HOOKNLOOP ·" before the SKU
+        while the brand line directly below already names the brand — the same
+        fact twice, and the uppercase vendor was the louder of the two despite
+        being the less useful. The SKU stands alone here.
+      {%- endcomment -%}
+      <span class="pdp__brand">
+        <span class="pdp__brand-sku">SKU <b data-hnl-sku>{{ product_variant.sku }}</b></span>
+      </span>
+
+      {%- comment -%}
+        Brand line. VELCRO is a registered trademark and a genuine VELCRO Brand
+        product is worth more than a generic equivalent — so it is called out
+        explicitly rather than left to the title. Detected from the product
+        title/type, since product.vendor is "HooknLoop" on every product.
+      {%- endcomment -%}
+      {%- liquid
+        assign is_velcro = false
+        assign hay = product.title | append: ' ' | append: product.type | append: ' ' | append: product.tags | downcase
+        if hay contains 'velcro' or hay contains 'velcoin'
+          assign is_velcro = true
+        endif
+      -%}
+      <span class="pdp__brandline">
+        Brand:&nbsp;
+        {%- if is_velcro -%}
+          {%- comment -%}
+            VELCRO® Brand stands alone here. Naming HooknLoop beside it read as
+            a co-brand — as though the product were both — when HooknLoop is the
+            retailer, not a second maker. The footer trademark note already
+            makes that relationship explicit.
+          {%- endcomment -%}
+          <b class="pdp__brandline-mark">VELCRO&reg;</b>
+        {%- else -%}
+          <b>HooknLoop</b>
+        {%- endif -%}
+      </span>
+
+      <div class="pdp__rating">
+        {%- comment -%}
+          Judge.me is installed on this store; its badge injects into this hook.
+          Until a product has reviews it renders nothing, so the fallback below
+          keeps the row from collapsing — same as React's "No reviews yet".
+        {%- endcomment -%}
+        {%- comment -%}
+          Judge.me's own markup, copied attribute for attribute from the live
+          store, INCLUDING the metafield. Judge.me caches the rendered rating
+          and review list into product.metafields.judgeme.*; printing that is
+          what puts reviews on the page server-side. An empty placeholder with
+          the right classes renders nothing, which is what was happening.
+        {%- endcomment -%}
+        <div class="jdgm-widget jdgm-preview-badge"
+             data-id="{{ product.id }}"
+             data-template="manual-installation">{{ product.metafields.judgeme.badge }}</div>
+        <span class="pdp__rating-none" data-hnl-norating>No reviews yet</span>
+      </div>
+
+      <div class="pdp__price">
+        <div>
+          <span class="pdp__price-now" data-hnl-price>{{ product_variant.price | money }}</span>
+          {%- comment -%}
+            React qualified the price with "per side" or "complete set" so a
+            shopper could tell at a glance whether $32.90 buys a working
+            fastener or half of one. Rebuilt from the live option value.
+          {%- endcomment -%}
+          <span class="pdp__price-unit" data-hnl-price-unit>incl. GST</span>
+        </div>
+        {%- if product_variant.compare_at_price > product_variant.price -%}
+          <s class="pdp__price-was" data-hnl-compare>{{ product_variant.compare_at_price | money }}</s>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%}
+        Liquid's form tag, not a hand-written <form>. That distinction is why the
+        Shop Pay button never appeared: {{ form | payment_button }} needs the
+        `form` object this tag creates, and a raw <form> leaves it nil, so the
+        filter silently rendered nothing. Dynamic checkout was enabled on the
+        store the whole time — the live product page renders the button fine.
+
+        The tag also supplies form_type and utf8 itself, so those hidden inputs
+        are gone.
+      {%- endcomment -%}
+      {%- form 'product', product, id: 'hnl-pdp-form', data-hnl-pdp-form: '' -%}
+        <input type="hidden" name="id" value="{{ product_variant.id }}" data-hnl-variant-id>
+
+        {%- for option in product.options_with_values -%}
+          {%- liquid
+            assign oname = option.name | downcase
+            assign style = 'pills'
+            if oname contains 'colour' or oname contains 'color'
+              assign style = 'swatch'
+            endif
+            if forloop.index == hl_option_index
+              assign style = 'seg'
+            endif
+          -%}
+
+          <div class="pdp__opt" data-hnl-opt data-option-index="{{ forloop.index }}">
+            <span class="pdp__opt-label">{{ option.name }} <b data-hnl-opt-value>{{ option.selected_value }}</b></span>
+
+            {%- case style -%}
+              {%- when 'swatch' -%}
+                <div class="pdp__swatches">
+                  {%- for value in option.values -%}
+                    <button type="button"
+                            class="pdp__swatch {% if value == option.selected_value %}is-on{% endif %}"
+                            data-hnl-val="{{ value | escape }}"
+                            aria-label="{{ value | escape }}"
+                            style="background: {% render 'hnl-swatch-fill', value: value %}"></button>
+                  {%- endfor -%}
+                </div>
+
+              {%- when 'seg' -%}
+                <div class="pdp__seg" role="radiogroup" aria-label="Choose {{ option.name | downcase }}">
+                  {%- comment -%}
+                    "Both" still leads, because a single side cannot fasten to
+                    anything on its own, but it no longer carries a Recommended
+                    badge — the store sells all three as equal choices and the
+                    flag was steering the pick.
+                  {%- endcomment -%}
+                  {%- for value in option.values -%}
+                    {%- assign v = value | downcase -%}
+                    {%- if v == 'both' -%}
+                      <button type="button" class="pdp__seg-btn {% if value == option.selected_value %}is-on{% endif %}"
+                              role="radio" aria-checked="{% if value == option.selected_value %}true{% else %}false{% endif %}"
+                              data-hnl-val="{{ value | escape }}">
+                        <span class="pdp__seg-t">Both</span>
+                        <span class="pdp__seg-s">Complete set</span>
+                      </button>
+                    {%- endif -%}
+                  {%- endfor -%}
+                  {%- for value in option.values -%}
+                    {%- assign v = value | downcase -%}
+                    {%- unless v == 'both' -%}
+                      {%- comment -%}
+                        "Look" is a typo for "Loop" in the option values on
+                        Fire Retardant Adhesive. Corrected on screen only —
+                        data-hnl-val keeps the real value, because that is what
+                        the variant lookup matches on and what Shopify expects
+                        back at add-to-cart. Fixing the option value in admin
+                        would retire this branch.
+                      {%- endcomment -%}
+                      <button type="button" class="pdp__seg-btn {% if value == option.selected_value %}is-on{% endif %}"
+                              role="radio" aria-checked="{% if value == option.selected_value %}true{% else %}false{% endif %}"
+                              data-hnl-val="{{ value | escape }}">
+                        <span class="pdp__seg-t">{% if v == 'look' %}Loop{% else %}{{ value }}{% endif %}</span>
+                        <span class="pdp__seg-s">{% if v == 'hook' %}Stiff side{% elsif v == 'loop' or v == 'look' %}Soft side{% endif %}</span>
+                      </button>
+                    {%- endunless -%}
+                  {%- endfor -%}
+                </div>
+
+
+              {%- else -%}
+                <div class="pdp__pills">
+                  {%- for value in option.values -%}
+                    <button type="button" class="pdp__pill {% if value == option.selected_value %}is-on{% endif %}"
+                            data-hnl-val="{{ value | escape }}">{{ value }}</button>
+                  {%- endfor -%}
+                </div>
+            {%- endcase -%}
+          </div>
+        {%- endfor -%}
+
+        <div class="pdp__cta">
+          <div class="pdp__cta-row">
+            <div class="pdp__qty" role="group" aria-label="Quantity">
+              <button type="button" data-hnl-qty="-1" aria-label="Decrease quantity">&minus;</button>
+              <span aria-live="polite" data-hnl-qty-val>1</span>
+              <button type="button" data-hnl-qty="1" aria-label="Increase quantity">+</button>
+            </div>
+            <input type="hidden" name="quantity" value="1" data-hnl-qty-input>
+            <button type="submit" class="btn btn--primary pdp__add" data-hnl-add
+                    {% unless product_variant.available %}disabled{% endunless %}>
+              <span data-hnl-add-label>
+                {%- if product_variant.available -%}
+                  Add to cart &mdash; <span data-hnl-total>{{ product_variant.price | money }}</span>
+                {%- else -%}
+                  Sold out
+                {%- endif -%}
+              </span>
+            </button>
+            {%- comment -%}
+              The add now happens without a page load, so nothing announces it.
+              This says so once, for screen readers only.
+            {%- endcomment -%}
+            <p id="hnl-cart-live" class="visually-hidden" role="status" aria-live="polite"></p>
+          </div>
+
+          {%- comment -%}
+            Volume saving for the quantity currently chosen, filled by
+            applyBulk(). It sits OUTSIDE .pdp__cta-row on purpose: that row is
+            a flex line holding the stepper and the add button, so a third item
+            in it stole width from the button and wrapped its label to three
+            lines. .pdp__cta is a column, so here it gets its own full-width
+            line beneath. Starts hidden so it never flashes an empty row.
+          {%- endcomment -%}
+          <p class="pdp__bulknote" data-hnl-bulk-note hidden></p>
+
+          {%- comment -%}
+            Buy it now — the cart's checkout, reached in one press instead of
+            three.
+
+            This stands in for {{ form | payment_button }}, which rendered "Buy
+            with Shop". That button handed the shopper to Shop's own flow and
+            asked them to sign in with a Shop account before it would accept the
+            order — a login wall in front of a purchase they had already decided
+            to make. Checkout from the cart never asks for that; it goes straight
+            to billing details. So this button does exactly what the cart does,
+            without the detour through the cart.
+
+            It submits the same form as Add to cart, so variant, quantity and
+            bulk pricing carry through unchanged. The only difference is where
+            the JS sends you once the item is in.
+
+            Shop Pay is untouched as a payment method — anyone who wants it can
+            still pick it at checkout. What is gone is being asked to log in
+            before you are allowed to buy. Turning on show_dynamic_checkout in
+            the theme editor restores the original button.
+          {%- endcomment -%}
+          {%- if section.settings.show_dynamic_checkout -%}
+            {{ form | payment_button }}
+          {%- else -%}
+            <button type="submit" class="pdp__buynow" data-hnl-buynow>
+              <span data-hnl-buynow-label>Buy it now</span>
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </button>
+          {%- endif -%}
+        </div>
+      {%- endform -%}
+
+      <div class="pdp__policies">
+        <a href="/pages/shipping-delivery"><span class="pdp__tico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6h11v11H2zM13 9h4l3 3v5h-7"/><circle cx="6" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg></span>Shipping</a>
+        <a href="/pages/return-policy"><span class="pdp__tico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8m0-5v5h5"/></svg></span>Returns &amp; Exchanges</a>
+      </div>
+    </div>
+  </div>
+
+  {%- comment -%} Buy More & Save — the live store's volume ladder. {%- endcomment -%}
+  {%- if section.settings.show_bulk -%}
+    <section class="pdp__bulk" aria-labelledby="bms-h">
+      <div class="wrap">
+        <div class="bms">
+          <div class="bms__top">
+            <span class="bms__eyebrow">{{ section.settings.bulk_eyebrow }}</span>
+            <h2 id="bms-h" class="bms__h">{{ section.settings.bulk_heading }}</h2>
+            <p class="bms__sub">{{ section.settings.bulk_sub }}</p>
+          </div>
+          {%- comment -%}
+            data-min / data-pct are what let the buy box price itself against
+            these tiers as the quantity changes, and what lets the matching
+            card light up. Parsed from the same strings the panel prints, so
+            editing a tier in the theme editor moves both together — there is
+            no second copy of the numbers to fall out of sync.
+          {%- endcomment -%}
+          <div class="bms__tiers" data-hnl-tiers>
+            {%- assign tiers = section.settings.bulk_tiers | newline_to_br | split: '<br />' -%}
+            {%- for tier in tiers -%}
+              {%- assign bits = tier | strip | split: '|' -%}
+              {%- if bits.size >= 2 -%}
+                {%- assign tmin = bits[0] | strip | replace: 'Buy ', '' | replace: '+', '' | replace: ' rolls', '' | strip -%}
+                {%- assign tpct = bits[1] | strip | replace: '%', '' | strip -%}
+                <div class="bms__tier {% if forloop.last %}is-best{% endif %}"
+                     style="--i: {{ forloop.index0 }}"
+                     data-min="{{ tmin }}" data-pct="{{ tpct }}">
+                  {%- if forloop.last -%}<span class="bms__ribbon">Best value</span>{%- endif -%}
+                  <span class="bms__qty">{{ bits[0] | strip }}</span>
+                  <span class="bms__pct">{{ bits[1] | strip }}</span>
+                  <span class="bms__lbl">off</span>
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </div>
+
+        <ul class="bms__trust">
+          <li><span class="bms__tico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6h11v11H2zM13 9h4l3 3v5h-7"/><circle cx="6" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg></span><span class="bms__tcopy"><b>Fast Australian shipping</b><em>Speedy delivery Australia-wide</em></span></li>
+          <li><span class="bms__tico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10.5" width="15" height="10" rx="2"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/></svg></span><span class="bms__tcopy"><b>Secured payment</b><em>Safe checkout with SSL encryption</em></span></li>
+          <li><span class="bms__tico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8m0-5v5h5"/></svg></span><span class="bms__tcopy"><b>Easy returns</b><em>{{ section.settings.returns_note }}</em></span></li>
+        </ul>
+      </div>
+    </section>
+  {%- endif -%}
+
+  <div class="pdp__lower">
+    <div class="wrap pdp__cols pdp__cols--single">
+      <div class="pdp__main-col">
+        <section class="pdp__block">
+          <h2>Specifications</h2>
+          <table class="pdp__spec">
+            <tbody>
+              <tr><th>Brand</th><td>{{ product.vendor | default: shop.name }}</td></tr>
+              <tr><th>SKU</th><td data-hnl-sku>{{ product_variant.sku }}</td></tr>
+              {%- for option in product.options_with_values -%}
+                <tr><th>{{ option.name }}</th><td>{{ option.values | join: ', ' }}</td></tr>
+              {%- endfor -%}
+              {%- if product.type != blank -%}<tr><th>Type</th><td>{{ product.type }}</td></tr>{%- endif -%}
+              <tr><th>Availability</th><td data-hnl-avail>{% if product_variant.available %}In stock{% else %}Out of stock{% endif %}</td></tr>
+            </tbody>
+          </table>
+          {%- comment -%}
+            Guarded: with the note cleared, an unguarded <p> still rendered an
+            empty paragraph carrying its own margin, leaving a gap under the
+            spec table. The setting is kept so a note can be put back from the
+            theme editor without a deploy.
+          {%- endcomment -%}
+          {%- if section.settings.spec_note != blank -%}
+            <p class="pdp__spec-note">{{ section.settings.spec_note }}</p>
+          {%- endif -%}
+        </section>
+
+        {%- if product.description != blank -%}
+          <section class="pdp__block">
+            <h2>Description</h2>
+            <div class="pdp__rte">{% render 'hnl-copy-rules', html: product.description, handle: product.handle %}</div>
+            {%- comment -%}
+              In-use photography sits with the description's own "Common
+              Applications" copy rather than in a section of its own — see the
+              note in the snippet.
+
+              Specifications now precedes this block. With Description first,
+              the photos landed directly above the "Specifications" heading and
+              read as though they illustrated the spec table. Ending the block
+              with them, followed by the FAQs, keeps them attached to the
+              applications copy they belong to.
+            {%- endcomment -%}
+            {% render 'hnl-product-applications', product: product %}
+          </section>
+        {%- endif -%}
+
+
+        {%- comment -%}
+          The store's real FAQs, per product. Section blocks below act as a
+          fallback for a product that has none of its own — empty by default,
+          because the live store shows nothing for those four products and
+          borrowing another product's answers would put words in its mouth.
+        {%- endcomment -%}
+        {%- capture product_faqs -%}{% render 'hnl-product-faqs', product: product %}{%- endcapture -%}
+        {%- if product_faqs contains 'pdp__faq-item' -%}
+          {{ product_faqs }}
+        {%- elsif section.blocks.size > 0 -%}
+          <section class="pdp__block">
+            <h2>Questions, answered</h2>
+            <div class="pdp__faq">
+              {%- for block in section.blocks -%}
+                {%- if block.type == 'faq' -%}
+                  <div class="pdp__faq-item {% if forloop.first %}is-open{% endif %}" {{ block.shopify_attributes }}>
+                    <button type="button" data-hnl-faq aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}">
+                      {{ block.settings.q }}<span aria-hidden="true">{% if forloop.first %}&minus;{% else %}+{% endif %}</span>
+                    </button>
+                    <p {% unless forloop.first %}hidden{% endunless %}>{{ block.settings.a }}</p>
+                  </div>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          </section>
+        {%- endif -%}
+
+        {%- comment -%}
+          The full review list and the "Write a review" button. Judge.me looks
+          for id="judgeme_product_reviews" specifically, and needs the product
+          id and title to load reviews and to attribute a new one — an anchor
+          named "reviews" with only data-id rendered nothing at all.
+        {%- endcomment -%}
+        {%- comment -%}
+          Reviews. On this store Judge.me's review widget is an APP BLOCK, not a
+          manual div — the live page renders it inside a shopify-app-block with
+          a data-block-id and its own entry point. A hand-written
+          .jdgm-review-widget has nothing to attach to, which is why the list
+          and the "Write a review" button never appeared.
+
+          The section accepts @app blocks now, so Judge.me (or any review app)
+          drops in here from the theme editor. The manual div is kept as a
+          fallback for when no app block has been added, so the anchor is never
+          empty.
+        {%- endcomment -%}
+        <div id="reviews" class="pdp__reviews">
+          {%- assign has_app_block = false -%}
+          {%- for block in section.blocks -%}
+            {%- if block.type == '@app' -%}{%- assign has_app_block = true -%}{%- endif -%}
+          {%- endfor -%}
+
+          {%- if has_app_block -%}
+            {%- for block in section.blocks -%}
+              {%- if block.type == '@app' -%}
+                {% render block %}
+              {%- endif -%}
+            {%- endfor -%}
+          {%- else -%}
+            <div id="judgeme_product_reviews"
+                 class="jdgm-widget jdgm-review-widget"
+                 data-product-title="{{ product.title | escape }}"
+                 data-id="{{ product.id }}"
+                 data-product-id="{{ product.id }}">{{ product.metafields.judgeme.widget }}</div>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+
+    {%- assign related = collections[section.settings.related_collection].products | default: collections.all.products -%}
+    {%- if related.size > 1 -%}
+      <div class="wrap pdp__related">
+        <div class="pdp__related-head">
+          <h2>Related products</h2>
+          <a href="{{ routes.all_products_collection_url }}" class="pdp__related-all">Shop all products &rarr;</a>
+        </div>
+        <div class="pdp__related-grid">
+          {%- assign shown = 0 -%}
+          {%- for item in related -%}
+            {%- if item.handle != product.handle and shown < 4 -%}
+              {%- assign shown = shown | plus: 1 -%}
+              {% render 'hnl-product-card', product: item %}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+
+  {%- comment -%}
+    Sticky dock. Submits the same form above via its form attribute, so there is
+    exactly one source of truth for the selected variant and quantity.
+  {%- endcomment -%}
+  <div class="pdp__dock" data-hnl-dock role="region" aria-label="Add to cart">
+    <div class="pdp__dock-inner">
+      <div class="pdp__dock-info">
+        <span class="pdp__dock-thumb">
+          {%- if product.featured_image -%}
+            <img src="{{ product.featured_image | image_url: width: 160 }}" alt="" width="160" height="160" loading="lazy">
+          {%- endif -%}
+        </span>
+        <span class="pdp__dock-meta">
+          <b class="pdp__dock-name">{{ product.title }}</b>
+          <span class="pdp__dock-variant" data-hnl-dock-variant>{{ product_variant.title }}</span>
+          <span class="pdp__dock-mprice"><b data-hnl-total>{{ product_variant.price | money }}</b> incl. GST</span>
+        </span>
+      </div>
+
+      <div class="pdp__dock-actions">
+        <span class="pdp__dock-price"><b data-hnl-total>{{ product_variant.price | money }}</b><em>incl. GST</em></span>
+        <div class="pdp__dock-qty" role="group" aria-label="Quantity">
+          <button type="button" data-hnl-qty="-1" aria-label="Decrease quantity">&minus;</button>
+          <span aria-live="polite" data-hnl-qty-val>1</span>
+          <button type="button" data-hnl-qty="1" aria-label="Increase quantity">+</button>
+        </div>
+        <button type="submit" form="hnl-pdp-form" class="btn btn--primary pdp__dock-add" data-hnl-add
+                {% unless product_variant.available %}disabled{% endunless %}>
+          <svg class="pdp__dock-cart" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M6 6 5 3H2"/></svg>Add to cart
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="application/json" data-hnl-variants>
+  {{ product.variants | json }}
+</script>
+
+<script>
+(function () {
+  var root = document.querySelector('.pdp');
+  if (!root) return;
+
+  var form     = root.querySelector('[data-hnl-pdp-form]');
+  var variants = JSON.parse(root.parentNode.querySelector('[data-hnl-variants]')
+                 ? root.parentNode.querySelector('[data-hnl-variants]').textContent
+                 : document.querySelector('[data-hnl-variants]').textContent);
+  var optGroups = [].slice.call(root.querySelectorAll('[data-hnl-opt]'));
+  var qty = 1;
+  var userPicked = false;   /* has the shopper touched an option control yet? */
+
+  var money = function (cents) {
+    return '$' + (cents / 100).toFixed(2);
+  };
+
+  function selected() {
+    return optGroups.map(function (g) {
+      var on = g.querySelector('.is-on');
+      return on ? on.getAttribute('data-hnl-val') : null;
+    });
+  }
+
+  function findVariant(opts) {
+    for (var i = 0; i < variants.length; i++) {
+      var v = variants[i], ok = true;
+      for (var j = 0; j < opts.length; j++) {
+        if (opts[j] !== null && v.options[j] !== opts[j]) { ok = false; break; }
+      }
+      if (ok) return v;
+    }
+    return null;
+  }
+
+  function setAll(sel, fn) {
+    [].forEach.call(root.querySelectorAll(sel), fn);
+  }
+
+  function render() {
+    var opts = selected();
+    var v = findVariant(opts);
+
+    /* Update every label to the value actually chosen. */
+    optGroups.forEach(function (g) {
+      var on = g.querySelector('.is-on');
+      var lbl = g.querySelector('[data-hnl-opt-value]');
+      if (on && lbl) lbl.textContent = on.getAttribute('data-hnl-val');
+      [].forEach.call(g.querySelectorAll('[role="radio"]'), function (b) {
+        b.setAttribute('aria-checked', b.classList.contains('is-on') ? 'true' : 'false');
+      });
+    });
+
+    if (!v) return;
+
+    root.querySelector('[data-hnl-variant-id]').value = v.id;
+    setAll('[data-hnl-sku]', function (e) { e.textContent = v.sku || '—'; });
+    setAll('[data-hnl-avail]', function (e) { e.textContent = v.available ? 'In stock' : 'Out of stock'; });
+    /* the gallery flag only ever claims stock — pull it the moment a sold-out
+       variant is selected, so it can never contradict the buy button */
+    setAll('[data-hnl-flag]', function (e) { e.hidden = !v.available; });
+    setAll('[data-hnl-total]', function (e) { e.textContent = money(v.price * qty); });
+
+    var price = root.querySelector('[data-hnl-price]');
+    if (price) price.textContent = money(v.price);
+
+    var dockVar = root.querySelector('[data-hnl-dock-variant]');
+    if (dockVar) dockVar.textContent = v.title;
+
+    syncVariantImage(v);
+
+    setAll('[data-hnl-add]', function (b) {
+      b.disabled = !v.available;
+      var lbl = b.querySelector('[data-hnl-add-label]');
+      /* While the button is showing the green "View cart" confirmation, leave
+         its label alone — a price re-render here would silently wipe it. */
+      if (lbl && !added) {
+        lbl.innerHTML = v.available
+          ? 'Add to cart &mdash; <span data-hnl-total>' + money(v.price * qty) + '</span>'
+          : 'Sold out';
+      }
+    });
+
+    /* Put the variant in the URL only once the shopper has actually chosen one.
+       Writing it on first paint rewrote a clean /products/<handle> into
+       ?variant=… before anyone had touched a control — which made every share,
+       copy or bookmark of a product page carry a variant nobody picked. Now the
+       URL stays clean until a size, colour or side is selected, and from then on
+       it tracks the selection so a shared link opens on the same variant. */
+    /* After the label rewrite above, which recreates the total span with the
+       undiscounted figure — this is what puts the tier price back. */
+    applyBulk(v);
+
+    if (userPicked && history.replaceState) {
+      var u = new URL(window.location.href);
+      u.searchParams.set('variant', v.id);
+      history.replaceState({}, '', u);
+    }
+
+  }
+
+  /* Add to cart — stay on the page, then offer the cart.
+
+     The form still POSTs natively without JS, so the no-script path keeps
+     working; this only upgrades it. On success both buttons (inline and the
+     sticky dock) turn green and read "View cart", and the next click goes to
+     the cart instead of adding a second one — which is the mistake the old
+     behaviour invited, since it navigated away and people came back and
+     clicked again.
+
+     Picking a different size, colour or side resets them: at that point the
+     shopper is looking at a variant they have not added, so a green "View
+     cart" would be lying about what is in the basket. */
+  {%- comment -%}
+    Volume pricing, shown while the shopper is still choosing.
+
+    The four tiers are real automatic discounts in Shopify (verified: 5+ =5%,
+    10+ =10%, 20+ =20%, 50+ =30%, all active), and they did apply — but only
+    at the cart, so raising the quantity here changed nothing on screen and
+    the "Buy more & save" panel below read as decoration. Someone typing 10
+    had no reason to believe the promise until two pages later.
+
+    Tiers are read from the panel's own data attributes, so the numbers cannot
+    drift apart.
+
+    Called an estimate deliberately. Shopify applies these across the whole
+    order, so a shopper with five of two products also qualifies — this box
+    can only speak for the line in front of it, and the cart remains the
+    authority.
+  {%- endcomment -%}
+  var tierEls = [].slice.call(root.querySelectorAll('[data-hnl-tiers] .bms__tier'));
+  var tiers = tierEls.map(function (el) {
+    return { el: el,
+             min: parseInt(el.getAttribute('data-min'), 10) || 0,
+             pct: parseFloat(el.getAttribute('data-pct')) || 0 };
+  }).filter(function (t) { return t.min > 0 && t.pct > 0; })
+    .sort(function (a, b) { return a.min - b.min; });
+
+  function tierFor(n) {
+    var hit = null;
+    tiers.forEach(function (t) { if (n >= t.min) hit = t; });
+    return hit;
+  }
+
+  function applyBulk(v) {
+    var t = tierFor(qty);
+    var full = v.price * qty;
+    var now = t ? Math.round(full * (1 - t.pct / 100)) : full;
+
+    tiers.forEach(function (x) { x.el.classList.toggle('is-active', !!t && x.min === t.min); });
+
+    setAll('[data-hnl-total]', function (e) { e.textContent = money(now); });
+
+    /* Three parts, always in the same order and the same places: a badge
+       carrying the rate, one line of plain language, and a quiet footnote.
+       Built as elements rather than a sentence so the numbers can change
+       without the layout shifting. */
+    var note = root.querySelector('[data-hnl-bulk-note]');
+    if (note) {
+      if (t) {
+        note.className = 'pdp__bulknote is-on';
+        note.innerHTML =
+          '<span class="pdp__bulknote-badge">' + t.pct + '% off</span>' +
+          '<span class="pdp__bulknote-main">You save <b>' + money(full - now) + '</b> on ' + qty + '</span>' +
+          '<span class="pdp__bulknote-sub">Applied automatically at checkout</span>';
+        note.hidden = false;
+      } else if (tiers.length) {
+        var next = tiers[0];
+        var away = next.min - qty;
+        note.className = 'pdp__bulknote is-next';
+        note.innerHTML =
+          '<span class="pdp__bulknote-badge">' + next.pct + '% off</span>' +
+          '<span class="pdp__bulknote-main">Add <b>' + away + ' more</b> to unlock</span>' +
+          '<span class="pdp__bulknote-sub">Volume pricing, no code needed</span>';
+        note.hidden = false;
+      } else {
+        note.hidden = true;
+      }
+    }
+    return now;
+  }
+
+  /* The confirmation is a flash, not a mode: green "Added to cart" for a beat,
+     then straight back to "Add to cart". It used to latch into a "View cart"
+     button, which meant the primary action on the page stopped being "add" —
+     and the drawer that opens alongside already offers the cart and checkout,
+     so the button never needed to carry that job. */
+  var added = false;
+  var addedTimer = null;
+  var ADDED_MS = 2200;
+
+  function setAdded(on) {
+    added = on;
+    setAll('[data-hnl-add]', function (b) {
+      b.classList.toggle('is-added', on);
+      var lbl = b.querySelector('[data-hnl-add-label]');
+      if (on) {
+        if (!b.hasAttribute('data-hnl-add-restore') && lbl) {
+          b.setAttribute('data-hnl-add-restore', lbl.innerHTML);
+        }
+        if (lbl) lbl.innerHTML = '&#10003; Added to cart';
+        else b.innerHTML = '&#10003; Added to cart';
+      } else if (b.hasAttribute('data-hnl-add-restore')) {
+        if (lbl) lbl.innerHTML = b.getAttribute('data-hnl-add-restore');
+        b.removeAttribute('data-hnl-add-restore');
+      }
+    });
+
+    clearTimeout(addedTimer);
+    if (on) {
+      var live = document.getElementById('hnl-cart-live');
+      if (live) live.textContent = 'Added to cart.';
+      /* Re-render after reverting so the label picks up the current variant
+         price, in case the shopper changed quantity while it was green. */
+      addedTimer = setTimeout(function () { setAdded(false); render(); }, ADDED_MS);
+    }
+  }
+
+  {%- comment -%}
+    Which button submitted decides where the shopper lands: Add to cart opens
+    the drawer, Buy it now goes to checkout. e.submitter carries that, but it is
+    missing on older Safari, so the press is also recorded on the way in.
+  {%- endcomment -%}
+  var buyNowPressed = false;
+  setAll('[data-hnl-buynow]', function (b) {
+    b.addEventListener('click', function () { buyNowPressed = true; });
+  });
+
+  function setBuyNowBusy(on) {
+    setAll('[data-hnl-buynow]', function (b) {
+      var lbl = b.querySelector('[data-hnl-buynow-label]');
+      if (on) {
+        if (lbl && !b.hasAttribute('data-hnl-buynow-restore')) {
+          b.setAttribute('data-hnl-buynow-restore', lbl.innerHTML);
+          lbl.innerHTML = 'Taking you to checkout…';
+        }
+        b.disabled = true;
+      } else {
+        if (lbl && b.hasAttribute('data-hnl-buynow-restore')) {
+          lbl.innerHTML = b.getAttribute('data-hnl-buynow-restore');
+          b.removeAttribute('data-hnl-buynow-restore');
+        }
+        b.disabled = false;
+      }
+    });
+  }
+
+  if (form) {
+    form.addEventListener('submit', function (e) {
+      /* Second press: honour the label and go to the cart. */
+      /* No special case while the confirmation is showing — pressing again
+         adds another one, which is what a button reading "Add to cart" should
+         do. The drawer is where the cart and checkout live. */
+      var toCheckout = buyNowPressed ||
+        !!(e.submitter && e.submitter.hasAttribute('data-hnl-buynow'));
+      buyNowPressed = false;
+
+      if (!window.fetch) return;                 /* let the browser post it */
+      e.preventDefault();
+
+      {%- comment -%}
+        This used to run three round trips before anything happened —
+        /cart/add.js, then /cart.js for the badge, then the drawer's own
+        /cart.js — with every add button disabled for the whole sequence. That
+        is why it felt like the press did nothing.
+
+        The confirmation is now shown on the press itself, before the network
+        is touched, and the redundant /cart.js is gone: the drawer already
+        updates the header badge when it renders. Two round trips became one,
+        and the feedback is immediate.
+
+        Buttons are no longer disabled. The green state is the feedback, and
+        disabling was what made a slow connection feel broken.
+      {%- endcomment -%}
+      /* "Added to cart" would be the wrong promise on the way to checkout — the
+         shopper is leaving this page, so that button says where it is going. */
+      if (toCheckout) { setBuyNowBusy(true); } else { setAdded(true); }
+
+      fetch('/cart/add.js', {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' },
+        credentials: 'same-origin'
+      })
+        .then(function (r) { return r.ok ? r.json() : r.json().then(function (j) { throw new Error(j.description || 'Could not add to cart'); }); })
+        .then(function () {
+          /* Straight to checkout — the same destination as the cart drawer's
+             checkout button, just without the stop in between. */
+          if (toCheckout) { window.location.href = '/checkout'; return; }
+          /* The drawer reads /cart.js itself and refreshes the badge from the
+             same payload, so the two cannot disagree. */
+          document.dispatchEvent(new CustomEvent('hnl:cart:open'));
+        })
+        .catch(function (err) {
+          /* Never strand the shopper: undo the optimistic confirmation and
+             fall back to a real form post. */
+          setAdded(false);
+          setBuyNowBusy(false);
+          console.warn('[hnl] add to cart failed, posting form', err);
+          form.submit();
+        });
+    });
+  }
+
+  /* Option buttons */
+  optGroups.forEach(function (g) {
+    g.addEventListener('click', function (e) {
+      var btn = e.target.closest('[data-hnl-val]');
+      if (!btn) return;
+      [].forEach.call(g.querySelectorAll('[data-hnl-val]'), function (b) { b.classList.remove('is-on'); });
+      btn.classList.add('is-on');
+      userPicked = true;
+      if (added) setAdded(false);
+      render();
+    });
+  });
+
+  /* Quantity — the two steppers (inline and dock) stay in lockstep. */
+  setAll('[data-hnl-qty]', function (b) {
+    b.addEventListener('click', function () {
+      qty = Math.max(1, qty + parseInt(b.getAttribute('data-hnl-qty'), 10));
+      setAll('[data-hnl-qty-val]', function (e) { e.textContent = qty; });
+      root.querySelector('[data-hnl-qty-input]').value = qty;
+      render();
+    });
+  });
+
+  /* Gallery: the shopper clicks a thumb, or picks a colour. */
+  var main = root.querySelector('[data-hnl-main]');
+  var thumbs = [].slice.call(root.querySelectorAll('[data-hnl-thumb]'));
+  var gi = 0, touched = false;
+
+  function showImage(n) {
+    if (!thumbs[n] || !main) return;
+    gi = n;
+    main.src = thumbs[n].getAttribute('data-full');
+    thumbs.forEach(function (t, k) { t.classList.toggle('is-on', k === n); });
+  }
+
+  thumbs.forEach(function (t, n) {
+    t.addEventListener('click', function () { touched = true; showImage(n); });
+  });
+
+  /* Picking Black or White should show that colour. Shopify assigns an image
+     per variant, so the variant's own featured_image is the source of truth —
+     matched to a thumb by image id rather than by URL, because the thumb URL is
+     a resized derivative and would never compare equal to the variant's.
+
+     Variants without their own image leave the gallery alone: on a product
+     photographed once, changing size or hook/loop should not reset what the
+     shopper is looking at. */
+  function syncVariantImage(v) {
+    if (!v || !v.featured_image || !main) return;
+    var id = String(v.featured_image.id);
+    for (var i = 0; i < thumbs.length; i++) {
+      if (thumbs[i].getAttribute('data-image-id') === id) { showImage(i); return; }
+    }
+  }
+
+  /* The gallery used to auto-advance every 3.5s until the shopper clicked a
+     thumb. Removed: on a product page the image is something you study, and
+     swapping it out from under someone mid-look is the opposite of helpful —
+     it also fought the variant sync below, which changes the image on purpose.
+     The image now only ever changes when the shopper asks it to, by clicking a
+     thumb or picking a colour. */
+
+  /* FAQ accordion */
+  setAll('[data-hnl-faq]', function (b) {
+    b.addEventListener('click', function () {
+      var item = b.parentNode;
+      var open = item.classList.toggle('is-open');
+      b.setAttribute('aria-expanded', open ? 'true' : 'false');
+      b.querySelector('span').textContent = open ? '−' : '+';
+      var p = item.querySelector('p');
+      if (p) p.hidden = !open;
+    });
+  });
+
+  /* Dock rides between the real CTA and the footer, never over either. */
+  var dock = root.querySelector('[data-hnl-dock]');
+  var cta = root.querySelector('.pdp__cta');
+  var footer = document.querySelector('.ft') || document.querySelector('footer');
+  var pastCta = false, atFooter = false;
+
+  function syncDock() {
+    var show = pastCta && !atFooter;
+    dock.classList.toggle('is-shown', show);
+    /* Tell the floating call/chat buttons to stand down on mobile, where the
+       dock would otherwise land on top of them. */
+    document.body.classList.toggle('dock-open', show);
+  }
+
+  if ('IntersectionObserver' in window && cta) {
+    new IntersectionObserver(function (en) {
+      pastCta = en[0].boundingClientRect.top < 0;
+      syncDock();
+    }, { threshold: 0 }).observe(cta);
+
+    if (footer) {
+      new IntersectionObserver(function (en) {
+        atFooter = en[0].isIntersecting;
+        syncDock();
+      }, { threshold: 0.05 }).observe(footer);
+    }
+  }
+
+  /* Hide the "No reviews yet" fallback once Judge.me paints a real badge. */
+  var none = root.querySelector('[data-hnl-norating]');
+  var badge = root.querySelector('.jdgm-preview-badge');
+  if (none && badge && 'MutationObserver' in window) {
+    new MutationObserver(function () {
+      if (badge.textContent.trim()) none.style.display = 'none';
+    }).observe(badge, { childList: true, subtree: true });
+  }
+
+  render();
+})();
+</script>
+
+{% schema %}
+{
+  "name": "HooknLoop product",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Australian stock · fast dispatch" },
+    { "type": "text", "id": "stock_flag", "label": "Gallery flag", "default": "In stock · ships in 1–2 days" },
+    { "type": "collection", "id": "related_collection", "label": "Related products from", "info": "Defaults to all products." },
+    { "type": "textarea", "id": "spec_note", "label": "Specifications note", "info": "Optional. Left empty so nothing shows under the spec table; add text here to bring a note back." },
+    { "type": "checkbox", "id": "show_dynamic_checkout", "label": "Show Shop Pay / \"Buy with Shop\" buttons", "default": false, "info": "Off by default. \"Buy with Shop\" makes shoppers sign in to a Shop account before it will accept the order; the normal cart checkout asks for billing details directly and needs no login." },
+
+    { "type": "header", "content": "Buy more & save" },
+    { "type": "checkbox", "id": "show_bulk", "label": "Show the volume ladder", "default": true },
+    { "type": "text", "id": "bulk_eyebrow", "label": "Eyebrow", "default": "Trade & bulk pricing" },
+    { "type": "text", "id": "bulk_heading", "label": "Heading", "default": "Buy more & save" },
+    { "type": "textarea", "id": "bulk_sub", "label": "Subheading", "default": "The more you order, the less you pay — volume discounts apply automatically at checkout, no code needed." },
+    { "type": "textarea", "id": "bulk_tiers", "label": "Tiers", "info": "One per line: Quantity | Discount. Set the matching discounts in Shopify Discounts — this table only displays them.", "default": "Buy 5+ | 5%\nBuy 10+ | 10%\nBuy 20+ | 20%\nBuy 50+ | 30%" },
+    { "type": "text", "id": "returns_note", "label": "Returns note", "default": "14-day returns policy" }
+  ],
+  "blocks": [
+    { "type": "@app" },
+    {
+      "type": "faq",
+      "name": "FAQ",
+      "settings": [
+        { "type": "text", "id": "q", "label": "Question" },
+        { "type": "textarea", "id": "a", "label": "Answer" }
+      ]
+    }
+  ],
+  "max_blocks": 12
+}
+{% endschema %}

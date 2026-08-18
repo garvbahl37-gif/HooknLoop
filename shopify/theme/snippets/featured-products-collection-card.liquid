@@ -1,0 +1,89 @@
+{% liquid
+  assign content_position = section.settings.desktop_content_position
+  case content_position
+    when 'top_left'
+      assign content_position_class = ''
+    when 'top_center'
+      assign content_position_class = 'd-flex justify-content-center text-center'
+    when 'top_right'
+      assign content_position_class = 'd-flex justify-content-end text-right'
+    when 'middle_left'
+      assign content_position_class = 'd-flex align-items-center text-left'
+    when 'middle_center'
+      assign content_position_class = 'd-flex justify-content-center align-items-center text-center'
+    when 'middle_right'
+      assign content_position_class = 'd-flex justify-content-end align-items-center text-right'
+    when 'bottom_left'
+      assign content_position_class = 'd-flex align-items-end text-left'
+    when 'bottom_center'
+      assign content_position_class = 'd-flex justify-content-center  align-items-end text-center'
+    when 'bottom_right'
+      assign content_position_class = 'd-flex justify-content-end  align-items-end text-right'
+  endcase
+
+  case section.settings.card_button_type
+    when 'primary'
+      assign button_class = 'button button--primary'
+    when 'secondary'
+      assign button_class = 'button button--secondary'
+    when 'icon'
+      assign button_class = 'link with--icon'
+    else
+      assign button_class = 'link'
+  endcase
+%}
+<a
+  {% if collection.all_products_count > 0 %}
+    href="{{ collection.url }}"
+  {% endif %}
+  class="{% if image != blank %} card--media{% endif %} featured--collection-card {% if corner_radius %}collection-card-radius-true{% endif %}"
+>
+  {%- if image != blank -%}
+    <div class="featured--collection-card--media-wrapper {{ image_width }}">
+      <div
+        class="media featured--collection-card-media overflow-hidden"
+        style="--image-padding-bottom: {{ 1 | divided_by: image.aspect_ratio | times: 100 }}%;"
+      >
+        <img
+          srcset="
+            {%- if image.width >= 165 -%}{{ image | img_url: '165x' }} 165w,{%- endif -%}
+            {%- if image.width >= 360 -%}{{ image | img_url: '360x' }} 360w,{%- endif -%}
+            {%- if image.width >= 535 -%}{{ image | img_url: '535x' }} 535w,{%- endif -%}
+            {%- if image.width >= 750 -%}{{ image | img_url: '750x' }} 750w,{%- endif -%}
+            {%- if image.width >= 1000 -%}{{ image | img_url: '1000x' }} 1000w,{%- endif -%}
+            {%- if image.width >= 1500 -%}{{ image | img_url: '1500x' }} 1500w,{%- endif -%}
+          "
+          src="{{ image | img_url: '1500x' }}"
+          sizes="(min-width: {{ settings.container_lg_width }}px) {{ settings.container_lg_width | minus: 100 | divided_by: 3 }}px, (min-width: 750px) calc((100vw - 130px) / 3), calc(100vw - 30px)"
+          alt="{{ collection.title | escape }}"
+          height="{{ image.height }}"
+          width="{{ image.width }}"
+          loading="lazy"
+        >
+      </div>
+    </div>
+  {%- else -%}
+    <div class="placeholder_svg_parent" style="padding-bottom: 100%">
+      {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+      {{ 'collection-' | append: current | placeholder_svg_tag: 'placeholder-svg-2' }}
+    </div>
+  {%- endif -%}
+  <div class="featured--collection-card-content  {{ content_position_class }} color-{{ section.settings.card_color_scheme }}">
+    <div class="featured--collection-card-content-inner">
+      {% if section.settings.card_heading != blank %}
+        <h3>{{ section.settings.card_heading }}</h3>
+      {% endif %}
+      {% if section.settings.card_text != blank %}
+        <p>{{ section.settings.card_text }}</p>
+      {% endif %}
+      {% if section.settings.card_button_label != blank %}
+        <button class="{{ button_class }} {% if section.settings.card_button_icon %} button--with-icon{% endif %}">
+          {{ section.settings.card_button_label }}
+          {% if section.settings.card_button_icon %}
+            <span class="button--icon button--icon-right"> {% render 'icon-arrow-right' %} </span>
+          {% endif %}
+        </button>
+      {% endif %}
+    </div>
+  </div>
+</a>

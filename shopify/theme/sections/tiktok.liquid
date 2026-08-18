@@ -1,0 +1,314 @@
+{{ 'component-grid.css' | asset_url | stylesheet_tag }}
+{{ 'component-mobile-scrolling.css' | asset_url | stylesheet_tag }}
+{{ 'section-title.css' | asset_url | stylesheet_tag }}
+
+<style>
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.mobile_padding_top }}px;
+      padding-bottom: {{ section.settings.mobile_padding_bottom }}px;
+    }
+    @media screen and (min-width: 750px) {
+      .section-{{ section.id }}-padding {
+        padding-top: {{ section.settings.padding_top }}px;
+        padding-bottom: {{ section.settings.padding_bottom }}px;
+      }
+    }
+      :root{
+      --grid-desktop-vertical-spacing: 20px;
+      --grid-desktop-horizontal-spacing: 20px;
+      --grid-mobile-vertical-spacing: 20px;
+      --grid-mobile-horizontal-spacing: 20px;
+    }
+    .Tiktok__list--item blockquote {
+      border: none;
+      max-width: 100% !important;
+      min-width: 100% !important;
+      margin: 0;
+      padding: 0;
+  }
+</style>
+{%- liquid
+  assign productShowXl = section.settings.products_show_on_xl
+  assign productShowSm = section.settings.products_show_on_sm
+
+  assign grid = 'grid'
+  assign grid_item = 'grid__item'
+
+  assign container = ''
+  if section.settings.container == 'container'
+    assign container = 'container'
+  elsif section.settings.container == 'container-fluid'
+    assign container = 'container-fluid'
+  else
+    assign container = 'container-fluid px-0'
+  endif
+-%}
+
+{%- capture container_class -%}
+{{ grid }} grid--{{ productShowXl }}-col-desktop grid--{{ productShowSm }}-col-tablet-down
+{%- endcapture -%}
+
+<div class="Tiktok__section section-{{ section.id }}-padding">
+  <div class="{{ container }} {% unless section.settings.show_offset %}p-0{% endunless %}">
+    {% if section.settings.heading != blank or section.settings.subtitle != blank %}
+      <div class="section-heading text-{{ section.settings.text_center }}  {% if section.settings.border_line or section.settings.show_navigation_topbar %} mb-70 {% else %} mb-50{% endif %}">
+        {% if section.settings.heading_position == 'bottom' and section.settings.subtitle != blank %}
+          <span class="section-heading__sub_title">{{- section.settings.subtitle -}}</span>
+        {% endif %}
+        <h2 class="section-heading__title {% if section.settings.heading_position == "top" and section.settings.subtitle != blank and section.settings.border_line %}heading__space--bottom{% endif %} ">
+          {% if section.settings.border_line %}<span>{% endif %}
+          {{- section.settings.heading -}}
+          {% if section.settings.border_line %}</span>{% endif %}
+        </h2>
+        {% if section.settings.heading_position == 'top' and section.settings.subtitle != blank %}
+          <span class="section-heading__sub_title">{{- section.settings.subtitle -}}</span>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% if section.settings.mobile_stack == false %}
+      <div class="mobile--scoller">
+      <div class="mobile--scoller-inner">
+    {% endif %}
+
+    <div class="{{ container_class }}">
+      {%- for block in section.blocks -%}
+        {% case block.type %}
+          {% when 'tiktok' %}
+            {% comment %} Tiktok item {% endcomment %}
+            <div
+              class="Tiktok__list--item {{ grid_item }}"
+              {{ block.shopify_attributes }}
+            >
+              {{ block.settings.video_embed }}
+            </div>
+            {% comment %} Tiktok Item .\ {% endcomment %}
+        {% endcase %}
+      {% endfor %}
+    </div>
+
+    {% if section.settings.mobile_stack == false %}
+      </div>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% schema %}
+ {
+   "name": "Tiktok",
+   "settings": [
+      {
+        "type": "select",
+        "id": "container",
+        "label": "Page width",
+        "default": "container-fluid",
+        "options": [
+          {
+            "value": "container",
+            "label": "Boxed"
+          },
+          {
+            "value": "container-fluid",
+            "label": "Full width"
+          }
+        ]
+      },
+    {
+       "type": "checkbox",
+       "id": "show_offset",
+       "label": "Enable Offset (left & right)",
+       "default": true
+     },
+    {
+      "type": "header",
+      "content": "Section header"
+    },
+     {
+      "type": "inline_richtext",
+      "id": "subtitle",
+      "default": "Subtitle",
+      "label": "Subheading"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "default": "Tiktok",
+      "label": "t:sections.featured-collection.settings.title.label"
+    },
+    {
+      "type": "select",
+      "id": "heading_position",
+      "options": [
+        {
+          "value": "top",
+          "label": "Top"
+        },
+        {
+          "value": "bottom",
+          "label": "Bottom"
+        }
+      ],
+      "default": "bottom",
+      "label": "Heading position"
+    },
+    {
+      "type": "select",
+      "id": "text_center",
+      "options": [
+        {
+          "value": "right",
+          "label": "Right"
+        },
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        }
+      ],
+      "default": "center",
+      "label": "Alignment"
+    },
+    {
+       "type": "checkbox",
+       "id": "border_line",
+       "label": "Enable border line",
+       "default": true
+     },
+     {
+        "type": "header",
+        "content": "Layout"
+      },
+     {
+        "type": "select",
+        "id": "products_show_on_xl",
+        "label": "Number of columns on desktop",
+        "options": [
+          {
+            "value": "1",
+            "label": "1"
+          },
+          {
+            "value": "2",
+            "label": "2"
+          },
+          {
+            "value": "3",
+            "label": "3"
+          },
+          {
+            "value": "4",
+            "label": "4"
+          },
+          {
+            "value": "5",
+            "label": "5"
+          },
+          {
+            "value": "6",
+            "label": "6"
+          }
+        ],
+        "default": "5"
+      },
+     {
+        "type": "select",
+        "id": "products_show_on_sm",
+        "label": "Number of columns on mobile",
+        "options": [
+          {
+            "value": "1",
+            "label": "1"
+          },
+          {
+            "value": "2",
+            "label": "2"
+          }
+        ],
+        "default": "2"
+      },
+       {
+           "type": "checkbox",
+           "id": "mobile_stack",
+           "label": "Stack on mobile",
+           "default": false,
+           "info": "This is only applicable to the Grid layout."
+       },
+  {
+     "type": "header",
+     "content": "Section padding"
+   },
+   {
+         "type": "paragraph",
+         "content": "Desktop"
+       },
+       {
+         "type": "range",
+         "id": "padding_top",
+         "min": 0,
+         "max": 150,
+         "step": 5,
+         "unit": "px",
+         "label": "Padding top",
+         "default": 50
+       },
+       {
+         "type": "range",
+         "id": "padding_bottom",
+         "min": 0,
+         "max": 150,
+         "step": 5,
+         "unit": "px",
+         "label": "Padding bottom",
+         "default": 50
+       },
+	{
+         "type": "paragraph",
+         "content": "Mobile"
+       },
+	{
+         "type": "range",
+         "id": "mobile_padding_top",
+         "min": 0,
+         "max": 150,
+         "step": 5,
+         "unit": "px",
+         "label": "Padding top",
+         "default": 50
+       },
+       {
+         "type": "range",
+         "id": "mobile_padding_bottom",
+         "min": 0,
+         "max": 150,
+         "step": 5,
+         "unit": "px",
+         "label": "Padding bottom",
+         "default": 50
+       }
+],
+"blocks": [
+    {
+      "type": "tiktok",
+      "name": "Tiktok video",
+      "settings": [
+        {
+          "type": "html",
+          "id": "video_embed",
+          "label": "Video embed"
+        }
+      ]
+    }
+  ],
+"presets": [
+     {
+       "name": "Tiktok"
+     }
+   ],
+   "disabled_on": {
+    "groups": ["header","footer"]
+  }
+ }
+{% endschema %}

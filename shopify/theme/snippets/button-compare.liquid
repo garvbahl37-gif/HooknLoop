@@ -1,0 +1,25 @@
+{%- if product.handle != blank -%}
+  <compare-item>
+    <button
+      class="compare__button wishlist__button {{ className }}  {% if tooltip %} product--tooltip{% endif %}"
+      type="button"
+      aria-label="{{ 'products.product.add_to_compare' | t }}"
+      data-product-handle="{{ product.handle }}"
+      data-product-title="{{ product.title }}"
+    >
+      <span title="{{ 'products.product.add_to_compare' | t }}" class="add__wishlist">
+        {% render 'compare-icon' %}
+      </span>
+      <span class="loading__wishlist"></span>
+      <span title="{{ 'products.product.remove_from_compare' | t }}" class="remove__wishlist">
+        {% render 'compare-done' %}
+      </span>
+      {% if tooltip %}
+        <div class="product--tooltip-label {{ tooltip_position }}">
+          <span class="product__card--add-wishlist">{{ 'products.product.add_to_compare' | t }}</span>
+          <span class="product__card--remove-wishlist">{{ 'products.product.remove_from_compare' | t }}</span>
+        </div>
+      {% endif %}
+    </button>
+  </compare-item>
+{%- endif -%}

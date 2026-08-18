@@ -1,0 +1,26 @@
+.snow--fall {
+    position: relative;
+}
+.snow--fall:before {
+    position: absolute;
+    width: 100%;
+    content: "";
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    pointer-events: none;
+    background-color: #0000;
+}
+.snow--fall:before {
+    background-image: url(https://cdn.shopify.com/s/files/1/0669/6101/5032/files/snow-1.png?v=1697822697),url(https://cdn.shopify.com/s/files/1/0669/6101/5032/files/snow-2.png?v=1697822697),url(https://cdn.shopify.com/s/files/1/0669/6101/5032/files/snow-3.png?v=1697822697);
+    animation: snowfall 18s linear infinite;
+}
+@keyframes snowfall {
+ 0% {
+  background-position:0 0,0 0,0 0
+ }
+ 100% {
+  background-position:500px 1000px,400px 400px,300px 300px
+ }
+}

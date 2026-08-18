@@ -1,0 +1,370 @@
+{% comment %}
+  MY TAPE STORE — TAX INVOICE
+  Paste into: Shopify admin > Apps > Order Printer > Templates > (new template) "Invoice".
+
+  ONE THING TO FILL IN BEFORE YOU USE THIS
+  Put your ABN in the abn variable below. It is deliberately blank: an Australian
+  tax invoice over $82.50 must show the supplier ABN, and printing the wrong one
+  is worse than printing none, so the whole ABN line simply does not render until
+  you set it.
+
+  WHY THIS LOOKS DIFFERENT TO THE DEFAULT TEMPLATE
+  Order Printer output is paper and PDF, not a web page. So: no flexbox (the PDF
+  engine is unreliable with it — this uses tables for structure), hairline rules
+  instead of shadows, tabular figures so the money column aligns on the decimal,
+  and thead { display: table-header-group } so the column headings repeat when a
+  large trade order runs past one page.
+
+  Brand: ink #1f1f1f, red #df3c22, paper #f5f4f2, 7px radii — same tokens as the
+  storefront and the notification emails, so an invoice, a confirmation email and
+  the site all read as one company.
+{% endcomment %}
+
+{%- assign abn = "" -%}
+{%- assign accent = "#df3c22" -%}
+{%- assign ink = "#1f1f1f" -%}
+{%- assign muted = "#5b5b5b" -%}
+{%- assign hairline = "#e3e1dd" -%}
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Inter:wght@400;500;600&display=swap');
+
+  /* The stack falls back to system faces because the PDF renderer does not
+     always fetch webfonts; the layout must not depend on them arriving. */
+  .mts-inv, .mts-inv * {
+    font-family: "Inter", -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    box-sizing: border-box;
+  }
+  .mts-inv {
+    color: {{ ink }};
+    font-size: 12px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  .mts-inv h1, .mts-inv h2, .mts-inv .mts-num {
+    font-family: "Sora", "Inter", system-ui, sans-serif;
+  }
+
+  /* masthead */
+  .mts-mast { width: 100%; border-collapse: collapse; }
+  .mts-mast td { vertical-align: top; padding: 0; }
+  .mts-logo { height: 46px; width: auto; display: block; }
+  .mts-doctype {
+    font-family: "Sora", system-ui, sans-serif;
+    font-size: 21px; font-weight: 700; letter-spacing: 0.02em;
+    text-transform: uppercase; margin: 0 0 2px 0; color: {{ ink }};
+  }
+  .mts-meta { font-size: 11.5px; color: {{ muted }}; margin: 0; }
+  .mts-meta b { color: {{ ink }}; font-weight: 600; }
+  .mts-rule { height: 3px; background: {{ accent }}; margin: 14px 0 0 0; font-size: 0; line-height: 0; }
+
+  /* address grid */
+  .mts-addr { width: 100%; border-collapse: collapse; margin-top: 20px; }
+  .mts-addr td { vertical-align: top; padding: 0 26px 0 0; width: 50%; }
+  .mts-addr td:last-child { padding-right: 0; }
+  .mts-label {
+    font-family: "Sora", system-ui, sans-serif;
+    font-size: 9.5px; font-weight: 700; letter-spacing: 0.09em;
+    text-transform: uppercase; color: {{ accent }};
+    margin: 0 0 5px 0;
+  }
+  .mts-addr p { margin: 0; font-size: 11.5px; line-height: 1.55; color: {{ ink }}; }
+  .mts-addr .mts-co { font-weight: 600; }
+
+  /* line items */
+  .mts-items { width: 100%; border-collapse: collapse; margin-top: 24px; }
+  .mts-items thead { display: table-header-group; }   /* repeat headings across pages */
+  .mts-items tr { page-break-inside: avoid; }
+  .mts-items th {
+    font-family: "Sora", system-ui, sans-serif;
+    font-size: 9.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    color: {{ muted }}; text-align: left;
+    padding: 0 8px 7px 0; border-bottom: 1.5px solid {{ ink }};
+  }
+  .mts-items td { padding: 9px 8px 9px 0; border-bottom: 1px solid {{ hairline }}; vertical-align: top; }
+  .mts-items th:last-child, .mts-items td:last-child { padding-right: 0; }
+  .mts-r { text-align: right; }
+  .mts-num, .mts-money {
+    font-variant-numeric: tabular-nums; font-feature-settings: "tnum" 1;
+    white-space: nowrap;
+  }
+  .mts-thumbcell { overflow: hidden; }
+  .mts-thumb { float: left; width: 46px; margin: 1px 11px 0 0; }
+  .mts-thumb img {
+    width: 46px; height: 46px; object-fit: contain;
+    border: 1px solid {{ hairline }}; border-radius: 7px; background: #fff; display: block;
+  }
+  .mts-itemtext { overflow: hidden; }
+  .mts-title { font-weight: 600; font-size: 12px; }
+  .mts-sub { font-size: 10.5px; color: {{ muted }}; margin-top: 2px; }
+  .mts-sku { font-size: 10px; color: {{ muted }}; letter-spacing: 0.02em; }
+  .mts-strike { color: {{ muted }}; text-decoration: line-through; font-size: 10.5px; }
+  .mts-save { color: {{ accent }}; font-size: 10.5px; }
+
+  /* totals */
+  .mts-sum { width: 100%; border-collapse: collapse; margin-top: 18px; page-break-inside: avoid; }
+  .mts-sum td { vertical-align: top; padding: 0; }
+  .mts-sum .mts-sum-l { width: 55%; }
+  .mts-tot { width: 100%; border-collapse: collapse; }
+  .mts-tot td { padding: 5px 0; font-size: 12px; }
+  .mts-tot td.mts-k { color: {{ muted }}; }
+  .mts-tot tr.mts-grand td {
+    border-top: 1.5px solid {{ ink }};
+    padding-top: 10px; font-size: 15px; font-weight: 700;
+    font-family: "Sora", system-ui, sans-serif;
+  }
+  .mts-tot tr.mts-grand td.mts-v { color: {{ accent }}; }
+  .mts-gst { font-size: 10.5px; color: {{ muted }}; padding-top: 3px; }
+
+  /* status pill + panels */
+  .mts-pill {
+    display: inline-block; border-radius: 999px; padding: 4px 11px;
+    font-family: "Sora", system-ui, sans-serif;
+    font-size: 9.5px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase;
+  }
+  .mts-pill--paid { background: #e8f3ec; color: #1d6b3d; }
+  .mts-pill--due  { background: #fdefeb; color: {{ accent }}; }
+  .mts-panel {
+    border: 1px solid {{ hairline }}; border-radius: 7px;
+    padding: 12px 14px; margin-top: 18px; page-break-inside: avoid;
+  }
+  .mts-panel h2 {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase;
+    color: {{ muted }}; margin: 0 0 6px 0;
+  }
+  .mts-panel p { margin: 0; font-size: 11.5px; }
+
+  .mts-txn { width: 100%; border-collapse: collapse; margin-top: 6px; }
+  .mts-txn th {
+    font-size: 9.5px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase;
+    color: {{ muted }}; text-align: left; padding: 0 8px 5px 0; border-bottom: 1px solid {{ hairline }};
+  }
+  .mts-txn td { padding: 6px 8px 6px 0; font-size: 11px; border-bottom: 1px solid {{ hairline }}; }
+  .mts-txn tr:last-child td { border-bottom: 0; }
+
+  .mts-foot {
+    margin-top: 22px; padding-top: 12px; border-top: 1px solid {{ hairline }};
+    font-size: 10.5px; color: {{ muted }}; line-height: 1.6;
+  }
+  .mts-foot b { color: {{ ink }}; font-weight: 600; }
+</style>
+
+<div class="mts-inv">
+
+  {% comment %} ---------- masthead ---------- {% endcomment %}
+  <table class="mts-mast">
+    <tr>
+      <td style="width:55%;">
+        <img class="mts-logo"
+             src="https://cdn.shopify.com/s/files/1/0783/2017/3161/files/mytapestore-checkout-logo-420.png?v=1786910098"
+             alt="{{ shop.name }}">
+      </td>
+      <td class="mts-r">
+        {%- assign is_paid = false -%}
+        {%- if order.financial_status == 'paid' or order.financial_status == 'partially_refunded' -%}{%- assign is_paid = true -%}{%- endif -%}
+        <p class="mts-doctype">Tax Invoice</p>
+        <p class="mts-meta">
+          <b>{{ order.order_name }}</b><br>
+          {{ order.created_at | date: "%d %B %Y" }}
+          {%- if order.po_number %}<br>PO {{ order.po_number }}{% endif %}
+        </p>
+        <p style="margin:8px 0 0 0;">
+          {% if is_paid %}
+            <span class="mts-pill mts-pill--paid">Paid in full</span>
+          {% else %}
+            <span class="mts-pill mts-pill--due">Payment due</span>
+          {% endif %}
+        </p>
+      </td>
+    </tr>
+  </table>
+  <div class="mts-rule"></div>
+
+  {% comment %} ---------- who / where ---------- {% endcomment %}
+  <table class="mts-addr">
+    <tr>
+      {% if order.billing_address %}
+        <td>
+          <p class="mts-label">Bill to</p>
+          {% if order.billing_address.company != blank %}<p class="mts-co">{{ order.billing_address.company }}</p>{% endif %}
+          <p>{{ order.billing_address | format_address }}</p>
+        </td>
+      {% endif %}
+      {% if order.shipping_address %}
+        <td>
+          <p class="mts-label">Deliver to</p>
+          {% if order.shipping_address.company != blank %}<p class="mts-co">{{ order.shipping_address.company }}</p>{% endif %}
+          <p>{{ order.shipping_address | format_address }}</p>
+          {% if order.shipping_address.phone %}<p>{{ order.shipping_address.phone }}</p>{% endif %}
+        </td>
+      {% endif %}
+    </tr>
+  </table>
+
+  {% comment %} ---------- line items ---------- {% endcomment %}
+  <table class="mts-items">
+    <thead>
+      <tr>
+        <th style="width:52%;">Item</th>
+        <th style="width:10%;" class="mts-r">Qty</th>
+        <th style="width:19%;" class="mts-r">Unit price</th>
+        <th style="width:19%;" class="mts-r">Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for line_item in order.line_items %}
+        <tr>
+          <td class="mts-thumbcell">
+            {% comment %}
+              product_img_url is the Order Printer specific filter; a line item
+              whose product was deleted has no featured_image, so the block is
+              guarded and the text simply sits left instead of leaving a gap.
+            {% endcomment %}
+            {% if line_item.product.featured_image %}
+              <div class="mts-thumb">
+                {{ line_item.product.featured_image | product_img_url: 'thumb' | img_tag }}
+              </div>
+            {% endif %}
+            <div class="mts-itemtext">
+            <div class="mts-title">{{ line_item.title }}</div>
+            {% if line_item.variant_title != blank and line_item.variant_title != 'Default Title' %}
+              <div class="mts-sub">{{ line_item.variant_title }}</div>
+            {% endif %}
+            {% if line_item.sku != blank %}<div class="mts-sku">SKU {{ line_item.sku }}</div>{% endif %}
+            {% if line_item.line_level_discount_allocations.size > 0 %}
+              {% for discount_allocation in line_item.line_level_discount_allocations %}
+                <div class="mts-save">{{ discount_allocation.discount_application.title }} &minus;{{ discount_allocation.amount | money }}</div>
+              {% endfor %}
+            {% endif %}
+            </div>
+          </td>
+          <td class="mts-r mts-num">{{ line_item.quantity }}</td>
+          <td class="mts-r mts-money">
+            {% if line_item.original_price != line_item.final_price %}
+              <span class="mts-strike">{{ line_item.original_price | money }}</span><br>
+            {% endif %}
+            {{ line_item.final_price | money }}
+          </td>
+          <td class="mts-r mts-money">{{ line_item.final_line_price | money }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  {% comment %} ---------- totals ---------- {% endcomment %}
+  <table class="mts-sum">
+    <tr>
+      <td class="mts-sum-l">
+        {% if order.note != blank %}
+          <div class="mts-panel" style="margin-top:0;">
+            <h2>Order note</h2>
+            <p>{{ order.note }}</p>
+          </div>
+        {% endif %}
+      </td>
+      <td>
+        <table class="mts-tot">
+          <tr>
+            <td class="mts-k">Subtotal</td>
+            <td class="mts-r mts-money">{{ order.line_items_subtotal_price | money }}</td>
+          </tr>
+
+          {%- assign has_shipping_discount = false -%}
+          {% for discount_application in order.discount_applications %}
+            {% if discount_application.target_type == 'shipping_line' %}{% assign has_shipping_discount = true %}{% endif %}
+            {% if discount_application.target_selection == 'all' and discount_application.target_type != 'shipping_line' %}
+              <tr>
+                <td class="mts-k">{% if discount_application.title %}{{ discount_application.title }}{% else %}Discount{% endif %}</td>
+                <td class="mts-r mts-money" style="color:{{ accent }};">&minus;{{ discount_application.total_allocated_amount | money }}</td>
+              </tr>
+            {% endif %}
+          {% endfor %}
+
+          {% if order.shipping_address %}
+            <tr>
+              <td class="mts-k">Shipping</td>
+              <td class="mts-r mts-money">
+                {% if has_shipping_discount %}Free{% else %}{{ order.shipping_price | money }}{% endif %}
+              </td>
+            </tr>
+          {% endif %}
+
+          <tr class="mts-grand">
+            <td>Total {{ shop.currency }}</td>
+            <td class="mts-r mts-money mts-v">{{ order.total_price | money }}</td>
+          </tr>
+
+          {% comment %}
+            Prices on this store are tax inclusive, so GST is stated as a
+            component of the total rather than added beneath it. That wording is
+            what an Australian tax invoice needs.
+          {% endcomment %}
+          <tr>
+            <td colspan="2" class="mts-gst">
+              {% if order.tax_lines.size > 0 %}
+                {% for tax_line in order.tax_lines %}
+                  Total includes {{ tax_line.title }}{% if tax_line.rate_percentage %} ({{ tax_line.rate_percentage }}%){% endif %} of {{ tax_line.price | money }}{% unless forloop.last %}<br>{% endunless %}
+                {% endfor %}
+              {% else %}
+                Total includes GST of {{ order.tax_price | money }}
+              {% endif %}
+            </td>
+          </tr>
+
+          {% if order.total_refunded_amount > 0 %}
+            <tr>
+              <td class="mts-k">Refunded</td>
+              <td class="mts-r mts-money">&minus;{{ order.total_refunded_amount | money }}</td>
+            </tr>
+          {% endif %}
+          {% if order.net_payment != order.total_net_amount %}
+            <tr>
+              <td class="mts-k">Paid to date</td>
+              <td class="mts-r mts-money">{{ order.net_payment | money }}</td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;">Balance due</td>
+              <td class="mts-r mts-money" style="font-weight:700;">{{ order.total_price | minus: order.net_payment | money }}</td>
+            </tr>
+          {% endif %}
+        </table>
+      </td>
+    </tr>
+  </table>
+
+  {% comment %} ---------- payments ---------- {% endcomment %}
+  {% if transactions.size > 1 %}
+    <div class="mts-panel">
+      <h2>Payments</h2>
+      <table class="mts-txn">
+        <thead>
+          <tr>
+            <th>Method</th>
+            <th>Type</th>
+            <th>Status</th>
+            <th class="mts-r">Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for transaction in transactions %}
+            <tr>
+              <td>{{ transaction.gateway | payment_method }}</td>
+              <td>{{ transaction.kind }}</td>
+              <td>{{ transaction.status }}</td>
+              <td class="mts-r mts-money">{{ transaction.amount | money }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% endif %}
+
+  {% comment %} ---------- footer ---------- {% endcomment %}
+  <div class="mts-foot">
+    <b>{{ shop.name }}</b>{% if abn != blank %} &nbsp;·&nbsp; ABN {{ abn }}{% endif %}
+    &nbsp;·&nbsp; {{ shop.email }}
+    {% if shop.phone %}&nbsp;·&nbsp; {{ shop.phone }}{% endif %}<br>
+    Questions about this invoice? Quote <b>{{ order.order_name }}</b> and we will sort it out.
+  </div>
+
+</div>

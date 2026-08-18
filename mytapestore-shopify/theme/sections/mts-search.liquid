@@ -1,0 +1,77 @@
+{%- comment -%}
+  Search results — ported from SearchPage.jsx.
+{%- endcomment -%}
+<main id="main">
+  <div class="wrap search__crumbs">{% render 'mts-breadcrumbs' %}</div>
+
+  <div class="wrap search__head">
+    <h1>
+      {%- if search.terms != blank -%}
+        Search results for “<span class="search__q">{{ search.terms | escape }}</span>”
+      {%- else -%}
+        {{ 'general.search.heading' | t }}
+      {%- endif -%}
+    </h1>
+
+    <form class="search__box" role="search" action="{{ routes.search_url }}" method="get">
+      <input type="search" name="q" value="{{ search.terms | escape }}"
+             placeholder="Search tapes, brands or sizes…" aria-label="Search products">
+      <input type="hidden" name="options[prefix]" value="last">
+      <button class="btn btn--brand" type="submit">
+        {% render 'mts-icon', name: 'search', size: 18 %} {{ 'general.search.submit' | t }}
+      </button>
+    </form>
+
+    {%- if search.performed -%}
+      <p class="search__count num">{{ 'general.search.results_count' | t: count: search.results_count }}</p>
+    {%- endif -%}
+  </div>
+
+  <div class="wrap section--tight">
+    {%- paginate search.results by section.settings.results_per_page -%}
+      {%- if search.performed and search.results_count > 0 -%}
+        <div class="grid-products grid-products--5">
+          {%- for item in search.results -%}
+            {%- if item.object_type == 'product' -%}
+              {%- comment -%}
+                `index` is what tells the card to load its image eagerly. Without
+                it every result — including the first row, which is the whole
+                point of a search page — was lazy, so the grid painted empty and
+                filled in afterwards. forloop.index0 counts results, not just
+                products, which is fine: it only ever over-counts, so at worst a
+                card in the first row stays lazy rather than a lower one going
+                eager.
+              {%- endcomment -%}
+              {% render 'mts-product-card', product: item, index: forloop.index0 %}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+        {%- if paginate.pages > 1 -%}
+          {% render 'mts-pagination', paginate: paginate %}
+        {%- endif -%}
+
+      {%- elsif search.performed -%}
+        <div class="col__empty">
+          {% render 'mts-icon', name: 'search', size: 40 %}
+          <p>{{ 'general.search.no_results' | t: terms: search.terms }}</p>
+          <a class="btn btn--ghost" href="{{ routes.all_products_collection_url }}">Browse all products</a>
+        </div>
+
+      {%- else -%}
+        <div class="col__empty">
+          {% render 'mts-icon', name: 'search', size: 40 %}
+          <p>{{ 'general.search.prompt' | t }}</p>
+        </div>
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</main>
+
+{% schema %}
+{
+  "name": "Search",
+  "settings": [
+    { "type": "range", "id": "results_per_page", "label": "Results per page", "min": 12, "max": 48, "step": 4, "default": 24 }
+  ]
+}
+{% endschema %}

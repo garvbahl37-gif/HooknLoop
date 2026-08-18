@@ -1,0 +1,711 @@
+{{ 'component-grid.css' | asset_url | stylesheet_tag }}
+{{ 'advanced-search-filter.css' | asset_url | stylesheet_tag }}
+{% liquid
+  assign collection_size = 0
+  for collection in section.settings.collection_list
+    assign collection_size = forloop.length
+  endfor
+  assign first_collection_name = section.settings.collection_list | first
+
+  assign container = ''
+  if section.settings.container == 'container'
+    assign container = 'container'
+  elsif section.settings.container == 'container-fluid'
+    assign container = 'container-fluid'
+  else
+    assign container = 'container-fluid px-0'
+  endif
+
+  if section.settings.padded_container_type == "small"
+    assign content_padding = "filter--content-padded-small filter--content-padded-true"
+  elsif section.settings.padded_container_type == "medium"
+    assign content_padding = "filter--content-padded-medium filter--content-padded-true"
+  elsif section.settings.padded_container_type == "large"
+    assign content_padding = "filter--content-padded-large filter--content-padded-true" 
+  else
+    assign content_padding = ""
+  endif
+%}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+     padding-top: {{ section.settings.mobile_padding_top }}px;
+     padding-bottom: {{ section.settings.mobile_padding_bottom }}px;
+     margin-top: {{ section.settings.mobile_margin_top }}px;
+     margin-bottom: {{ section.settings.mobile_margin_bottom }}px;
+   }
+   @media screen and (min-width: 750px) {
+     .section-{{ section.id }}-padding {
+       padding-top: {{ section.settings.padding_top }}px;
+       padding-bottom: {{ section.settings.padding_bottom }}px;
+       margin-top: {{ section.settings.margin_top }}px;
+       margin-bottom: {{ section.settings.margin_bottom }}px;
+     }
+   }
+    {% if section.settings.background_image != blank %}
+      .advanced--filter-with-background::before {
+        position: absolute;
+        content: "";
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+    	opacity: {{ section.settings.image_overlay_opacity | divided_by: 100.0 }};
+        background-color: rgba(0,0,0,1);
+        z-index: 1;
+    }
+    {% endif %}
+{%- endstyle -%}
+
+<script src="{{ 'advanced-search-filter.js' | asset_url }}" defer="defer"></script>
+<svg style="display: none">
+  <symbol id="icon-caret" viewBox="0 0 10 6">
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z" fill="currentColor">
+      </symbol>
+        <symbol id="icon-search" viewbox="0 0 18 19" fill="none">
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M11.03 11.68A5.784 5.784 0 112.85 3.5a5.784 5.784 0 018.18 8.18zm.26 1.12a6.78 6.78 0 11.72-.7l5.4 5.4a.5.5 0 11-.71.7l-5.41-5.4z" fill="currentColor"/>
+  </symbol>
+</svg>
+
+<div class="advanced--search-filter {% if section.settings.background_image != blank %} advanced--filter-with-background {% endif %} color-{{ section.settings.color_scheme }} section-{{ section.id }}-padding">
+  {%- if section.settings.background_image != blank -%}
+    {% liquid
+      assign height = section.settings.background_image.width | divided_by: section.settings.background_image.aspect_ratio
+    %}
+    <div class="advanced--media-background media">
+      {{
+        section.settings.background_image
+        | image_url: width: 3840
+        | image_tag:
+          loading: 'lazy',
+          height: height,
+          sizes: '100vw',
+          widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840'
+      }}
+    </div>
+  {%- endif -%}
+
+  <div class="{{ container }} {% if section.settings.background_image != blank %} filter--background-content-visibility{% endif %}">
+    {% if section.settings.heading != blank or section.settings.subtitle != blank %}
+      <div class="section-heading text-{{ section.settings.text_center }}  {% if section.settings.border_line %} mb-70 {% else %} mb-50{% endif %}">
+        {% if section.settings.heading_position == 'bottom' and section.settings.subtitle != blank %}
+          <span class="section-heading__sub_title">{{- section.settings.subtitle -}}</span>
+        {% endif %}
+        <h2 class="section-heading__title {% if section.settings.heading_position == "top" and section.settings.subtitle != blank and section.settings.border_line %}heading__space--bottom{% endif %} ">
+          {% if section.settings.border_line %}<span>{% endif %}
+          {{- section.settings.heading -}}
+          {% if section.settings.border_line %}</span>{% endif %}
+        </h2>
+        {% if section.settings.heading_position == 'top' and section.settings.subtitle != blank %}
+          <span class="section-heading__sub_title">{{- section.settings.subtitle -}}</span>
+        {% endif %}
+      </div>
+    {% endif %}
+    <div class="advanced--search-filter--wrapper {% if section.settings.box_shadow %}box--shadow-true{% endif %}  {{ content_padding }} {% if section.settings.round_corner %}filter--container-radius-true{% endif %} grid {% if section.settings.full_width %} grid--1-col-desktop grid--1-col-tablet-down{% else %} grid--2-col-desktop grid--1-col-tablet-down{% endif %} color-{{ section.settings.filter_box_color_cheme }} {% if section.settings.background_transparent  %}filter--box-container-background-transparent{% endif %}">
+      {% comment %} Advanced Filter {% endcomment %}
+      <div class="grid__item advanced--search-filter-content {% if section.settings.full_width %}content--full-width{% endif %} ">
+        <advanced-search-filter>
+          <form
+            action="{% if collection_size == 1 %}/collections/{{ first_collection_name.handle }}{% endif %}"
+            method="get"
+            class="advanced--search-filter-form {% if section.settings.filter_layout == "horizontal" %} d-flex{% else %}vertical--filter{% endif %}"
+          >
+            {% if collection_size > 1 %}
+              <div class="facets--filter-group">
+                {% if section.settings.filter_tooltip and section.settings.collections__tooltip_label != blank %}
+                  <div class="filter__tooltip--wrapper">
+                {% endif %}
+                <label
+                  for="{{ section.id }}--collection--filters"
+                  {% unless section.settings.filter_label %}
+                    class="visually-hidden"
+                  {% endunless %}
+                >
+                  {{ section.settings.collections_label }}
+                </label>
+
+                {% if section.settings.filter_tooltip and section.settings.collections__tooltip_label != blank %}
+                  <button
+                    type="button"
+                    class="tooltip filter--product-tooltip-wrapper"
+                    aria-label="{{ section.settings.collections__tooltip_label }}"
+                  >
+                    {% render 'icon-question' %}
+                    <div class="filter--tooltip-label tooltip--top">
+                      <span class="filter--tooltip-text">{{ section.settings.collections__tooltip_label }}</span>
+                    </div>
+                  </button>
+                {% endif %}
+                {% if section.settings.filter_tooltip and section.settings.collections__tooltip_label != blank %}
+                  </div>
+                {% endif %}
+
+                <div class="select__field_form color-{{ section.settings.filter_group_color_scheme }}">
+                  <select
+                    class="select_box search--filter-collection"
+                    id="{{ section.id }}--collection--filters"
+                    data-index="0"
+                  >
+                    <option class="default" value="" selected="" hidden="">
+                      {{ section.settings.collections_label }}
+                    </option>
+                    {% if section.settings.all_collection %}
+                      <option value="/collections/all">
+                        {{ section.settings.collection_all_label | default: 'All' }}
+                      </option>
+                    {% endif %}
+                    {%- for collection in section.settings.collection_list -%}
+                      <option value="/collections/{{ collection.handle }}">{{- collection.title -}}</option>
+                    {%- endfor -%}
+                  </select>
+                  <svg aria-hidden="true" focusable="false" viewBox="0 0 10 6">
+                    <use href="#icon-caret" />
+                  </svg>
+                </div>
+              </div>
+            {% endif %}
+            {%- for block in section.blocks -%}
+              {%- case block.type -%}
+                {%- when 'filter' -%}
+                  {% assign filter_default_name = 'Filter name ' | append: forloop.index %}
+                  <div class="facets--filter-group disabled" {{ block.shopify_attributes }}>
+                    {% if section.settings.filter_tooltip and block.settings.tooltip_label != blank %}
+                      <div class="filter__tooltip--wrapper">
+                    {% endif %}
+                    <label
+                      for="{{ section.id }}__filters-filter-{{ forloop.index }}"
+                      {% unless section.settings.filter_label %}
+                        class="visually-hidden"
+                      {% endunless %}
+                    >
+                      {{ block.settings.placeholder_name | default: filter_default_name | escape }}
+                    </label>
+                    {% if section.settings.filter_tooltip and block.settings.tooltip_label != blank %}
+                      <button
+                        type="button"
+                        class="tooltip filter--product-tooltip-wrapper"
+                        aria-label="{{ block.settings.tooltip_label }}"
+                      >
+                        {% render 'icon-question' %}
+                        <div class="filter--tooltip-label tooltip--top">
+                          <span class="filter--tooltip-text">{{ block.settings.tooltip_label }}</span>
+                        </div>
+                      </button>
+                    {% endif %}
+                    {% if section.settings.filter_tooltip and block.settings.tooltip_label != blank %}
+                      </div>
+                    {% endif %}
+                    <div class="select__field_form color-{{ section.settings.filter_group_color_scheme }}">
+                      <select
+                        class="select_box  facets--filter select_box"
+                        id="{{ section.id }}__filters-filter-{{ forloop.index }}"
+                        data-label="{{ block.settings.filter_name  | escape }}"
+                        data-index="{{ forloop.index }}"
+                        disabled=""
+                      >
+                        <option class="default" value="" selected="" disabled="">
+                          {{ block.settings.placeholder_name | default: filter_default_name }}
+                        </option>
+                      </select>
+                      <svg aria-hidden="true" focusable="false" viewBox="0 0 10 6">
+                        <use href="#icon-caret" />
+                      </svg>
+                    </div>
+                  </div>
+              {% endcase %}
+            {% endfor %}
+            <div class="search--filter-button">
+              <button type="submit" disabled="" class="button button--medium">
+                {% if section.settings.button_search_icon %}
+                <span class="button--search-with-icon">
+                  <svg class="icon icon-search" aria-hidden="true" focusable="false" role="presentation">
+                      <use href="#icon-search">
+                    </svg>
+                {% endif %}
+                {{ 'sections.advanced_search_filter.submit_button' | t }}
+                {% if section.settings.button_search_icon %} </span>{% endif %}
+              </button>
+            </div>
+          </form>
+        </advanced-search-filter>
+      </div>
+      {% comment %} Advanced Filter End {% endcomment %}
+
+      {% if section.settings.show_image %}
+        <div class="{% if section.settings.image_layout == "image_first" %}image__first--column{% else %}image__second--column{% endif %} grid__item">
+          <div
+            class="banner__media media search--filter-media--{{ section.settings.height }} {% if section.settings.image == blank %} placeholder {% endif %} {% if section.settings.image_round_corner %}image--corner-radius-true{% endif %}"
+            {% if section.settings.height == 'adapt' and section.settings.image != blank %}
+              style="padding-bottom: {{ 1 | divided_by: section.settings.image.aspect_ratio | times: 100 }}%;"
+            {% endif %}
+          >
+            {%- if section.settings.image != blank -%}
+              {%- assign widths = '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840' -%}
+              {%- capture sizes -%}
+              (min-width: {{ settings.page_width }}px) {% if section.settings.full_width  %} {% if section.settings.container == 'container' %} {{ settings.page_width | minus: 100 }}px {% else %}100vw{% endif %}{% else %} {{ settings.page_width | minus: 100 | divided_by: 2 }}px{% endif %},
+              (min-width: 750px) calc(100vw - 130px), calc(100vw - 50px)
+            {%- endcapture -%}
+              {{
+                section.settings.image
+                | image_url: width: 3840
+                | image_tag:
+                  loading: 'lazy',
+                  width: section.settings.image.width,
+                  height: image_height,
+                  sizes: sizes,
+                  widths: widths
+              }}
+            {%- else -%}
+              {{ 'image' | placeholder_svg_tag: 'placeholder' }}
+            {%- endif -%}
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Advanced search filter",
+  "settings": [
+     {
+        "type": "select",
+        "id": "container",
+        "label": "Page width",
+        "default": "container-fluid",
+        "options": [
+          {
+            "value": "container",
+            "label": "Boxed"
+          },
+          {
+            "value": "container-fluid",
+            "label": "Full width"
+          }
+        ]
+     },
+    {
+       "type": "image_picker",
+       "id": "background_image",
+       "label": "Background image"
+     },
+     {
+       "type": "range",
+       "id": "image_overlay_opacity",
+       "min": 0,
+       "max": 100,
+       "step": 10,
+       "unit": "%",
+       "label": "Image overlay opacity",
+       "default": 0
+     },
+    {
+      "type": "header",
+      "content": "Section header"
+    },
+     {
+      "type": "inline_richtext",
+      "id": "subtitle",
+      "label": "Subheading"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "default": "Advanced search filter",
+      "label": "t:sections.featured-collection.settings.title.label"
+    },
+    {
+      "type": "select",
+      "id": "heading_position",
+      "options": [
+        {
+          "value": "top",
+          "label": "Top"
+        },
+        {
+          "value": "bottom",
+          "label": "Bottom"
+        }
+      ],
+      "default": "bottom",
+      "label": "Heading position"
+    },
+    {
+      "type": "select",
+      "id": "text_center",
+      "options": [
+        {
+          "value": "right",
+          "label": "Right"
+        },
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        }
+      ],
+      "default": "center",
+      "label": "Alignment"
+    },
+    {
+       "type": "checkbox",
+       "id": "border_line",
+       "label": "Enable border line",
+       "default": true
+     },
+    {
+      "type": "header",
+      "content": "General"
+    },
+    {
+      "type": "collection_list",
+      "id": "collection_list",
+      "label": "Collections",
+      "info": "To search your entire store, leave it blank.  \"Also, the select box will appear if you select  more than 1 collection.\""
+    },
+
+    {
+      "type": "text",
+      "id": "collections_label",
+      "default": "Collections",
+      "label": "Collections label"
+    },
+    {
+      "type": "text",
+      "id": "collections__tooltip_label",
+      "label": "Collections tooltip"
+    },
+    {
+      "type": "checkbox",
+      "id": "all_collection",
+      "default": true,
+      "label": "Show all collection",
+      "info": "If you enable it, you will see a new option in the collection pick box to search for products across the whole store. \"It will appear if you select  more than 1 collection.\""
+    },
+    {
+      "type": "text",
+      "id": "collection_all_label",
+      "label": "Default collections label"
+    },
+     {
+      "type": "select",
+      "id": "padded_container_type",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "small",
+      "label": "Padded container type"
+    },
+     {
+        "type": "checkbox",
+        "id": "round_corner",
+        "label": "Round corner",
+        "default": false
+      },
+    {
+       "type": "checkbox",
+       "id": "box_shadow",
+       "label": "Enable box shadow",
+       "default": true
+     },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Make section full width",
+      "default": true
+    },
+    {
+      "type": "color_scheme",
+      "id": "filter_box_color_cheme",
+      "label": "Filter container color scheme",
+      "default": "background-1"
+    },
+    {
+      "type": "checkbox",
+      "id": "background_transparent",
+      "label": "Enable transparent background",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Filter layout"
+    },
+    {
+      "type": "select",
+      "id": "filter_layout",
+      "options": [
+        {
+          "value": "horizontal",
+          "label": "Horizontal"
+        },
+        {
+          "value": "Vertical",
+          "label": "Vertical"
+        }
+      ],
+      "default": "horizontal",
+      "label": "Desktop filter layout",
+      "info": "Vertical is the default mobile layout."
+    },
+    {
+       "type": "checkbox",
+       "id": "filter_label",
+       "label": "Enable filter label",
+       "default": true
+     },
+     {
+       "type": "checkbox",
+       "id": "filter_tooltip",
+       "label": "Enable filter tooltip",
+       "default": true
+     },
+    {
+       "type": "checkbox",
+       "id": "button_search_icon",
+       "label": "Enable search icon",
+       "default": false
+     },
+    {
+      "type": "color_scheme",
+      "id": "filter_group_color_scheme",
+      "label": "Filter group color scheme",
+      "default": "background-2"
+    },
+    {
+      "type": "header",
+      "content": "Image settings"
+    },
+    {
+       "type": "checkbox",
+       "id": "show_image",
+       "label": "Show image",
+       "default": false
+     },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+     {
+      "type": "select",
+      "id": "height",
+      "options": [
+        {
+          "value": "adapt",
+          "label": "t:sections.image-with-text.settings.height.options__1.label"
+        },
+        {
+          "value": "small",
+          "label": "t:sections.image-with-text.settings.height.options__2.label"
+        },
+        {
+          "value": "large",
+          "label": "t:sections.image-with-text.settings.height.options__3.label"
+        }
+      ],
+      "default": "adapt",
+      "label": "t:sections.image-with-text.settings.height.label"
+    },
+    {
+      "type": "select",
+      "id": "image_layout",
+      "options": [
+        {
+          "value": "image_first",
+          "label": "t:sections.image-with-text.settings.layout.options__1.label"
+        },
+        {
+          "value": "text_first",
+          "label": "t:sections.image-with-text.settings.layout.options__2.label"
+        }
+      ],
+      "default": "text_first",
+      "label": "t:sections.image-with-text.settings.layout.label",
+      "info": "t:sections.image-with-text.settings.layout.info"
+    },
+    {
+        "type": "checkbox",
+        "id": "image_round_corner",
+        "label": "Round corner of image",
+        "default": false
+      },
+    {
+      "type": "header",
+      "content": "Section spacing"
+    },
+    {
+      "type": "paragraph",
+      "content": "Desktop"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "label": "Margin top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "label": "Margin bottom",
+      "default": 0
+    },
+    {
+      "type": "paragraph",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "mobile_margin_top",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "label": "Margin top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "mobile_margin_bottom",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "label": "Margin bottom",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "paragraph",
+      "content": "Desktop"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 50
+    },
+    {
+      "type": "paragraph",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_top",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_bottom",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 50
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+        "type": "color_scheme",
+        "id": "color_scheme",
+        "label": "Section color scheme",
+        "default": "background-1"
+      }
+  ],
+  "blocks": [
+        {
+          "type": "filter",
+          "name": "Filter",
+          "settings": [
+              {
+                "type": "text",
+                "id": "filter_name",
+                "label": "Filter name",
+                "info": "This must exactly match the name of the filter. [Learn more](https://themihub.gitbook.io/suruchi-theme/theme-sections/advanced-search-filter)"
+              },
+              {
+                "type": "text",
+                "id": "placeholder_name",
+                "label": "Placeholder name"
+              },
+              {
+                "type": "text",
+                "id": "tooltip_label",
+                "label": "Fillter tooltip label"
+              }
+          ]
+        }
+  ],
+  "presets": [
+     {
+       "name": "Advanced search filter",
+       "blocks":[
+            {
+              "type": "filter"
+            },
+            {
+              "type": "filter"
+            },
+            {
+              "type": "filter"
+            }
+        ]
+     }
+   ],
+  "disabled_on": {
+    "templates": ["password", "404"],
+    "groups": ["header","footer"]
+  }
+}
+{% endschema %}

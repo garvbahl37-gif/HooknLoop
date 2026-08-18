@@ -1,0 +1,80 @@
+{%- comment -%}
+  Testimonials — ported from the Testimonials section in home.jsx. Dark band with
+  a single-row infinite review marquee. As with the brand wall, the track holds
+  the set twice so the loop is seamless; the duplicate half is aria-hidden.
+
+  The React version mined real reviews out of REVIEWS in the catalogue data.
+  Shopify has no review store of its own, so these are blocks — real quotes,
+  entered once. Do not invent them: paste the store's actual reviews.
+{%- endcomment -%}
+<section class="tmx grain">
+  <div class="wrap">
+    <div class="section-head">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="eyebrow eyebrow--onink">{{ section.settings.eyebrow }}</span>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h2 class="tmx__title">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+      {%- if section.settings.text != blank -%}
+        <p class="tmx__lead">{{ section.settings.text }}</p>
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- if section.blocks.size > 0 -%}
+    <div class="tmx__marquee">
+      <div class="tmx__track">
+        {%- for pass in (1..2) -%}
+          {%- for block in section.blocks -%}
+            <figure class="tmx__card" {% if pass == 2 %}aria-hidden="true"{% endif %} {{ block.shopify_attributes }}>
+              <div class="tmx__stars">
+                <span class="tmx__starrow" aria-label="{{ block.settings.rating }} out of 5">
+                  {%- for i in (1..5) -%}
+                    {%- if i <= block.settings.rating -%}
+                      {% render 'mts-icon', name: 'star', size: 16, class: 'on' %}
+                    {%- else -%}
+                      {% render 'mts-icon', name: 'star', size: 16, class: 'off' %}
+                    {%- endif -%}
+                  {%- endfor -%}
+                </span>
+              </div>
+              <blockquote>{{ block.settings.quote }}</blockquote>
+              <figcaption>
+                <span class="tmx__ava">{{ block.settings.name | slice: 0 | upcase }}</span>
+                <span class="tmx__who">
+                  <b>{{ block.settings.name }}</b>
+                  <em>{{ block.settings.product }}</em>
+                </span>
+              </figcaption>
+            </figure>
+          {%- endfor -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Testimonials",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Testimonials" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Trusted by thousands of happy customers" },
+    { "type": "text", "id": "text", "label": "Text", "default": "Real reviews from Australian trade & DIY buyers." }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        { "type": "textarea", "id": "quote", "label": "Quote" },
+        { "type": "text", "id": "name", "label": "Customer name" },
+        { "type": "text", "id": "product", "label": "Product" },
+        { "type": "range", "id": "rating", "label": "Rating", "min": 1, "max": 5, "step": 1, "default": 5 }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Testimonials" }]
+}
+{% endschema %}

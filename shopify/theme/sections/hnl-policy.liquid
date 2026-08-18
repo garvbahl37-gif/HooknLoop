@@ -1,0 +1,152 @@
+{%- comment -%}
+  Policy page — port of PolicyPage() in storefront/src/pages/ContentPages.jsx
+
+  React held all four policies in one POLICIES object and switched on a route.
+  Here each policy is its own Shopify page template, and its sections are
+  blocks — so legal copy is edited in the theme editor by whoever owns it,
+  not in a JS object behind a deploy.
+
+  Bullets inside a section are one per line in a textarea, matching how the hero
+  and footer settings already work in this theme.
+{%- endcomment -%}
+
+{%- comment -%}
+  Handle gate. The Theme Access token cannot assign template suffixes (that is
+  Admin API territory), so every page on this store uses the default `page`
+  template. templates/page.json therefore lists ALL the page sections, and each
+  renders only for the handle it belongs to. Leave `page_handle` empty to make a
+  section render on any page — which is what the generic fallback does.
+
+  If you later assign a real template suffix in Shopify admin, clear this
+  setting and the section renders unconditionally, as Shopify intends.
+{%- endcomment -%}
+{%- assign hnl_gate = section.settings.page_handle | strip -%}
+{%- if hnl_gate == blank or hnl_gate == page.handle -%}
+<div id="main" class="page">
+  <div class="page__hero page__hero--center">
+    <div class="wrap">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="sec-eyebrow sec-eyebrow--orange">{{ section.settings.eyebrow }}</span>
+      {%- endif -%}
+      <h1 class="page__hero-h1">{{ section.settings.title | default: page.title }}</h1>
+      {%- if section.settings.lead != blank -%}
+        <p class="page__hero-lead">{{ section.settings.lead }}</p>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <div class="wrap policy2">
+    <div class="policy2__main">
+      {%- assign hls = section.settings.highlights | newline_to_br | split: '<br />' -%}
+      {%- if hls.size > 0 and section.settings.highlights != blank -%}
+        <div class="policy2__hls">
+          {%- for h in hls -%}
+            {%- assign bits = h | strip | split: '|' -%}
+            {%- if bits.size >= 2 -%}
+              <div class="policy2__hl"><b>{{ bits[0] | strip }}</b><span>{{ bits[1] | strip }}</span></div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+      <div class="policy2__cards">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'clause' -%}
+            <div class="policy2__card" {{ block.shopify_attributes }}>
+              <span class="policy2__icn">{% render 'hnl-policy-icon', icon: block.settings.icon %}</span>
+              <div class="policy2__body">
+                <h2>{{ block.settings.heading }}</h2>
+                {%- if block.settings.body != blank -%}<p>{{ block.settings.body }}</p>{%- endif -%}
+                {%- if block.settings.bullets != blank -%}
+                  <ul class="policy2__ul">
+                    {%- assign items = block.settings.bullets | newline_to_br | split: '<br />' -%}
+                    {%- for item in items -%}
+                      {%- assign line = item | strip -%}
+                      {%- if line != blank -%}<li>{{ line }}</li>{%- endif -%}
+                    {%- endfor -%}
+                  </ul>
+                {%- endif -%}
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+      {%- comment -%}
+        Shopify's own policy text, if this page is standing in for one. Keeps the
+        legally-binding wording in Settings > Policies as the single source, so
+        the checkout footer and this page can never disagree.
+      {%- endcomment -%}
+      {%- if page.content != blank -%}
+        <div class="policy2__rte">{{ page.content }}</div>
+      {%- endif -%}
+    </div>
+
+    <aside class="policy2__side">
+      <div class="policy2__help">
+        <h3>{{ section.settings.help_heading }}</h3>
+        <p>{{ section.settings.help_body }}</p>
+        <a class="btn btn--primary" href="mailto:{{ section.settings.help_email }}">Email support</a>
+        <a class="policy2__call" href="tel:{{ section.settings.help_phone | replace: ' ', '' }}">or call {{ section.settings.help_phone }}</a>
+      </div>
+
+      {%- if section.settings.other_links != blank -%}
+        <div class="policy2__links">
+          <span class="policy2__links-lbl">Other policies</span>
+          {%- assign others = section.settings.other_links | newline_to_br | split: '<br />' -%}
+          {%- for o in others -%}
+            {%- assign bits = o | strip | split: '|' -%}
+            {%- if bits.size >= 2 and bits[1] != page.url -%}
+              <a href="{{ bits[1] | strip }}">{{ bits[0] | strip }}<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </aside>
+  </div>
+</div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "HooknLoop policy",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "page_handle", "label": "Only show on page handle", "info": "Leave empty to show on every page using this template." },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "text", "id": "title", "label": "Heading", "info": "Defaults to the page title." },
+    { "type": "textarea", "id": "lead", "label": "Lead" },
+    { "type": "textarea", "id": "highlights", "label": "Highlights", "info": "One per line: Value | Label" },
+
+    { "type": "header", "content": "Help card" },
+    { "type": "text", "id": "help_heading", "label": "Heading", "default": "Need a hand?" },
+    { "type": "textarea", "id": "help_body", "label": "Body", "default": "Talk to a real person in Australia about your order, delivery or a return." },
+    { "type": "text", "id": "help_email", "label": "Support email", "default": "info@hooknloop.com.au" },
+    { "type": "text", "id": "help_phone", "label": "Support phone", "default": "+61 3 4061 6287" },
+    { "type": "textarea", "id": "other_links", "label": "Other policies", "info": "One per line: Label | /path. The current page is skipped automatically.",
+      "default": "Shipping & Delivery | /pages/shipping-delivery\nReturns & Exchanges | /pages/return-policy\nPrivacy Policy | /pages/privacy-policy\nTerms & Conditions | /pages/terms-conditions" }
+  ],
+  "blocks": [
+    {
+      "type": "clause",
+      "name": "Clause",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icon", "default": "doc",
+          "options": [
+            { "value": "truck", "label": "Truck" }, { "value": "pin", "label": "Pin" },
+            { "value": "box", "label": "Box" }, { "value": "clock", "label": "Clock" },
+            { "value": "route", "label": "Route" }, { "value": "trade", "label": "Trade" },
+            { "value": "check", "label": "Check" }, { "value": "x", "label": "Cross" },
+            { "value": "mail", "label": "Mail" }, { "value": "card", "label": "Card" },
+            { "value": "alert", "label": "Alert" }, { "value": "lock", "label": "Lock" },
+            { "value": "shield", "label": "Shield" }, { "value": "doc", "label": "Document" }
+          ] },
+        { "type": "text", "id": "heading", "label": "Heading" },
+        { "type": "textarea", "id": "body", "label": "Body" },
+        { "type": "textarea", "id": "bullets", "label": "Bullets", "info": "One per line." }
+      ]
+    }
+  ],
+  "max_blocks": 16
+}
+{% endschema %}

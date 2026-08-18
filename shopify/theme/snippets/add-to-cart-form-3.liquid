@@ -1,0 +1,71 @@
+{% liquid
+  if card_button_type == 'primary'
+    assign button_class = 'button button--primary'
+  elsif card_button_type == 'link'
+    assign button_class = 'link with--icon button--not-underline'
+  else
+    assign button_class = 'button button--secondary'
+  endif
+%}
+{% if product_card_product.has_only_default_variant %}
+  <product-form>
+    <form action="/cart/add" method="post" enctype="multipart/form-data" data-type="add-to-cart-form">
+      <input type="hidden" name="id" value="{{ variant.id }}">
+      <button
+        type="submit"
+        name="add"
+        class="deals--product-cart-button {{ button_class }} {% if tooltip %} product--tooltip{% endif %}"
+        {% if product_card_product.selected_or_first_available_variant.available == false %}
+          disabled
+        {% endif %}
+      >
+        {%- if product_card_product.selected_or_first_available_variant.available -%}
+          {%- if product_card_product.selected_or_first_available_variant.inventory_quantity <= 0
+            and product_card_product.selected_or_first_available_variant.inventory_policy == 'continue'
+            and show_preorder_button
+          -%}
+            {% if use_button_icon %}
+              {% render 'icon-cart' %}
+            {% endif %}
+            <span class="cart__buton--label">{{ 'products.product.pre_order' | t }} </span>
+          {%- else -%}
+            {% if use_button_icon %}
+              {% render 'icon-cart' %}
+            {% endif %}
+            <span class="cart__buton--label">{{ 'products.product.add_to_cart' | t }} </span>
+          {%- endif -%}
+        {%- else -%}
+          {% if use_button_icon %}
+            {% render 'icon-cart' %}
+          {% endif %}
+          <span class="cart__buton--label">{{ 'products.product.sold_out' | t }} </span>
+        {%- endif -%}
+
+        {% if tooltip %}
+          <div class="product--tooltip-label {{ tooltip_position }} {% if tooltip_desktop != true %} desktop--tooltip-disable{% endif %}">
+            {% if product_card_product.selected_or_first_available_variant.available %}
+              {{ 'products.product.add_to_cart' | t }}
+            {% else %}
+              {{ 'products.product.sold_out' | t }}
+            {%- endif -%}
+          </div>
+        {% endif %}
+      </button>
+    </form>
+  </product-form>
+{%- else -%}
+  <quick-view-modal>
+    <button
+      aria-haspopup="dialog"
+      type="button"
+      class="deals--product-cart-button {{ button_class }}"
+      data-product-handle="{{ product_card_product.handle }}"
+      aria-label="{{ 'products.product.select_options' | t }}"
+    >
+      {% if use_button_icon %}
+        {% render 'icon-cart' %}
+      {% endif %}
+      <span class="cart__buton--label">{{ 'products.product.select_options' | t }}</span>
+    </button>
+  </quick-view-modal>
+{%- endif -%}

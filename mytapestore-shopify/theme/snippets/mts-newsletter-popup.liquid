@@ -1,0 +1,90 @@
+{%- comment -%}
+  Newsletter modal, shown once after a delay on the visitor's first look around.
+
+  Design note: the store's signature device is the hazard-tape stripe, so the
+  dialog is edged with it rather than given a gradient or a stock photo. One
+  brand button, charcoal type, nothing else competing — the CTA is the only
+  flare on screen while it is open.
+
+  Behaviour (mts-theme.js):
+    · fires after `delay` seconds, first visit only
+    · dismissal remembered for `snooze` days; a successful signup is permanent
+    · never appears on the cart or checkout, where it would interrupt a purchase
+    · Esc and backdrop close it; focus is trapped and returned
+    · honours prefers-reduced-motion
+{%- endcomment -%}
+{%- if settings.popup_enabled -%}
+  <div class="mts-pop" data-mts-popup
+       data-delay="{{ settings.popup_delay | default: 10 }}"
+       data-snooze="{{ settings.popup_snooze | default: 30 }}"
+       role="dialog" aria-modal="true" aria-labelledby="mts-pop-title" hidden>
+    <div class="mts-pop__scrim" data-mts-popup-close></div>
+
+    <div class="mts-pop__card">
+      <button class="mts-pop__close" data-mts-popup-close aria-label="Close">
+        {% render 'mts-icon', name: 'close', size: 18 %}
+      </button>
+
+      <div class="mts-pop__body">
+        {%- comment -%}
+          The brand mark does the job the old "TRADE LIST" eyebrow was doing —
+          saying who this is from — and does it faster and with more authority
+          than a small caps label. Left-aligned so it anchors the same optical
+          edge as the headline beneath it.
+        {%- endcomment -%}
+        <a class="mts-pop__logo" href="{{ routes.root_url }}" aria-label="{{ shop.name }}">
+          {%- if settings.logo != blank -%}
+            <img src="{{ settings.logo | image_url: width: 392 }}" alt="{{ shop.name }}" width="168" height="29">
+          {%- else -%}
+            <img src="{{ 'mts-logo.png' | asset_url }}" alt="{{ shop.name }}" width="168" height="29">
+          {%- endif -%}
+        </a>
+
+        {%- comment -%}
+          Deliberately NOT an <h2>. This popup renders on every page of the
+          store, so as a real heading it injected the same H2 — "First look at
+          new lines and price breaks." — into the outline of every URL on the
+          site, competing with each page's actual H2s in any SEO audit.
+
+          role="heading" aria-level="2" keeps it a heading for assistive tech
+          and still labels the dialog through aria-labelledby, but it is no
+          longer part of the document's heading structure for crawlers.
+        {%- endcomment -%}
+        <p class="mts-pop__title" id="mts-pop-title" role="heading" aria-level="2">
+          {{ settings.popup_title | default: 'First look at new lines and price breaks.' }}
+        </p>
+
+        <p class="mts-pop__text">
+          {{ settings.popup_text | default: 'Join the trade list for new stock, bulk pricing and the occasional job-site tip. No spam, unsubscribe anytime.' }}
+        </p>
+
+        {%- form 'customer', class: 'mts-pop__formwrap', id: 'mts-popup-form' -%}
+          {%- if form.posted_successfully? -%}
+            <p class="mts-pop__done" data-mts-popup-success>
+              {% render 'mts-icon', name: 'check', size: 18 %}
+              You're on the list — check your inbox.
+            </p>
+          {%- else -%}
+            <input type="hidden" name="contact[tags]" value="newsletter, popup">
+            <div class="mts-pop__form">
+              <input type="email" name="contact[email]" required
+                     placeholder="you@company.com.au" aria-label="Email address"
+                     autocomplete="email">
+              <button class="btn btn--brand btn--lg" type="submit">
+                {{ settings.popup_cta | default: 'Join the list' }}
+              </button>
+            </div>
+            {%- if form.errors -%}
+              <p class="mts-pop__fine" role="alert">{{ form.errors | default_errors }}</p>
+            {%- endif -%}
+          {%- endif -%}
+        {%- endform -%}
+
+        <p class="mts-pop__fine">
+          {% render 'mts-icon', name: 'lock', size: 12 %}
+          We never share your address.
+        </p>
+      </div>
+    </div>
+  </div>
+{%- endif -%}

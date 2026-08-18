@@ -1,0 +1,266 @@
+{% comment %}
+  MY TAPE STORE — ORDER CONFIRMATION
+  Paste into: Shopify admin > Settings > Notifications > Order confirmation > Edit code.
+
+  WHY THIS IS TABLE-BASED AND INLINE-STYLED
+  Email clients are not browsers. Outlook renders with Word's HTML engine, Gmail
+  strips <style> blocks on some clients, and flexbox/grid are unavailable almost
+  everywhere. Everything here is nested tables with inline styles, which is the
+  only layout that survives all of them. The one <style> block carries the dark
+  mode and mobile rules, which are progressive enhancements — if a client drops
+  it, the email still reads correctly.
+
+  Brand: ink #1f1f1f, brand red #df3c22, machined radii. Webfonts do not load in
+  most email clients, so the stack is system faces that read close to Inter.
+{% endcomment %}
+{%- comment -%}
+  PUT YOUR ABN HERE. Left blank deliberately: an Australian tax invoice over
+  $82.50 must show the supplier ABN, and printing a wrong one is worse than
+  printing none, so every ABN line stays hidden until this is set.
+{%- endcomment -%}
+{%- assign abn = "" -%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="supported-color-schemes" content="light dark">
+<title>{{ shop.name }} — order {{ order.name }}</title>
+<style>
+  /* Progressive enhancement only — the inline styles carry the design. */
+  body { margin:0 !important; padding:0 !important; width:100% !important; }
+  img { border:0; line-height:100%; outline:none; text-decoration:none; -ms-interpolation-mode:bicubic; }
+  table { border-collapse:collapse !important; }
+  a { color:#b32f18; }
+  .mts-shell { width:600px; }
+  @media only screen and (max-width:620px) {
+    .mts-shell { width:100% !important; }
+    .mts-pad { padding-left:22px !important; padding-right:22px !important; }
+    .mts-stack { display:block !important; width:100% !important; }
+    .mts-stack-gap { display:block !important; width:100% !important; height:20px !important; }
+    .mts-h1 { font-size:23px !important; }
+    .mts-cta a { display:block !important; }
+  }
+  @media (prefers-color-scheme: dark) {
+    .mts-body { background:#141312 !important; }
+    .mts-card { background:#1d1b19 !important; }
+    .mts-ink { color:#f2efec !important; }
+    .mts-muted { color:#a49d96 !important; }
+    .mts-rule { border-color:#332f2b !important; }
+    .mts-soft { background:#231f1c !important; }
+    /* The masthead stays white in dark mode on purpose: the logo is charcoal
+       and brand red on a transparent background, so it needs a light ground to
+       be legible at all. Letting a client invert it makes the logo disappear. */
+    .mts-mast { background:#ffffff !important; }
+  }
+</style>
+</head>
+<body class="mts-body" style="margin:0; padding:0; background:#f3f1ee; -webkit-font-smoothing:antialiased;">
+
+<div style="display:none; font-size:1px; color:#f3f1ee; line-height:1px; max-height:0; max-width:0; opacity:0; overflow:hidden;">
+  Order {{ order.name }} is confirmed{% if order.line_items.size > 0 %} — {{ order.line_items.size }} item{% if order.line_items.size != 1 %}s{% endif %}{% endif %}. We'll email tracking as soon as it ships.
+</div>
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f3f1ee;">
+<tr><td align="center" style="padding:28px 12px 44px 12px;">
+
+<table role="presentation" class="mts-shell" width="600" cellpadding="0" cellspacing="0" style="width:600px; max-width:600px;">
+
+  <!-- masthead: light ground so the real logo reads, brand rule for definition -->
+  <tr><td class="mts-mast" style="background:#ffffff; border-radius:12px 12px 0 0; padding:26px 34px 22px 34px; border-bottom:3px solid #df3c22;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
+      <td align="left" valign="middle" style="font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+        <img src="https://cdn.shopify.com/s/files/1/0783/2017/3161/files/mytapestore-checkout-logo-420.png?v=1786910098"
+             alt="{{ shop.name }}" width="176" height="31"
+             style="display:block; width:176px; max-width:176px; height:auto; border:0;">
+      </td>
+      <td align="right" valign="middle" style="font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+        <div style="font-size:12px; font-weight:700; letter-spacing:1.4px; text-transform:uppercase; color:#1f1f1f;">Tax Invoice</div>
+        <div class="mts-muted" style="font-size:11px; font-weight:700; letter-spacing:1.4px; text-transform:uppercase; color:#8a8078; margin-top:3px;">Order {{ order.name }}</div>
+      </td>
+    </tr></table>
+  </td></tr>
+
+  <!-- the confirmation itself -->
+  <tr><td class="mts-card mts-pad" style="background:#ffffff; padding:38px 34px 4px 34px; font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td>
+      <div style="display:inline-block; background:#fdeae5; color:#b32f18; font-size:11px; font-weight:700; letter-spacing:1.3px; text-transform:uppercase; padding:6px 11px; border-radius:6px;">Order confirmed</div>
+      <h1 class="mts-h1 mts-ink" style="margin:16px 0 0 0; font-size:27px; line-height:1.22; font-weight:700; color:#1f1f1f; letter-spacing:-0.5px;">
+        Thanks{% if order.customer.first_name %}, {{ order.customer.first_name }}{% endif %} — we've got it.
+      </h1>
+      <p class="mts-muted" style="margin:11px 0 0 0; font-size:15px; line-height:1.6; color:#5d5651;">
+        {% if order.line_items.size > 0 %}We're picking your {% if order.line_items.size == 1 %}item{% else %}{{ order.line_items.size }} items{% endif %} now. {% endif %}You'll get tracking by email as soon as it ships — usually within 1–2 business days.
+      </p>
+    </td></tr></table>
+  </td></tr>
+
+  <!-- primary action -->
+  <tr><td class="mts-card mts-pad" style="background:#ffffff; padding:24px 34px 30px 34px; font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+    <table role="presentation" cellpadding="0" cellspacing="0" class="mts-cta"><tr>
+      <td style="background:#df3c22; border-radius:7px;">
+        <a href="{{ order.order_status_url }}" style="display:inline-block; padding:14px 28px; font-size:15px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.1px;">Track your order</a>
+      </td>
+    </tr></table>
+  </td></tr>
+
+  <!-- what was ordered -->
+  <tr><td class="mts-card mts-pad" style="background:#ffffff; padding:0 34px; font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+      <tr><td class="mts-rule" style="border-top:1px solid #e6e1da; padding:22px 0 14px 0;">
+        <span class="mts-muted" style="font-size:11px; font-weight:700; letter-spacing:1.4px; text-transform:uppercase; color:#8a8078;">Your order</span>
+      </td></tr>
+
+      {% for line in order.line_items %}
+      <tr><td style="padding:0 0 16px 0;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
+          <td width="64" valign="top" style="padding-right:14px;">
+            {% if line.image %}
+              <img src="{{ line | img_url: 'compact_cropped' }}" alt="" width="64" height="64" class="mts-soft" style="display:block; width:64px; height:64px; border-radius:8px; background:#f3f1ee; object-fit:cover;">
+            {% else %}
+              <div class="mts-soft" style="width:64px; height:64px; border-radius:8px; background:#f3f1ee;">&nbsp;</div>
+            {% endif %}
+          </td>
+          <td valign="top" style="font-size:14px; line-height:1.5;">
+            <div class="mts-ink" style="font-weight:600; color:#1f1f1f;">{{ line.title }}</div>
+            {% if line.variant_title and line.variant_title != 'Default Title' %}
+              <div class="mts-muted" style="color:#6d6660; font-size:13px; margin-top:2px;">{{ line.variant_title }}</div>
+            {% endif %}
+            {% if line.sku != blank %}
+              <div class="mts-muted" style="color:#8a8078; font-size:12px; margin-top:3px; letter-spacing:0.2px;">SKU {{ line.sku }}</div>
+            {% endif %}
+            <div class="mts-muted" style="color:#6d6660; font-size:13px; margin-top:4px;">Qty {{ line.quantity }}</div>
+            {% if line.discount_allocations.size > 0 %}
+              {% for allocation in line.discount_allocations %}
+                <div style="color:#2b6b4f; font-size:12.5px; margin-top:3px; font-weight:600;">
+                  {{ allocation.discount_application.title }} &mdash;{{ allocation.amount | money }}
+                </div>
+              {% endfor %}
+            {% endif %}
+          </td>
+          <td valign="top" align="right" class="mts-ink" style="font-size:14px; font-weight:600; color:#1f1f1f; white-space:nowrap; padding-left:12px;">
+            {% if line.original_line_price != line.final_line_price %}
+              <span class="mts-muted" style="color:#9a938c; font-weight:400; text-decoration:line-through; display:block; font-size:12.5px;">{{ line.original_line_price | money }}</span>
+            {% endif %}
+            {{ line.final_line_price | money }}
+          </td>
+        </tr></table>
+      </td></tr>
+      {% endfor %}
+    </table>
+  </td></tr>
+
+  <!-- totals -->
+  <tr><td class="mts-card mts-pad" style="background:#ffffff; padding:0 34px 6px 34px; font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="mts-rule" style="border-top:1px solid #e6e1da;">
+      <tr>
+        <td class="mts-muted" style="padding:16px 0 0 0; font-size:14px; color:#5d5651;">Subtotal</td>
+        <td class="mts-ink" align="right" style="padding:16px 0 0 0; font-size:14px; color:#1f1f1f;">{{ order.subtotal_price | money }}</td>
+      </tr>
+      {% for discount_application in order.discount_applications %}
+      <tr>
+        <td style="padding:7px 0 0 0; font-size:14px; color:#2b6b4f; font-weight:600;">{{ discount_application.title }}</td>
+        <td align="right" style="padding:7px 0 0 0; font-size:14px; color:#2b6b4f; font-weight:600;">&minus;{{ discount_application.total_allocated_amount | money }}</td>
+      </tr>
+      {% endfor %}
+      <tr>
+        <td class="mts-muted" style="padding:7px 0 0 0; font-size:14px; color:#5d5651;">Shipping</td>
+        <td class="mts-ink" align="right" style="padding:7px 0 0 0; font-size:14px; color:#1f1f1f;">
+          {% if order.shipping_price == 0 %}Free{% else %}{{ order.shipping_price | money }}{% endif %}
+        </td>
+      </tr>
+      {% for tax_line in order.tax_lines %}
+      <tr>
+        <td class="mts-muted" style="padding:7px 0 0 0; font-size:14px; color:#5d5651;">{{ tax_line.title }}{% if order.taxes_included %} (included){% endif %}</td>
+        <td class="mts-ink" align="right" style="padding:7px 0 0 0; font-size:14px; color:#1f1f1f;">{{ tax_line.price | money }}</td>
+      </tr>
+      {% endfor %}
+      <tr>
+        <td class="mts-ink mts-rule" style="padding:14px 0 18px 0; border-top:1px solid #e6e1da; font-size:17px; font-weight:700; color:#1f1f1f;">Total</td>
+        <td class="mts-ink mts-rule" align="right" style="padding:14px 0 18px 0; border-top:1px solid #e6e1da; font-size:17px; font-weight:700; color:#1f1f1f;">
+          {{ order.total_price | money_with_currency }}
+        </td>
+      </tr>
+    </table>
+  </td></tr>
+
+  {% comment %}
+    DELIVERY + PAYMENT
+    Two equal cards rather than two bare columns. `format_address` emits a
+    variable number of lines, so bare columns of different heights read as
+    misaligned — a filled card of a fixed width makes both sides square up
+    regardless of how long the address runs. Widths are stated in pixels, not
+    percentages: Outlook's Word engine rounds percentage table cells
+    inconsistently and drifts them out of line.
+  {% endcomment %}
+  <tr><td class="mts-card mts-pad" style="background:#ffffff; padding:22px 34px 34px 34px; font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif; border-radius:0 0 12px 12px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="mts-rule" style="border-top:1px solid #e6e1da;">
+      <tr><td style="padding-top:22px;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
+
+          <td class="mts-stack" width="256" valign="top" style="width:256px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="mts-soft" style="background:#f6f4f1; border-radius:10px;">
+              <tr><td valign="top" style="padding:16px 18px;">
+                <div class="mts-muted" style="font-size:10.5px; font-weight:700; letter-spacing:1.4px; text-transform:uppercase; color:#8a8078; padding-bottom:9px;">Delivering to</div>
+                <div class="mts-ink" style="font-size:14px; line-height:1.62; color:#1f1f1f;">
+                  {% if order.shipping_address %}{{ order.shipping_address | format_address }}{% else %}{{ order.billing_address | format_address }}{% endif %}
+                </div>
+              </td></tr>
+            </table>
+          </td>
+
+          <td class="mts-stack-gap" width="20" style="width:20px; font-size:0; line-height:0;">&nbsp;</td>
+
+          <td class="mts-stack" width="256" valign="top" style="width:256px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="mts-soft" style="background:#f6f4f1; border-radius:10px;">
+              <tr><td valign="top" style="padding:16px 18px;">
+                <div class="mts-muted" style="font-size:10.5px; font-weight:700; letter-spacing:1.4px; text-transform:uppercase; color:#8a8078; padding-bottom:9px;">Payment</div>
+                <div class="mts-ink" style="font-size:14px; line-height:1.62; color:#1f1f1f;">
+                  {% for transaction in order.transactions %}
+                    {% if transaction.payment_details.credit_card_company %}
+                      {{ transaction.payment_details.credit_card_company }} ending {{ transaction.payment_details.credit_card_last_four_digits }}<br>
+                    {% else %}
+                      {{ transaction.gateway_display_name | default: transaction.gateway }}<br>
+                    {% endif %}
+                  {% endfor %}
+                  <strong>{{ order.total_price | money_with_currency }}</strong>
+                </div>
+              </td></tr>
+            </table>
+          </td>
+
+        </tr></table>
+      </td></tr>
+    </table>
+  </td></tr>
+
+  <!-- help -->
+  <tr><td style="padding:20px 0 0 0;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="mts-soft" style="background:#eceae6; border-radius:12px;">
+      <tr><td class="mts-pad" style="padding:22px 30px; font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+        <div class="mts-ink" style="font-size:15px; font-weight:600; color:#1f1f1f;">Need to change something?</div>
+        <div class="mts-muted" style="font-size:14px; line-height:1.6; color:#5d5651; margin-top:5px;">
+          Reply to this email and we'll sort it.
+          <br>Or email <a href="mailto:info@mytapestore.com.au" style="color:#b32f18; text-decoration:underline;">info@mytapestore.com.au</a>
+        </div>
+      </td></tr>
+    </table>
+  </td></tr>
+
+  <!-- footer -->
+  <tr><td style="padding:24px 30px 0 30px; font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif; text-align:center;">
+    <div class="mts-muted" style="font-size:12.5px; line-height:1.65; color:#8a8078;">
+      {{ shop.name }}{% if abn != blank %} &nbsp;·&nbsp; ABN {{ abn }}{% endif %}<br>
+      <a href="{{ shop.url }}" style="color:#8a8078; text-decoration:underline;">{{ shop.domain }}</a>
+    </div>
+    <div class="mts-muted" style="font-size:11.5px; color:#a49d96; margin-top:10px;">
+      This is your tax invoice for order {{ order.name }}, placed {{ order.created_at | date: "%-d %B %Y" }}.
+      Keep it for your records — you can print or save it as a PDF from your email.
+    </div>
+  </td></tr>
+
+</table>
+</td></tr>
+</table>
+</body>
+</html>

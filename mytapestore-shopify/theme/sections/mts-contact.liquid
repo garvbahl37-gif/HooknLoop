@@ -1,0 +1,118 @@
+{%- comment -%}
+  Contact — ported from ContactPage.jsx. The React form was a mock (it just set
+  a "sent" flag); this one posts through Shopify's contact form, so it actually
+  emails the store.
+{%- endcomment -%}
+<main id="main">
+  <div class="wrap page__crumbs">{% render 'mts-breadcrumbs' %}</div>
+
+  <section class="page-hero">
+    <div class="wrap">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="eyebrow eyebrow--onink">{{ section.settings.eyebrow }}</span>
+      {%- endif -%}
+      <h1>{{ page.title | default: 'Contact My Tape Store' }}</h1>
+      {%- if section.settings.intro != blank -%}<p>{{ section.settings.intro }}</p>{%- endif -%}
+    </div>
+  </section>
+
+  <div class="wrap contact">
+    <div class="contact__info">
+      <ul>
+        {%- if settings.phone != blank -%}
+          <li>
+            <span class="contact__ic">{% render 'mts-icon', name: 'phone', size: 20 %}</span>
+            <div><b>Phone</b><a href="tel:{{ settings.phone_href | default: settings.phone | remove: ' ' }}">{{ settings.phone }}</a></div>
+          </li>
+        {%- endif -%}
+        {%- if settings.email != blank -%}
+          <li>
+            <span class="contact__ic">{% render 'mts-icon', name: 'mail', size: 20 %}</span>
+            <div><b>Email</b><a href="mailto:{{ settings.email }}">{{ settings.email }}</a></div>
+          </li>
+        {%- endif -%}
+        {%- comment -%}
+          Opening hours are off here, as in the footer. The `hours` setting is
+          NOT removed — the chat assistant still quotes it when someone asks
+          about hours — this only controls whether the contact card lists it.
+        {%- endcomment -%}
+        {%- if section.settings.show_hours and settings.hours != blank -%}
+          <li>
+            <span class="contact__ic">{% render 'mts-icon', name: 'clock', size: 20 %}</span>
+            <div><b>Hours</b><span>{{ settings.hours }}</span></div>
+          </li>
+        {%- endif -%}
+        {%- if settings.abn != blank -%}
+          <li>
+            <span class="contact__ic">{% render 'mts-icon', name: 'shield', size: 20 %}</span>
+            <div><b>Business</b><span class="num">ABN {{ settings.abn }} · Australian owned</span></div>
+          </li>
+        {%- endif -%}
+      </ul>
+
+      {%- if section.settings.ship_note != blank -%}
+        <div class="contact__ship">
+          {% render 'mts-icon', name: 'truck', size: 20 %}
+          <p>{{ section.settings.ship_note }}</p>
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- form 'contact', class: 'contact__form' -%}
+      <h2>Send us a message</h2>
+
+      {%- if form.posted_successfully? -%}
+        <div class="contact__sent" role="status">
+          {% render 'mts-icon', name: 'check', size: 22 %}
+          <div>
+            <b>Thanks — message received.</b>
+            <span>Our team will get back to you within one business day.</span>
+          </div>
+        </div>
+      {%- else -%}
+        {%- if form.errors -%}
+          <div class="contact__sent contact__sent--error" role="alert">
+            {% render 'mts-icon', name: 'close', size: 22 %}
+            <div>
+              <b>That didn't send.</b>
+              <span>{{ form.errors | default_errors }}</span>
+            </div>
+          </div>
+        {%- endif -%}
+
+        <div class="contact__row">
+          <label>Name<input type="text" name="contact[name]" required placeholder="Your name" value="{{ form.name }}"></label>
+          <label>Email<input type="email" name="contact[email]" required placeholder="you@email.com" value="{{ form.email }}"></label>
+        </div>
+        <label>Subject<input type="text" name="contact[subject]" placeholder="What's it about?"></label>
+        <label>Message<textarea name="contact[body]" rows="5" required placeholder="How can we help?">{{ form.body }}</textarea></label>
+        <button class="btn btn--brand btn--lg" type="submit">
+          Send message {% render 'mts-icon', name: 'arrowRight', size: 18 %}
+        </button>
+      {%- endif -%}
+    {%- endform -%}
+  </div>
+
+  {%- if page.content != blank -%}
+    <div class="wrap page-prose">{{ page.content }}</div>
+  {%- endif -%}
+</main>
+
+{% schema %}
+{
+  "name": "Contact",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Get in touch" },
+    { "type": "checkbox", "id": "show_hours", "label": "Show opening hours", "default": false,
+      "info": "The hours themselves live in Theme settings \u2192 Contact, and are still used by the chat assistant." },
+    {
+      "type": "textarea", "id": "intro", "label": "Intro",
+      "default": "Questions about a product, a bulk order or delivery? Talk to a real person — we're happy to help you find the right tape."
+    },
+    {
+      "type": "textarea", "id": "ship_note", "label": "Shipping note",
+      "default": "We dispatch to Melbourne, Sydney, Brisbane, Perth, Adelaide, Darwin and 3,600+ postcodes Australia-wide — most orders arrive in 2–3 business days."
+    }
+  ]
+}
+{% endschema %}

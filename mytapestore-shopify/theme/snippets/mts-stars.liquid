@@ -1,0 +1,42 @@
+{%- comment -%}
+  Rating stars — ported from Stars.jsx. rating 0–5, renders full/half/empty.
+
+  Shopify has no native product rating, so callers pass values read from the
+  standard `reviews.rating` / `reviews.rating_count` metafields (the schema the
+  Shopify Product Reviews app and most review apps write to). When no review
+  data exists the caller simply doesn't render this.
+
+  Params: rating, count (optional), size (default 15), show_count (default true)
+{%- endcomment -%}
+{%- liquid
+  assign size = size | default: 15
+  assign r = rating | default: 0 | times: 2 | round | divided_by: 2.0
+  if show_count == nil
+    assign show_count = true
+  endif
+-%}
+<span class="stars" aria-label="Rated {{ rating }} out of 5">
+  <span class="stars__row" aria-hidden="true">
+    {%- for i in (1..5) -%}
+      {%- liquid
+        assign half_point = i | minus: 0.5
+        if r >= i
+          assign icon = 'star'
+          assign cls = 'stars__on'
+        elsif r >= half_point
+          assign icon = 'starHalf'
+          assign cls = 'stars__on'
+        else
+          assign icon = 'star'
+          assign cls = 'stars__off'
+        endif
+      -%}
+      {% render 'mts-icon', name: icon, size: size, class: cls %}
+    {%- endfor -%}
+  </span>
+  {%- if show_count and count != nil -%}
+    <span class="stars__count num">
+      {%- if count > 0 -%}({{ count }}){%- else -%}{{ 'products.product.no_reviews' | t }}{%- endif -%}
+    </span>
+  {%- endif -%}
+</span>

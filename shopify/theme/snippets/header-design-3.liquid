@@ -1,0 +1,256 @@
+{% liquid
+  assign predictive_result_type = 'product'
+
+  if settings.show_collection
+    assign predictive_result_type = predictive_result_type | append: ',collection'
+  endif
+
+  if settings.show_article
+    assign predictive_result_type = predictive_result_type | append: ',article'
+  endif
+
+  if settings.show_page
+    assign predictive_result_type = predictive_result_type | append: ',page'
+  endif
+
+  assign my_array = settings.search_filter_tags
+
+  assign new_my_array = my_array | split: ','
+  assign result = new_my_array | uniq | sort_natural | join: ', '
+  assign product_tags = result | split: ', '
+%}
+
+<!-- Mobile Menu Bar -->
+<div class="col-auto d-none d-md-only-block">
+  <div class="mobile__menu_bar header__actions_btn--menu">
+    {% render 'icon-hamburger' %}
+  </div>
+</div>
+<!-- Mobile Menu Bar end -->
+<div class="col-md-4 d-md-none">
+  {%- if search_button == 'hide' -%}
+  {%- elsif search_button == 'icon' -%}
+    <button class="header__actions_btn header__actions_btn--search" aria-label="{{ 'general.search.search' | t }}">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <path fill="currentColor" d="M508.5 481.6l-129-129c-2.3-2.3-5.3-3.5-8.5-3.5h-10.3C395 312 416 262.5 416 208 416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c54.5 0 104-21 141.1-55.2V371c0 3.2 1.3 6.2 3.5 8.5l129 129c4.7 4.7 12.3 4.7 17 0l9.9-9.9c4.7-4.7 4.7-12.3 0-17zM208 384c-97.3 0-176-78.7-176-176S110.7 32 208 32s176 78.7 176 176-78.7 176-176 176z" />
+      </svg>
+    </button>
+  {%- else -%}
+    {%- if settings.predictive_search_enabled -%}
+      <predictive-search
+        class="search-modal__form"
+        data-loading-text="{{ 'accessibility.loading' | t }}"
+        data-limit="{{ settings.number_of_search_result }}"
+        data-unavailable="{{ settings.show_unavailable_product }}"
+        data-types="{{ predictive_result_type }}"
+      >
+    {% else %}
+      <search-form class="search-modal__form">
+    {%- endif -%}
+    <form action="{{ routes.search_url }}" method="get" role="search" class="search search-modal__form">
+      {% unless settings.search_type == 'none' %}
+        <div class="select__filter--search-box">
+          <div class="select-custom header-global-search-select">
+            <div class="select__field_form">
+              <main-select-search>
+                <label class="visually-hidden" for="category__serch--form">
+                  {{ 'customer.addresses.country' | t }}
+                </label>
+                <select
+                  id="search-filter"
+                  id="category__serch--form"
+                  name="search-filter"
+                  data-type="{{ settings.search_type }}"
+                  class="header-global-search-categories"
+                >
+                  {% if settings.search_type == 'vendor' %}
+                    <option value="" selected="selected">{{ 'templates.search.search_filter.vendor' | t }}</option>
+                    {% for vendor in shop.vendors %}
+                      <option value="{{ vendor }}">{{ vendor }}</option>
+                    {%- endfor -%}
+                  {% elsif settings.search_type == 'tag' %}
+                    <option value="" selected="selected">{{ 'templates.search.search_filter.tag' | t }}</option>
+                    {% for tag in product_tags %}
+                      <option value="{{ tag | strip  }}">{{ tag | strip }}</option>
+                    {% endfor %}
+                  {% else %}
+                    <option value="" selected="selected">{{ 'templates.search.search_filter.type' | t }}</option>
+                    {% for type in shop.types %}
+                      {% if type != blank %}
+                        <option value="{{ type }}">{{ type }}</option>
+                      {% endif %}
+                    {%- endfor -%}
+                  {% endif %}
+                </select>
+                <svg aria-hidden="true" focusable="false" viewBox="0 0 10 6">
+                  <use href="#icon-caret" />
+                </svg>
+              </main-select-search>
+            </div>
+          </div>
+      {% endunless %}
+
+      <div class="search__input_field input__field_form search__input--inline-header">
+        <input
+          class="search__input input__field"
+          id="Search-In-Modal"
+          type="search"
+          name="q"
+          value=""
+          placeholder="{{ 'general.search.search' | t }}"
+          {%- if settings.predictive_search_enabled -%}
+            role="combobox"
+            aria-expanded="false"
+            aria-owns="predictive-search-results-list"
+            aria-controls="predictive-search-results-list"
+            aria-haspopup="listbox"
+            aria-autocomplete="list"
+            autocorrect="off"
+            autocomplete="off"
+            autocapitalize="off"
+            spellcheck="false"
+          {%- endif -%}
+        >
+        <input type="hidden" name="options[prefix]" value="last">
+        <button
+          type="reset"
+          class="reset__button field__button{% if search.terms == blank %} hidden{% endif %}"
+          aria-label="{{ 'general.search.reset' | t }}"
+        >
+          <svg class="icon icon-close" aria-hidden="true" focusable="false">
+            <use xlink:href="#icon-reset">
+          </svg>
+        </button>
+        <button class="search__button input__field_form_button" aria-label="{{ 'general.search.search' | t }}">
+          <svg class="icon icon-search" aria-hidden="true" focusable="false" role="presentation">
+            <use href="#icon-search">
+          </svg>
+        </button>
+      </div>
+
+      {% unless settings.search_type == 'none' %}
+        </div>
+      {% endunless %}
+
+      {%- if settings.predictive_search_enabled -%}
+        <div
+          class="predictive-search predictive-search--header predictive--search--in-header predictive--search-narrow-width"
+          tabindex="-1"
+          data-predictive-search
+        >
+          <div class="predictive-search__loading-state">
+            <svg
+              aria-hidden="true"
+              focusable="false"
+              role="presentation"
+              class="spinner"
+              viewBox="0 0 66 66"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+            </svg>
+          </div>
+        </div>
+
+        <span class="predictive-search-status visually-hidden" role="status" aria-hidden="true"></span>
+      {%- endif -%}
+    </form>
+    {%- if settings.predictive_search_enabled -%}
+      </predictive-search>
+    {%- else -%}
+      </search-form>
+    {%- endif -%}
+  {%- endif -%}
+</div>
+<!-- Header Logo Start -->
+<div class="header__logo col-md-4 text-center">
+  {%- if request.page_type == 'index' -%}
+    <div class="header__heading mb-0">
+  {%- endif -%}
+  {%- render 'header-logo', className: 'header__logo_link' -%}
+  {%- if request.page_type == 'index' -%}
+  </div>
+  {%- endif -%}
+</div>
+<!-- Header Logo End -->
+
+<!-- Header Actions Start -->
+<div class="header__actions col-md-4">
+  {%- unless search_button == 'hide' -%}
+    <button
+      class="header__actions_btn header__actions_btn--search d-none"
+      aria-label="{{ 'general.search.search' | t }}"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <path fill="currentColor" d="M508.5 481.6l-129-129c-2.3-2.3-5.3-3.5-8.5-3.5h-10.3C395 312 416 262.5 416 208 416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c54.5 0 104-21 141.1-55.2V371c0 3.2 1.3 6.2 3.5 8.5l129 129c4.7 4.7 12.3 4.7 17 0l9.9-9.9c4.7-4.7 4.7-12.3 0-17zM208 384c-97.3 0-176-78.7-176-176S110.7 32 208 32s176 78.7 176 176-78.7 176-176 176z" />
+      </svg>
+    </button>
+  {%- endunless -%}
+
+  {%- if shop.customer_accounts_enabled and account_icon -%}
+    <a
+      href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}"
+      class="header__actions_btn header__actions_btn--user d-md-none"
+    >
+      {%- if customer -%}
+        {% render 'icon-account' %}
+      {%- else -%}
+        {% render 'user-icon' %}
+      {%- endif -%}
+      <span class="visually-hidden">
+        {%- liquid
+          if customer
+            echo 'customer.account_fallback' | t
+          else
+            echo 'customer.log_in' | t
+          endif
+        -%}
+      </span>
+    </a>
+  {%- endif -%}
+
+  {%- if compare_icon -%}
+    <a href="/pages/compare" class="header__actions_btn header__actions_btn--wishlist d-md-none">
+      {% render 'compare-icon' %}
+      <span class="header__actions_btn_cart_num compare__count"></span>
+    </a>
+  {%- endif -%}
+
+  {%- if wishlist_icon -%}
+    <a href="/pages/wishlist" class="header__actions_btn header__actions_btn--wishlist d-md-none">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <path fill="currentColor" d="M462.3 62.7c-54.5-46.4-136-38.7-186.6 13.5L256 96.6l-19.7-20.3C195.5 34.1 113.2 8.7 49.7 62.7c-62.8 53.6-66.1 149.8-9.9 207.8l193.5 199.8c6.2 6.4 14.4 9.7 22.6 9.7 8.2 0 16.4-3.2 22.6-9.7L472 270.5c56.4-58 53.1-154.2-9.7-207.8zm-13.1 185.6L256.4 448.1 62.8 248.3c-38.4-39.6-46.4-115.1 7.7-161.2 54.8-46.8 119.2-12.9 142.8 11.5l42.7 44.1 42.7-44.1c23.2-24 88.2-58 142.8-11.5 54 46 46.1 121.5 7.7 161.2z" />
+      </svg>
+      <span class="header__actions_btn_cart_num wishlist__count"></span>
+    </a>
+  {%- endif -%}
+
+  {%- if cart_icon -%}
+    {%- unless template contains 'cart' -%}
+      {%- if settings.cart_type == 'drawer' -%}
+        <open-minicart>
+          <a href="{{ routes.cart_url }}" class="header__actions_btn header__actions_btn--cart">
+            {% render 'icon-cart', icon: cart_icon_type %}
+
+            <div class="cart-count-bubble header__actions_btn_cart_num">
+              {%- if cart.item_count < 100 -%}
+                <span id="cart-notification-count" aria-hidden="true">{{ cart.item_count }}</span>
+              {%- endif -%}
+              <span class="visually-hidden">{{ 'sections.header.cart_count' | t: count: cart.item_count }}</span>
+            </div>
+          </a>
+        </open-minicart>
+      {%- else -%}
+        <a href="{{ routes.cart_url }}" class="header__actions_btn header__actions_btn--cart">
+          {% render 'icon-cart', icon: cart_icon_type %}
+          <div class="cart-count-bubble header__actions_btn_cart_num">
+            {%- if cart.item_count < 100 -%}
+              <span id="cart-notification-count" aria-hidden="true">{{ cart.item_count }}</span>
+            {%- endif -%}
+            <span class="visually-hidden">{{ 'sections.header.cart_count' | t: count: cart.item_count }}</span>
+          </div>
+        </a>
+      {%- endif -%}
+    {%- endunless -%}
+  {%- endif -%}
+</div>

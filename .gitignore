@@ -17,3 +17,21 @@ Thumbs.db
 
 # local, not committed
 CLAUDE.local.md
+.vercel
+.env*
+
+# ---------------------------------------------------------------------------
+# Added during the MyTapeStore migration.
+# Build output, database dumps and rendered video are regenerable and must not
+# be in git. The WordPress build/ tree in particular contains mytapestore.sql,
+# a full WooCommerce dump WITH customer records and password hashes — that is
+# personal data and has no business in a code repository.
+# ---------------------------------------------------------------------------
+mytapestore-wordpress/build/
+**/*.sql
+**/*.sql.gz
+.cache/
+**/.cache/
+hooknloop-commercial/05_assets/generated/video/
+**/*.mp4
+**/*.mov

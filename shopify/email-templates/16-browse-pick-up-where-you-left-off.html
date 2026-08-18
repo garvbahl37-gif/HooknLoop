@@ -1,0 +1,99 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="color-scheme" content="light only">
+  <title>Pick up where you left off</title>
+  <!--
+    BROWSE ABANDONMENT — "Pick up where you left off"
+    Trigger: Viewed Product → wait 4 hours. Exit if they add to cart or order.
+
+    Different from the three cart emails: this person never added anything, so
+    there is no cart to show. It uses the Viewed Product event instead, and its
+    job is to answer "will this work for my job", not to chase a checkout.
+  -->
+  <style type="text/css">
+    body,table,td,a{-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;}
+    table,td{mso-table-lspace:0pt;mso-table-rspace:0pt;}
+    img{-ms-interpolation-mode:bicubic;border:0;height:auto;line-height:100%;outline:none;text-decoration:none;}
+    body{margin:0!important;padding:0!important;width:100%!important;background:#efece6;}
+    a{color:#e8590c;}
+    @media only screen and (max-width:600px){
+      .full{width:100%!important;}
+      .px{padding-left:20px!important;padding-right:20px!important;}
+      .btnw{width:100%!important;}
+      .btnw td{width:100%!important;}
+      .btnw a{display:block!important;text-align:center!important;padding-left:0!important;padding-right:0!important;}
+    }
+  </style>
+</head>
+<body style="margin:0;padding:0;background:#efece6;">
+
+  <div style="display:none;font-size:1px;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;mso-hide:all;color:#efece6;">Tell us the job and we'll point you at the right one.</div>
+
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#efece6;"><tr><td align="center" style="padding:0 12px;">
+    <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" class="full" style="width:600px;max-width:600px;background:#ffffff;border-radius:18px;overflow:hidden;margin-top:22px;">
+
+      <tr><td style="font-size:0;line-height:0;padding:0;background:#153fae;">
+        <a href="https://hooknloop.com.au" target="_blank" style="text-decoration:none;">
+          <img src="https://d3k81ch9hvuctc.cloudfront.net/company/SbHZqm/images/3955b0e1-6917-45d9-98ed-a42b66e0a180.jpeg" width="600" alt="HooknLoop" style="display:block;width:100%;max-width:600px;height:auto;border:0;">
+        </a>
+      </td></tr>
+      <tr><td style="height:3px;line-height:3px;font-size:0;background:#e8590c;">&nbsp;</td></tr>
+
+      <tr><td style="padding:34px 32px 0;" class="px">
+        <div style="font-family:Georgia,'Times New Roman',serif;font-size:28px;font-weight:700;line-height:1.25;color:#0b2447;">Pick up where you left off</div>
+        <p style="font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.7;color:#3a4152;margin:14px 0 0;">You were having a look at <strong style="color:#0b2447;">{{ event.ProductName|default:"our range" }}</strong>. It's still there when you're ready.</p>
+      </td></tr>
+
+      <tr><td align="center" style="padding:26px 32px 0;" class="px">
+        <table role="presentation" class="btnw" cellpadding="0" cellspacing="0" border="0"><tr><td align="center" bgcolor="#e8590c" style="border-radius:10px;">
+          <a href="{{ event.URL|default:'https://hooknloop.com.au/collections/all' }}" target="_blank" style="display:inline-block;padding:14px 30px;font-family:Arial,Helvetica,sans-serif;font-size:15px;font-weight:700;color:#ffffff;text-decoration:none;">Take another look</a>
+        </td></tr></table>
+      </td></tr>
+
+      <tr><td style="padding:32px 32px 0;" class="px">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-top:1px solid #e9e4db;"><tr><td style="padding-top:24px;">
+          <div style="font-family:Georgia,'Times New Roman',serif;font-size:20px;font-weight:700;color:#0b2447;">Not sure which one you need?</div>
+          <p style="font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.7;color:#3a4152;margin:10px 0 0;">Most people get stuck on the same three things:</p>
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:13px;">
+            <tr>
+              <td width="26" valign="top" style="font-family:Arial,Helvetica,sans-serif;font-size:16px;font-weight:700;color:#e8590c;line-height:1.6;">&rarr;</td>
+              <td style="font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.6;color:#3a4152;padding-bottom:10px;"><strong style="color:#0b2447;">Hook or loop?</strong> They only stick to each other, so most jobs need both.</td>
+            </tr>
+            <tr>
+              <td width="26" valign="top" style="font-family:Arial,Helvetica,sans-serif;font-size:16px;font-weight:700;color:#e8590c;line-height:1.6;">&rarr;</td>
+              <td style="font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.6;color:#3a4152;padding-bottom:10px;"><strong style="color:#0b2447;">Stick on or sew on?</strong> Sew-on lasts longer on anything that moves or gets washed.</td>
+            </tr>
+            <tr>
+              <td width="26" valign="top" style="font-family:Arial,Helvetica,sans-serif;font-size:16px;font-weight:700;color:#e8590c;line-height:1.6;">&rarr;</td>
+              <td style="font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.6;color:#3a4152;"><strong style="color:#0b2447;">Going outside?</strong> Use the heavy duty grade — standard tape softens in heat.</td>
+            </tr>
+          </table>
+        </td></tr></table>
+      </td></tr>
+
+      <tr><td style="height:34px;line-height:34px;font-size:0;">&nbsp;</td></tr>
+
+      <tr><td style="background:#0b2447;padding:28px 32px;" class="px">
+        <img src="https://hooknloop-newsletter.vercel.app/img/logo-footer.png" width="132" alt="HooknLoop" style="display:block;width:132px;max-width:132px;height:auto;border:0;">
+        <p style="font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.9;margin:16px 0 0;">
+          <a href="https://hooknloop.com.au/collections/all" style="color:#ffffff;text-decoration:none;">Shop all</a> &nbsp;&middot;&nbsp;
+          <a href="https://hooknloop.com.au/pages/bulk-orders" style="color:#ffffff;text-decoration:none;">Bulk orders</a> &nbsp;&middot;&nbsp;
+          <a href="https://hooknloop.com.au/pages/contact" style="color:#ffffff;text-decoration:none;">Contact</a>
+        </p>
+        <p style="font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.9;margin:8px 0 0;">
+          <a href="mailto:info@hooknloop.com.au" style="color:#ffffff;text-decoration:none;">info@hooknloop.com.au</a> &nbsp;&middot;&nbsp;
+          <a href="tel:+61340616287" style="color:#ffffff;text-decoration:none;">+61 340 616 287</a>
+        </p>
+        <p style="font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:1.7;color:#6f86a8;margin:18px 0 0;">You're getting this because you were browsing hooknloop.com.au. <a href="{% unsubscribe_link %}" style="color:#9fb0cc;text-decoration:underline;">Unsubscribe</a></p>
+      </td></tr>
+
+    </table>
+    <div style="height:26px;line-height:26px;font-size:0;">&nbsp;</div>
+  </td></tr></table>
+
+</body>
+</html>

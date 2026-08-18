@@ -1,0 +1,180 @@
+.image-with-text__media--placeholder.placeholder {
+  height: 35rem;
+}
+
+.image-with-text__media {
+  min-height: 100%;
+}
+@media only screen and (min-width: 992px) {
+  .desktop-row-reverse {
+    flex-direction: row-reverse;
+  }
+}
+.image-with-text__media {
+  min-height: 100%;
+  overflow: visible;
+}
+
+.image-with-text__media--small {
+  height: 19.4rem;
+}
+
+.image-with-text__media--large {
+  height: 43.5rem;
+}
+.image-with-text__media--extra-large {
+  height: 45rem;
+}
+
+@media screen and (min-width: 750px) and (max-width: 991px) {
+  .image-with-text__media--small {
+    height: 30rem;
+  }
+
+  .image-with-text__media--large {
+    height: 50rem;
+  }
+  .image-with-text__media--placeholder.placeholder {
+    height: 50em;
+  }
+  .image-with-text__media--extra-large {
+    height: 55rem;
+  }
+}
+@media screen and (min-width: 992px) {
+  .image-with-text__media--small {
+    height: 31.4rem;
+  }
+
+  .image-with-text__media--large {
+    height: 69.5rem;
+  }
+  .image-with-text__media--placeholder.placeholder {
+    height: 45rem;
+  }
+  .image-with-text__media--extra-large {
+    height: 70rem;
+  }
+}
+@media screen and (min-width: 1580px) {
+  .image-with-text__media--extra-large {
+    height: 80rem;
+  }
+}
+.image-with-text__content > * + * {
+  margin-top: 2rem;
+}
+.image-with-text__content {
+  padding: 3rem;
+  position: relative;
+}
+
+@media only screen and (max-width: 749px) {
+  .image-with-text__content.mobile__text-center {
+    text-align: center;
+    align-items: center;
+  }
+  .image-with-text__content.mobile__text-left {
+    text-align: left;
+    align-items: flex-start;
+  }
+  .image-with-text__content.mobile__text-right {
+    text-align: right;
+    align-items: flex-end;
+  }
+  .mobile__text-center .feature-list--inner {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+.link.with--icon.button--with-icon {
+  display: flex;
+  text-underline-offset: 0.3rem;
+}
+.image-with-text__content {
+  display: flex;
+  flex-wrap: wrap;
+}
+.image-with-text__content > * {
+  width: 100%;
+}
+/* Features list */
+.feature-list-icon > svg {
+  width: 2.5rem;
+}
+.feature-list--inner {
+  display: flex;
+  gap: 1rem;
+}
+.feature-list-image--icon {
+  display: block;
+  width: 100%;
+}
+.feature-list-image--icon > img {
+  max-width: 100%;
+  height: auto;
+}
+.feature-list-heading {
+  margin-bottom: 0;
+}
+.feature-list-content {
+  flex-grow: 1;
+}
+.feature-list-icon {
+  max-width: 5rem;
+}
+.icon--solid-button {
+  display: flex;
+  background: rgba(var(--color-button), var(--alpha-button-background));
+  width: 4rem;
+  height: 4rem;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+}
+.feature-list-icon .icon--solid-button svg {
+  width: 2rem;
+  display: inline-block;
+  color: rgb(var(--color-button-text));
+}
+@media only screen and (min-width: 750px) {
+  .feature__list {
+    width: var(--feature-list-width, 50%);
+  }
+  .image-with-text__content.image--content-padded-medium-text_first {
+    padding-inline-start: 7rem;
+    padding-inline-end: 5rem;
+  }
+  .image-with-text__content.image--content-padded-large-text_first {
+    padding-inline-start: 9rem;
+    padding-inline-end: 5rem;
+  }
+  .image-with-text__content.image--content-padded-small-text_first {
+    padding-inline-start: 5rem;
+    padding-inline-end: 5rem;
+  }
+  .feature__list {
+    padding-inline-end: 3rem;
+  }
+  .image-with-text__content.image--content-padded-medium-image_first {
+    padding-inline-end: 7rem;
+    padding-inline-start: 5rem;
+  }
+  .image-with-text__content.image--content-padded-large-image_first {
+    padding-inline-end: 9rem;
+    padding-inline-start: 5rem;
+  }
+  .image-with-text__content.image--content-padded-small-image_first {
+    padding-inline-end: 5rem;
+    padding-inline-start: 5rem;
+  }
+}
+@media only screen and (max-width: 749px) {
+  .mobile__text-right .feature-list--inner {
+    flex-direction: row-reverse;
+  }
+}
+.image-with-text__grid:is(.rounded--image) {
+  border-radius: 1rem;
+  overflow: hidden;
+}

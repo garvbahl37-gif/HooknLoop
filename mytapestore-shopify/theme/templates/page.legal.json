@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "main": {
+      "type": "mts-page-legal",
+      "settings": {
+        "eyebrow": "Customer care",
+        "toc_title": "On this page",
+        "show_help": true
+      }
+    }
+  },
+  "order": ["main"]
+}

@@ -1,0 +1,22 @@
+/*
+ * HooknLoop collection — mirrors CollectionPage.jsx in storefront/src/pages.
+ * Suruchi's original is preserved in git at the pristine backup commit.
+ */
+{
+  "sections": {
+    "hnl_collection": {
+      "type": "hnl-collection",
+      "settings": {
+        "dispatch_note": "dispatched 1–2 days Australia-wide",
+        "per_page": 24,
+        "help_heading": "",
+        "help_body": "",
+        "help_cta": "",
+        "help_link": "/pages/contact"
+      }
+    }
+  },
+  "order": [
+    "hnl_collection"
+  ]
+}

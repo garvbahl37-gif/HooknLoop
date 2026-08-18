@@ -1,0 +1,282 @@
+/*
+ * Default page template.
+ *
+ * The Theme Access token cannot assign template suffixes to pages — that needs
+ * the Admin API — so every page on this store renders through THIS template.
+ * It therefore carries one section per page, each gated on `page_handle`, plus
+ * a generic fallback last for any page not listed.
+ *
+ * The matching page.<handle>.json files are still on disk. Assign one of them
+ * in Online Store > Pages > Theme template and it takes over; then the entry
+ * here can be deleted. Nothing breaks either way.
+ */
+{
+  "sections": {
+    "hnl_contact": {
+      "type": "hnl-contact",
+      "settings": {
+        "eyebrow": "We're here to help",
+        "phone": "+61 3 4061 6287",
+        "phone_note": "Mon–Fri, Australian business hours",
+        "email": "info@hooknloop.com.au",
+        "email_note": "Replies within 1 business day",
+        "address": "111 Cecil St",
+        "address_sub": "South Melbourne VIC 3205",
+        "abn": "ABN 93 878 995 217",
+        "abn_note": "GST tax invoice on every order",
+        "form_heading": "Send us a message",
+        "success_note": "We'll get back to you within 1 business day.",
+        "map_query": "111 Cecil St, South Melbourne VIC 3205",
+        "page_handle": "contact"
+      },
+      "blocks": {
+        "s1": {
+          "type": "social",
+          "settings": {
+            "network": "facebook",
+            "url": "https://www.facebook.com/profile.php?id=61587201524181"
+          }
+        },
+        "s2": {
+          "type": "social",
+          "settings": {
+            "network": "instagram",
+            "url": "https://www.instagram.com/hooknloopshop"
+          }
+        },
+        "s3": {
+          "type": "social",
+          "settings": {
+            "network": "pinterest",
+            "url": "https://www.pinterest.com/hooknloopshop/"
+          }
+        },
+        "s4": {
+          "type": "social",
+          "settings": {
+            "network": "linkedin",
+            "url": "https://www.linkedin.com/company/hooknloop/"
+          }
+        }
+      },
+      "block_order": [
+        "s1",
+        "s2",
+        "s3",
+        "s4"
+      ]
+    },
+    "hnl_bulk": {
+      "type": "hnl-bulk",
+      "settings": {
+        "pill": "For trade & bulk buyers",
+        "heading": "Buy by the box. Priced for trade.",
+        "sub": "Industrial hook & loop, dispatched from our Australian warehouse. Volume pricing, a proper GST tax invoice, and one point of contact for repeat orders.",
+        "form_heading": "Request a trade quote",
+        "phone": "+61 3 4061 6287",
+        "legal": "GST tax invoice supplied · ABN 93 878 995 217",
+        "show_ladder": true,
+        "ladder_eyebrow": "Bundle & save",
+        "ladder_heading": "The more you order, the more you save",
+        "ladder_sub": "Volume discounts scale with your order — no code needed. Large and recurring runs go further again, confirmed on your quote.",
+        "tiers": "5+ rolls | 5\n10+ rolls | 10\n20+ rolls | 20\n50+ rolls | 30",
+        "strip": "Free shipping over $300\nGST tax invoice + PO\nAny width, no minimums\n1–2 day dispatch",
+        "page_handle": "bulk-orders",
+        "hero_eyebrow": "For trade & bulk buyers",
+        "hero_title": "Bulk Orders",
+        "hero_lead": "Industrial hook & loop at volume pricing, with a GST tax invoice and one contact for repeat orders."
+      },
+      "blocks": {
+        "v1": {
+          "type": "value",
+          "settings": {
+            "title": "Volume breaks up to 30%",
+            "body": "The more rolls, the lower the per-roll price."
+          }
+        },
+        "v2": {
+          "type": "value",
+          "settings": {
+            "title": "Any width, no minimums",
+            "body": "Order the exact quantity your job needs."
+          }
+        },
+        "v3": {
+          "type": "value",
+          "settings": {
+            "title": "GST tax invoice + PO",
+            "body": "Compliant invoicing for accounts and procurement."
+          }
+        },
+        "v4": {
+          "type": "value",
+          "settings": {
+            "title": "1–2 business day dispatch",
+            "body": "100,000m+ in stock, ready to ship."
+          }
+        }
+      },
+      "block_order": [
+        "v1",
+        "v2",
+        "v3",
+        "v4"
+      ]
+    },
+    "hnl_shipping": {
+      "type": "hnl-policy",
+      "settings": {
+        "eyebrow": "Delivery",
+        "highlights": "1–2 days | Dispatch time\nFree | Shipping over $300\n2–5 days | Metro delivery\n3–7 days | Regional delivery",
+        "help_heading": "Need a hand?",
+        "help_body": "Talk to a real person in Australia about your order, delivery or a return.",
+        "help_email": "info@hooknloop.com.au",
+        "help_phone": "+61 3 4061 6287",
+        "other_links": "Shipping & Delivery | /pages/shipping-delivery\nReturns & Exchanges | /pages/return-policy\nPrivacy Policy | /pages/privacy-policy\nTerms & Conditions | /pages/terms-conditions",
+        "page_handle": "shipping-delivery"
+      }
+    },
+    "hnl_returns": {
+      "type": "hnl-policy",
+      "settings": {
+        "eyebrow": "Returns & Exchanges",
+        "highlights": "14 days | Return window\nFaulty | Always covered\n2 steps | Simple process",
+        "help_heading": "Need a hand?",
+        "help_body": "Talk to a real person in Australia about your order, delivery or a return.",
+        "help_email": "info@hooknloop.com.au",
+        "help_phone": "+61 3 4061 6287",
+        "other_links": "Shipping & Delivery | /pages/shipping-delivery\nReturns & Exchanges | /pages/return-policy\nPrivacy Policy | /pages/privacy-policy\nTerms & Conditions | /pages/terms-conditions",
+        "page_handle": "return-policy"
+      }
+    },
+    "hnl_privacy": {
+      "type": "hnl-policy",
+      "settings": {
+        "eyebrow": "Your data",
+        "highlights": "",
+        "help_heading": "Need a hand?",
+        "help_body": "Talk to a real person in Australia about your order, delivery or a return.",
+        "help_email": "info@hooknloop.com.au",
+        "help_phone": "+61 3 4061 6287",
+        "other_links": "Shipping & Delivery | /pages/shipping-delivery\nReturns & Exchanges | /pages/return-policy\nPrivacy Policy | /pages/privacy-policy\nTerms & Conditions | /pages/terms-conditions",
+        "page_handle": "privacy-policy"
+      }
+    },
+    "hnl_terms": {
+      "type": "hnl-policy",
+      "settings": {
+        "eyebrow": "The fine print",
+        "highlights": "AUD | All prices quoted\nSecure | Payments processed\nVictoria | Governing law",
+        "help_heading": "Need a hand?",
+        "help_body": "Talk to a real person in Australia about your order, delivery or a return.",
+        "help_email": "info@hooknloop.com.au",
+        "help_phone": "+61 3 4061 6287",
+        "other_links": "Shipping & Delivery | /pages/shipping-delivery\nReturns & Exchanges | /pages/return-policy\nPrivacy Policy | /pages/privacy-policy\nTerms & Conditions | /pages/terms-conditions",
+        "page_handle": "terms-conditions"
+      }
+    },
+    "hnl_about": {
+      "type": "hnl-page",
+      "settings": {
+        "eyebrow": "Australian owned",
+        "center": true,
+        "narrow": true,
+        "cta_label": "Shop the range",
+        "cta_link": "/collections/all",
+        "page_handle": "customer-service"
+      }
+    },
+    "hnl_blog": {
+      "type": "hnl-page",
+      "settings": {
+        "eyebrow": "Guides & how-tos",
+        "center": true,
+        "narrow": true,
+        "page_handle": "blog"
+      }
+    },
+    "hnl_page": {
+      "type": "hnl-page",
+      "settings": {
+        "page_handle": "",
+        "center": true,
+        "narrow": true,
+        "skip_handles": "about-us,automotive-caravan-rv,blog,bulk-orders,clothing-garments,construction-industrial,contact,customer-service,industries,medical-aged-care,privacy-policy,return-policy,schools-education,shipping-delivery,signage-displays,terms-conditions,upholstery-furniture,warehousing-logistics"
+      }
+    },
+    "hnl_industries": {
+      "type": "hnl-industries",
+      "settings": {
+        "page_handle": "industries"
+      }
+    },
+    "hnl_aboutus": {
+      "type": "hnl-about",
+      "settings": {
+        "page_handle": "about-us",
+        "eyebrow": "About HooknLoop",
+        "heading": "About Us",
+        "lead": "The right fastening solution should be simple to find, easy to order and dependable when you need it.",
+        "stats": "Australian | Owned and operated\nGST | Tax invoice on every order\n1–2 days | Typical dispatch\n6 years | Supplying the trades",
+        "values_heading": "What You Can Expect",
+        "cta_label": "Shop the Range",
+        "cta_link": "/collections/all",
+        "cta_note": ""
+      },
+      "blocks": {
+        "v1": {
+          "type": "value",
+          "settings": {
+            "title": "Australian Owned",
+            "body": "An Australian online store supplying individuals, tradespeople, schools, organisations and businesses right across the country."
+          }
+        },
+        "v2": {
+          "type": "value",
+          "settings": {
+            "title": "Fair, Honest Pricing",
+            "body": "Reliable products at fair prices, with a GST tax invoice on every order and no surprises at checkout."
+          }
+        },
+        "v3": {
+          "type": "value",
+          "settings": {
+            "title": "A Hassle-Free Process",
+            "body": "A simple path from first visit to delivered order, whether it is one roll for a home project or a standing business requirement."
+          }
+        },
+        "v4": {
+          "type": "value",
+          "settings": {
+            "title": "Advice You Can Use",
+            "body": "Clear information and honest advice on width, backing and strength — so you order the right thing the first time."
+          }
+        }
+      },
+      "block_order": [
+        "v1",
+        "v2",
+        "v3",
+        "v4"
+      ]
+    },
+    "hnl_industry": {
+      "type": "hnl-industry",
+      "settings": {}
+    }
+  },
+  "order": [
+    "hnl_contact",
+    "hnl_bulk",
+    "hnl_shipping",
+    "hnl_returns",
+    "hnl_privacy",
+    "hnl_terms",
+    "hnl_about",
+    "hnl_blog",
+    "hnl_industries",
+    "hnl_aboutus",
+    "hnl_industry",
+    "hnl_page"
+  ]
+}

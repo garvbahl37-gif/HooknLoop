@@ -1,0 +1,15 @@
+{
+  "sections": {
+    "main": {
+      "type": "mts-cart",
+      "settings": {
+        "upsell_collection": "bestsellers",
+        "delivery_estimate": "3–5 business days",
+        "show_upsell": false
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

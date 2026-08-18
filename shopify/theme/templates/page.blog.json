@@ -1,0 +1,18 @@
+/*
+ * Blog landing — mirrors BlogPage() in ContentPages.jsx.
+ */
+{
+  "sections": {
+    "hnl_page": {
+      "type": "hnl-page",
+      "settings": {
+        "eyebrow": "Guides & how-tos",
+        "center": true,
+        "narrow": true
+      }
+    }
+  },
+  "order": [
+    "hnl_page"
+  ]
+}

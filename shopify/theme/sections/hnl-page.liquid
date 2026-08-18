@@ -1,0 +1,87 @@
+{%- comment -%}
+  Generic content page — the PageHero + prose shell shared by AboutPage,
+  BlogPage and friends in storefront/src/pages/ContentPages.jsx.
+
+  React hardcoded the body copy for each page. Here the body is page.content, so
+  the merchant edits it in Shopify admin like any other page and nothing has to
+  be redeployed to fix a typo. The hero above it is per-page settings, which is
+  the part Shopify's plain page has no room for.
+{%- endcomment -%}
+
+{%- comment -%}
+  Handle gate. The Theme Access token cannot assign template suffixes (that is
+  Admin API territory), so every page on this store uses the default `page`
+  template. templates/page.json therefore lists ALL the page sections, and each
+  renders only for the handle it belongs to. Leave `page_handle` empty to make a
+  section render on any page — which is what the generic fallback does.
+
+  If you later assign a real template suffix in Shopify admin, clear this
+  setting and the section renders unconditionally, as Shopify intends.
+{%- endcomment -%}
+{%- liquid
+  assign hnl_gate = section.settings.page_handle | strip
+  assign hnl_show = false
+  if hnl_gate == page.handle
+    assign hnl_show = true
+  elsif hnl_gate == blank
+    comment
+      Fallback instance. It must stand down on any handle another section in
+      this template already owns, or that page renders twice.
+    endcomment
+    assign hnl_show = true
+    assign hnl_skip = section.settings.skip_handles | replace: ' ', '' | split: ','
+    if hnl_skip contains page.handle
+      assign hnl_show = false
+    endif
+  endif
+-%}
+{%- if hnl_show -%}
+<div id="main" class="page">
+  <div class="page__hero {% if section.settings.center %}page__hero--center{% endif %}">
+    <div class="wrap">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="sec-eyebrow sec-eyebrow--orange">{{ section.settings.eyebrow }}</span>
+      {%- endif -%}
+      <h1 class="page__hero-h1">{{ section.settings.title | default: page.title }}</h1>
+      {%- if section.settings.lead != blank -%}
+        <p class="page__hero-lead">{{ section.settings.lead }}</p>
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- if page.content != blank or section.settings.body != blank -%}
+    <div class="wrap page__prose {% if section.settings.narrow %}page__prose--narrow{% endif %}">
+      {{ page.content }}
+      {{ section.settings.body }}
+
+      {%- if section.settings.cta_label != blank -%}
+        <div class="page__cta">
+          <a href="{{ section.settings.cta_link | default: routes.all_products_collection_url }}" class="btn btn--primary">
+            {{ section.settings.cta_label }} &rarr;
+          </a>
+        </div>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+</div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "HooknLoop page",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "page_handle", "label": "Only show on page handle", "info": "Leave empty to show on every page using this template." },
+    { "type": "text", "id": "skip_handles", "label": "Except these handles", "info": "Comma-separated. Only used when the handle above is empty — stops this fallback doubling up on pages another section already covers." },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "text", "id": "title", "label": "Heading", "info": "Defaults to the page title." },
+    { "type": "textarea", "id": "lead", "label": "Lead paragraph" },
+    { "type": "checkbox", "id": "center", "label": "Centre the hero", "default": true },
+    { "type": "checkbox", "id": "narrow", "label": "Narrow the body column", "default": true },
+    { "type": "richtext", "id": "body", "label": "Extra body copy", "info": "Appended after the page's own content." },
+    { "type": "text", "id": "cta_label", "label": "Button label" },
+    { "type": "url", "id": "cta_link", "label": "Button link" }
+  ],
+  "presets": [{ "name": "HooknLoop page" }]
+}
+{% endschema %}

@@ -1,0 +1,23 @@
+{
+  "sections": {
+    "main": {
+      "type": "mts-product",
+      "settings": {
+        "shipping_url": "/pages/shipping-delivery",
+        "returns_url": "/pages/return-policy"
+      },
+      "blocks": {
+        "judgeme_reviews": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "judgeme_reviews"
+      ]
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

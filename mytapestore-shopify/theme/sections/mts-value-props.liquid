@@ -1,0 +1,95 @@
+{%- comment -%}
+  "Buy with confidence" — ported from the ValueProps section in home.jsx.
+  In the React app this rendered on EVERY page (App.jsx puts it between the page
+  and the footer), so it lives in the footer group here to keep that behaviour
+  while staying reorderable.
+{%- endcomment -%}
+<section class="section vprops-sec">
+  <div class="wrap">
+    {%- if section.settings.eyebrow != blank or section.settings.heading != blank -%}
+      <div class="section-head">
+        {%- if section.settings.eyebrow != blank -%}<span class="eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
+        {%- if section.settings.heading != blank -%}<h2>{{ section.settings.heading }}</h2>{%- endif -%}
+      </div>
+    {%- endif -%}
+    <div class="vprops">
+      {%- for block in section.blocks -%}
+        <div class="vprop" {{ block.shopify_attributes }}>
+          <span class="vprop__icon">
+            {%- if block.settings.image != blank -%}
+              <img src="{{ block.settings.image | image_url: width: 88 }}" alt="" width="44" height="44" loading="lazy">
+            {%- elsif block.settings.packaged_icon != 'none' -%}
+              <img src="{{ 'mts-ic-' | append: block.settings.packaged_icon | append: '.svg' | asset_url }}" alt="" width="44" height="44" loading="lazy">
+            {%- else -%}
+              {% render 'mts-icon', name: block.settings.icon, size: 40 %}
+            {%- endif -%}
+          </span>
+          <h3>{{ block.settings.title }}</h3>
+          <p>{{ block.settings.text }}</p>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Value props",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Why My Tape Store" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Buy with confidence" }
+  ],
+  "blocks": [
+    {
+      "type": "prop",
+      "name": "Value prop",
+      "limit": 4,
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Fast delivery Australia-wide" },
+        { "type": "textarea", "id": "text", "label": "Text", "default": "Dispatched in 1–2 business days to 3,600+ postcodes." },
+        {
+          "type": "select",
+          "id": "packaged_icon",
+          "label": "Packaged icon",
+          "info": "The illustrated icons from the redesign.",
+          "options": [
+            { "value": "none", "label": "None (use line icon below)" },
+            { "value": "fast-delivery", "label": "Fast delivery" },
+            { "value": "secure-payment", "label": "Secure payment" },
+            { "value": "price", "label": "Price" },
+            { "value": "flag-australia", "label": "Australian flag" },
+            { "value": "tape-measure", "label": "Tape measure" }
+          ],
+          "default": "fast-delivery"
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Line icon (fallback)",
+          "options": [
+            { "value": "truck", "label": "Truck" },
+            { "value": "lock", "label": "Lock" },
+            { "value": "medal", "label": "Medal" },
+            { "value": "flag", "label": "Flag" },
+            { "value": "shield", "label": "Shield" },
+            { "value": "refresh", "label": "Refresh" }
+          ],
+          "default": "truck"
+        },
+        { "type": "image_picker", "id": "image", "label": "Custom icon image" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Value props",
+      "blocks": [
+        { "type": "prop", "settings": { "title": "Fast delivery Australia-wide", "text": "Dispatched in 1–2 business days to 3,600+ postcodes.", "packaged_icon": "fast-delivery" } },
+        { "type": "prop", "settings": { "title": "Secure payment", "text": "Checkout safely with major cards, PayPal and Shop Pay.", "packaged_icon": "secure-payment" } },
+        { "type": "prop", "settings": { "title": "Lowest-price guarantee", "text": "Find a stocked line cheaper and we'll match it.", "packaged_icon": "price" } },
+        { "type": "prop", "settings": { "title": "Australian owned", "text": "Local stock, local support and honest advice.", "packaged_icon": "flag-australia" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

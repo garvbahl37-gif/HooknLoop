@@ -1,0 +1,14 @@
+# Deny HTTP access to the API key file.
+#
+# functions.php loads it through PHP, which does not go through the web server,
+# so this costs the theme nothing. What it buys is the case that actually leaks
+# credentials: a server that stops executing .php and serves it as plain text.
+<FilesMatch "^MTS-API-KEYS\.php$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>

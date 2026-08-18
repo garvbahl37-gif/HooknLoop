@@ -1,0 +1,90 @@
+{%- comment -%}
+  Industries index — port of IndustriesPage() in pages/IndustryPages.jsx.
+
+  Same markup React used: .ind-idx__list, one <li> per industry, each linking to
+  its own guide. The guides are real Shopify pages now (created through the
+  Admin API), so this is the index React had rather than an accordion standing
+  in for one.
+{%- endcomment -%}
+{%- assign hnl_gate = section.settings.page_handle | strip -%}
+{%- if hnl_gate == blank or hnl_gate == page.handle -%}
+<div id="main" class="page">
+  <div class="wrap ind-art ind-idx">
+    <span class="ind-art__eyebrow">{{ section.settings.eyebrow }}</span>
+    <h1 class="ind-art__h1">{{ section.settings.heading }}</h1>
+    <p class="ind-art__intro">{{ section.settings.intro }}</p>
+    <ul class="ind-idx__list">
+      <li>
+        <a href="/pages/clothing-garments">
+          <b>Clothing &amp; Garments</b>
+          <span>Hook and loop fasteners for clothing &amp; garments have always been a trusted choice of tailor, costume designer, or clothing manufacturer, as it brings in the cleanest and most suitable alternative to buttons, zips, and snaps for you.</span>
+          <em>Read guide <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></em>
+        </a>
+      </li>
+      <li>
+        <a href="/pages/upholstery-furniture">
+          <b>Upholstery &amp; Furniture</b>
+          <span>Upholstery and furniture work are in consistent need of effective fasteners that hold firm under repeated use with no damaging effects on fabric or surfaces.</span>
+          <em>Read guide <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></em>
+        </a>
+      </li>
+      <li>
+        <a href="/pages/schools-education">
+          <b>Schools &amp; Education</b>
+          <span>Hook and loop fasteners are used in countless creative ways within schools, child care centres and other educational institutions, including displays, learning tools, storage solutions and furniture design.</span>
+          <em>Read guide <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></em>
+        </a>
+      </li>
+      <li>
+        <a href="/pages/signage-displays">
+          <b>Signage &amp; Displays</b>
+          <span>When it comes to signage and displays for retail spaces, events, exhibitions and commercial settings, both timing and presentation are essential.</span>
+          <em>Read guide <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></em>
+        </a>
+      </li>
+      <li>
+        <a href="/pages/automotive-caravan-rv">
+          <b>Automotive, Caravan &amp; RV</b>
+          <span>Hook and loop fasteners are used to attach interior panels, hold accessories in place, organise storage spaces and hold loose items in place inside vehicles, caravans and RVs when traveling.</span>
+          <em>Read guide <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></em>
+        </a>
+      </li>
+      <li>
+        <a href="/pages/medical-aged-care">
+          <b>Medical &amp; Aged Care</b>
+          <span>Hook and loop fasteners are playing a significant role in medical and aged care environments when it comes to considering features like ease of use, adjustability, and hygiene.</span>
+          <em>Read guide <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></em>
+        </a>
+      </li>
+      <li>
+        <a href="/pages/warehousing-logistics">
+          <b>Warehousing &amp; Logistics</b>
+          <span>Organising a warehouse and logistics system efficiently and ensuring load management is secure can minimize errors, enhance safety, and accelerate daily operations.</span>
+          <em>Read guide <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></em>
+        </a>
+      </li>
+      <li>
+        <a href="/pages/construction-industrial">
+          <b>Construction &amp; Industrial</b>
+          <span>Fastening solutions at construction sites and industrial facilities must be capable of performing under harsh conditions, challenging handling, dust, moisture, and heavy loads.</span>
+          <em>Read guide <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></em>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "HooknLoop industries",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "page_handle", "label": "Only show on page handle", "info": "Leave empty to show on every page using this template." },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Industries & applications" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Hook & loop, matched to your industry" },
+    { "type": "textarea", "id": "intro", "label": "Intro", "default": "Practical fastening guides for the trades and sectors we supply — the right product, the right width, and how it's used, for each application." }
+  ],
+  "presets": [{ "name": "HooknLoop industries" }]
+}
+{% endschema %}

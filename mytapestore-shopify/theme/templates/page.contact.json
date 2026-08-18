@@ -1,0 +1,14 @@
+{
+  "sections": {
+    "main": {
+      "type": "mts-contact",
+      "settings": {
+        "eyebrow": "Get in touch",
+        "show_hours": false
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

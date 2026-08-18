@@ -1,0 +1,84 @@
+{%- comment -%}
+  Account — order history. Replaces Suruchi's main-account.
+
+  Orders paginate at 20: a trade customer with years of repeat orders should
+  not receive all of them in one response.
+{%- endcomment -%}
+
+{%- liquid
+  assign fname = customer.first_name | default: customer.name | split: ' ' | first
+  assign hello = 'Welcome back'
+  if fname != blank
+    assign hello = 'Welcome back, ' | append: fname
+  endif
+-%}
+
+{% render 'hnl-account-shell', part: 'open', current: 'orders',
+   eyebrow: hello, title: 'Your Orders',
+   subtitle: 'Track an order, check an invoice, or reorder what you bought last time.' %}
+
+{%- paginate customer.orders by 20 -%}
+  {%- if customer.orders.size > 0 -%}
+    <div class="acct__card acct__card--flush">
+      <table class="acct__table">
+        <caption class="visually-hidden">Your orders</caption>
+        <thead>
+          <tr>
+            <th scope="col">Order</th>
+            <th scope="col">Date</th>
+            <th scope="col">Payment</th>
+            <th scope="col">Delivery</th>
+            <th scope="col" class="acct__num">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          {%- for order in customer.orders -%}
+            <tr>
+              <th scope="row" data-label="Order">
+                <a class="acct__order-no" href="{{ order.customer_url }}">{{ order.name }}</a>
+              </th>
+              <td data-label="Date"><time datetime="{{ order.created_at | date: '%Y-%m-%d' }}">{{ order.created_at | date: '%d %b %Y' }}</time></td>
+              <td data-label="Payment">
+                <span class="acct__pill{% if order.financial_status == 'paid' %} acct__pill--ok{% endif %}">{{ order.financial_status_label }}</span>
+              </td>
+              <td data-label="Delivery">
+                <span class="acct__pill{% if order.fulfillment_status == 'fulfilled' %} acct__pill--ok{% endif %}">{{ order.fulfillment_status_label }}</span>
+              </td>
+              <td data-label="Total" class="acct__num">{{ order.total_price | money }}</td>
+            </tr>
+          {%- endfor -%}
+        </tbody>
+      </table>
+    </div>
+
+    {%- if paginate.pages > 1 -%}
+      <nav class="acct__pager" aria-label="Orders pages">{{ paginate | default_pagination }}</nav>
+    {%- endif -%}
+  {%- else -%}
+    <div class="acct__card acct__empty">
+      <h2>No orders yet</h2>
+      <p>When you place an order it appears here, with its invoice and tracking.</p>
+      <a class="btn btn--primary" href="{{ routes.all_products_collection_url }}">Shop the range</a>
+    </div>
+  {%- endif -%}
+{%- endpaginate -%}
+
+{%- comment -%}
+  Default address sits here as well as on /addresses — it is the thing most
+  often checked before placing a repeat order.
+{%- endcomment -%}
+{%- if customer.default_address -%}
+  <section class="acct__card" aria-labelledby="acct-addr-h">
+    <div class="acct__card-head">
+      <h2 id="acct-addr-h">Default Address</h2>
+      <a href="{{ routes.account_addresses_url }}">Manage addresses &rarr;</a>
+    </div>
+    <address class="acct__address">{{ customer.default_address | format_address }}</address>
+  </section>
+{%- endif -%}
+
+{% render 'hnl-account-shell', part: 'close' %}
+
+{% schema %}
+{ "name": "HooknLoop account", "settings": [] }
+{% endschema %}

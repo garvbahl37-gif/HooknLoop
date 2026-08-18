@@ -1,0 +1,31 @@
+.footer__list-social .list-social__link + .list-social__link {
+  margin-right: 15px;
+  margin-left: 0;
+}
+.footer__widget_title {
+  padding-right: 0;
+  margin-left: 20px;
+}
+.newsletter__subscribe--button {
+  right: auto;
+  left: 0.5rem;
+  transform: translateY(-50%) rotate(-180deg);
+}
+.footer__widget_inner .newsletter-form__field-wrapper input[type="email"] {
+  padding: 0 5rem 0 4.5rem;
+}
+.newsletter__mail--icon {
+  left: auto;
+  right: 1.5rem;
+}
+.footer__widget_title:before,
+.footer__widget_title:after {
+  right: auto;
+  left: 0;
+}
+@media only screen and (max-width: 749px) {
+  .footer__widget_title {
+    padding-right: 1.5rem;
+    margin-left: 0.5rem;
+  }
+}

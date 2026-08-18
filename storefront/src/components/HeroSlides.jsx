@@ -18,7 +18,28 @@ const SLIDES = [
       'Fast Australia-wide shipping',
     ],
     cta: { label: 'Shop All Products', to: 'collection' }, cta2: { label: 'Find the Right Product', to: 'collection' },
-    fig: { img: '/img/products/self-adhesive-roll-1.jpg', tag: 'BEST SELLER', priceFrom: '24.46' },
+    banner: { lg: '/img/banners/hero-1-range-1920.webp', sm: '/img/banners/hero-1-range-1280.webp' },
+    /* Mobile only. On a phone the hero is the whole first screen, so it should
+       be a way in rather than a poster — four taps to the four things people
+       actually come for, plus the two brands they search by name. Desktop keeps
+       the bullets, where there is room to read them. */
+    /* Shown on mobile only, where the four bullets are hidden. One line, not
+       four: it has to say what the business is before the tiles say where to
+       go, without pushing the tiles below the fold. */
+    mobileLead: 'Australia-wide trade supply — cut to length, dispatched in 1–2 days.',
+    tiles: {
+      brands: [
+        { label: 'VELCRO\u00AE Brand', to: 'collection/velcro-brand' },
+        { label: 'HooknLoop', to: 'collection/all' },
+      ],
+      cats: [
+        { label: 'Self-Adhesive', to: 'collection/self-adhesive' },
+        { label: 'Sew-On', to: 'collection/sew-on' },
+        { label: 'Dots', to: 'collection/dots' },
+        { label: 'Straps & Ties', to: 'collection/straps' },
+      ],
+      all: { label: 'Shop all products', to: 'collection/all' },
+    },
   },
   {
     key: 'heavy', pill: 'Built for Demanding Applications',
@@ -26,7 +47,7 @@ const SLIDES = [
     sub: 'High-performance hook & loop for metal, plastic, equipment, vehicles and outdoor applications.',
     spec: ['Heat-resistant', 'Moisture-proof', 'Heavy-duty'],
     cta: { label: 'Shop Heavy Duty', to: 'product/heavy-duty-adhesive' }, cta2: { label: 'View Industrial Solutions', to: 'collection/self-adhesive' },
-    fig: { img: '/img/products/heavy-duty-adhesive-1.webp', tag: 'INDUSTRIAL', gauge: '50', priceFrom: '55.43' },
+    banner: { lg: '/img/banners/hero-2-industrial-1920.webp', sm: '/img/banners/hero-2-industrial-1280.webp' },
   },
   {
     key: 'premium', pill: 'Tested for Real-World Use',
@@ -34,7 +55,7 @@ const SLIDES = [
     sub: 'Every product is chosen for material quality, performance testing and long-term reliability — trade-grade hook & loop, held in stock in Australia.',
     spec: ['Performance-tested', 'Long-term hold', 'AU-stocked'],
     cta: { label: 'Shop the Range', to: 'collection' }, cta2: { label: 'Why Choose Us', to: 'about' },
-    fig: { img: '/img/products/hook-and-loop-dots-1.jpg', tag: 'PREMIUM GRADE', gauge: '22', priceFrom: '66.74' },
+    banner: { lg: '/img/banners/hero-3-premium-1920.webp', sm: '/img/banners/hero-3-premium-1280.webp' },
   },
   {
     key: 'shipping', pill: 'Fast Australia-Wide Delivery',
@@ -42,7 +63,7 @@ const SLIDES = [
     sub: 'Dispatched in 1–2 business days from our Australian warehouse — metro, regional and everywhere in between, with free shipping over $200.',
     spec: ['1–2 day dispatch', 'Metro & regional', 'Free over $200'],
     cta: { label: 'Shop the Range', to: 'collection' }, cta2: { label: 'Shipping & Delivery', to: 'shipping' },
-    fig: { img: '/img/australia-network.webp', tag: 'AUSTRALIA-WIDE', photo: true },
+    banner: { lg: '/img/banners/hero-4-australia-1920.webp', sm: '/img/banners/hero-4-australia-1280.webp' },
   },
   {
     key: 'bulk', pill: 'Trade, Commercial & Wholesale',
@@ -50,11 +71,38 @@ const SLIDES = [
     sub: 'Bulk pricing, reliable stock, custom widths and tailored fastening solutions for Australian businesses.',
     spec: ['Custom widths', 'Volume pricing', 'Priority dispatch'],
     cta: { label: 'Request a Bulk Quote', to: 'bulk' }, cta2: { label: 'Explore Bulk Orders', to: 'bulk' },
-    fig: { img: '/img/hooknloop-cartons.webp', tag: 'BULK & WHOLESALE', photo: true },
+    banner: { lg: '/img/banners/hero-5-bulk-1920.webp', sm: '/img/banners/hero-5-bulk-1280.webp' },
   },
 ]
 
 const DUR = 5000
+
+/*  A banner slide is a single full-bleed photograph with the copy laid over it,
+    replacing the framed product card. The photographs are shot with the left
+    45% deliberately empty, so the copy lands on clean background rather than
+    on top of a product.
+
+    The scrim is still required. "Deliberately empty" is not the same as
+    "dark enough for white text at every viewport" — as the image is cropped by
+    object-fit on narrower screens, brighter parts of the scene move leftward
+    under the headline. The gradient guarantees contrast regardless of crop. */
+function Banner({ banner, eager }) {
+  return (
+    <>
+      <picture className="hs__bg">
+        <source media="(max-width: 900px)" srcSet={banner.sm} />
+        <img
+          src={banner.lg}
+          alt=""
+          draggable="false"
+          loading={eager ? 'eager' : 'lazy'}
+          fetchPriority={eager ? 'high' : 'auto'}
+        />
+      </picture>
+      <div className="hs__bg-scrim" aria-hidden="true" />
+    </>
+  )
+}
 
 function Figure({ fig, eager }) {
   return (
@@ -71,12 +119,29 @@ function Figure({ fig, eager }) {
 export default function HeroSlides() {
   const [i, setI] = useState(0)
 
-  /* infinite auto-advance every DUR — always sliding, never pauses (no hover/
-     focus pause). Not gated on reduced-motion; the slide still changes, just
-     with a quick fade (see the reduced-motion rule in slides.css). */
+  /*  Desktop auto-advances every DUR. MOBILE DOES NOT ROTATE AT ALL.
+
+      On a phone the hero is the entire first screen, and slide 1 is the only
+      one carrying the tile navigation — rotating away from it replaces a way
+      into the catalogue with a poster the visitor cannot act on. A carousel
+      that moves under a thumb mid-tap is also how people end up on a page they
+      did not choose.
+
+      So mobile pins slide 1 and never moves. The listener re-evaluates on
+      breakpoint change, so rotating a phone or dragging a desktop window narrow
+      stops the timer and returns to slide 1 rather than leaving it stranded
+      mid-sequence.                                                          */
   useEffect(() => {
-    const t = setInterval(() => setI((n) => (n + 1) % SLIDES.length), DUR)
-    return () => clearInterval(t)
+    const mq = window.matchMedia('(max-width: 920px)')
+    let t
+    const apply = () => {
+      clearInterval(t)
+      if (mq.matches) { setI(0); return }
+      t = setInterval(() => setI((n) => (n + 1) % SLIDES.length), DUR)
+    }
+    apply()
+    mq.addEventListener('change', apply)
+    return () => { clearInterval(t); mq.removeEventListener('change', apply) }
   }, [])
   const nav = (to) => (e) => { e.preventDefault(); navigate(to); window.scrollTo(0, 0) }
 
@@ -86,7 +151,8 @@ export default function HeroSlides() {
 
       <div className="wrap hs__stage">
         {SLIDES.map((s, n) => (
-          <div key={s.key} className={`hs__slide ${n === i ? 'is-active' : ''}`} aria-hidden={n === i ? undefined : true}>
+          <div key={s.key} className={`hs__slide ${s.banner ? 'hs__slide--banner' : ''} ${n === i ? 'is-active' : ''}`} aria-hidden={n === i ? undefined : true}>
+            {s.banner && <Banner banner={s.banner} eager={n === 0} />}
             <div className="hs__copy">
               <span className="hs__eyebrow"><i className="hs__eyebrow-line" aria-hidden="true" />{s.pill}</span>
               {/* only the first banner is the page's <h1> — the rest are styled
@@ -114,13 +180,34 @@ export default function HeroSlides() {
                   )}
                 </>
               )}
+              {s.mobileLead && <p className="hs__lead-m">{s.mobileLead}</p>}
+
+              {s.tiles && (
+                <nav className="hs__tiles" aria-label="Shop by brand or product type">
+                  <div className="hs__tiles-grid hs__tiles-grid--brands">
+                    {s.tiles.brands.map((t) => (
+                      <a key={t.label} href="#" className="hs__tile hs__tile--brand" onClick={nav(t.to)}>{t.label}</a>
+                    ))}
+                  </div>
+                  <div className="hs__tiles-grid">
+                    {s.tiles.cats.map((t) => (
+                      <a key={t.label} href="#" className="hs__tile" onClick={nav(t.to)}>{t.label}</a>
+                    ))}
+                  </div>
+                  <a href="#" className="hs__tile hs__tile--all" onClick={nav(s.tiles.all.to)}>
+                    {s.tiles.all.label}
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+                  </a>
+                </nav>
+              )}
+
               <div className="hs__cta">
                 <a href="#" className="btn btn--primary" onClick={nav(s.cta.to)}>{s.cta.label}<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
                 {s.cta2 && <a href="#" className="btn btn--ghost" onClick={nav(s.cta2.to)}>{s.cta2.label}</a>}
               </div>
             </div>
 
-            <Figure fig={s.fig} eager={n === 0} />
+            {s.fig && <Figure fig={s.fig} eager={n === 0} />}
           </div>
         ))}
       </div>

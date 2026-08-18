@@ -1,0 +1,74 @@
+{%- comment -%}
+  Order list — ported from AcctOrdersTable in ContentPages.jsx. Each row expands
+  to show its line items.
+
+  The React version had the whole order object client-side. Shopify's `customer`
+  object exposes order totals and status on the list, but NOT line items — those
+  need the order page. So each expanded row shows what Liquid actually has
+  (fulfilment/payment status, item count) and links to the full order rather than
+  faking a line-item list.
+
+  Params: orders (array), limit (optional)
+{%- endcomment -%}
+{%- if orders == empty or orders.size == 0 -%}
+  <div class="col__empty">
+    {% render 'mts-icon', name: 'layers', size: 34 %}
+    <p>No orders yet — once you place one, it'll show up here.</p>
+    <a class="btn btn--brand btn--lg" href="{{ routes.all_products_collection_url }}">
+      Start shopping {% render 'mts-icon', name: 'arrowRight', size: 18 %}
+    </a>
+  </div>
+{%- else -%}
+  {%- comment -%} `limit:` takes a value, not a filter chain — resolve it first {%- endcomment -%}
+  {%- assign order_limit = limit | default: 50 -%}
+  <div class="acct-orders" data-mts-orders>
+    {%- for order in orders limit: order_limit -%}
+      {%- liquid
+        # Map Shopify's statuses onto the design's tag colours.
+        assign tag_cls = 'tag--best'
+        if order.cancelled
+          assign tag_cls = 'tag--out'
+          assign status_label = 'Cancelled'
+        elsif order.fulfillment_status_label == 'Fulfilled'
+          assign tag_cls = 'tag--best'
+          assign status_label = 'Delivered'
+        elsif order.financial_status_label == 'Paid'
+          assign tag_cls = 'tag--sale'
+          assign status_label = 'Processing'
+        else
+          assign tag_cls = 'tag--sale'
+          assign status_label = order.financial_status_label
+        endif
+      -%}
+      <div class="acct-order" data-mts-order>
+        <button class="acct-order__row" type="button" aria-expanded="false" data-mts-order-toggle>
+          <span class="acct-order__id num">{{ order.name }}</span>
+          <span class="acct-order__date">{{ order.created_at | date: '%d %b %Y' }}</span>
+          <span class="tag {{ tag_cls }}">{{ status_label }}</span>
+          <span class="acct-order__total num">{{ order.total_price | money }}</span>
+          {% render 'mts-icon', name: 'chevronDown', size: 16, class: 'acct-order__chev' %}
+        </button>
+
+        <div class="acct-order__detail" data-mts-order-detail hidden>
+          <ul class="acct-order__items">
+            <li>
+              <span class="acct-order__item-name">Payment</span>
+              <span class="num">{{ order.financial_status_label }}</span>
+            </li>
+            <li>
+              <span class="acct-order__item-name">Fulfilment</span>
+              <span class="num">{{ order.fulfillment_status_label | default: 'Unfulfilled' }}</span>
+            </li>
+            <li>
+              <span class="acct-order__item-name">Items</span>
+              <span class="num">{{ order.item_count }}</span>
+            </li>
+          </ul>
+          <a class="btn btn--ghost" href="{{ order.customer_url }}">
+            View order {% render 'mts-icon', name: 'arrowRight', size: 15 %}
+          </a>
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+{%- endif -%}

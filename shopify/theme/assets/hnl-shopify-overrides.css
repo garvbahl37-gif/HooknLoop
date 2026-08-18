@@ -1,0 +1,1762 @@
+/* ============================================================================
+   Shopify-only overrides — appended LAST to hnl-redesign.css.liquid.
+
+   Nothing here belongs in storefront/src/styles. These rules exist purely
+   because Shopify's Liquid output differs structurally from the React JSX, or
+   because Suruchi's theme.css reaches into markup the redesign also uses.
+
+   Every rule must say which of those two it is and why. If a rule would be
+   correct in the React app too, fix it there and re-run build-css.sh instead.
+   ========================================================================= */
+
+
+/* ── Product-card button: full width, like React ──────────────────────────
+   React renders <button class="pc__add"> as a direct child of the flex-column
+   .pc__body, so `align-items: stretch` makes it card-width. Liquid's product
+   form tag wraps it in a <form>, so the FORM becomes the flex child and the
+   inline-flex button shrinks to its text — which is why "Add to cart" came out
+   narrower than "Choose options".
+
+   Handing the form the button's layout role restores the React result. Not
+   using `display: contents` on the <form>: it removes the element from the
+   box tree, and forms carry semantics some assistive tech still reads off it.
+
+   NOTE: this file is inlined into a .liquid asset, so it must never contain a
+   literal Liquid tag — even inside a comment, Liquid parses it and the whole
+   stylesheet fails to render. */
+.pc__addform {
+  margin-top: auto;
+  display: flex;
+  width: 100%;
+}
+.pc__addform .pc__add {
+  width: 100%;
+  margin-top: 0;
+}
+
+/* Both variants now share one baseline: pin the "Choose options" link too, so
+   a card with a form and a card with a link line their buttons up exactly. */
+.pc__body > .pc__add {
+  width: 100%;
+}
+
+/* Suruchi's theme.css styles bare `button` and `a.button` globally (its own
+   border-radius, uppercase transform and letter-spacing). Those leak onto the
+   redesign's buttons wherever the class names collide. Restate the redesign's
+   own values at equal specificity so the card button is not half-Suruchi. */
+.pc__add,
+.pc__addform .pc__add {
+  border: 0;
+  text-transform: none;
+  letter-spacing: normal;
+  line-height: 1.2;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* ── Blockquotes: no left rule ────────────────────────────────────────────
+   Suruchi's theme.css styles bare `blockquote` with
+       border-left: 3.2px solid ...; padding-left: 16px
+   which drew a vertical line down the left of the brand-film founder story and
+   every review quote. The React app has no such rule, so those are the theme's
+   own decoration bleeding into ported markup, not part of the design.
+
+   Scoped to the redesign's own blockquotes so Suruchi's product descriptions
+   and blog posts keep the styling they were written against. */
+.film__story-text,
+.rv__quote {
+  border-left: 0;
+  padding-left: 0;
+}
+
+/* ── Product description (.pdp__rte) ──────────────────────────────────────
+   React built the PDP body from a hardcoded object and gave each list its own
+   class (.pdp__features, .pdp__apps) carrying the orange tick bullet. Here the
+   body is product.description — real merchant HTML with bare <ul>/<li> and no
+   classes to hook onto. base.css sets `ul { list-style: none }`, so every
+   feature and application list rendered as unmarked lines.
+
+   These rules give the description's own lists the same tick the React classes
+   had, so the rendered result matches the design without asking the merchant to
+   write class names into their product copy. */
+.pdp__rte ul {
+  display: grid;
+  gap: 11px;
+  margin: 12px 0 18px;
+  padding: 0;
+  list-style: none;
+}
+.pdp__rte li {
+  position: relative;
+  padding-left: 30px;
+  color: var(--muted-ink);
+  line-height: 1.5;
+}
+.pdp__rte li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 1px;
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  background: rgba(232, 119, 34, 0.14);
+}
+.pdp__rte li::after {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 7px;
+  width: 7px;
+  height: 4px;
+  border-left: 2px solid var(--orange-ink);
+  border-bottom: 2px solid var(--orange-ink);
+  transform: rotate(-45deg);
+}
+/* Ordered lists keep their numbers — a tick would misrepresent a sequence. */
+.pdp__rte ol {
+  display: grid;
+  gap: 11px;
+  margin: 12px 0 18px;
+  padding-left: 22px;
+  list-style: decimal;
+}
+.pdp__rte ol li {
+  padding-left: 0;
+}
+.pdp__rte ol li::before,
+.pdp__rte ol li::after {
+  content: none;
+}
+
+/* Merchant copy uses h2–h4 inconsistently inside one description. Pin them all
+   below the section's own <h2> so "key features:" cannot outrank "Description". */
+.pdp__rte h1,
+.pdp__rte h2,
+.pdp__rte h3,
+.pdp__rte h4 {
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 16.8px;
+  color: var(--navy);
+  line-height: 1.3;
+  margin: 22px 0 8px;
+}
+.pdp__rte > :first-child {
+  margin-top: 0;
+}
+.pdp__rte p {
+  color: var(--muted-ink);
+  line-height: 1.65;
+}
+.pdp__rte p + p {
+  margin-top: 12px;
+}
+.pdp__rte a {
+  color: var(--orange-ink);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.pdp__rte img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--r-ctrl);
+}
+/* Wide spec tables in merchant copy must scroll themselves, never the page. */
+.pdp__rte table {
+  width: 100%;
+  display: block;
+  overflow-x: auto;
+  border-collapse: collapse;
+}
+
+/* ── Hero slide dots ──────────────────────────────────────────────────────
+   slides.css already styles .hs__nav / .hs__dots / .hs__dot / .hs__dot-fill
+   and defines the hsFill keyframe — the React component just never rendered
+   them, so it was dead CSS. The markup exists now, and these are the few bits
+   the original rules assumed but did not set, because they were written for
+   divs rather than buttons.
+
+   The React rule hides .hs__dot-fill under 640px. Kept: on a phone the bar is
+   5px of movement nobody reads, and it repaints every 5 seconds. */
+.hs__nav { position: relative; z-index: 4; }
+.hs__dot {
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  transition: width 0.24s cubic-bezier(0.22, 0.61, 0.24, 1), background 0.2s;
+}
+.hs__dot:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 4px;
+}
+/* Bigger tap target than the 30x5 bar, without changing how it looks. */
+.hs__dot::after {
+  content: '';
+  position: absolute;
+  inset: -14px -4px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hs__dot { transition: none; }
+  .hs__dot-fill { animation: none; transform: scaleX(1); }
+}
+
+/* ── Newsletter popup ─────────────────────────────────────────────────────
+   Not ported from React — new work, so it is built from the same tokens the
+   rest of the redesign uses: navy brand panel with the hero's ember glow, one
+   orange flare on the submit, machined radii, DM Sans.
+
+   px throughout, like everything else in this file — see the note in
+   build-css.sh about Suruchi's 62.5% root. */
+.nlp {
+  position: fixed;
+  inset: 0;
+  z-index: 210;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(10, 18, 38, 0.62);
+  backdrop-filter: blur(3px);
+  animation: qaFade 0.24s ease;
+}
+.nlp[hidden] { display: none; }
+
+.nlp__panel {
+  position: relative;
+  width: 100%;
+  max-width: 880px;
+  max-height: 92vh;
+  overflow: auto;
+  display: grid;
+  grid-template-columns: 0.88fr 1fr;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 40px 100px rgba(4, 10, 26, 0.55);
+  animation: qaPop 0.28s cubic-bezier(0.22, 0.61, 0.24, 1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .nlp, .nlp__panel { animation: none; }
+}
+
+/* Focus is moved to the panel so the dialog is announced and Tab is trapped,
+   but the panel is not itself an interactive control — a focus ring around the
+   whole popup reads as a rendering fault. */
+.nlp__panel:focus { outline: none; }
+
+/* The close sits over the WHITE form column, so it has to be dark. An earlier
+   white-on-white version was invisible. */
+.nlp__close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 3;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(20, 37, 72, 0.07);
+  color: var(--navy);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, transform 0.12s;
+}
+.nlp__close:hover {
+  background: var(--navy);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+/* Brand side */
+.nlp__brand {
+  position: relative;
+  overflow: hidden;
+  padding: 40px 34px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+  background:
+    radial-gradient(90% 120% at 85% 8%, #1d345f 0%, rgba(29, 52, 95, 0) 52%),
+    linear-gradient(180deg, #16264a 0%, #0f1d3a 100%);
+  color: #fff;
+}
+.nlp__glow {
+  position: absolute;
+  width: 420px;
+  height: 420px;
+  top: -22%;
+  right: -26%;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(232, 119, 34, 0.26) 0%, rgba(232, 119, 34, 0) 62%);
+}
+/* .nlp__brand is a flex column, and a flex column stretches its children on
+   the cross axis — which is horizontal. That beat `width: auto` and pulled the
+   wordmark to the full column width while the height stayed pinned, so it
+   rendered at ratio 11.0 against a natural 5.64: near enough double-wide.
+   align-self opts this one child out of the stretch. */
+.nlp__logo {
+  position: relative;
+  align-self: flex-start;
+  height: 34px;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+}
+.nlp__kicker {
+  position: relative;
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 27.2px;
+  line-height: 1.16;
+  letter-spacing: -0.01em;
+}
+.nlp__points { position: relative; display: grid; gap: 11px; padding: 0; list-style: none; }
+.nlp__points li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14.4px;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.82);
+}
+.nlp__points svg { flex: none; margin-top: 2px; color: var(--orange); }
+
+/* Form side */
+.nlp__form { padding: 44px 38px; display: flex; flex-direction: column; justify-content: center; }
+.nlp__eyebrow {
+  display: block;
+  font-size: 11.2px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--orange-ink);
+  margin-bottom: 10px;
+}
+.nlp__h {
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 25.6px;
+  line-height: 1.15;
+  color: var(--navy);
+}
+.nlp__sub { margin: 10px 0 22px; color: var(--muted-ink); font-size: 15.2px; line-height: 1.55; }
+
+.nlp__field { display: block; }
+.nlp__field input {
+  width: 100%;
+  min-height: 52px;
+  padding: 0 16px;
+  font-size: 15.2px;
+  font-family: inherit;
+  color: var(--navy);
+  background: #fff;
+  border: 1.5px solid var(--line-card);
+  border-radius: var(--r-ctrl);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.nlp__field input::placeholder { color: #8b96ab; }
+.nlp__field input:focus {
+  outline: none;
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(46, 106, 224, 0.18);
+}
+
+.nlp__submit { width: 100%; min-height: 52px; margin-top: 12px; gap: 8px; }
+
+.nlp__decline {
+  margin-top: 14px;
+  background: none;
+  border: 0;
+  color: var(--muted-ink);
+  font-size: 13.6px;
+  font-family: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.nlp__decline:hover { color: var(--navy); }
+.nlp__legal { margin-top: 16px; font-size: 12px; line-height: 1.5; color: #8b96ab; }
+.nlp__err { margin-bottom: 12px; color: #b3261e; font-size: 13.6px; }
+
+.nlp__ok { text-align: center; }
+.nlp__ok-icn {
+  display: grid;
+  place-items: center;
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 18px;
+  border-radius: 50%;
+  background: rgba(31, 157, 85, 0.12);
+  color: #1f9d55;
+}
+.nlp__ok h2 { font-family: var(--font-head); font-weight: 800; font-size: 24px; color: var(--navy); }
+.nlp__ok p { margin-top: 10px; color: var(--muted-ink); line-height: 1.6; }
+
+@media (max-width: 760px) {
+  .nlp__panel { grid-template-columns: 1fr; max-height: 94vh; }
+  .nlp__brand { padding: 34px 26px 28px; gap: 16px; }
+  .nlp__kicker { font-size: 22.4px; }
+  /* Two of four points is enough on a phone; the rest is scroll for no gain. */
+  .nlp__points li:nth-child(n + 3) { display: none; }
+  .nlp__form { padding: 28px 26px 34px; }
+  /* Stacked layout puts the close over the navy brand panel instead. */
+  .nlp__close { background: rgba(255, 255, 255, 0.18); color: #fff; }
+  .nlp__close:hover { background: rgba(255, 255, 255, 0.32); color: #fff; }
+}
+
+/* ── Sticky nav ───────────────────────────────────────────────────────────
+   header.css gives .nav `position: sticky; top: 0`, and in the React app that
+   works because .nav's ancestors run to <body>. Shopify wraps every section in
+   its own <div id="shopify-section-…">, and a sticky element can only travel
+   inside its parent's box — that wrapper is 179px tall, so the nav slid away
+   with the header. Measured: after scrolling 1400px it sat at top: -1275,
+   completely off screen. So it was never sticky here at all.
+
+   Driven from JS instead. Once pinned it stays pinned: no hide-on-scroll-down,
+   which is both what was asked for and the only way to stop a phone's momentum
+   scroll flipping it in and out.
+
+   Below 900px it is the compact .bar that pins, not the whole .hdr — the live
+   store pins the equivalent 60px row, and sliding all 154px around was a third
+   of a phone screen in motion.
+
+   .hnl-header-section is the wrapper class declared in the section schema. */
+.hnl-header-section .nav,
+.hnl-header-section .bar {
+  position: relative;
+  top: auto;
+}
+.hnl-nav-spacer { display: none; }
+.hnl-nav-spacer.is-on { display: block; }
+
+.hnl-header-section .nav.is-pinned,
+.hnl-header-section .bar.is-pinned {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  animation: hnlPinIn 0.22s cubic-bezier(0.22, 0.61, 0.24, 1);
+}
+/* The bar carries no background of its own in flow — over content it needs one,
+   plus a shadow to lift it off whatever it is covering. */
+.hnl-header-section .bar.is-pinned {
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(12, 30, 80, 0.14);
+}
+.hnl-header-section .nav.is-pinned {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 10px 28px rgba(12, 30, 80, 0.24);
+}
+
+/* Slides down once, when it pins — not on every scroll tick. */
+@keyframes hnlPinIn {
+  from { transform: translateY(-100%); }
+  to   { transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hnl-header-section .nav.is-pinned,
+  .hnl-header-section .bar.is-pinned { animation: none; }
+}
+
+/* ── Real page copy (.policy2__rte, .page__prose) ─────────────────────────
+   The policy and content pages originally rendered hardcoded clause blocks
+   ported from ContentPages.jsx AND the store's own page.content — the same
+   text twice. The blocks are gone; page.content is now the single source, so
+   these pages read exactly what hooknloop.com.au reads and cannot drift from
+   it when someone edits a policy in Shopify admin.
+
+   That makes merchant HTML responsible for the whole page, so it needs the
+   typography the clause cards used to provide. Same reasoning as .pdp__rte:
+   base.css strips list markers, and the copy uses h2-h4 inconsistently. */
+.policy2__rte,
+.page__prose {
+  color: var(--muted-ink);
+  line-height: 1.7;
+}
+.policy2__rte h1, .policy2__rte h2, .policy2__rte h3, .policy2__rte h4,
+.page__prose h1, .page__prose h2, .page__prose h3, .page__prose h4 {
+  font-family: var(--font-head);
+  font-weight: 800;
+  color: var(--navy);
+  line-height: 1.25;
+  margin: 30px 0 12px;
+}
+.policy2__rte h2, .page__prose h2 { font-size: 20.8px; }
+.policy2__rte h3, .policy2__rte h4,
+.page__prose h3, .page__prose h4 { font-size: 17.6px; }
+.policy2__rte > :first-child,
+.page__prose > :first-child { margin-top: 0; }
+
+.policy2__rte p, .page__prose p { margin-bottom: 14px; }
+
+.policy2__rte ul, .page__prose ul {
+  display: grid;
+  gap: 10px;
+  margin: 12px 0 20px;
+  padding: 0;
+  list-style: none;
+}
+.policy2__rte li, .page__prose li {
+  position: relative;
+  padding-left: 28px;
+}
+.policy2__rte ul li::before, .page__prose ul li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 6px;
+  background: rgba(232, 119, 34, 0.14);
+}
+.policy2__rte ul li::after, .page__prose ul li::after {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 7px;
+  width: 7px;
+  height: 4px;
+  border-left: 2px solid var(--orange-ink);
+  border-bottom: 2px solid var(--orange-ink);
+  transform: rotate(-45deg);
+}
+.policy2__rte ol, .page__prose ol {
+  margin: 12px 0 20px;
+  padding-left: 22px;
+  list-style: decimal;
+}
+.policy2__rte ol li, .page__prose ol li { padding-left: 0; }
+.policy2__rte ol li::before, .policy2__rte ol li::after,
+.page__prose ol li::before, .page__prose ol li::after { content: none; }
+
+.policy2__rte a, .page__prose a {
+  color: var(--orange-ink);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.policy2__rte strong, .page__prose strong { color: var(--navy); }
+.policy2__rte table, .page__prose table {
+  width: 100%;
+  display: block;
+  overflow-x: auto;
+  border-collapse: collapse;
+}
+.policy2__rte img, .page__prose img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--r-ctrl);
+}
+
+/* ── Quick Add popup: states React never needed ───────────────────────────
+   React's QuickAdd read a catalog where every size/colour combination existed,
+   so it had no unavailable state and no error state. Driving it from real
+   Shopify variants means both are reachable: a colour can be sold out in one
+   size only, and /cart/add can reject an add if stock ran out mid-session.
+
+   Unavailable combinations are dimmed rather than removed, so the shopper can
+   see the size exists and is simply not stocked in that colour. */
+.qa__pill[disabled],
+.qa__swatch[disabled] {
+  opacity: 0.32;
+  cursor: not-allowed;
+  position: relative;
+}
+.qa__pill[disabled]:hover {
+  border-color: var(--line-card);
+}
+.qa__swatch[disabled]::after {
+  content: '';
+  position: absolute;
+  inset: 40% -4px auto -4px;
+  height: 2px;
+  background: var(--muted-ink);
+  transform: rotate(-45deg);
+}
+.qa__err {
+  margin-top: 12px;
+  color: #b3261e;
+  font-size: 13.6px;
+  line-height: 1.45;
+}
+/* The "View cart" link reuses .qa__shoppay's shape but is not a Shop Pay
+   button, so it takes the redesign's navy rather than Shop Pay purple. */
+.qa__shoppay[data-hnl-qa-view] {
+  background: var(--navy);
+  text-decoration: none;
+}
+.qa__shoppay[data-hnl-qa-view]:hover {
+  background: #1d3866;
+}
+
+/* A card CTA is an <a> now, not a <button>, so it needs the button's own
+   centring back — an anchor does not inherit it. */
+.pc__add {
+  text-decoration: none;
+}
+.pc__add[aria-disabled='true'] {
+  background: #8b96ab;
+  pointer-events: none;
+}
+
+/* Sold-out cards: Suruchi disables the submit button but leaves it navy, which
+   reads as tappable. Match the muted treatment the rest of the redesign uses. */
+.pc__add[disabled] {
+  background: #8b96ab;
+  cursor: not-allowed;
+}
+.pc__add[disabled]:hover {
+  background: #8b96ab;
+}
+
+/* ── Mobile header, matched to the live store ─────────────────────────────
+   Three differences against hooknloop.com.au on a phone, all of them the
+   React design's deliberate choices rather than bugs — but the live store is
+   the reference here, and one of them cost real function.
+
+   1. header.css line 99 hides .icn--searchlink on mobile ("cart is the only
+      top action; rest live in the tab bar/drawer"). The live store keeps a
+      magnifier in the header, and search is the fastest route into a
+      12-product catalogue. Restored.
+   2. The cart badge only rendered above zero; the live store shows a 0.
+   3. The call bar below. floating.css hides the call FAB below 900px, so
+      before this a phone had no tap-to-call at all on a store whose whole
+      proposition is talking to a real person in Australia. */
+@media (max-width: 900px) {
+  .bar__actions .icn--searchlink { display: grid; }
+}
+
+.callbar {
+  display: none;
+  align-items: center;
+  gap: 11px;
+  padding: 10px var(--sp-5);
+  background: #fff;
+  border-bottom: 1px solid var(--line-card);
+  color: var(--navy);
+  text-decoration: none;
+}
+@media (max-width: 900px) {
+  .callbar { display: flex; }
+}
+.callbar__icn {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(232, 119, 34, 0.12);
+  color: var(--orange-ink);
+}
+.callbar__txt {
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 15.2px;
+  letter-spacing: -0.01em;
+}
+.callbar__num {
+  margin-left: auto;
+  font-size: 13.6px;
+  font-weight: 700;
+  color: var(--orange-ink);
+  white-space: nowrap;
+}
+/* Under 380px the number and the label fight for the same row. */
+@media (max-width: 380px) {
+  .callbar__num { display: none; }
+}
+
+/* ── Chat stays reachable at the footer ───────────────────────────────────
+   floating.css parks BOTH FABs once the footer is in view (.is-parked), which
+   was right in React: the chat panel there was a decorative front-end mock, so
+   losing it cost nothing. Here the chat button is the launcher for SmartBot,
+   a real bot — and SmartBot's own bubble is hidden on desktop because we drive
+   it. Parking therefore removed chat entirely at the bottom of the page, which
+   is exactly where a shopper who has read everything and is still unsure would
+   reach for it. Measured on desktop: visible at every scroll position until the
+   footer, then visibility:hidden with nothing to replace it.
+
+   The call FAB still parks — the footer prints the phone number in full, so
+   nothing is lost there. */
+.fabchat.is-parked {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: none;
+}
+
+/* ── Best sellers on mobile: one per row, like the live store ─────────────
+   mobile.css turns .bs__grid into a horizontal rail at 45vw per card, with the
+   reasoning written into the file: "Twelve cards in a 2-up grid is six rows of
+   vertical scroll before the next section. As a rail it's one screen, and it
+   invites a swipe."
+
+   Sound argument, but it is not what hooknloop.com.au does. Measured on an
+   iPhone 13: the live store stacks cards full width — 360px in a 390px
+   viewport, one per row, no horizontal scroll. Matching that, because the live
+   store is the reference here.
+
+   The trade-off the rail was avoiding is real: twelve full-width cards is a
+   long scroll. "Products to show" on the section is the lever if that becomes
+   a problem — the live store simply accepts the length. */
+@media (max-width: 900px) {
+  .bs__grid {
+    display: grid;
+    grid-auto-flow: row;
+    grid-template-columns: 1fr;
+    grid-auto-columns: auto;
+    gap: 14px;
+    overflow-x: visible;
+    scroll-snap-type: none;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 4px 0 10px;
+  }
+
+  /* A full-width card can afford a taller image and real type, rather than the
+     cramped scale the 45vw rail needed. */
+  .bs__grid .pc__media { aspect-ratio: 4 / 3; }
+  .bs__grid .pc__body { padding: 14px 16px 16px; }
+  .bs__grid .pc__name { font-size: 16px; -webkit-line-clamp: 2; }
+  .bs__grid .pc__set { font-size: 14px; }
+  .bs__grid .pc__set b { font-size: 19px; }
+  .bs__grid .pc__gst { font-size: 12px; }
+  .bs__grid .pc__add { min-height: 48px; font-size: 15px; }
+  .bs__grid .pc__add svg { width: 17px; height: 17px; }
+}
+
+/* ── Industries index: the accordion React never had ──────────────────────
+   industries.css styles .ind-idx__list and the .ind-art__* article, but React
+   split them across nine routes. Here all eight live on one page as <details>
+   panels, because a Shopify page cannot be created from a theme — so these are
+   the summary/open states those styles never needed. */
+.ind-idx__item > summary {
+  display: block;
+  cursor: pointer;
+  list-style: none;
+}
+.ind-idx__item > summary::-webkit-details-marker { display: none; }
+.ind-idx__item[open] > summary em { color: var(--navy); }
+.ind-idx__item[open] > summary em svg { transform: rotate(90deg); }
+.ind-idx__item > summary em svg { transition: transform 0.18s var(--ease); }
+
+.ind-art__body {
+  padding: 4px 0 8px;
+  animation: qaFade 0.22s ease;
+}
+.ind-art__body > :first-child { margin-top: 18px; }
+
+.ind-art__related {
+  display: grid;
+  gap: 9px;
+  padding: 0;
+  list-style: none;
+}
+.ind-art__related li { color: var(--muted-ink); line-height: 1.5; }
+.ind-art__related a { color: var(--orange-ink); font-weight: 700; }
+.ind-art__related a:hover { text-decoration: underline; text-underline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ind-art__body { animation: none; }
+  .ind-idx__item > summary em svg { transition: none; }
+}
+
+/* ── Brand line + real ratings ────────────────────────────────────────────
+   New markup, so nothing to port. */
+.pdp__brandline {
+  display: block;
+  margin-top: 6px;
+  font-size: 14.4px;
+  color: var(--muted-ink);
+}
+/* Brand names carry the store's blue — the same blue as the logo — so the line
+   reads as identification rather than as a promotion. Orange is reserved for
+   the one action per screen, and a brand label is not an action. */
+.pdp__brandline b { color: var(--blue); font-weight: 700; }
+/* VELCRO Brand is a licensed mark and a genuine one costs more than a generic,
+   so it carries the extra weight within that line. */
+.pdp__brandline-mark { color: var(--blue) !important; font-weight: 800 !important; }
+.pdp__brandline-sep { margin: 0 4px; color: #c9d3e6; }
+
+/* The fallback hides itself as soon as Judge.me paints a real badge, so a
+   product with reviews never shows "No reviews yet" underneath them. */
+.pc__rating .jdgm-preview-badge:not(:empty) + .pc__rating-fallback { display: none; }
+.pc__rating .jdgm-preview-badge:empty { display: none; }
+.pc__rating-fallback { font-size: 12.48px; color: var(--muted-ink); font-weight: 500; opacity: 0.7; }
+
+/* ── Homepage read-more panel ─────────────────────────────────────────────
+   Five paragraphs of category copy. Inside .ts__copy (max-width 560px) it was a
+   narrow wall; out at full width it can breathe.
+
+   Two columns on desktop because this is continuous prose with no hierarchy —
+   multi-column halves the vertical run and keeps the measure near 60-70
+   characters, which is where sustained reading is comfortable. break-inside
+   stops a paragraph splitting across the gutter mid-sentence. */
+.ts__morewrap {
+  margin-top: clamp(28px, 3.5vw, 44px);
+  padding-top: clamp(24px, 3vw, 34px);
+  border-top: 1px solid var(--line-card);
+  animation: tsMore 0.28s cubic-bezier(0.22, 0.61, 0.24, 1);
+}
+.ts__morewrap[hidden] { display: none; }
+
+@keyframes tsMore {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.ts__more {
+  columns: 2;
+  column-gap: clamp(32px, 4vw, 64px);
+  max-width: 1040px;
+}
+.ts__more p {
+  break-inside: avoid;
+  margin: 0 0 16px;
+  color: #3a4864;
+  font-size: 15.7px;
+  line-height: 1.72;
+}
+.ts__more p:last-child { margin-bottom: 0; }
+
+/* The opening paragraph carries the section, so it leads rather than blending
+   into the block — and spanning both columns stops it being orphaned at the
+   bottom of the first one. */
+.ts__more p:first-child {
+  column-span: all;
+  font-size: 17.6px;
+  line-height: 1.62;
+  color: var(--navy);
+  font-weight: 500;
+  margin-bottom: 22px;
+  max-width: 74ch;
+}
+
+@media (max-width: 900px) {
+  /* One column on a phone — two columns of 40 characters is unreadable, and
+     multi-column has no scroll affordance to tell you a column continues. */
+  .ts__more { columns: 1; }
+  .ts__more p { font-size: 15.2px; }
+  .ts__more p:first-child { font-size: 16.8px; }
+}
+
+[data-hnl-more-toggle] svg { transition: transform 0.18s var(--ease); }
+[data-hnl-more-toggle].is-open svg { transform: rotate(180deg); }
+
+@media (prefers-reduced-motion: reduce) {
+  .ts__morewrap { animation: none; }
+  [data-hnl-more-toggle] svg { transition: none; }
+}
+
+/* ── Footer: a fourth link column ─────────────────────────────────────────
+   sections.css sizes .ft__main for five children — brand, three link columns
+   and the newsletter. The Industries column makes six, and without a sixth
+   track it wraps onto a second row under the brand. The link tracks are
+   narrowed rather than the brand, so the wordmark and phone number stay on
+   one line. Tablet/mobile already collapse to 1fr 1fr and place brand and
+   .ft__col--connect explicitly, so the extra column just flows there. */
+@media (min-width: 1001px) {
+  .ft__main { grid-template-columns: 1.25fr 1fr 1fr 1fr 1fr 1.15fr; }
+}
+
+/* ── Judge.me review widget, wearing the React .rvw design ────────────────
+   The reviews themselves stay Judge.me's: their app renders the list, owns
+   moderation, and its "Write a review" modal is what actually submits. Only
+   the appearance is ours. Rewriting their DOM into .rvw markup was the other
+   option and was rejected — it would break every time they ship a widget
+   update, and it would take the submit form with it.
+
+   Judge.me's new widget is a Vue app that themes itself entirely through
+   --jm-* custom properties, set inline on the container. Stylesheet rules with
+   !important beat a non-important inline style, which is the only reason these
+   land. The shipped values are a generic teal (#108474) on black text; the
+   store is navy and orange.
+
+   Their body font is already DM Sans — the same face as --font-body — so
+   nothing here touches font-family. */
+#judgeme_product_reviews [data-widget-container="review-widget"] {
+  --jm-review-widget-star-and-histogram-color: #e87722 !important;  /* --orange */
+  --jm-widget-primary-color:                   #e87722 !important;
+  --jm-review-widget-button-color:             #e87722 !important;
+  --jm-review-widget-button-text-color:        #142548 !important;  /* navy on orange = AA 5.11 */
+  --jm-review-widget-form-button-color:        #e87722 !important;
+  --jm-review-widget-form-button-text-color:   #142548 !important;
+  --jm-review-widget-text-color:               #142548 !important;  /* --navy, not #000 */
+  --jm-review-widget-lighter-text-color:       #5a6b8c !important;  /* --muted-ink */
+  --jm-review-widget-form-text-color:          #142548 !important;
+  --jm-widget-border-radius:                   16px !important;     /* --r-card */
+  --jm-review-widget-form-border-radius:       16px !important;
+  --jm-review-widget-form-field-background-color: #f4f7fb !important; /* --cloud */
+  --jm-review-widget-bar-chart-height:         6px !important;      /* .rvw__bar-track */
+}
+
+/* Section heading — .rvw h2: display face, 800, navy */
+#judgeme_product_reviews .jm-review-widget-minimal-header__title {
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 26px;
+  color: var(--navy);
+  letter-spacing: -0.01em;
+}
+
+/* Average score — .rvw__avg is the one oversized number in the block */
+#judgeme_product_reviews .jm-average-rating-display {
+  font-family: var(--font-head);
+  color: var(--navy);
+}
+
+/* "Write a review" — .btn.btn--primary, including its lift on hover */
+#judgeme_product_reviews .jm-button.jm-button--primary {
+  border-radius: 10px;                      /* --r-ctrl */
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  min-height: 50px;
+  box-shadow: 0 8px 22px rgba(232,119,34,0.34);   /* --shadow-cta */
+  transition: transform 0.14s var(--ease), background 0.18s var(--ease);
+}
+#judgeme_product_reviews .jm-button.jm-button--primary:hover {
+  background: #f0842a !important;
+  transform: translateY(-1px);
+}
+/* Filter/sort controls read as .btn--ghost's quieter sibling, not as CTAs.
+   Deliberately NOT touching .jm-sort-filter__select: it is a native <select>
+   laid transparently over the sort icon, so giving it a colour paints its
+   selected option ("Most Recent") straight through the glyph. */
+#judgeme_product_reviews .jm-button.jm-button--secondary {
+  border-radius: 10px;
+  border-color: var(--line-card);
+  color: var(--muted-ink);
+}
+
+/* Reviewer avatar — .rvw__avatar: solid navy disc, white initial */
+#judgeme_product_reviews .jm-reviewer-avatar--with-initial {
+  background: var(--navy) !important;
+}
+#judgeme_product_reviews .jm-reviewer-avatar__initial {
+  color: #fff !important;
+  font-weight: 800;
+}
+
+/* Verified pill — .rvw__vf: green, uppercase, tight */
+#judgeme_product_reviews .jm-verified-buyer-badge {
+  background: rgba(20,108,67,0.10);
+  border-color: transparent;
+  border-radius: 999px;
+}
+#judgeme_product_reviews .jm-verified-buyer-badge__text {
+  color: #146c43;
+  font-weight: 800;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Review card — .rvw__card: hairline separator, no box */
+#judgeme_product_reviews .jm-review-item { border-bottom: 1px solid var(--line-card); }
+#judgeme_product_reviews .jm-review-item:last-child { border-bottom: 0; }
+#judgeme_product_reviews .jm-review-content__title {
+  font-family: var(--font-head);
+  font-weight: 800;
+  color: var(--navy);
+}
+#judgeme_product_reviews .jm-review-content__body,
+#judgeme_product_reviews .jdgm-review-content__body-content {
+  color: #38455f;                            /* .rvw__body */
+  line-height: 1.6;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #judgeme_product_reviews .jm-button.jm-button--primary { transition: none; }
+  #judgeme_product_reviews .jm-button.jm-button--primary:hover { transform: none; }
+}
+
+/* Judge.me ships a second, older variable set on :root that drives the star
+   glyphs — including the preview badges on every product card, which were
+   rendering teal store-wide, not just inside the review widget. Same element,
+   so !important wins the cascade here. */
+:root {
+  --jdgm-primary-color:            #e87722 !important;
+  --jdgm-secondary-color:          rgba(232,119,34,0.10) !important;
+  --jdgm-star-color:               #e87722 !important;
+  --jdgm-paginate-color:           #e87722 !important;
+  --jdgm-write-review-bg-color:    #e87722 !important;
+  --jdgm-write-review-text-color:  #142548 !important;
+  --jdgm-reviewer-name-color:      #142548 !important;
+}
+
+/* The revamp widget's star glyph reads its colour from neither variable set
+   reliably (measured: still #108474 with both overridden), so it is set
+   directly. Empty stars are the same hue drawn as an outline, exactly as
+   Judge.me draws them, so one declaration covers both states. */
+.jm-star-rating__font-icon,
+.jdgm-star { color: #e87722 !important; }
+
+/* ── About Us page ────────────────────────────────────────────────────────
+   New work, not a React port — the React app had no About page, which is why
+   this page was rendering as bare paragraphs through the generic prose shell.
+   Built from the same tokens as the rest of the redesign: navy ground, one
+   orange flare (the CTA), machined radii, DM Sans. px only, per the note in
+   build-css.sh about Suruchi's 62.5% root. */
+.abt { padding-bottom: clamp(56px, 7vw, 96px); }
+
+/* The photo moved out of the hero and onto the page as its own figure, so
+   this is now a type-only band: no scrim, no image, and centred. */
+.abt__hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: clamp(200px, 22vw, 300px);
+  padding: clamp(36px, 4.5vw, 64px) 0;
+  background: linear-gradient(160deg, #142548 0%, #24406f 100%);
+  overflow: hidden;
+}
+
+
+/* .abt__hero is a flex container, so .wrap shrink-wrapped to its text and its
+   own `margin: 0 auto` then centred it — the hero copy sat 280px right of the
+   gutter every other block aligns to. Filling the row restores the shared edge. */
+.abt__hero-inner { position: relative; width: 100%; }
+.abt__eyebrow { margin-left: auto; margin-right: auto; }
+.abt__eyebrow {
+  display: inline-block;
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--orange);
+  color: #f0842a;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.abt__h1 {
+  margin: 0;
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: clamp(34px, 5vw, 54px);
+  line-height: 1.06;
+  letter-spacing: -0.02em;
+  color: #fff;
+}
+.abt__lead {
+  max-width: 620px;
+  margin: 16px auto 0;
+  color: rgba(255,255,255,0.88);
+  font-size: clamp(16px, 1.6vw, 19px);
+  line-height: 1.6;
+}
+
+.abt__stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  margin-top: clamp(28px, 4vw, 44px);
+  background: var(--line-card);
+  border: 1px solid var(--line-card);
+  border-radius: var(--r-card);
+  overflow: hidden;
+}
+.abt__stat { background: #fff; padding: 20px 22px; }
+.abt__stat b {
+  display: block;
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 22px;
+  color: var(--navy);
+  line-height: 1.15;
+}
+.abt__stat span { display: block; margin-top: 4px; font-size: 13.5px; color: var(--muted-ink); }
+
+/* Prose: one readable measure, and a lead paragraph that carries the opening
+   line instead of letting six identical paragraphs read as a blog dump. */
+/* Centred on the page. The paragraphs themselves stay left-aligned: six
+   centred paragraphs give every line a different starting edge, which is what
+   makes centred body copy hard to read. The lead is centred, as the one line
+   short enough to carry it. */
+.abt__prose {
+  max-width: 760px;
+  margin: clamp(36px, 5vw, 60px) auto 0;
+}
+.abt__prose p:first-of-type { text-align: center; }
+.abt__prose p {
+  margin: 0 0 18px;
+  color: #38455f;
+  font-size: 17px;
+  line-height: 1.78;
+}
+.abt__prose p:first-of-type {
+  color: var(--navy);
+  font-size: clamp(19px, 2vw, 22px);
+  font-weight: 500;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+.abt__prose p:last-child { margin-bottom: 0; }
+.abt__prose a { color: var(--orange-ink); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
+
+
+/* Standalone photo — given a frame and room rather than used as wallpaper
+   behind the heading. Fixed 16/9 with object-fit so a replacement shot of any
+   proportion cannot change the page's rhythm. */
+.abt__figure {
+  margin: clamp(40px, 5vw, 64px) auto 0;
+}
+.abt__figure-img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: var(--r-card);
+  box-shadow: 0 2px 6px rgba(8,18,40,0.10), 0 22px 48px rgba(8,18,40,0.18);
+}
+.abt__figure figcaption {
+  margin-top: 12px;
+  text-align: center;
+  font-size: 13.5px;
+  color: var(--muted-ink);
+}
+
+.abt__values { margin-top: clamp(44px, 6vw, 72px); }
+.abt__h2 {
+  /* Centred over the four value cards, matching the hero and lead above it. */
+  text-align: center;
+  margin: 0 0 22px;
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: clamp(22px, 2.6vw, 30px);
+  letter-spacing: -0.01em;
+  color: var(--navy);
+}
+.abt__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+.abt__card {
+  padding: 22px 22px 24px;
+  background: #fff;
+  border: 1px solid var(--line-card);
+  border-radius: var(--r-card);
+  transition: transform 0.16s var(--ease), box-shadow 0.2s var(--ease);
+}
+.abt__card:hover { transform: translateY(-3px); box-shadow: var(--shadow-card); }
+.abt__card h3 {
+  margin: 0 0 8px;
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 16px;
+  color: var(--navy);
+}
+.abt__card p { margin: 0; color: var(--muted-ink); font-size: 14.5px; line-height: 1.6; }
+
+.abt__cta {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin-top: clamp(36px, 5vw, 56px);
+}
+.abt__cta-note { color: var(--muted-ink); font-size: 14.5px; }
+
+@media (max-width: 900px) {
+  .abt__stats { grid-template-columns: repeat(2, 1fr); }
+  .abt__grid  { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 560px) {
+  .abt__grid { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .abt__card { transition: none; }
+  .abt__card:hover { transform: none; }
+}
+
+/* ── Related products: centred heading ────────────────────────────────────
+   .pdp__related-head is flex with space-between, which pins the h2 to the
+   left edge. A three-track grid centres the heading against the container
+   rather than against the remaining space, while "Shop all products" keeps
+   its place on the right and the row keeps its original height. The empty
+   first track is what makes the centring true. */
+.pdp__related-head {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: baseline;
+}
+.pdp__related-head h2 {
+  grid-column: 2;
+  text-align: center;
+}
+.pdp__related-all {
+  grid-column: 3;
+  justify-self: end;
+}
+@media (max-width: 640px) {
+  /* Side by side there is no room for both, so they stack and both centre. */
+  .pdp__related-head { grid-template-columns: 1fr; }
+  .pdp__related-head h2,
+  .pdp__related-all { grid-column: 1; justify-self: center; }
+}
+
+/* ── Footer: tighter, same content ────────────────────────────────────────
+   Measured at 646px on desktop and 1487px on mobile — tall enough that the
+   legal row sat well below the fold on a phone. Nothing is removed or
+   shrunk typographically: every link, column and control stays, and body
+   copy keeps its size. What changes is dead space — outer padding, the gap
+   between link rows, and the margins stacked around the brand block.
+
+   The link-row gap does the most work here, because the Industries column
+   added a fourth list of nine items. */
+.ft__main {
+  gap: clamp(20px, 2.2vw, 30px);
+  padding-top: clamp(32px, 3.4vw, 44px);
+  padding-bottom: clamp(22px, 2.4vw, 30px);
+}
+.ft__logo-img { height: 34px; }
+.ft__tag { margin: 10px 0 14px; }
+.ft__phone { margin-bottom: 9px; }
+.ft__col h4 { padding-bottom: 9px; margin-bottom: 13px; }
+.ft__col ul { gap: 9px; }
+.ft__signup-blurb { margin-bottom: 10px; }
+.ft__legal { padding: 14px 0 16px; }
+.ft__velcro { margin-top: 8px; }
+
+/* The desktop trims barely touched phones (1487px -> 1416px), because there the
+   grid collapses to two tracks and the height is the stacked columns, not the
+   outer padding. Same principle as above — spacing only, nothing removed. */
+@media (max-width: 640px) {
+  .ft__main {
+    gap: 18px 16px;
+    padding-top: 28px;
+    padding-bottom: 20px;
+  }
+  .ft__col h4 { padding-bottom: 7px; margin-bottom: 10px; }
+  .ft__col ul { gap: 8px; }
+  .ft__legal { padding: 12px 0 14px; }
+}
+
+/* ── Add to cart: confirm in place ────────────────────────────────────────
+   The button used to post the form and land the shopper on /cart, away from
+   the product. Now it adds in the background and turns into a green "View
+   cart", so the next click is a deliberate trip to the basket rather than an
+   accidental second add.
+
+   The green is pitched to the .pdp__flag "In stock · ships in 1-2 days" tag
+   (#1f9d55) rather than the darker badge green, which read as heavy. The tag's
+   exact value could not be used as a button fill: white on #1f9d55 measures
+   3.49:1 and navy 4.33:1, and this label is 15px, so both miss AA's 4.5.
+   #1a8449 is the lightest step in that same family that clears it, at 4.73:1. */
+.pdp__add.is-added,
+.pdp__dock-add.is-added {
+  background: #1a8449;
+  color: #fff;
+  box-shadow: 0 8px 22px rgba(26, 132, 73, 0.28);
+}
+.pdp__add.is-added:hover,
+.pdp__dock-add.is-added:hover { background: #177a43; }
+.pdp__add.is-added svg,
+.pdp__dock-add.is-added svg { display: none; }
+
+/* Screen-reader-only announcement target — the add no longer reloads the
+   page, so without this nothing tells a non-visual user it worked. */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── Cart drawer: restore the scroll chain ────────────────────────────────
+   cartdrawer.css assumes .cd__items and .cd__foot are direct children of the
+   flex-column .cd__panel — .cd__items takes flex: 1 and scrolls, .cd__foot
+   stays pinned. The Liquid port introduced a .cd__body wrapper so the whole
+   contents could be re-rendered in one write, and that wrapper is a plain
+   block: flex: 1 on .cd__items resolved against nothing, the list grew to its
+   natural height, and the panel overflowed with no scrollbar — taking the
+   Checkout button off-screen with it.
+
+   Making the wrapper the flex column the CSS expects fixes both. min-height: 0
+   is the load-bearing part: without it a flex child refuses to shrink below
+   its content, so overflow-y never has a smaller box to scroll inside. */
+.cd__body {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.cd__items { min-height: 0; }
+
+/* The drawer reuses the cart page's .cart__ship progress bar rather than a
+   second design. Only the spacing differs: inside the drawer foot it sits
+   directly above the subtotal, so it needs less room beneath it than it does
+   on the cart page. */
+.cd__ship { margin-bottom: 12px; text-align: center; }
+.cd__ship .cart__ship-bar { margin-top: 12px; }
+
+/* ── Customer account area ────────────────────────────────────────────────
+   New work, not a React port — the prototype had no account pages, and the
+   Suruchi originals carried their own heading and table styling, which is
+   most of why this area looked like a different website. Built from the same
+   tokens as the storefront. px only, per build-css.sh. */
+.acct { padding-bottom: clamp(56px, 7vw, 96px); }
+
+.acct__hero {
+  background: linear-gradient(160deg, #142548 0%, #24406f 100%);
+  padding: clamp(34px, 4.5vw, 60px) 0;
+  text-align: center;
+}
+.acct__eyebrow {
+  display: inline-block;
+  margin-bottom: 12px;
+  padding-bottom: 7px;
+  border-bottom: 2px solid var(--orange);
+  color: #f0842a;
+  font-size: 12px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase;
+}
+.acct__h1 {
+  margin: 0;
+  font-family: var(--font-head); font-weight: 800;
+  font-size: clamp(28px, 4vw, 42px); line-height: 1.08; letter-spacing: -0.02em; color: #fff;
+}
+.acct__lead { max-width: 560px; margin: 12px auto 0; color: rgba(255,255,255,0.86); font-size: 16px; line-height: 1.55; }
+
+/* Sidebar + content. Collapses to one column before the nav would crowd. */
+.acct__body {
+  display: grid; grid-template-columns: 208px 1fr; gap: clamp(20px, 3vw, 36px);
+  align-items: start; margin-top: clamp(28px, 4vw, 44px);
+}
+.acct--solo .acct__body { grid-template-columns: 1fr; }
+.acct__nav { display: grid; gap: 2px; position: sticky; top: 96px; }
+.acct__nav a, .acct__logout button {
+  display: block; width: 100%; text-align: left;
+  padding: 11px 14px; border-radius: var(--r-ctrl);
+  font-size: 15px; font-weight: 600; color: var(--muted-ink);
+  background: none; border: 0; cursor: pointer; font-family: inherit;
+}
+.acct__nav a:hover, .acct__logout button:hover { background: var(--cloud); color: var(--navy); }
+.acct__nav a.is-on { background: var(--navy); color: #fff; }
+.acct__logout { margin-top: 6px; border-top: 1px solid var(--line-card); padding-top: 6px; }
+.acct__main { display: grid; gap: 18px; min-width: 0; }
+
+.acct__card {
+  background: #fff; border: 1px solid var(--line-card); border-radius: var(--r-card);
+  padding: 20px 22px;
+}
+.acct__card--flush { padding: 0; overflow: hidden; }
+.acct__card-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.acct__card h2 { margin: 0; font-family: var(--font-head); font-weight: 800; font-size: 17px; color: var(--navy); }
+.acct__card-head a { font-size: 14px; font-weight: 700; color: var(--orange-ink); }
+
+/* Orders table. Below 700px each row becomes a stacked card via data-label,
+   because a five-column table cannot survive a phone. */
+.acct__table { width: 100%; border-collapse: collapse; font-size: 15px; }
+.acct__table th, .acct__table td { padding: 13px 16px; text-align: left; vertical-align: middle; }
+.acct__table thead th {
+  background: var(--cloud); color: var(--muted-ink);
+  font-size: 12px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase;
+  border-bottom: 1px solid var(--line-card);
+}
+.acct__table tbody tr { border-bottom: 1px solid var(--line-card); }
+.acct__table tbody tr:last-child { border-bottom: 0; }
+.acct__table tbody th { font-weight: 700; color: var(--navy); }
+.acct__num { text-align: right; }
+.acct__order-no { color: var(--orange-ink); font-weight: 800; }
+
+.acct__pill {
+  display: inline-block; padding: 4px 10px; border-radius: 999px;
+  background: var(--cloud); color: var(--muted-ink);
+  font-size: 11px; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase;
+}
+.acct__pill--ok { background: rgba(20,108,67,0.10); color: #146c43; }
+
+.acct__empty { text-align: center; padding: 40px 24px; }
+.acct__empty h2 { margin-bottom: 6px; }
+.acct__empty p { color: var(--muted-ink); margin-bottom: 18px; }
+.acct__address { font-style: normal; color: var(--muted-ink); line-height: 1.7; font-size: 15px; }
+.acct__pager { display: flex; justify-content: center; padding: 6px 0; }
+.acct__back { margin-bottom: 4px; }
+.acct__back a { font-weight: 700; color: var(--muted-ink); font-size: 14px; }
+.acct__back a:hover { color: var(--navy); }
+
+/* Order detail */
+.acct__ordhead { display: flex; gap: 8px; flex-wrap: wrap; padding: 18px 22px 0; }
+.acct__line { display: flex; align-items: center; gap: 12px; }
+.acct__line-img { flex: none; width: 54px; height: 54px; border-radius: var(--r-ctrl); overflow: hidden; background: var(--cloud); }
+.acct__line-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.acct__line-txt { display: grid; gap: 2px; min-width: 0; }
+.acct__line-var, .acct__line-sku { font-size: 13px; color: var(--muted-ink); font-weight: 500; }
+.acct__line-track { font-size: 13px; color: #146c43; font-weight: 600; }
+.acct__totals { padding: 14px 22px 20px; border-top: 1px solid var(--line-card); display: grid; gap: 7px; }
+.acct__sumrow { display: flex; justify-content: space-between; gap: 16px; font-size: 15px; color: var(--muted-ink); }
+.acct__sumrow b { color: var(--navy); }
+.acct__sumrow--disc b { color: #146c43; }
+.acct__sumrow--total { border-top: 1px solid var(--line-card); padding-top: 9px; font-size: 17px; color: var(--navy); }
+.acct__sumrow--total b { font-family: var(--font-head); font-size: 19px; }
+
+/* Addresses */
+.acct__addrgrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+.acct__addrcard { position: relative; display: grid; gap: 12px; align-content: start; }
+.acct__addrcard-acts { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.acct__danger { background: none; border: 0; padding: 0; cursor: pointer; font-family: inherit;
+  font-size: 14px; font-weight: 700; color: #b42318; text-decoration: underline; text-underline-offset: 2px; }
+.acct__danger:hover { color: #8a1a12; }
+
+.acct__disclose > summary {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  cursor: pointer; list-style: none;
+  font-family: var(--font-head); font-weight: 800; font-size: 16px; color: var(--navy);
+}
+.acct__disclose > summary::-webkit-details-marker { display: none; }
+.acct__disclose--sm > summary { font-size: 14px; font-weight: 700; color: var(--orange-ink); }
+.acct__disclose-i { font-size: 20px; color: var(--muted-ink); line-height: 1; }
+.acct__disclose[open] .acct__disclose-i { transform: rotate(45deg); }
+
+/* Forms */
+.acct__solo { max-width: 460px; margin: 0 auto; }
+.acct__solo.is-ready > #recover { display: none; }
+.acct__solo.is-ready.show-recover > #recover { display: block; }
+.acct__solo.is-ready.show-recover > #login { display: none; }
+.acct__form { display: grid; gap: 14px; }
+.acct__form--inset { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--line-card); }
+.acct__form h2 { margin: 0; }
+.acct__hint { color: var(--muted-ink); font-size: 14.5px; margin: -4px 0 0; }
+.acct__row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.acct__submit { width: 100%; }
+.acct__alt { display: grid; gap: 6px; font-size: 14px; color: var(--muted-ink); text-align: center; }
+.acct__alt a { color: var(--orange-ink); font-weight: 700; }
+.acct__check { display: flex; align-items: center; gap: 9px; font-size: 14.5px; color: var(--muted-ink); }
+.acct__ok  { background: rgba(20,108,67,0.10); color: #146c43; border-radius: var(--r-ctrl); padding: 11px 14px; font-weight: 600; font-size: 14.5px; }
+.acct__err { background: rgba(180,35,24,0.08); color: #b42318; border-radius: var(--r-ctrl); padding: 11px 14px; font-weight: 600; font-size: 14.5px; }
+.acct__err ul { margin: 0; padding-left: 18px; }
+
+@media (max-width: 900px) {
+  .acct__body { grid-template-columns: 1fr; }
+  .acct__nav { position: static; grid-auto-flow: column; grid-auto-columns: max-content; overflow-x: auto; gap: 6px; }
+  .acct__logout { border-top: 0; border-left: 1px solid var(--line-card); margin-top: 0; padding-top: 0; padding-left: 6px; }
+  .acct__addrgrid { grid-template-columns: 1fr; }
+}
+@media (max-width: 700px) {
+  /* Stacked rows — a five-column table cannot survive a phone. */
+  .acct__table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .acct__table tbody tr { display: grid; gap: 6px; padding: 14px 16px; }
+  .acct__table th, .acct__table td { padding: 0; text-align: left; }
+  .acct__table td::before {
+    content: attr(data-label) ': ';
+    font-size: 12px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted-ink);
+  }
+  .acct__num { text-align: left; }
+  .acct__row2 { grid-template-columns: 1fr; }
+}
+
+/* Quick Add confirms with the same green the product page uses — one success
+   colour across both add paths, not two. Matches .pdp__add.is-added. */
+.qa__add.is-added {
+  background: #1a8449;
+  color: #fff;
+  box-shadow: 0 8px 22px rgba(26, 132, 73, 0.28);
+}
+
+/* ── Breadcrumbs ──────────────────────────────────────────────────────────
+   New work. Suruchi's own breadcrumb renders in #194cbf, a blue that appears
+   nowhere else in this palette; these use the store's muted ink with the
+   burnt-orange link colour, so the trail reads as part of the page rather
+   than as a leftover from the old theme.
+
+   A thin rule under the nav rather than a filled bar: the trail is wayfinding,
+   not a section, and a solid band would compete with the hero beneath it. */
+.bc {
+  border-bottom: 1px solid var(--line-card);
+  background: #fff;
+}
+.bc__list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 8px;
+  margin: 0;
+  padding: 11px 0;
+  list-style: none;
+  font-size: 13.5px;
+  line-height: 1.4;
+}
+.bc__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted-ink);
+  min-width: 0;
+}
+/* The separator is generated, so it can never be selected or read aloud as
+   part of a page name — a literal "/" in the markup is announced by some
+   screen readers on every crumb. */
+.bc__item + .bc__item::before {
+  content: '/';
+  color: var(--sky-edge);
+  font-size: 13px;
+}
+.bc__item a {
+  color: var(--muted-ink);
+  text-decoration: none;
+  transition: color 0.14s var(--ease);
+}
+.bc__item a:hover { color: var(--orange-ink); text-decoration: underline; text-underline-offset: 2px; }
+.bc__item[aria-current='page'] {
+  color: var(--navy);
+  font-weight: 700;
+  /* Long product names truncate rather than wrapping the bar onto three
+     lines on a phone. */
+  max-width: 60ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+@media (max-width: 560px) {
+  .bc__list { font-size: 12.5px; padding: 9px 0; }
+  .bc__item[aria-current='page'] { max-width: 22ch; }
+}
+
+/* ── Signed-in avatar in the header ───────────────────────────────────────
+   New work. The outline person icon looked identical whether or not you were
+   signed in, so the header never answered "am I logged in?". Signed in it
+   becomes a filled navy disc with the customer's initials.
+
+   Navy on white, white text: 15.13:1. Sized to the same 23px optical box as
+   the sibling icons so the action row keeps its rhythm. */
+.icn--me { text-decoration: none; }
+.icn__ini {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  background: var(--navy);
+  color: #fff;
+  font-family: var(--font-head);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+.icn--me:hover .icn__ini { background: var(--orange); color: var(--navy); }
+.icn--me:focus-visible .icn__ini { outline: 2px solid var(--orange); outline-offset: 2px; }
+
+/* ── Cart drawer on mobile: hold the page still ───────────────────────────
+   cartdrawer.css locks the background with body { overflow: hidden }, which
+   mobile Safari ignores — the page rubber-bands behind the sheet, and since
+   the sheet is fixed against a viewport that resizes as the URL bar collapses,
+   the whole panel slides with it.
+
+   The JS pins the body at its current offset and sets `top`, so these three
+   properties are what make that hold. Restoring the offset on close is handled
+   in JS, so the shopper does not get dumped at the top of the page. */
+body.drawer-open {
+  position: fixed;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* dvh tracks the browser chrome as it collapses; the vh line is the fallback
+   for anything that does not support it. Without this the panel is sized to
+   the tallest viewport and its footer sits below the fold. */
+.cd,
+.cd__panel {
+  height: 100vh;
+  height: 100dvh;
+}
+
+/* Scrolling the item list must not chain to the page underneath once it hits
+   an end — that chaining is the other half of the drag-the-page-behind bug. */
+.cd__items {
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ── PDP: a long thumbnail strip must not widen the grid ──────────────────
+   .pdp__grid uses 1.05fr / 0.95fr, and an `fr` track will not shrink below
+   its content's min-content width. .pdp__thumbs is a nowrap flex row of 76px
+   thumbs, so Hook & Loop Dots — which has 8 images — forced a 552px strip,
+   which pushed the grid column to 520px inside a 390px phone. Products with
+   four images stayed at 358px, which is why only that one page looked cut off.
+
+   min-width: 0 lets the tracks actually shrink, and wrapping the strip means
+   the fix holds for a product with twenty images too. */
+.pdp__grid > * { min-width: 0; }
+.pdp__thumbs { flex-wrap: wrap; }
+
+/* ── Volume pricing, shown in the buy box ─────────────────────────────────
+   The tiers were real automatic discounts all along but only revealed
+   themselves at the cart, so the "Buy more & save" panel read as decoration.
+   This is the line that answers "what do I actually pay for 10?".
+
+   It sits on its own row beneath the stepper and the add button, never beside
+   them — as a third flex item in that row it stole width from the button and
+   wrapped its label onto three lines.
+
+   Badge / statement / footnote, always in that order, so the eye lands on the
+   rate first and the numbers can change without anything moving. Green because
+   it confirms a saving; the orange CTA beside it stays the only call to
+   action. */
+.pdp__bulknote {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  width: 100%;
+  margin: 0;
+  padding: 11px 14px;
+  border: 1px solid rgba(20, 108, 67, 0.22);
+  border-radius: var(--r-ctrl);
+  background: linear-gradient(180deg, rgba(20,108,67,0.07), rgba(20,108,67,0.04));
+  font-size: 14px;
+  line-height: 1.35;
+  /* Digits keep a fixed advance so the row does not twitch as the total
+     changes on every press of the stepper. */
+  font-variant-numeric: tabular-nums;
+}
+.pdp__bulknote[hidden] { display: none; }
+
+.pdp__bulknote-badge {
+  flex: none;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: #146c43;
+  color: #fff;
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.pdp__bulknote-main { color: var(--navy); font-weight: 600; }
+.pdp__bulknote-main b { font-weight: 800; }
+.pdp__bulknote-sub {
+  flex-basis: 100%;
+  color: var(--muted-ink);
+  font-size: 12.5px;
+  font-weight: 500;
+}
+
+/* Not there yet: the same shape in the store's own orange, so "unlocked" and
+   "one more step" are told apart without reading a word. */
+.pdp__bulknote.is-next {
+  border-color: rgba(232, 119, 34, 0.28);
+  background: linear-gradient(180deg, rgba(232,119,34,0.08), rgba(232,119,34,0.04));
+}
+.pdp__bulknote.is-next .pdp__bulknote-badge {
+  background: var(--orange);
+  color: var(--navy);   /* navy on orange = 5.11:1; white would be 2.96 */
+}
+
+/* The tier the current quantity has reached. The panel already marks the
+   largest tier "Best value"; this marks the one you are actually getting, so
+   the two are distinguishable at a glance. */
+.bms__tier.is-active {
+  border-color: #1a8449;
+  box-shadow: 0 0 0 1px #1a8449, 0 10px 26px rgba(20, 108, 67, 0.22);
+}
+.bms__tier.is-active .bms__pct { color: #3ddc84; }
+
+/* ── Search suggestions ───────────────────────────────────────────────────
+   New work. The header search was a plain form that only answered after a
+   full page load; this shows real products while the shopper types.
+
+   Anchored to .search, which needed position: relative — it had none, so an
+   absolutely positioned panel would have escaped to the page. */
+.search { position: relative; }
+.sugg {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  z-index: 120;
+  max-height: min(60vh, 420px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: #fff;
+  border: 1px solid var(--line-card);
+  border-radius: var(--r-card);
+  box-shadow: 0 2px 6px rgba(8,18,40,0.10), 0 18px 44px rgba(8,18,40,0.20);
+  padding: 6px;
+}
+.sugg[hidden] { display: none; }
+
+.sugg__item {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 8px 9px;
+  border-radius: var(--r-ctrl);
+  text-decoration: none;
+  color: var(--navy);
+}
+/* Hover and keyboard selection share one state, so arrowing down looks the
+   same as pointing at it. */
+.sugg__item:hover,
+.sugg__item.is-on { background: var(--cloud); }
+
+.sugg__img {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--cloud);
+}
+.sugg__img img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.sugg__txt { display: grid; gap: 2px; min-width: 0; }
+.sugg__name {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.3;
+  /* Two lines then ellipsis — a long product name must not stretch the row. */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.sugg__price { font-size: 12.5px; color: var(--muted-ink); font-weight: 600; }
+
+.sugg__all {
+  display: block;
+  margin-top: 4px;
+  padding: 10px 9px;
+  border-top: 1px solid var(--line-card);
+  color: var(--orange-ink);
+  font-size: 13.5px;
+  font-weight: 700;
+  text-decoration: none;
+}
+.sugg__all:hover { text-decoration: underline; text-underline-offset: 2px; }
+.sugg__empty { margin: 0; padding: 14px 10px; color: var(--muted-ink); font-size: 14px; }
+
+/* ── Buy it now ───────────────────────────────────────────────────────────
+   STAGED, DELIBERATELY NOT LIVE. Uncomment and re-run shopify/build-css.sh to
+   ship it.
+
+   This button is no longer Shop Pay, so it no longer wears Shop's purple.
+   That purple is Shop's brand and it promises the Shop flow — a shopper who
+   presses it expecting to sign in, or expecting Shop's wallet, would be
+   reading a colour that now means something else. Navy keeps it clearly
+   secondary to the orange Add to cart while still reading as a real button.
+
+   It is held back because it was written during the hero work and never
+   pushed, so it would have ridden along with the single-banner release as an
+   unrequested change to the primary purchase button on every product page.
+   Product-page colour belongs in its own release, tested on its own.
+
+.pdp__buynow {
+  background: var(--navy);
+}
+.pdp__buynow:hover {
+  background: #0d1a38;
+}
+.pdp__buynow[disabled] {
+  opacity: 0.72;
+  cursor: default;
+  transform: none;
+}
+*/

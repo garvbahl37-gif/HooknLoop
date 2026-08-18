@@ -1,0 +1,74 @@
+@media only screen and (min-width: 750px) {
+  .deals--product-card--content .price {
+      font-size: 1.8rem;
+  }
+  .deals--product__card .product__card__thumbnail {
+    width: 33.33%;
+  }
+}
+.deals--product-card--content {
+  flex-grow: 1;
+}
+.deals--product-card--content.card-content-spacing-true {
+  padding: 2rem;
+}
+.deals--product__card {
+  gap: 2rem;
+  align-items: center;
+}
+.deals--product-card-footer {
+  margin-top: 2rem;
+}
+.deals--product__card.product--corner-radius-true {
+  border-radius: 1rem;
+  overflow: hidden;
+}
+.deals--product__card.product--card-spacing-true {
+  padding: 2rem;
+}
+.deals--product-cart-button.button > svg {
+  width: 2.2rem;
+}
+.deals--product-cart-button.button {
+  gap: 0.5rem;
+}
+.deals--product-card--content .price--on-sale .price-item--regular {
+  color: rgba(var(--color-foreground), 0.5);
+}
+.deals--product-cart-button.link > svg {
+  width: 2.2rem;
+}
+.deals--product-cart-button.link {
+  align-items: center;
+  display: inline-flex;
+  gap: 0.5rem;
+  font-size: 1.8rem;
+  padding: 0;
+}
+@media screen and (min-width: 992px) {
+  .deals--product__card .media > img {
+    transition: opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+      transfrom 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .deals--product__card .media > img:only-child {
+    transition: transform var(--duration-long) ease;
+  }
+}
+.deals--product-cart-button {
+  position: relative;
+}
+.deals--product-cart-button.link:hover {
+  text-decoration: underline;
+}
+
+@media only screen and (max-width: 749px) {
+  .deals--product__card .product__card__thumbnail {
+    width: 100%;
+  }
+  .deals--product__card.d-flex {
+    flex-wrap: wrap;
+  }
+}
+.deals--product__card.card--border-line {
+    border: 0.1rem solid rgba(var(--color-foreground), 0.12);
+}

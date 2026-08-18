@@ -1,0 +1,540 @@
+{%- comment -%}
+  HooknLoop header — port of storefront/src/components/Header.jsx
+
+  Structure, class names and icons match the React version exactly, so
+  header.css (bundled verbatim into hnl-redesign.css) styles it unchanged:
+
+    .promo   blue promo strip
+    .bar     white row: burger / logo / search / account-wish-cart
+    .nav     navy nav with hover+focus dropdowns, sticks on scroll
+    .mdrawer mobile drawer, opened by the burger
+
+  The React version read menus from catalog.js; here the dropdowns are theme
+  blocks pointing at real Shopify product handles, so a renamed product shows
+  up as an editable setting rather than a dead link.
+
+  Cart and wishlist counts come from Shopify's cart object. Wishlist has no
+  Shopify equivalent, so it reads 0 unless a wishlist app sets it — the markup
+  is kept so the layout matches.
+{%- endcomment -%}
+
+<header class="hdr">
+  <div class="promo">
+    <div class="wrap promo__row">
+      <span class="promo__lead">{{ section.settings.promo_lead }}</span>
+      <span class="promo__sep promo__sep--lead" aria-hidden="true">•</span>
+      <span class="promo__hl">{{ section.settings.promo_hl1 }}</span>
+      <span class="promo__sep" aria-hidden="true">•</span>
+      <span class="promo__opt">{{ section.settings.promo_opt }}</span>
+      <span class="promo__sep promo__sep--opt" aria-hidden="true">•</span>
+      <span class="promo__hl">{{ section.settings.promo_hl2 }}</span>
+    </div>
+  </div>
+
+  {%- comment -%}
+    Mobile call bar — the live store has this row and the redesign did not.
+    It matters more than it looks: floating.css hides the call FAB below 900px
+    (phones get the bottom nav instead), so without this a phone had NO way to
+    ring a trade supplier. Desktop keeps the FAB and never renders this.
+  {%- endcomment -%}
+  {%- if settings.hnl_mobile_callbar -%}
+    <a class="callbar" href="tel:{{ settings.hnl_phone | default: '+61340616287' | replace: ' ', '' }}">
+      <span class="callbar__icn" aria-hidden="true">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 12l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 2 6a2 2 0 0 1 2-2Z"/></svg>
+      </span>
+      <span class="callbar__txt">{{ settings.hnl_mobile_callbar_text | default: 'Stuck? Call Us' }}</span>
+      <span class="callbar__num">{{ settings.hnl_phone_display | default: '+61 3 4061 6287' }}</span>
+    </a>
+  {%- endif -%}
+
+  <div class="bar">
+    <div class="wrap bar__row">
+      <button class="bar__burger" aria-label="Open menu" aria-expanded="false" data-hnl-burger>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+
+      <a href="{{ routes.root_url }}" class="logo" aria-label="HooknLoop home">
+        <img class="logo__img" src="{{ 'hnl-logo-header.svg' | asset_url }}" alt="HooknLoop" width="389" height="69">
+      </a>
+
+      {%- comment -%}
+        Search with live suggestions. The form still submits normally, so with
+        JS unavailable it is exactly the search it was before — the dropdown is
+        an enhancement layered on top, never the only way through.
+
+        Results come from Shopify's own /search/suggest.json rather than a
+        hand-built index, so a renamed or unpublished product can never linger
+        in the suggestions.
+      {%- endcomment -%}
+      <form class="search" role="search" action="{{ routes.search_url }}" method="get"
+            data-hnl-search autocomplete="off">
+        <input class="search__input" type="search" name="q" value="{{ search.terms | escape }}"
+               placeholder="{{ section.settings.search_placeholder }}" aria-label="Search products"
+               data-hnl-search-input
+               role="combobox" aria-expanded="false" aria-autocomplete="list"
+               aria-controls="hnl-search-suggest">
+        <button class="search__btn" type="submit" aria-label="Search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></button>
+        <div class="sugg" id="hnl-search-suggest" role="listbox" aria-label="Search suggestions" data-hnl-suggest hidden></div>
+      </form>
+
+      <div class="bar__actions">
+        <a class="icn icn--searchlink" href="{{ routes.search_url }}" aria-label="Search"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></a>
+
+        {%- comment -%}
+          Signed out, the link uses routes.storefront_login_url, which Shopify
+          documents as "direct your customers back to the online store after
+          successful sign in". Two earlier attempts were worse: plain /account
+          hands OAuth a redirect_uri on shopify.com, so the shopper is dropped
+          on the hosted dashboard; and a hand-built
+          /customer_authentication/login?return_to=/ has the return_to stripped
+          out of the OAuth chain entirely (traced: it appears in no hop).
+          storefront_login_url is the theme-supported route for this, so it is
+          the one that gets to be responsible for the destination.
+
+          Signed in, the outline person becomes a filled disc with the
+          customer's initials, so the header itself answers "am I logged in?".
+          Falls back to the email's first letter for a customer who has no name
+          on file, which is common when the account was created at checkout.
+        {%- endcomment -%}
+        {%- if customer -%}
+          {%- liquid
+            assign ini = ''
+            if customer.first_name != blank
+              assign ini = customer.first_name | slice: 0
+              if customer.last_name != blank
+                assign ini = ini | append: customer.last_name | slice: 0
+              endif
+            elsif customer.name != blank
+              assign ini = customer.name | slice: 0
+            elsif customer.email != blank
+              assign ini = customer.email | slice: 0
+            endif
+            assign ini = ini | upcase
+          -%}
+          <a class="icn icn--account icn--me" href="{{ routes.account_url }}"
+             aria-label="Account and orders, signed in as {{ customer.first_name | default: customer.email | escape }}"
+             title="{{ customer.first_name | default: customer.email | escape }}">
+            <span class="icn__ini" aria-hidden="true">{{ ini | default: 'H' }}</span>
+          </a>
+        {%- else -%}
+          <a class="icn icn--account" href="{{ routes.storefront_login_url }}" aria-label="Sign in"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></a>
+        {%- endif -%}
+
+        <a class="icn icn--wish" href="{{ section.settings.wishlist_url | default: routes.root_url }}" aria-label="Wishlist">
+          <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 21s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.5-7 10-7 10Z"/></svg>
+          <span class="icn__count" data-hnl-wishcount>0</span>
+        </a>
+
+        <a class="icn icn--cart" href="{{ routes.cart_url }}" aria-label="Cart, {{ cart.item_count }} items">
+          <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M6 6 5 3H2"/></svg>
+          <span class="icn__count {% if cart.item_count > 0 or settings.hnl_cart_count_always %}is-on{% endif %}" data-hnl-cart-count>{{ cart.item_count }}</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<nav class="nav" aria-label="Primary" data-hnl-nav>
+  <div class="wrap nav__row">
+    <ul class="nav__list">
+      <li class="nav__item"><a href="{{ routes.root_url }}" class="nav__link">Home</a></li>
+
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'menu' -%}
+          <li class="nav__item nav__item--has" {{ block.shopify_attributes }}>
+            <button class="nav__link" aria-expanded="false" aria-haspopup="true">
+              {{ block.settings.label }}<svg class="nav__chev" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+            <div class="nav__drop">
+              {%- assign labels  = block.settings.item_labels  | split: '|' -%}
+              {%- assign handles = block.settings.item_handles | split: '|' -%}
+              {%- for l in labels -%}
+                {%- assign h = handles[forloop.index0] | strip -%}
+                {%- assign prod = all_products[h] -%}
+                {%- if prod != blank and prod.handle -%}
+                  <a href="{{ prod.url }}">{{ l | strip }}</a>
+                {%- else -%}
+                  <a href="{{ routes.all_products_collection_url }}">{{ l | strip }}</a>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          </li>
+        {%- elsif block.type == 'link' -%}
+          <li class="nav__item" {{ block.shopify_attributes }}><a href="{{ block.settings.url }}" class="nav__link">{{ block.settings.label }}</a></li>
+        {%- endif -%}
+      {%- endfor -%}
+
+      {%- comment -%}
+        Industries dropdown — the React header's INDUSTRY_MENU: the index plus
+        one entry per guide. Each item renders only if its page exists, so a
+        guide that has not been created yet cannot leave a dead link.
+      {%- endcomment -%}
+      {%- if pages['industries'] != blank and pages['industries'].handle -%}
+        <li class="nav__item nav__item--has">
+          <a href="/pages/industries" class="nav__link">Industries
+            <svg class="nav__chev" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="m6 9 6 6 6-6"/></svg>
+          </a>
+          <div class="nav__drop">
+              {%- if pages['industries'] != blank and pages['industries'].handle -%}<a href="/pages/industries">All industries</a>{%- endif -%}
+              {%- if pages['clothing-garments'] != blank and pages['clothing-garments'].handle -%}<a href="/pages/clothing-garments">Clothing & Garments</a>{%- endif -%}
+              {%- if pages['upholstery-furniture'] != blank and pages['upholstery-furniture'].handle -%}<a href="/pages/upholstery-furniture">Upholstery & Furniture</a>{%- endif -%}
+              {%- if pages['schools-education'] != blank and pages['schools-education'].handle -%}<a href="/pages/schools-education">Schools & Education</a>{%- endif -%}
+              {%- if pages['signage-displays'] != blank and pages['signage-displays'].handle -%}<a href="/pages/signage-displays">Signage & Displays</a>{%- endif -%}
+              {%- if pages['automotive-caravan-rv'] != blank and pages['automotive-caravan-rv'].handle -%}<a href="/pages/automotive-caravan-rv">Automotive, Caravan & RV</a>{%- endif -%}
+              {%- if pages['medical-aged-care'] != blank and pages['medical-aged-care'].handle -%}<a href="/pages/medical-aged-care">Medical & Aged Care</a>{%- endif -%}
+              {%- if pages['warehousing-logistics'] != blank and pages['warehousing-logistics'].handle -%}<a href="/pages/warehousing-logistics">Warehousing & Logistics</a>{%- endif -%}
+              {%- if pages['construction-industrial'] != blank and pages['construction-industrial'].handle -%}<a href="/pages/construction-industrial">Construction & Industrial</a>{%- endif -%}
+          </div>
+        </li>
+      {%- endif -%}
+    </ul>
+  </div>
+</nav>
+
+{%- comment -%} Mobile drawer — same markup as the React createPortal drawer. {%- endcomment -%}
+<div class="mdrawer" role="dialog" aria-modal="true" aria-label="Menu" data-hnl-drawer hidden>
+  <div class="mdrawer__scrim" data-hnl-drawer-close></div>
+  <aside class="mdrawer__panel">
+    <div class="mdrawer__head">
+      <img class="mdrawer__logo" src="{{ 'hnl-logo-header.svg' | asset_url }}" alt="HooknLoop" width="389" height="69">
+      <button class="mdrawer__close" aria-label="Close menu" data-hnl-drawer-close>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+
+    <form class="mdrawer__search" role="search" action="{{ routes.search_url }}" method="get">
+      <input type="search" name="q" placeholder="{{ section.settings.search_placeholder }}" aria-label="Search products">
+      <button type="submit" aria-label="Search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></button>
+    </form>
+
+    <nav class="mdrawer__nav" aria-label="Mobile">
+      <a href="{{ routes.root_url }}" class="mdrawer__link">Home</a>
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'menu' -%}
+          <div class="mdrawer__group">
+            <button class="mdrawer__acc" aria-expanded="false">
+              {{ block.settings.label }}<svg class="mdrawer__chev" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+            <div class="mdrawer__sub">
+              {%- assign labels  = block.settings.item_labels  | split: '|' -%}
+              {%- assign handles = block.settings.item_handles | split: '|' -%}
+              {%- for l in labels -%}
+                {%- assign h = handles[forloop.index0] | strip -%}
+                {%- assign prod = all_products[h] -%}
+                <a href="{% if prod != blank and prod.handle %}{{ prod.url }}{% else %}{{ routes.all_products_collection_url }}{% endif %}">{{ l | strip }}</a>
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- elsif block.type == 'link' -%}
+          <a href="{{ block.settings.url }}" class="mdrawer__link">{{ block.settings.label }}</a>
+        {%- endif -%}
+      {%- endfor -%}
+      {%- if pages['industries'] != blank and pages['industries'].handle -%}
+        <div class="mdrawer__group">
+          <button class="mdrawer__acc" aria-expanded="false">
+            Industries<svg class="mdrawer__chev" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <div class="mdrawer__sub">
+            {%- if pages['industries'] != blank and pages['industries'].handle -%}<a href="/pages/industries">All industries</a>{%- endif -%}
+            {%- if pages['clothing-garments'] != blank and pages['clothing-garments'].handle -%}<a href="/pages/clothing-garments">Clothing & Garments</a>{%- endif -%}
+            {%- if pages['upholstery-furniture'] != blank and pages['upholstery-furniture'].handle -%}<a href="/pages/upholstery-furniture">Upholstery & Furniture</a>{%- endif -%}
+            {%- if pages['schools-education'] != blank and pages['schools-education'].handle -%}<a href="/pages/schools-education">Schools & Education</a>{%- endif -%}
+            {%- if pages['signage-displays'] != blank and pages['signage-displays'].handle -%}<a href="/pages/signage-displays">Signage & Displays</a>{%- endif -%}
+            {%- if pages['automotive-caravan-rv'] != blank and pages['automotive-caravan-rv'].handle -%}<a href="/pages/automotive-caravan-rv">Automotive, Caravan & RV</a>{%- endif -%}
+            {%- if pages['medical-aged-care'] != blank and pages['medical-aged-care'].handle -%}<a href="/pages/medical-aged-care">Medical & Aged Care</a>{%- endif -%}
+            {%- if pages['warehousing-logistics'] != blank and pages['warehousing-logistics'].handle -%}<a href="/pages/warehousing-logistics">Warehousing & Logistics</a>{%- endif -%}
+            {%- if pages['construction-industrial'] != blank and pages['construction-industrial'].handle -%}<a href="/pages/construction-industrial">Construction & Industrial</a>{%- endif -%}
+          </div>
+        </div>
+      {%- endif -%}
+    </nav>
+
+    <div class="mdrawer__foot">
+      {%- if customer -%}
+        <a href="{{ routes.account_url }}">Account</a>
+      {%- else -%}
+        <a href="{{ routes.storefront_login_url }}">Sign in</a>
+      {%- endif -%}
+      <a href="/pages/contact">Contact</a>
+      <a href="/pages/about-us">About us</a>
+      <a href="/pages/shipping-delivery">Shipping</a>
+    </div>
+  </aside>
+</div>
+
+<script>
+(function () {
+  /* Predictive search — Shopify's /search/suggest.json.
+
+     Progressive enhancement: the form posts to /search on its own, so this
+     only ever adds a shortcut. Requests are debounced and the in-flight one is
+     abandoned when a newer keystroke arrives, so a slow reply cannot repaint
+     over fresher results. */
+  var form  = document.querySelector('[data-hnl-search]');
+  if (!form || !window.fetch) return;
+  var input = form.querySelector('[data-hnl-search-input]');
+  var box   = form.querySelector('[data-hnl-suggest]');
+  var timer = null, seq = 0, items = [], cursor = -1;
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (m) {
+      return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[m];
+    });
+  }
+
+  function close() {
+    box.hidden = true;
+    input.setAttribute('aria-expanded', 'false');
+    cursor = -1;
+  }
+
+  function mark(i) {
+    cursor = i;
+    var els = box.querySelectorAll('.sugg__item');
+    [].forEach.call(els, function (el, n) {
+      el.classList.toggle('is-on', n === i);
+      el.setAttribute('aria-selected', n === i ? 'true' : 'false');
+    });
+  }
+
+  function render(products, term) {
+    items = products;
+    if (!products.length) {
+      box.innerHTML = '<p class="sugg__empty">No matches for &ldquo;' + esc(term) + '&rdquo;</p>';
+      box.hidden = false;
+      input.setAttribute('aria-expanded', 'true');
+      return;
+    }
+    box.innerHTML = products.map(function (p, i) {
+      var img = (p.featured_image && p.featured_image.url) ? p.featured_image.url : '';
+      return '<a class="sugg__item" role="option" aria-selected="false" id="sugg-' + i + '" href="' + esc(p.url) + '">'
+           + (img ? '<span class="sugg__img"><img src="' + esc(img.replace(/(\.[a-z]+)(\?|$)/i, '_88x$1$2')) + '" alt="" loading="lazy"></span>' : '<span class="sugg__img"></span>')
+           + '<span class="sugg__txt"><span class="sugg__name">' + esc(p.title) + '</span>'
+           + (p.price ? '<span class="sugg__price">From $' + esc(p.price) + '</span>' : '')
+           + '</span></a>';
+    }).join('') + '<a class="sugg__all" href="/search?q=' + encodeURIComponent(term) + '">See all results for &ldquo;' + esc(term) + '&rdquo;</a>';
+    box.hidden = false;
+    input.setAttribute('aria-expanded', 'true');
+    cursor = -1;
+  }
+
+  function ask(term) {
+    var mine = ++seq;
+    var url = '/search/suggest.json?q=' + encodeURIComponent(term)
+            + '&resources[type]=product&resources[limit]=6&resources[options][unavailable_products]=last';
+    fetch(url, { headers: { 'Accept': 'application/json' }, credentials: 'same-origin' })
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        if (mine !== seq) return;              /* a newer keystroke won */
+        var ps = ((d.resources || {}).results || {}).products || [];
+        render(ps, term);
+      })
+      .catch(function () { if (mine === seq) close(); });
+  }
+
+  input.addEventListener('input', function () {
+    var term = input.value.trim();
+    clearTimeout(timer);
+    if (term.length < 2) { close(); return; }
+    timer = setTimeout(function () { ask(term); }, 180);
+  });
+
+  input.addEventListener('keydown', function (e) {
+    if (box.hidden) return;
+    var els = box.querySelectorAll('.sugg__item');
+    if (e.key === 'ArrowDown') { e.preventDefault(); mark(Math.min(cursor + 1, els.length - 1)); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); mark(Math.max(cursor - 1, -1)); }
+    else if (e.key === 'Enter' && cursor > -1 && els[cursor]) { e.preventDefault(); els[cursor].click(); }
+    else if (e.key === 'Escape') { close(); }
+  });
+
+  input.addEventListener('focus', function () {
+    if (input.value.trim().length >= 2 && box.innerHTML) { box.hidden = false; input.setAttribute('aria-expanded', 'true'); }
+  });
+
+  /* Close on an outside click, but not on the scrollbar or a suggestion. */
+  document.addEventListener('click', function (e) {
+    if (!form.contains(e.target)) close();
+  });
+})();
+(function () {
+  /* Dropdowns. React gated hover on (hover: hover) because a tap emits a
+     synthetic mouseenter before the click — without the gate, the tap opens
+     the menu and its own click closes it again. Same gate here. */
+  var canHover = function () { return window.matchMedia('(hover: hover)').matches; };
+  var items = document.querySelectorAll('.nav__item--has');
+
+  function close(el) { el.classList.remove('is-open'); var b = el.querySelector('.nav__link'); if (b) b.setAttribute('aria-expanded','false'); }
+  function open(el)  { el.classList.add('is-open');    var b = el.querySelector('.nav__link'); if (b) b.setAttribute('aria-expanded','true'); }
+  function closeAll(){ items.forEach(close); }
+
+  items.forEach(function (el) {
+    var btn = el.querySelector('.nav__link');
+    el.addEventListener('mouseenter', function () { if (canHover()) { closeAll(); open(el); } });
+    el.addEventListener('mouseleave', function () { if (canHover()) close(el); });
+    if (btn) {
+      var wasOpen = false;
+      btn.addEventListener('pointerdown', function () { wasOpen = el.classList.contains('is-open'); });
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (canHover()) { closeAll(); open(el); }
+        else if (wasOpen) { close(el); }
+        else { closeAll(); open(el); }
+      });
+    }
+  });
+
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeAll(); });
+  document.addEventListener('pointerdown', function (e) { if (!e.target.closest('.nav__item--has')) closeAll(); });
+
+  /* Nav pins to the top once the promo + logo rows scroll away. */
+  var nav = document.querySelector('[data-hnl-nav]');
+  if (nav) {
+    var onScroll = function () {
+      var t = nav.getBoundingClientRect().top;
+      nav.classList.toggle('is-stuck', t <= 0);
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+
+  /* Mobile drawer + body scroll lock. */
+  var drawer = document.querySelector('[data-hnl-drawer]');
+  var burger = document.querySelector('[data-hnl-burger]');
+  if (drawer && burger) {
+    var prevOverflow = '';
+    var setDrawer = function (on) {
+      if (on) { drawer.removeAttribute('hidden'); prevOverflow = document.body.style.overflow; document.body.style.overflow = 'hidden'; }
+      else    { drawer.setAttribute('hidden',''); document.body.style.overflow = prevOverflow; }
+      burger.setAttribute('aria-expanded', on ? 'true' : 'false');
+    };
+    burger.addEventListener('click', function () { setDrawer(true); });
+    drawer.querySelectorAll('[data-hnl-drawer-close]').forEach(function (b) {
+      b.addEventListener('click', function () { setDrawer(false); });
+    });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setDrawer(false); });
+
+    drawer.querySelectorAll('.mdrawer__acc').forEach(function (acc) {
+      acc.addEventListener('click', function () {
+        var g = acc.closest('.mdrawer__group');
+        var on = g.classList.toggle('is-open');
+        acc.setAttribute('aria-expanded', on ? 'true' : 'false');
+      });
+    });
+  }
+})();
+</script>
+
+<script>
+(function () {
+  var section = document.querySelector('.hnl-header-section');
+  if (!section) return;
+
+  /* Which row pins depends on the breakpoint, and it is NOT the whole header:
+     the nav on desktop, and below 900px the compact logo/cart bar. Measured on
+     hooknloop.com.au, that bar is what its own sticky header pins (60px), not
+     the promo strip and call row above it. Pinning all 154px made a third of a
+     phone screen slide about. Keep 900 in step with the media query in
+     hnl-shopify-overrides.css and with header.css. */
+  var wide = window.matchMedia('(min-width: 901px)');
+  var spacer = document.createElement('div');
+  spacer.className = 'hnl-nav-spacer';
+  var bar = null, barTop = 0, pinned = false, ticking = false;
+
+  /* Pin a little AFTER the bar's natural position rather than exactly at it.
+     At the threshold the two states are one pixel apart, and momentum scroll
+     on a phone crosses that boundary repeatedly — which is what made the
+     header flicker in and out. */
+  var HYSTERESIS = 24;
+
+  function pick() {
+    return wide.matches ? section.querySelector('.nav') : section.querySelector('.bar');
+  }
+
+  function reset() {
+    if (bar) bar.classList.remove('is-pinned');
+    spacer.classList.remove('is-on');
+    spacer.style.height = '';
+    pinned = false;
+
+    bar = pick();
+    if (!bar) return;
+    if (spacer.parentNode !== bar.parentNode || spacer.nextSibling !== bar) {
+      bar.parentNode.insertBefore(spacer, bar);
+    }
+    /* Read while unpinned — once fixed, the bar is out of flow and this
+       measurement would collapse to the viewport position. */
+    barTop = bar.getBoundingClientRect().top + window.pageYOffset;
+  }
+
+  /* Once pinned it STAYS pinned. An earlier version hid the bar on scroll down
+     and revealed it on scroll up; that flipped on every few pixels of direction
+     change, and it also meant the bar was missing exactly when someone scrolling
+     down wanted to reach the nav. */
+  function apply() {
+    ticking = false;
+    if (!bar) return;
+    var y = window.pageYOffset;
+
+    if (!pinned && y > barTop + HYSTERESIS) {
+      pinned = true;
+      spacer.style.height = bar.offsetHeight + 'px';
+      spacer.classList.add('is-on');
+      bar.classList.add('is-pinned');
+    } else if (pinned && y <= barTop) {
+      pinned = false;
+      bar.classList.remove('is-pinned');
+      spacer.classList.remove('is-on');
+      spacer.style.height = '';
+    }
+  }
+
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(apply);
+  }
+
+  reset();
+  apply();
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', function () { reset(); apply(); }, { passive: true });
+  (wide.addEventListener ? wide.addEventListener('change', function () { reset(); apply(); })
+                         : wide.addListener(function () { reset(); apply(); }));
+})();
+</script>
+
+{% schema %}
+{
+  "name": "HooknLoop header",
+  "tag": "header",
+  "class": "hnl-header-section",
+  "settings": [
+    { "type": "text", "id": "promo_lead", "label": "Promo lead", "default": "Fast Australia-wide delivery" },
+    { "type": "text", "id": "promo_hl1", "label": "Promo highlight 1", "default": "Free shipping over $300" },
+    { "type": "text", "id": "promo_opt", "label": "Promo middle", "default": "Best price in Australia" },
+    { "type": "text", "id": "promo_hl2", "label": "Promo highlight 2", "default": "★ 5-star rated store" },
+    { "type": "text", "id": "search_placeholder", "label": "Search placeholder", "default": "Search our store" },
+    { "type": "url", "id": "wishlist_url", "label": "Wishlist link" }
+  ],
+  "blocks": [
+    {
+      "type": "menu",
+      "name": "Dropdown",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label" },
+        { "type": "textarea", "id": "item_labels", "label": "Item labels (pipe-separated)" },
+        { "type": "textarea", "id": "item_handles", "label": "Product handles (pipe-separated)", "info": "Same order as the labels. Unknown handles fall back to the all-products collection." }
+      ]
+    },
+    {
+      "type": "link",
+      "name": "Link",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label" },
+        { "type": "url", "id": "url", "label": "Link" }
+      ]
+    }
+  ]
+}
+{% endschema %}

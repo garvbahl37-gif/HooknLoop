@@ -1,0 +1,19 @@
+.component--slider--nav {
+  right: auto;
+  left: 0;
+}
+.swiper-button-next.component--slider--nav {
+  right: auto;
+  left: 0;
+}
+.component--slider-wrapper:hover .swiper-button-prev.component--slider--nav {
+  left: auto;
+  right: 0;
+}
+.component--slider-wrapper:hover .swiper-button-next.component--slider--nav {
+  right: auto;
+  left: 0;
+}
+.component--slider--nav {
+  transform: rotate(-180deg);
+}

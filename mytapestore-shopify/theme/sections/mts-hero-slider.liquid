@@ -1,0 +1,326 @@
+{%- comment -%}
+  Hero slider — ported from HeroSlider.jsx. Crossfade auto-advance every 6s,
+  pause on hover, arrows + dots, and it respects prefers-reduced-motion (all in
+  mts-theme.js). The first slide is eager + high priority; the rest are lazy.
+{%- endcomment -%}
+{%- comment -%}
+  MOBILE BANNER — one static banner, shown only below 900px.
+
+  A five-slide rotator is a desktop idea. On a phone each slide stacked its
+  image ABOVE its text, so one slide ran past the fold and the first product sat
+  ~1,100px down; a shopper had to scroll through marketing to reach stock, and
+  four of the five messages were never seen anyway. This says the same thing
+  once, in ~430px, with the copy overlaid on the image instead of below it.
+
+  The `<source media="(min-width: 901px)">` pointing at a 1×1 GIF is not a
+  trick — it stops desktop browsers downloading a banner they will never show.
+  The slider's own first slide gets the mirror-image guard, so each viewport
+  pays for exactly one hero image. (Slides 2-6 are lazy, and a lazy image inside
+  a `display:none` container is never fetched.)
+{%- endcomment -%}
+{%- liquid
+  assign m_img = section.settings.m_image
+  assign m_packaged = section.settings.m_packaged
+  if m_img != blank
+    assign m_src = m_img | image_url: width: 1200
+  else
+    assign m_src = m_packaged | asset_url
+  endif
+-%}
+<section class="mhero" aria-label="{{ section.settings.m_title | default: shop.name | escape }}">
+  <div class="mhero__media">
+    <picture>
+      <source media="(min-width: 901px)" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
+      {%- if m_img != blank -%}
+        <img class="mhero__img" src="{{ m_img | image_url: width: 1200 }}"
+             srcset="{{ m_img | image_url: width: 600 }} 600w,
+                     {{ m_img | image_url: width: 900 }} 900w,
+                     {{ m_img | image_url: width: 1200 }} 1200w"
+             sizes="100vw" alt="" width="1200" height="900"
+             loading="eager" fetchpriority="high" decoding="async">
+      {%- else -%}
+        <img class="mhero__img" src="{{ m_src }}" alt="" width="1200" height="900"
+             loading="eager" fetchpriority="high" decoding="async">
+      {%- endif -%}
+    </picture>
+  </div>
+
+  <div class="wrap mhero__inner">
+    {%- if section.settings.m_eyebrow != blank -%}
+      {%- comment -%}
+        The eyebrow sits on a torn tape tab. This is a tape merchant — the one
+        decorative element on the banner is the product itself.
+      {%- endcomment -%}
+      <span class="mhero__tab">{{ section.settings.m_eyebrow }}</span>
+    {%- endif -%}
+    {%- if section.settings.m_title != blank -%}
+      {%- comment -%}
+        The opening banner carries the page's h1. It lives on the MOBILE banner
+        rather than the desktop slider because Google indexes the mobile render
+        — so this is the h1 it actually sees. The desktop slide below shows the
+        same words as a <p>, which keeps the page to exactly one h1.
+      {%- endcomment -%}
+      {%- if request.page_type == 'index' -%}
+        <h1 class="mhero__title">{{ section.settings.m_title }}</h1>
+      {%- else -%}
+        <p class="mhero__title">{{ section.settings.m_title }}</p>
+      {%- endif -%}
+    {%- endif -%}
+    {%- if section.settings.m_text != blank -%}
+      <p class="mhero__text">{{ section.settings.m_text }}</p>
+    {%- endif -%}
+    {%- if section.settings.m_cta_label != blank -%}
+      <a class="mhero__cta" href="{{ section.settings.m_cta_url | default: routes.all_products_collection_url }}">
+        {{ section.settings.m_cta_label }} {% render 'mts-icon', name: 'arrowRight', size: 18 %}
+      </a>
+    {%- endif -%}
+  </div>
+
+  {%- comment -%}
+    The proof rail carries the numbers so the sentence above does not have to —
+    each element does one job. Between them they cover what the five slides used
+    to say one at a time.
+  {%- endcomment -%}
+  <ul class="mhero__proof">
+    {%- for i in (1..3) -%}
+      {%- liquid
+        case i
+          when 1
+            assign pv = section.settings.m_proof_1
+          when 2
+            assign pv = section.settings.m_proof_2
+          when 3
+            assign pv = section.settings.m_proof_3
+        endcase
+      -%}
+      {%- if pv != blank -%}
+        {%- assign parts = pv | split: '|' -%}
+        <li>
+          <b class="num">{{ parts[0] | strip }}</b>
+          <span>{{ parts[1] | strip }}</span>
+        </li>
+      {%- endif -%}
+    {%- endfor -%}
+  </ul>
+</section>
+
+<section class="hslide" data-mts-hero data-interval="{{ section.settings.interval | times: 1000 }}"
+         aria-roledescription="carousel" aria-label="Featured">
+  <div class="hslide__track">
+    {%- for block in section.blocks -%}
+      <div class="hslide__slide{% if forloop.first %} is-active{% endif %}"
+           data-mts-hero-slide {% unless forloop.first %}aria-hidden="true"{% endunless %} {{ block.shopify_attributes }}>
+        <div class="hslide__media">
+          {%- comment -%}
+            Slide 1 is eager (it is the desktop LCP), so on a phone — where this
+            whole slider is display:none — it would be a wasted full-size
+            download. The 1×1 source below 901px prevents that. Slides 2+ are
+            lazy and never enter a hidden viewport, so they need no guard.
+          {%- endcomment -%}
+          {%- if block.settings.image != blank -%}
+            <picture>
+              {%- if forloop.first -%}
+                <source media="(max-width: 900px)" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
+              {%- endif -%}
+              <img src="{{ block.settings.image | image_url: width: 2400 }}"
+                   srcset="{{ block.settings.image | image_url: width: 900 }} 900w,
+                           {{ block.settings.image | image_url: width: 1400 }} 1400w,
+                           {{ block.settings.image | image_url: width: 2400 }} 2400w"
+                   sizes="100vw" alt=""
+                   {% if forloop.first %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %} width="2400" height="1000">
+            </picture>
+          {%- elsif block.settings.packaged_image != 'none' -%}
+            <picture>
+              {%- if forloop.first -%}
+                <source media="(max-width: 900px)" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
+              {%- endif -%}
+              <img src="{{ block.settings.packaged_image | asset_url }}" alt=""
+                   {% if forloop.first %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %} width="2400" height="1000">
+            </picture>
+          {%- endif -%}
+        </div>
+        <div class="wrap hslide__inner">
+          <div class="hslide__content">
+            {%- if block.settings.eyebrow != blank -%}
+              <span class="hslide__eyebrow">{{ block.settings.eyebrow }}</span>
+            {%- endif -%}
+            {%- if block.settings.title != blank -%}
+              {%- comment -%}
+                Not an <h1>. The mobile banner above owns the page's single h1,
+                and Google crawls mobile-first — so the h1 it indexes is the one
+                a phone actually renders. Two h1s (one of them display:none at
+                the crawler's viewport) would be worse than this.
+              {%- endcomment -%}
+              <p class="hslide__title">{{ block.settings.title }}</p>
+            {%- endif -%}
+            {%- if block.settings.text != blank -%}
+              <p class="hslide__text">{{ block.settings.text }}</p>
+            {%- endif -%}
+            <div class="hslide__cta">
+              {%- if block.settings.cta_label != blank -%}
+                <a href="{{ block.settings.cta_url }}" class="btn btn--brand btn--lg"
+                   {% unless forloop.first %}tabindex="-1"{% endunless %}>
+                  {{ block.settings.cta_label }} {% render 'mts-icon', name: 'arrowRight', size: 18 %}
+                </a>
+              {%- endif -%}
+              {%- if block.settings.alt_label != blank -%}
+                <a href="{{ block.settings.alt_url }}" class="btn btn--onink-ghost btn--lg"
+                   {% unless forloop.first %}tabindex="-1"{% endunless %}>{{ block.settings.alt_label }}</a>
+              {%- endif -%}
+            </div>
+          </div>
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+
+  {%- if section.blocks.size > 1 -%}
+    <button class="hslide__arrow hslide__arrow--prev" data-mts-hero-prev aria-label="Previous slide">
+      {% render 'mts-icon', name: 'chevronRight', size: 22 %}
+    </button>
+    <button class="hslide__arrow hslide__arrow--next" data-mts-hero-next aria-label="Next slide">
+      {% render 'mts-icon', name: 'chevronRight', size: 22 %}
+    </button>
+    <div class="hslide__dots" role="tablist" aria-label="Choose slide">
+      {%- for block in section.blocks -%}
+        <button class="hslide__dot{% if forloop.first %} is-active{% endif %}" data-mts-hero-dot
+                role="tab" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+                aria-label="Slide {{ forloop.index }}"></button>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Hero slider",
+  "settings": [
+    {
+      "type": "range",
+      "id": "interval",
+      "label": "Seconds per slide",
+      "min": 3, "max": 12, "step": 1, "default": 6, "unit": "s"
+    },
+    { "type": "header", "content": "Mobile banner" },
+    {
+      "type": "paragraph",
+      "content": "Phones show this one static banner instead of the slider — the slides above are desktop only. Keep the heading to about four words so it holds two lines."
+    },
+    { "type": "image_picker", "id": "m_image", "label": "Banner image" },
+    {
+      "type": "select",
+      "id": "m_packaged",
+      "label": "Packaged banner",
+      "info": "Used when no image is picked above.",
+      "options": [
+        { "value": "mts-banner-3.jpg", "label": "Widest range" },
+        { "value": "mts-banner-australian-owned.jpg", "label": "Australian owned (map)" },
+        { "value": "mts-banner-australia.jpg", "label": "Australia / delivery" },
+        { "value": "mts-banner-2.jpg", "label": "Premium quality" },
+        { "value": "mts-banner-4.jpg", "label": "Bulk & trade" },
+        { "value": "mts-banner-1.jpg", "label": "Banner 1" }
+      ],
+      "default": "mts-banner-3.jpg"
+    },
+    { "type": "text", "id": "m_eyebrow", "label": "Tape tab", "default": "Australian owned" },
+    { "type": "text", "id": "m_title", "label": "Heading", "default": "Every tape. One supplier." },
+    {
+      "type": "textarea", "id": "m_text", "label": "Text",
+      "default": "Premium brands, quality-checked for the job — with volume pricing on every roll."
+    },
+    { "type": "text", "id": "m_cta_label", "label": "Button", "default": "Shop all tapes" },
+    { "type": "url", "id": "m_cta_url", "label": "Button link" },
+    {
+      "type": "paragraph",
+      "content": "Proof rail — write each as \"figure | label\", e.g. \"130+ | tape lines\"."
+    },
+    { "type": "text", "id": "m_proof_1", "label": "Proof 1", "default": "1–2 days | to dispatch" },
+    { "type": "text", "id": "m_proof_2", "label": "Proof 2", "default": "Lowest price | guaranteed" },
+    { "type": "text", "id": "m_proof_3", "label": "Proof 3", "default": "Secure | checkout" }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "limit": 6,
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Background image" },
+        {
+          "type": "select",
+          "id": "packaged_image",
+          "label": "Packaged background",
+          "info": "The AI-generated banners shipped with the redesign. Used when no image is picked above.",
+          "options": [
+            { "value": "none", "label": "None" },
+            { "value": "mts-banner-australian-owned.jpg", "label": "Australian owned (map)" },
+            { "value": "mts-banner-australia.jpg", "label": "Australia / delivery" },
+            { "value": "mts-banner-2.jpg", "label": "Premium quality" },
+            { "value": "mts-banner-3.jpg", "label": "Widest range" },
+            { "value": "mts-banner-4.jpg", "label": "Bulk & trade" },
+            { "value": "mts-banner-1.jpg", "label": "Banner 1" }
+          ],
+          "default": "none"
+        },
+        { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+        { "type": "text", "id": "title", "label": "Heading" },
+        { "type": "textarea", "id": "text", "label": "Text" },
+        { "type": "text", "id": "cta_label", "label": "Primary button" },
+        { "type": "url", "id": "cta_url", "label": "Primary button link" },
+        { "type": "text", "id": "alt_label", "label": "Secondary button" },
+        { "type": "url", "id": "alt_url", "label": "Secondary button link" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero slider",
+      "blocks": [
+        {
+          "type": "slide",
+          "settings": {
+            "packaged_image": "mts-banner-australia.jpg",
+            "eyebrow": "Express delivery",
+            "title": "Fast delivery, right across Australia",
+            "text": "Dispatch to 3,600+ postcodes — most orders arrive in 2–3 business days.",
+            "cta_label": "Shop the range",
+            "alt_label": "Track your order"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "packaged_image": "mts-banner-2.jpg",
+            "eyebrow": "Premium quality",
+            "title": "Industrial-grade tapes, built to last",
+            "text": "Trusted brands and premium lines — quality-checked for every job.",
+            "cta_label": "Shop premium tapes",
+            "alt_label": "Our brands"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "packaged_image": "mts-banner-3.jpg",
+            "eyebrow": "The widest range",
+            "title": "Every tape, one supplier",
+            "text": "130+ lines across 35 categories — double-sided, foam, foil, safety and more.",
+            "cta_label": "Browse all tapes",
+            "alt_label": "Shop by industry"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "packaged_image": "mts-banner-4.jpg",
+            "eyebrow": "Bulk & trade",
+            "title": "Save more when you buy more",
+            "text": "Volume discounts on larger orders for business buyers.",
+            "cta_label": "Bulk & trade pricing",
+            "alt_label": "Get in contact"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

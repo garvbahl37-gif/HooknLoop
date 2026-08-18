@@ -1,0 +1,292 @@
+{%- comment -%}
+  Quick Add popup — port of storefront/src/components/QuickAdd.jsx
+
+  Opened from any product card so a shopper configures the variant without
+  leaving the page. Uses the qa* classes and the qaFade / qaPop keyframes
+  already in the bundle, so the animation matches the React original.
+
+  React held the whole catalogue in memory. Here the popup fetches
+  /products/<handle>.js when it opens — one small cached request — rather than
+  embedding every product's variant JSON into every page that shows a card.
+  With 12 products that would be tolerable; with 200 it would not.
+
+  Options are rendered from the real variants, the same mapping the PDP uses:
+  Size to pills, Color to swatches, "Hook or Loop?" to pills. Combinations that
+  do not exist are disabled rather than hidden, so the shopper can see the size
+  is real and simply out of stock in that colour.
+
+  Rendered once, from theme.liquid.
+{%- endcomment -%}
+
+<div class="qa" data-hnl-qa role="dialog" aria-modal="true" aria-label="Quick add" hidden>
+  <div class="qa__panel" data-hnl-qa-panel tabindex="-1">
+    <button class="qa__close" data-hnl-qa-close aria-label="Close">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+
+    <div class="qa__media"><img alt="" data-hnl-qa-img></div>
+
+    <div class="qa__body">
+      <h3 class="qa__title" data-hnl-qa-title></h3>
+      <div class="qa__price"><b data-hnl-qa-price></b> <span>incl. GST</span></div>
+
+      <div data-hnl-qa-options></div>
+
+      <div class="qa__buy">
+        <div class="qa__qty" role="group" aria-label="Quantity">
+          <button type="button" data-hnl-qa-qty="-1" aria-label="Decrease quantity">&minus;</button>
+          <span data-hnl-qa-qty-val>1</span>
+          <button type="button" data-hnl-qa-qty="1" aria-label="Increase quantity">+</button>
+        </div>
+        <button type="button" class="btn btn--primary qa__add" data-hnl-qa-add>Add to cart</button>
+      </div>
+
+      <a class="qa__shoppay" data-hnl-qa-view href="{{ routes.cart_url }}" hidden>View cart &rarr;</a>
+      <p class="qa__err" role="alert" data-hnl-qa-err hidden></p>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var modal = document.querySelector('[data-hnl-qa]');
+  if (!modal) return;
+
+  var panel   = modal.querySelector('[data-hnl-qa-panel]');
+  var imgEl   = modal.querySelector('[data-hnl-qa-img]');
+  var titleEl = modal.querySelector('[data-hnl-qa-title]');
+  var priceEl = modal.querySelector('[data-hnl-qa-price]');
+  var optsEl  = modal.querySelector('[data-hnl-qa-options]');
+  var addBtn  = modal.querySelector('[data-hnl-qa-add]');
+  var viewEl  = modal.querySelector('[data-hnl-qa-view]');
+  var errEl   = modal.querySelector('[data-hnl-qa-err]');
+  var qtyEl   = modal.querySelector('[data-hnl-qa-qty-val]');
+
+  var product = null, chosen = [], qty = 1, lastFocus = null;
+  var cache = {};
+
+  var money = function (c) { return '$' + (c / 100).toFixed(2); };
+  var esc = function (s) {
+    return String(s).replace(/[&<>"']/g, function (m) {
+      return { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m];
+    });
+  };
+
+  /* Same colour map as the PDP swatches, so a Black chip is the same black. */
+  var SWATCH = { black:'#1a1a1a', white:'#ffffff', orange:'#e8600a', grey:'#8b96ab',
+                 gray:'#8b96ab', beige:'#d9cbb3', navy:'#16264a', red:'#b3261e',
+                 blue:'#2e6ae0', green:'#3d6456', yellow:'#e0b02e' };
+  function swatchFill(v) {
+    var key = String(v).trim().toLowerCase();
+    if (key.indexOf('/') > -1) {
+      var p = key.split('/');
+      return 'linear-gradient(90deg,' + (SWATCH[p[0].trim()] || '#c9d3e6') + ' 50%,'
+                                      + (SWATCH[p[1].trim()] || '#c9d3e6') + ' 50%)';
+    }
+    return SWATCH[key] || '#c9d3e6';
+  }
+
+  function variantFor(opts) {
+    for (var i = 0; i < product.variants.length; i++) {
+      var v = product.variants[i], ok = true;
+      for (var j = 0; j < opts.length; j++) {
+        if (opts[j] != null && v.options[j] !== opts[j]) { ok = false; break; }
+      }
+      if (ok) return v;
+    }
+    return null;
+  }
+
+  /* Is there any variant at all with `value` in position `idx`, given the rest
+     of the current selection? Drives the disabled state. */
+  function combinationExists(idx, value) {
+    var probe = chosen.slice();
+    probe[idx] = value;
+    return !!variantFor(probe);
+  }
+
+  function renderOptions() {
+    var html = '';
+    product.options.forEach(function (opt, idx) {
+      var name = typeof opt === 'string' ? opt : opt.name;
+      var values = (typeof opt === 'string' ? product.options_with_values : null);
+      /* /products/x.js gives options as names plus values on each variant, so
+         collect the distinct values in variant order rather than guessing. */
+      var seen = [], list = [];
+      product.variants.forEach(function (v) {
+        var val = v.options[idx];
+        if (val != null && seen.indexOf(val) === -1) { seen.push(val); list.push(val); }
+      });
+      if (list.length < 2 && /default/i.test(String(list[0]))) return;
+
+      var isColour = /colou?r/i.test(name);
+      html += '<div class="qa__opt" data-hnl-qa-opt="' + idx + '">'
+            +   '<span class="qa__label">' + esc(name) + ': <b data-hnl-qa-optval>' + esc(chosen[idx]) + '</b></span>'
+            +   '<div class="' + (isColour ? 'qa__swatches' : 'qa__pills') + '">';
+      list.forEach(function (val) {
+        var on  = chosen[idx] === val;
+        var can = combinationExists(idx, val);
+        html += isColour
+          ? '<button type="button" class="qa__swatch' + (on ? ' is-on' : '') + '"'
+            + ' style="background:' + swatchFill(val) + '"'
+            + ' data-hnl-qa-val="' + esc(val) + '" data-idx="' + idx + '"'
+            + (can ? '' : ' disabled') + ' aria-label="' + esc(val) + '"></button>'
+          : '<button type="button" class="qa__pill' + (on ? ' is-on' : '') + '"'
+            + ' data-hnl-qa-val="' + esc(val) + '" data-idx="' + idx + '"'
+            + (can ? '' : ' disabled') + '>' + esc(val) + '</button>';
+      });
+      html += '</div></div>';
+    });
+    optsEl.innerHTML = html;
+  }
+
+  function paint() {
+    var v = variantFor(chosen);
+    renderOptions();
+    priceEl.textContent = v ? money(v.price * qty) : '—';
+    qtyEl.textContent = qty;
+    if (v && v.featured_image && v.featured_image.src) imgEl.src = v.featured_image.src;
+    addBtn.disabled = !v || !v.available;
+    addBtn.textContent = !v ? 'Unavailable' : (v.available ? 'Add to cart' : 'Sold out');
+  }
+
+  function open(handle, trigger) {
+    lastFocus = trigger || null;
+    errEl.hidden = true;
+    viewEl.hidden = true;
+    qty = 1;
+
+    var show = function (data) {
+      product = data;
+      /* Start from the first variant that can actually be bought, so the popup
+         never opens on a sold-out combination. */
+      var first = null;
+      for (var i = 0; i < data.variants.length; i++) {
+        if (data.variants[i].available) { first = data.variants[i]; break; }
+      }
+      first = first || data.variants[0];
+      chosen = first.options.slice();
+
+      titleEl.textContent = data.title;
+      imgEl.src = (first.featured_image && first.featured_image.src) || data.featured_image || '';
+      imgEl.alt = data.title;
+      modal.setAttribute('aria-label', 'Quick add: ' + data.title);
+      addBtn.textContent = 'Add to cart';
+      paint();
+
+      modal.removeAttribute('hidden');
+      document.body.style.overflow = 'hidden';
+      /* Focus the panel, not the close button: it moves focus into the dialog
+         for keyboard and screen-reader users without painting a focus ring on
+         a control the shopper did not choose. */
+      panel.focus();
+    };
+
+    if (cache[handle]) { show(cache[handle]); return; }
+    fetch('/products/' + handle + '.js', { headers: { 'Accept': 'application/json' } })
+      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function (d) { cache[handle] = d; show(d); })
+      .catch(function () {
+        /* Never strand the shopper: fall back to the full product page. */
+        window.location.href = '/products/' + handle;
+      });
+  }
+
+  function close() {
+    modal.setAttribute('hidden', '');
+    document.body.style.overflow = '';
+    if (lastFocus) lastFocus.focus();
+  }
+
+  /* Card buttons are real links to the product page; JS upgrades them to the
+     popup. Without JS, or if the fetch fails, the link still works. */
+  document.addEventListener('click', function (e) {
+    var t = e.target.closest('[data-hnl-quick-add]');
+    if (!t) return;
+    e.preventDefault();
+    open(t.getAttribute('data-hnl-quick-add'), t);
+  });
+
+  modal.addEventListener('click', function (e) {
+    if (e.target === modal) { close(); return; }
+
+    var close_ = e.target.closest('[data-hnl-qa-close]');
+    if (close_) { close(); return; }
+
+    var val = e.target.closest('[data-hnl-qa-val]');
+    if (val && !val.disabled) {
+      chosen[parseInt(val.getAttribute('data-idx'), 10)] = val.getAttribute('data-hnl-qa-val');
+      /* The chosen combination may not exist; fall back to the nearest one that
+         does, rather than showing "Unavailable" and stopping there. */
+      if (!variantFor(chosen)) {
+        var idx = parseInt(val.getAttribute('data-idx'), 10);
+        for (var i = 0; i < product.variants.length; i++) {
+          if (product.variants[i].options[idx] === chosen[idx] && product.variants[i].available) {
+            chosen = product.variants[i].options.slice();
+            break;
+          }
+        }
+      }
+      paint();
+      return;
+    }
+
+    var step = e.target.closest('[data-hnl-qa-qty]');
+    if (step) {
+      qty = Math.max(1, qty + parseInt(step.getAttribute('data-hnl-qa-qty'), 10));
+      paint();
+      return;
+    }
+  });
+
+  addBtn.addEventListener('click', function () {
+    var v = variantFor(chosen);
+    if (!v) return;
+
+    {%- comment -%}
+      This had the same three round trips the product page did — /cart/add.js,
+      then /cart.js for the badge, then the drawer's own /cart.js on open —
+      while the button sat disabled reading "Adding…". Nothing acknowledged the
+      press until all three finished, which is what made Quick Add feel slow.
+
+      The confirmation is now shown on the press, before the network is
+      touched, and the redundant /cart.js is gone: the drawer refreshes the
+      header badge from the payload it already fetches. Three round trips
+      became one.
+
+      The button is not disabled. A second press while the first is in flight
+      simply adds another, which is what the label says it does; the failure
+      path below puts the label back and surfaces the reason.
+    {%- endcomment -%}
+    var restore = addBtn.textContent;
+    addBtn.textContent = '✓ Added to cart';
+    addBtn.classList.add('is-added');
+    errEl.hidden = true;
+
+    fetch('{{ routes.cart_add_url }}.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ items: [{ id: v.id, quantity: qty }] })
+    })
+      .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+      .then(function (res) {
+        if (!res.ok) throw new Error(res.d.description || res.d.message || 'Could not add to cart');
+        /* Same drawer the product page opens, so adding from a card on the
+           homepage or a collection confirms the same way. Closing this popup
+           first stops two overlays stacking. */
+        close();
+        document.dispatchEvent(new CustomEvent('hnl:cart:open'));
+      })
+      .catch(function (err) {
+        addBtn.classList.remove('is-added');
+        addBtn.textContent = restore;
+        errEl.textContent = err.message;
+        errEl.hidden = false;
+      });
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && !modal.hasAttribute('hidden')) close();
+  });
+})();
+</script>

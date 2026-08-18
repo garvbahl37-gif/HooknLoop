@@ -1,0 +1,252 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:mc="http://www.mailchimp.com/ns/mc" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="color-scheme" content="light only">
+  <meta name="supported-color-schemes" content="light only">
+  <title mc:edit="page_title">HooknLoop — Weekly Dispatch</title>
+  <!--
+    HooknLoop — Mailchimp "Code your own". WEEKLY DISPATCH.
+
+    DESIGN NOTES
+    ------------
+    The look is a supplier's dispatch sheet, not a lifestyle newsletter. For a
+    trade buyer, "premium" reads as specification-grade: precise, quiet, real
+    numbers. Three decisions carry it:
+
+      1. No serif. Georgia on an industrial supplier reads borrowed. This uses
+         DM Sans + a monospace utility face, matching shopify/messaging-templates/
+         so the whole email programme speaks in one voice.
+      2. Monospace carries prices and category codes. Trade data should look
+         like data. This is the signature element.
+      3. Products are docket rows, not cards. The category code (ADHESIVE,
+         HEAVY DUTY, STRAPS, SEW-ON) is the structure a buyer actually
+         navigates by, so it earns its place.
+
+    COLOUR — measured, not eyeballed (WCAG AA needs 4.5:1 for normal text)
+      #3a4152 on white ............ 10.20  body
+      #6a7180 on white ............. 4.90  muted text and section labels
+      #b8460a on white ............. 5.36  accent text AND button fill w/ white
+      #0b2447 on white ............ 15.47  headings, product names, prices
+      #5c5f68 on #efece6 ........... 5.41  utility bar and compliance footer
+      #f0a06a on #0b2447 ........... 7.32  tip eyebrow, footer Shop all
+      #9fb0c9 on #0b2447 ........... 7.02  footer body
+      #c7d3e6 on #0b2447 .......... 10.23  footer links
+
+    Four greys inherited from the previous version failed and were replaced:
+    #9aa0aa on white was 2.63, and #8b8578 / #6a7180 on the cream ground were
+    3.11 / 4.16. Small grey type on a tinted ground is the usual place this
+    slips through, because it looks fine and measures badly.
+
+    #e8590c is deliberately NOT used for text or as a button fill. It measures
+    3.58:1 against white in BOTH directions, so the previous white-on-#e8590c
+    button failed AA. #b8460a replaces it and reads deeper anyway.
+
+    CUT FROM THE PREVIOUS VERSION
+      - the banner image (logo alone now, as briefed)
+      - the 7-pill "Shop by type" row (duplicated the product links)
+      - the 5-tick "Why HooknLoop" list (landing-page boilerplate)
+      - the "Stocked in AU" masthead tag
+      - the Trade tip panel
+      - the bulk-quote CTA
+
+    The headline is the brand line the removed banner used to carry
+    ("Built to stick. Designed to last."), so cutting the image did not cost
+    the brand its voice. Set on two lines deliberately -- the break is the
+    typographic moment now that there is no banner.
+
+    All product names, prices, copy, images and links are real, from
+    hooknloop.com.au. Nothing fabricated.
+  -->
+  <style type="text/css">
+    body,table,td,a{-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;}
+    table,td{mso-table-lspace:0pt;mso-table-rspace:0pt;}
+    img{-ms-interpolation-mode:bicubic;border:0;height:auto;line-height:100%;outline:none;text-decoration:none;}
+    body{margin:0!important;padding:0!important;width:100%!important;background:#efece6;}
+    a{color:#b8460a;}
+    @media only screen and (max-width:600px){
+      .full{width:100%!important;}
+      .px{padding-left:22px!important;padding-right:22px!important;}
+      .heropad{padding:22px!important;}
+      .h1{font-size:26px!important;line-height:1.18!important;}
+      .h2{font-size:20px!important;}
+      /* docket rows: smaller thumb so the line never wraps awkwardly */
+      .thumb{width:84px!important;}
+      .thumb img{width:84px!important;max-width:84px!important;}
+      .rowpad{padding:16px 0!important;}
+      /* application photos stack full width — bigger, more tappable */
+      .gcell{display:block!important;width:100%!important;padding:0 0 12px 0!important;}
+      .gcell img{max-width:100%!important;}
+      /* thumb-friendly buttons */
+      .btnw{width:100%!important;}
+      .btnw td{width:100%!important;}
+      .btnw a{display:block!important;text-align:center!important;padding-left:0!important;padding-right:0!important;}
+    }
+  </style>
+</head>
+<body style="margin:0;padding:0;background:#efece6;">
+
+  <div style="display:none;font-size:1px;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;mso-hide:all;color:#efece6;">*|MC_PREVIEW_TEXT|*</div>
+
+  <!-- ══ UTILITY BAR ══════════════════════════════════════════════════════ -->
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#efece6;"><tr><td align="center" style="padding:22px 12px 0;">
+    <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" class="full" style="width:600px;max-width:600px;"><tr>
+      <td style="font-family:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#5c5f68;padding:0 8px 12px;">Weekly dispatch</td>
+      <td align="right" style="padding:0 8px 12px;"><a href="*|ARCHIVE|*" style="font-family:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:11px;color:#5c5f68;text-decoration:underline;">View in browser</a></td>
+    </tr></table>
+  </td></tr></table>
+
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#efece6;"><tr><td align="center" style="padding:0 12px;">
+    <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" class="full" style="width:600px;max-width:600px;background:#ffffff;border-radius:16px;overflow:hidden;">
+
+      <!-- ══ MASTHEAD — logo only, no banner ══════════════════════════════ -->
+      <tr><td mc:edit="masthead" style="padding:30px 34px 24px;" class="px">
+        <a href="https://hooknloop.com.au" target="_blank" style="text-decoration:none;">
+          <img src="https://cdn.shopify.com/s/files/1/0975/4509/3489/files/logo_5.png?v=1767767497" width="176" height="31" alt="HooknLoop" style="display:block;width:176px;height:31px;border:0;">
+        </a>
+      </td></tr>
+      <tr><td style="padding:0 34px;" class="px"><div style="border-top:2px solid #0b2447;font-size:0;line-height:0;">&nbsp;</div></td></tr>
+
+      <!-- ══ INTRO ════════════════════════════════════════════════════════ -->
+      <tr><td mc:edit="intro" style="padding:30px 34px 0;" class="px">
+        <div style="font-family:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#b8460a;">This week</div>
+        <div class="h1" style="font-family:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:31px;font-weight:800;line-height:1.14;letter-spacing:-.022em;color:#0b2447;margin-top:11px;">Built to stick.<br>Designed to last.</div>
+        <p style="font-family:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15.5px;line-height:1.62;color:#3a4152;margin:13px 0 0;">Premium-grade hook &amp; loop at the best price in Australia, dispatched fast nationwide. Here&rsquo;s what&rsquo;s worth keeping on the shelf.</p>
+      </td></tr>
+
+      <!-- ══ THIS WEEK'S PICK ═════════════════════════════════════════════ -->
+      <tr><td mc:edit="hero_product" style="padding:26px 34px 0;" class="px">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border:1px solid #e9e4db;border-radius:14px;overflow:hidden;">
+          <tr><td style="background:#f5f2ec;text-align:center;font-size:0;">
+            <a href="https://hooknloop.com.au/products/self-adhesive-hook-and-loop-roll" target="_blank" style="text-decoration:none;">
+              <img src="https://cdn.shopify.com/s/files/1/0975/4509/3489/files/Untitled-1_29.jpg?v=1770404428&width=560" width="530" alt="Self Adhesive Hook and Loop Roll" style="display:block;width:100%;max-width:530px;height:auto;">
+            </a>
+          </td></tr>
+          <tr><td class="heropad" style="padding:26px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+              <td style="font-family:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#b8460a;">Adhesive</td>
+              <td align="right" style="font-family:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#6a7180;">This week&rsquo;s pick</td>
+            </tr></table>
+            <div class="h2" style="font-family:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:22px;font-weight:800;line-height:1.26;letter-spacing:-.015em;color:#0b2447;margin:10px 0 0;">Self Adhesive Hook and Loop Roll</div>
+            <div style="font-family:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace;font-size:15px;font-weight:700;color:#0b2447;margin-top:8px;">from&nbsp;$32.90</div>
+            <p style="font-family:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.62;color:#3a4152;margin:14px 0 0;">A reusable, handy fastening solution made to install without drilling, screwing or permanent fixing.</p>
+            <div style="height:20px;line-height:20px;font-size:0;">&nbsp;</div>
+            <table role="presentation" class="btnw" cellpadding="0" cellspacing="0" border="0"><tr><td align="center" bgcolor="#b8460a" style="border-radius:9px;">
+              <a href="https://hooknloop.com.au/products/self-adhesive-hook-and-loop-roll" target="_blank" style="display:inline-block;padding:14px 28px;font-family:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;font-weight:700;color:#ffffff;text-decoration:none;border-radius:9px;">Shop now &rarr;</a>
+            </td></tr></table>
+          </td></tr>
+        </table>
+      </td></tr>
+
+      <!-- ══ THE RANGE — docket rows ══════════════════════════════════════ -->
+      <tr><td style="padding:36px 34px 0;" class="px">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+          <td style="font-family:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#6a7180;padding-bottom:8px;">Also in stock</td>
+        </tr></table>
+        <div style="border-top:2px solid #0b2447;font-size:0;line-height:0;">&nbsp;</div>
+      </td></tr>
+
+      <tr mc:repeatable="products" mc:variant="Product"><td mc:edit="product" style="padding:0 34px;" class="px">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-bottom:1px solid #e9e4db;"><tr>
+          <td width="104" class="thumb" valign="top" style="padding:18px 16px 18px 0;font-size:0;">
+            <a href="https://hooknloop.com.au/products/heavy-duty-adhesive-hook-and-loop" target="_blank"><img src="https://cdn.shopify.com/s/files/1/0975/4509/3489/files/HeavyDutyHook_Loop.png?v=1771699961&width=320" width="104" alt="Heavy Duty Adhesive Hook and Loop Fastener" style="display:block;width:104px;max-width:104px;height:auto;border-radius:8px;background:#f5f2ec;"></a>
+          </td>
+          <td valign="top" class="rowpad" style="padding:18px 0;">
+            <div style="font-family:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#b8460a;">Heavy duty</div>
+            <a href="https://hooknloop.com.au/products/heavy-duty-adhesive-hook-and-loop" target="_blank" style="text-decoration:none;"><div style="font-family:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;font-weight:700;line-height:1.32;color:#0b2447;margin-top:6px;">Heavy Duty Adhesive Hook and Loop Fastener</div></a>
+            <div style="font-family:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace;font-size:13px;font-weight:700;color:#0b2447;margin-top:6px;">from&nbsp;$55.43</div>
+            <div style="font-family:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:13.5px;line-height:1.55;color:#6a7180;margin-top:7px;">Built for real industrial conditions, with a high-temperature acrylic adhesive.</div>
+          </td>
+        </tr></table>
+      </td></tr>
+
+      <tr><td style="padding:0 34px;" class="px">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-bottom:1px solid #e9e4db;"><tr>
+          <td width="104" class="thumb" valign="top" style="padding:18px 16px 18px 0;font-size:0;">
+            <a href="https://hooknloop.com.au/products/hook-and-loop-adjustable-strap" target="_blank"><img src="https://cdn.shopify.com/s/files/1/0975/4509/3489/files/Image_of_1.png?v=1770233150&width=320" width="104" alt="Hook and Loop Reusable Cable Strap &amp; Ties" style="display:block;width:104px;max-width:104px;height:auto;border-radius:8px;background:#f5f2ec;"></a>
+          </td>
+          <td valign="top" class="rowpad" style="padding:18px 0;">
+            <div style="font-family:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#b8460a;">Straps</div>
+            <a href="https://hooknloop.com.au/products/hook-and-loop-adjustable-strap" target="_blank" style="text-decoration:none;"><div style="font-family:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;font-weight:700;line-height:1.32;color:#0b2447;margin-top:6px;">Hook and Loop Reusable Cable Strap &amp; Ties</div></a>
+            <div style="font-family:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace;font-size:13px;font-weight:700;color:#0b2447;margin-top:6px;">from&nbsp;$25.00</div>
+            <div style="font-family:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:13.5px;line-height:1.55;color:#6a7180;margin-top:7px;">Sturdy &mdash; won&rsquo;t fray or lose grip, even under daily use.</div>
+          </td>
+        </tr></table>
+      </td></tr>
+
+      <tr><td style="padding:0 34px;" class="px">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+          <td width="104" class="thumb" valign="top" style="padding:18px 16px 18px 0;font-size:0;">
+            <a href="https://hooknloop.com.au/products/sew-on-hook-and-loop-fastener" target="_blank"><img src="https://cdn.shopify.com/s/files/1/0975/4509/3489/files/black-hook-50-mm-copy.jpg?v=1770145016&width=320" width="104" alt="Sew On Hook and Loop, Non Adhesive" style="display:block;width:104px;max-width:104px;height:auto;border-radius:8px;background:#f5f2ec;"></a>
+          </td>
+          <td valign="top" class="rowpad" style="padding:18px 0;">
+            <div style="font-family:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#b8460a;">Sew-on</div>
+            <a href="https://hooknloop.com.au/products/sew-on-hook-and-loop-fastener" target="_blank" style="text-decoration:none;"><div style="font-family:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;font-weight:700;line-height:1.32;color:#0b2447;margin-top:6px;">Sew On Hook and Loop, Non Adhesive</div></a>
+            <div style="font-family:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace;font-size:13px;font-weight:700;color:#0b2447;margin-top:6px;">from&nbsp;$24.46</div>
+            <div style="font-family:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:13.5px;line-height:1.55;color:#6a7180;margin-top:7px;">For a permanent, washable, long-lasting hold on fabric.</div>
+          </td>
+        </tr></table>
+      </td></tr>
+
+      <!-- ══ IN USE ═══════════════════════════════════════════════════════ -->
+      <tr><td style="padding:34px 34px 0;" class="px">
+        <div style="font-family:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#6a7180;">On the job</div>
+      </td></tr>
+      <tr><td mc:edit="gallery" style="padding:14px 34px 36px;" class="px">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+          <td width="50%" valign="top" class="gcell" style="padding-right:7px;">
+            <a href="https://hooknloop.com.au/collections/all" target="_blank" style="text-decoration:none;display:block;">
+              <img src="https://hooknloop-newsletter.vercel.app/img/applications/panel-mount.jpg" width="259" alt="Mounting a panel to the wall with a hook and loop strip" style="display:block;width:100%;max-width:259px;height:auto;border-radius:10px;background:#f5f2ec;">
+              <div style="font-family:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:13px;font-weight:700;color:#0b2447;padding-top:9px;">Panel &amp; display mounting</div>
+            </a>
+          </td>
+          <td width="50%" valign="top" class="gcell" style="padding-left:7px;">
+            <a href="https://hooknloop.com.au/collections/all" target="_blank" style="text-decoration:none;display:block;">
+              <img src="https://hooknloop-newsletter.vercel.app/img/applications/cable-management.jpg" width="259" alt="Bundling cabling on a construction site with hook and loop straps" style="display:block;width:100%;max-width:259px;height:auto;border-radius:10px;background:#f5f2ec;">
+              <div style="font-family:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:13px;font-weight:700;color:#0b2447;padding-top:9px;">Cable management on site</div>
+            </a>
+          </td>
+        </tr></table>
+      </td></tr>
+
+      <!-- ══ FOOTER ═══════════════════════════════════════════════════════ -->
+      <tr><td style="background:#0b2447;padding:30px 34px;" class="px">
+        <a href="https://hooknloop.com.au" target="_blank"><img src="https://hooknloop-newsletter.vercel.app/img/logo-footer.png" width="148" height="27" alt="HooknLoop" style="display:block;width:148px;height:27px;border:0;margin-bottom:15px;"></a>
+        <p style="font-family:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:13.5px;line-height:1.7;color:#9fb0c9;margin:0 0 16px;">
+          Industrial hook &amp; loop, dispatched fast across Australia.<br>
+          <a href="tel:+61340616287" style="font-family:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace;font-size:14px;font-weight:700;color:#ffffff;text-decoration:none;">+61&nbsp;340&nbsp;616&nbsp;287</a>
+          <span style="color:#3a4d6b;">&nbsp;&middot;&nbsp;</span>
+          <a href="mailto:info@hooknloop.com.au" style="color:#c7d3e6;text-decoration:none;">info@hooknloop.com.au</a>
+        </p>
+        <p style="font-family:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:12.5px;font-weight:700;margin:0 0 16px;">
+          <a href="https://www.facebook.com/profile.php?id=61587201524181" target="_blank" style="color:#c7d3e6;text-decoration:none;">Facebook</a><span style="color:#3a4d6b;">&nbsp;&middot;&nbsp;</span>
+          <a href="https://www.instagram.com/hooknloopshop" target="_blank" style="color:#c7d3e6;text-decoration:none;">Instagram</a><span style="color:#3a4d6b;">&nbsp;&middot;&nbsp;</span>
+          <a href="https://www.linkedin.com/company/hooknloop/" target="_blank" style="color:#c7d3e6;text-decoration:none;">LinkedIn</a><span style="color:#3a4d6b;">&nbsp;&middot;&nbsp;</span>
+          <a href="https://www.pinterest.com/hooknloopshop/" target="_blank" style="color:#c7d3e6;text-decoration:none;">Pinterest</a>
+        </p>
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr><td style="font-family:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:12.5px;font-weight:700;padding-top:16px;border-top:1px solid #1c3358;">
+          <a href="https://hooknloop.com.au/collections/all" target="_blank" style="color:#f0a06a;text-decoration:none;">Shop all</a><span style="color:#3a4d6b;">&nbsp;&nbsp;&middot;&nbsp;&nbsp;</span>
+          <a href="https://hooknloop.com.au/pages/bulk-orders" target="_blank" style="color:#c7d3e6;text-decoration:none;">Bulk quotes</a><span style="color:#3a4d6b;">&nbsp;&nbsp;&middot;&nbsp;&nbsp;</span>
+          <a href="https://hooknloop.com.au/pages/contact" target="_blank" style="color:#c7d3e6;text-decoration:none;">Contact</a>
+        </td></tr></table>
+      </td></tr>
+
+    </table>
+  </td></tr></table>
+
+  <!-- ══ COMPLIANCE ═════════════════════════════════════════════════════ -->
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#efece6;"><tr><td align="center" style="padding:20px 20px 32px;">
+    <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" class="full" style="width:600px;max-width:600px;"><tr><td style="font-family:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:12px;line-height:1.75;color:#5c5f68;text-align:center;">
+      You&rsquo;re receiving this because you subscribed at hooknloop.com.au.<br>
+      HooknLoop<br>
+      <a href="*|UNSUB|*" style="color:#5c5f68;text-decoration:underline;">Unsubscribe</a> &nbsp;&middot;&nbsp;
+      <a href="*|UPDATE_PROFILE|*" style="color:#5c5f68;text-decoration:underline;">Update preferences</a> &nbsp;&middot;&nbsp;
+      <a href="https://hooknloop.com.au/pages/privacy-policy" target="_blank" style="color:#5c5f68;text-decoration:underline;">Privacy</a><br>
+      &copy; *|CURRENT_YEAR|* HooknLoop &middot; VELCRO&reg; is a registered trademark of Velcro IP Holdings LLC.
+    </td></tr></table>
+  </td></tr></table>
+
+</body>
+</html>

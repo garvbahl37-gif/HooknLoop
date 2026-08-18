@@ -1,0 +1,64 @@
+<main id="main">
+  <div class="wrap page__crumbs">{% render 'mts-breadcrumbs', current_title: order.name %}</div>
+  <section class="page-hero">
+    <div class="wrap">
+      <span class="eyebrow eyebrow--onink">Account</span>
+      <h1>{{ 'customer.order.title' | t: name: order.name }}</h1>
+      <p>{{ 'customer.order.date' | t: date: order.created_at | date: '%d %B %Y' }}</p>
+    </div>
+  </section>
+
+  <div class="wrap page-prose">
+    <div class="mts-table-wrap">
+      <table class="spec-table mts-orders">
+        <thead>
+          <tr>
+            <th>{{ 'customer.order.product' | t }}</th>
+            <th>{{ 'customer.order.sku' | t }}</th>
+            <th>{{ 'customer.order.price' | t }}</th>
+            <th>{{ 'customer.order.quantity' | t }}</th>
+            <th>{{ 'customer.order.total' | t }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {%- for line_item in order.line_items -%}
+            <tr>
+              <td><a href="{{ line_item.product.url }}">{{ line_item.title }}</a></td>
+              <td class="num">{{ line_item.sku }}</td>
+              <td class="num">{{ line_item.price | money }}</td>
+              <td class="num">{{ line_item.quantity }}</td>
+              <td class="num">{{ line_item.final_line_price | money }}</td>
+            </tr>
+          {%- endfor -%}
+        </tbody>
+        <tfoot>
+          <tr><th colspan="4">{{ 'customer.order.subtotal' | t }}</th><td class="num">{{ order.line_items_subtotal_price | money }}</td></tr>
+          {%- for shipping_method in order.shipping_methods -%}
+            <tr><th colspan="4">{{ 'customer.order.shipping' | t }} ({{ shipping_method.title }})</th><td class="num">{{ shipping_method.price | money }}</td></tr>
+          {%- endfor -%}
+          {%- for tax_line in order.tax_lines -%}
+            <tr><th colspan="4">{{ 'customer.order.tax' | t }} ({{ tax_line.title }} {{ tax_line.rate | times: 100 }}%)</th><td class="num">{{ tax_line.price | money }}</td></tr>
+          {%- endfor -%}
+          <tr><th colspan="4">{{ 'customer.order.total' | t }}</th><td class="num">{{ order.total_net_amount | money }}</td></tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <div class="mts-order-addresses">
+      <div>
+        <h3>{{ 'customer.order.billing_address' | t }}</h3>
+        <p>{{ 'customer.order.payment_status' | t }}: {{ order.financial_status_label }}</p>
+        {{ order.billing_address | format_address }}
+      </div>
+      <div>
+        <h3>{{ 'customer.order.shipping_address' | t }}</h3>
+        <p>{{ 'customer.order.fulfillment_status' | t }}: {{ order.fulfillment_status_label }}</p>
+        {{ order.shipping_address | format_address }}
+      </div>
+    </div>
+  </div>
+</main>
+
+{% schema %}
+{ "name": "Order" }
+{% endschema %}

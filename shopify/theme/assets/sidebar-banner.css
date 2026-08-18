@@ -1,0 +1,85 @@
+.sidebar__banner--content {
+  position: absolute;
+  top: 35px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  padding: 0 20px;
+}
+
+@media only screen and (min-width: 768px) {
+  .sidebar__banner--content {
+    top: 25px;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .sidebar__banner--content {
+    top: 38px;
+  }
+}
+
+@media only screen and (max-width: 575px) {
+  .sidebar__banner--content {
+    top: 30%;
+    text-align: left;
+  }
+}
+
+.sidebar__banner--content__title {
+  font-size: 1.8rem;
+  line-height: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+@media only screen and (min-width: 768px) {
+  .sidebar__banner--content__title {
+    font-size: 2rem;
+    line-height: 2.2rem;
+    margin-bottom: 11px;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .sidebar__banner--content__title {
+    font-size: 2.2rem;
+    line-height: 2.5rem;
+  }
+}
+
+.sidebar__banner--content__desc {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  margin-bottom: 10px;
+}
+
+@media only screen and (min-width: 768px) {
+  .sidebar__banner--content__desc {
+    font-size: 1.6rem;
+    line-height: 2.2rem;
+    margin-bottom: 12px;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .sidebar__banner--content__desc {
+    font-size: 1.7rem;
+    margin-bottom: 13px;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  .sidebar__banner--content__desc {
+    font-size: 1.8rem;
+    margin-bottom: 17px;
+  }
+}
+
+.sidebar__banner--content__btn {
+  font-size: 1.5rem;
+}
+
+.sidebar__banner--content__btn:hover {
+  color: var(--secondary-color);
+    }

@@ -1,0 +1,69 @@
+{%- comment -%}
+  Generic content page — ported from the shared Page/AboutPage/PolicyPage shell
+  in ContentPages.jsx: breadcrumbs, a dark page hero, then the prose body from
+  the Shopify page content, with an optional stat strip.
+{%- endcomment -%}
+<main id="main">
+  <div class="wrap page__crumbs">{% render 'mts-breadcrumbs' %}</div>
+
+  <section class="page-hero">
+    <div class="wrap">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="eyebrow eyebrow--onink">{{ section.settings.eyebrow }}</span>
+      {%- endif -%}
+      <h1>{{ page.title }}</h1>
+      {%- if section.settings.intro != blank -%}
+        <p>{{ section.settings.intro }}</p>
+      {%- endif -%}
+      {%- if section.settings.cta_label != blank -%}
+        <div class="page-hero__cta">
+          <a class="btn btn--brand btn--lg" href="{{ section.settings.cta_url }}">{{ section.settings.cta_label }}</a>
+          {%- if section.settings.alt_label != blank -%}
+            <a class="btn btn--ghost btn--lg" href="{{ section.settings.alt_url }}">{{ section.settings.alt_label }}</a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </section>
+
+  <div class="wrap page-prose">
+    {{ page.content }}
+
+    {%- assign stats = section.blocks | where: 'type', 'stat' -%}
+    {%- if stats.size > 0 -%}
+      <div class="page-stats">
+        {%- for block in stats -%}
+          <div {{ block.shopify_attributes }}>
+            <b class="num">{{ block.settings.value }}</b>
+            <span>{{ block.settings.label }}</span>
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</main>
+
+{% schema %}
+{
+  "name": "Page",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "textarea", "id": "intro", "label": "Hero intro" },
+    { "type": "text", "id": "cta_label", "label": "Primary button" },
+    { "type": "url", "id": "cta_url", "label": "Primary button link" },
+    { "type": "text", "id": "alt_label", "label": "Secondary button" },
+    { "type": "url", "id": "alt_url", "label": "Secondary button link" }
+  ],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Stat",
+      "limit": 4,
+      "settings": [
+        { "type": "text", "id": "value", "label": "Value" },
+        { "type": "text", "id": "label", "label": "Label" }
+      ]
+    }
+  ]
+}
+{% endschema %}

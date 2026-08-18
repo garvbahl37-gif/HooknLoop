@@ -1,0 +1,383 @@
+{{ 'image-with-biography.css' | asset_url | stylesheet_tag }}
+{{ 'section-title.css' | asset_url | stylesheet_tag }}
+
+<style>
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.mobile_padding_top }}px;
+    padding-bottom: {{ section.settings.mobile_padding_bottom }}px;
+  }
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+  .team__items--{{ section.id }}{
+    --social-icon-hover-color: {{ section.settings.social_icon_color.red }}, {{ section.settings.social_icon_color.green }}, {{ section.settings.social_icon_color.blue }};
+  }
+</style>
+
+{% liquid
+  assign container = ''
+  if section.settings.container == 'container'
+    assign container = 'container'
+  elsif section.settings.container == 'container-fluid'
+    assign container = 'container-fluid'
+  else
+    assign container = 'container-fluid px-0'
+  endif
+%}
+
+<section class="team__section team__items--{{ section.id }} section-{{ section.id }}-padding">
+  <div class="{{ container }}">
+    {% if section.settings.heading != blank or section.settings.subtitle != blank %}
+      <div class="section-heading text-{{ section.settings.text_center }}   {% if section.settings.border_line %} mb-70 {% else %} mb-50{% endif %}">
+        {% if section.settings.heading_position == 'bottom' and section.settings.subtitle != blank %}
+          <span class="section-heading__sub_title">{{- section.settings.subtitle -}}</span>
+        {% endif %}
+        <h2 class="section-heading__title {% if section.settings.heading_position == "top" and section.settings.subtitle != blank and section.settings.border_line %}heading__space--bottom{% endif %} ">
+          {% if section.settings.border_line %}<span>{% endif %}
+          {{- section.settings.heading -}}
+          {% if section.settings.border_line %}</span>{% endif %}
+        </h2>
+        {% if section.settings.heading_position == 'top' and section.settings.subtitle != blank %}
+          <span class="section-heading__sub_title">{{- section.settings.subtitle -}}</span>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <div class="team__container">
+      <div class="row">
+        {%- liquid
+          assign highest_ratio = 0
+          for block in section.blocks
+            if block.settings.image.aspect_ratio > highest_ratio
+              assign highest_ratio = block.settings.image.aspect_ratio
+            endif
+          endfor
+        -%}
+
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when 'image_block' -%}
+              <div class="col-lg-3 col-md-4 col-sm-6 col-6">
+                <div class="team__items text-center">
+                  <div class="team__thumb color-foreground-accent-1 {% if section.settings.image_ratio == "circle" %} border-radius-100{% endif %} {% if section.settings.show_border %}hover--border-team{% endif %}">
+                    <div
+                      class="media media--transparent media--{{ section.settings.image_ratio }} {% if block.settings.image == blank %} placeholder{% endif %}"
+                      {% if section.settings.image_ratio == 'adapt' %}
+                        style="padding-bottom: {% if block.settings.image != blank %}{{ 1 | divided_by: highest_ratio | times: 100 }}%{% else %}100%{% endif %};"
+                      {% endif %}
+                    >
+                      {%- if block.settings.image != blank -%}
+                        {%- capture sizes -%}(min-width: 992px) {% if section.blocks.size <= 2 %}710px{% else %}550px{% endif %}, (min-width: 750px) {% if section.blocks.size == 1 %}710px{% else %}550px{% endif %}, calc(100vw - 30px){%- endcapture -%}
+                        {{
+                          block.settings.image
+                          | image_url: width: 1420
+                          | image_tag:
+                            loading: 'lazy',
+                            sizes: sizes,
+                            widths: '275, 550, 710, 1420',
+                            class: 'multicolumn-card__image'
+                        }}
+                      {%- else -%}
+                        {{ 'image' | placeholder_svg_tag: 'placeholder-svg placeholder' }}
+                      {%- endif -%}
+                    </div>
+                    <div class="team__social--media">
+                      {% render 'team-social', block: block %}
+                    </div>
+                  </div>
+                  <div class="team__content ">
+                    <h3 class="team__content--title">{{ block.settings.title }}</h3>
+                    <span class="team__content--subtitle">{{ block.settings.subtitle }}</span>
+                  </div>
+                </div>
+              </div>
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+ {
+   "name": "Image with biography",
+   "settings": [
+     {
+        "type": "select",
+        "id": "container",
+        "label": "Page width",
+        "default": "container-fluid",
+        "options": [
+          {
+            "value": "container",
+            "label": "Boxed"
+          },
+          {
+            "value": "container-fluid",
+            "label": "Full width"
+          }
+        ]
+      },
+      {
+     "type": "header",
+     "content": "Section header"
+   },
+  {
+      "type": "inline_richtext",
+      "id": "subtitle",
+      "default": "Subtitle",
+      "label": "Subheading"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "default": "Image with biography",
+      "label": "t:sections.featured-collection.settings.title.label"
+    },
+    {
+      "type": "select",
+      "id": "heading_position",
+      "options": [
+        {
+          "value": "top",
+          "label": "Top"
+        },
+        {
+          "value": "bottom",
+          "label": "Bottom"
+        }
+      ],
+      "default": "bottom",
+      "label": "Heading position"
+    },
+    {
+      "type": "select",
+      "id": "text_center",
+      "options": [
+        {
+          "value": "right",
+          "label": "Right"
+        },
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        }
+      ],
+      "default": "center",
+      "label": "Alignment"
+    },
+    {
+       "type": "checkbox",
+       "id": "border_line",
+       "label": "Enable border line",
+       "default": true
+     },
+     {
+     "type": "header",
+     "content": "Team card"
+   },
+  {
+         "type": "select",
+         "id": "image_ratio",
+         "options": [
+           {
+             "value": "adapt",
+             "label": "t:sections.multicolumn.settings.image_ratio.options__1.label"
+           },
+           {
+             "value": "portrait",
+             "label": "t:sections.multicolumn.settings.image_ratio.options__2.label"
+           },
+           {
+             "value": "square",
+             "label": "t:sections.multicolumn.settings.image_ratio.options__3.label"
+           },
+           {
+             "value": "circle",
+             "label": "t:sections.multicolumn.settings.image_ratio.options__4.label"
+           }
+         ],
+         "default": "circle",
+         "label": "t:sections.multicolumn.settings.image_ratio.label"
+       },
+	{
+         "type": "checkbox",
+         "id": "show_border",
+         "label": "Show border on hover",
+         "default": true
+       },
+     {
+      "type": "color",
+      "id": "social_icon_color",
+      "default": "#EE2761",
+      "label": "Icon hover color"
+    },
+	{
+         "type": "header",
+         "content": "Section padding"
+       },
+       {
+         "type": "paragraph",
+         "content": "Desktop"
+       },
+       {
+         "type": "range",
+         "id": "padding_top",
+         "min": 0,
+         "max": 150,
+         "step": 5,
+         "unit": "px",
+         "label": "Padding top",
+         "default": 0
+       },
+       {
+         "type": "range",
+         "id": "padding_bottom",
+         "min": 0,
+         "max": 150,
+         "step": 5,
+         "unit": "px",
+         "label": "Padding bottom",
+         "default": 0
+       },
+	{
+         "type": "paragraph",
+         "content": "Mobile"
+       },
+	{
+         "type": "range",
+         "id": "mobile_padding_top",
+         "min": 0,
+         "max": 150,
+         "step": 5,
+         "unit": "px",
+         "label": "Padding top",
+         "default": 0
+       },
+       {
+         "type": "range",
+         "id": "mobile_padding_bottom",
+         "min": 0,
+         "max": 150,
+         "step": 5,
+         "unit": "px",
+         "label": "Padding bottom",
+         "default": 0
+       }
+],
+"blocks": [
+   {
+     "type": "image_block",
+     "name": "Image block",
+     "settings": [
+       {
+         "type": "image_picker",
+         "id": "image",
+         "label": "Image"
+       },
+       {
+         "type": "text",
+         "id": "title",
+         "default": "Title",
+         "label": "Heading"
+       },
+	{
+         "type": "text",
+         "id": "subtitle",
+         "default": "Sub title",
+         "label": "Subheading"
+       },
+	{
+         "type": "checkbox",
+         "id": "social_media",
+         "label": "Show social media",
+         "default": true
+       },
+	{
+         "type": "text",
+         "id": "social_twitter_link",
+         "label": "t:settings_schema.social-media.settings.social_twitter_link.label",
+         "info": "t:settings_schema.social-media.settings.social_twitter_link.info"
+       },
+       {
+         "type": "text",
+         "id": "social_facebook_link",
+         "label": "t:settings_schema.social-media.settings.social_facebook_link.label",
+         "info": "t:settings_schema.social-media.settings.social_facebook_link.info"
+       },
+       {
+         "type": "text",
+         "id": "social_pinterest_link",
+         "label": "t:settings_schema.social-media.settings.social_pinterest_link.label",
+         "info": "t:settings_schema.social-media.settings.social_pinterest_link.info"
+       },
+       {
+         "type": "text",
+         "id": "social_instagram_link",
+         "label": "t:settings_schema.social-media.settings.social_instagram_link.label",
+         "info": "t:settings_schema.social-media.settings.social_instagram_link.info"
+       },
+       {
+         "type": "text",
+         "id": "social_tiktok_link",
+         "label": "t:settings_schema.social-media.settings.social_tiktok_link.label",
+         "info": "t:settings_schema.social-media.settings.social_tiktok_link.info"
+       },
+       {
+         "type": "text",
+         "id": "social_tumblr_link",
+         "label": "t:settings_schema.social-media.settings.social_tumblr_link.label",
+         "info": "t:settings_schema.social-media.settings.social_tumblr_link.info"
+       },
+       {
+         "type": "text",
+         "id": "social_snapchat_link",
+         "label": "t:settings_schema.social-media.settings.social_snapchat_link.label",
+         "info": "t:settings_schema.social-media.settings.social_snapchat_link.info"
+       },
+       {
+         "type": "text",
+         "id": "social_youtube_link",
+         "label": "t:settings_schema.social-media.settings.social_youtube_link.label",
+         "info": "t:settings_schema.social-media.settings.social_youtube_link.info"
+       },
+       {
+         "type": "text",
+         "id": "social_vimeo_link",
+         "label": "t:settings_schema.social-media.settings.social_vimeo_link.label",
+         "info": "t:settings_schema.social-media.settings.social_vimeo_link.info"
+       }
+     ]
+   }
+ ],
+"presets": [
+     {
+       "name": "Image with biography",
+       "blocks": [
+          {
+            "type": "image_block"
+          },
+          {
+            "type": "image_block"
+          },
+          {
+            "type": "image_block"
+          },
+          {
+            "type": "image_block"
+          }
+        ]
+     }
+   ],
+   "disabled_on": {
+    "groups": ["header","footer"]
+  }
+ }
+{% endschema %}

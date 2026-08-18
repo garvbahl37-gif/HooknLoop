@@ -1,0 +1,176 @@
+{%- comment -%}
+  Blog index — the store's technical journal.
+
+  Design intent: this is a trade supplier's reference library, not a lifestyle
+  blog. The premium signal for this audience is authority, not decoration —
+  confident type, real structure, and navigation that works. So:
+
+    · MASTHEAD matches the collection banner (left-aligned, eyebrow, count)
+      instead of a centred slab, so the blog reads as part of the same store.
+    · TOPIC RAIL from real article tags. 54 posts with no way to move between
+      them is the actual usability problem here; a reader on one flashing-tape
+      guide can now reach the others. Tags are Shopify-native, so /tagged/ URLs
+      filter server-side and paginate correctly.
+    · LEAD STORY gets genuine editorial weight — an index that opens on twelve
+      identical tiles reads as a dump.
+    · CARDS carry a topic label, so every card says what it is before you read
+      the title.
+
+  Layout rules live in mts-shopify-overrides.css (.blogx).
+{%- endcomment -%}
+{%- liquid
+  assign per_page = 12
+  assign is_tagged = false
+  if current_tags.size > 0
+    assign is_tagged = true
+  endif
+
+  # TOPIC LIST
+  # `blog.all_tags` is the documented source and returns nothing on this store —
+  # Shopify's blog tag index has never populated, even though every article is
+  # tagged and /tagged/ URLs filter correctly. Deriving from `blog.articles`
+  # does not work either: on a filtered view that array is already narrowed to
+  # the current tag, so the rail would collapse to one chip.
+  #
+  # So the list is a section setting, written from the real article counts and
+  # editable in the theme editor. It renders identically on every view and does
+  # not depend on an index we cannot see. `blog.all_tags` still wins when it
+  # starts working.
+  assign topics = blog.all_tags
+  if topics.size == 0
+    assign topics = ''
+    assign rows = section.settings.topics | newline_to_br | split: '<br />'
+    for row in rows
+      assign label = row | strip | split: '|' | first | strip
+      if label != blank
+        assign topics = topics | append: label | append: '~|~'
+      endif
+    endfor
+    assign topics = topics | split: '~|~'
+  endif
+-%}
+
+<main id="main" class="blogpage">
+  <div class="wrap page__crumbs">{% render 'mts-breadcrumbs' %}</div>
+
+  <section class="page-hero page-hero--blog">
+    <div class="wrap blogmast">
+      <span class="eyebrow eyebrow--onink">{{ section.settings.eyebrow }}</span>
+      <h1 class="blogmast__title">
+        {%- if is_tagged -%}{{ current_tags.first }}{%- else -%}{{ blog.title }}{%- endif -%}
+      </h1>
+      {%- if section.settings.intro != blank and is_tagged == false -%}
+        <p class="blogmast__intro">{{ section.settings.intro }}</p>
+      {%- endif -%}
+      <p class="blogmast__count num">
+        {{ blog.articles_count }} article{% if blog.articles_count != 1 %}s{% endif %}
+        {%- if is_tagged %} in this topic{% endif -%}
+      </p>
+    </div>
+  </section>
+
+  {%- comment -%} TOPIC RAIL — real tags, so these are real filters {%- endcomment -%}
+  {%- if topics.size > 1 -%}
+    <nav class="blogtopics" aria-label="Article topics">
+      <div class="wrap blogtopics__row">
+        <a class="blogtopics__chip{% unless is_tagged %} is-on{% endunless %}" href="{{ blog.url }}">
+          All topics
+        </a>
+        {%- for tag in topics -%}
+          <a class="blogtopics__chip{% if current_tags contains tag %} is-on{% endif %}"
+             href="{{ blog.url }}/tagged/{{ tag | handle }}"
+             {% if current_tags contains tag %}aria-current="page"{% endif %}>{{ tag }}</a>
+        {%- endfor -%}
+      </div>
+    </nav>
+  {%- endif -%}
+
+  <div class="wrap section blogpage__body">
+    {%- paginate blog.articles by per_page -%}
+      {%- if blog.articles.size > 0 -%}
+        <div class="blogx">
+          {%- for article in blog.articles -%}
+            {%- liquid
+              assign is_lead = false
+              if forloop.first and paginate.current_page == 1 and is_tagged == false
+                assign is_lead = true
+              endif
+
+              assign words = article.content | strip_html | split: ' ' | size
+              assign mins = words | divided_by: 200
+              if mins < 1
+                assign mins = 1
+              endif
+
+              assign topic = article.tags.first
+            -%}
+            <a href="{{ article.url }}" class="blogx__card{% if is_lead %} blogx__card--lead{% endif %}">
+              <div class="blogx__media">
+                {%- if article.image -%}
+                  {%- if is_lead -%}
+                    <img src="{{ article.image | image_url: width: 1100 }}"
+                         srcset="{{ article.image | image_url: width: 550 }} 550w,
+                                 {{ article.image | image_url: width: 1100 }} 1100w"
+                         sizes="(min-width: 901px) 58vw, 100vw"
+                         alt="{{ article.image.alt | default: article.title | escape }}"
+                         width="1100" height="700" loading="eager" fetchpriority="high">
+                  {%- else -%}
+                    <img src="{{ article.image | image_url: width: 640 }}"
+                         srcset="{{ article.image | image_url: width: 320 }} 320w,
+                                 {{ article.image | image_url: width: 640 }} 640w"
+                         sizes="(min-width: 901px) 33vw, 120px"
+                         alt="{{ article.image.alt | default: article.title | escape }}"
+                         width="640" height="410" loading="lazy">
+                  {%- endif -%}
+                {%- else -%}
+                  {{ 'image' | placeholder_svg_tag: 'blogx__ph' }}
+                {%- endif -%}
+              </div>
+
+              <div class="blogx__body">
+                {%- if topic != blank -%}
+                  <span class="blogx__topic">{{ topic }}</span>
+                {%- endif -%}
+                <h2 class="blogx__title">{{ article.title }}</h2>
+                {%- if is_lead -%}
+                  {%- assign blurb = article.excerpt_or_content | strip_html | truncatewords: 32 -%}
+                  {%- if blurb != blank -%}<p class="blogx__excerpt">{{ blurb }}</p>{%- endif -%}
+                {%- endif -%}
+                <p class="blogx__meta">
+                  <time class="num" datetime="{{ article.published_at | date: '%Y-%m-%d' }}">
+                    {{ article.published_at | date: '%d %b %Y' }}
+                  </time>
+                  <span class="blogx__dot" aria-hidden="true"></span>
+                  <span class="num">{{ mins }} min read</span>
+                </p>
+              </div>
+            </a>
+          {%- endfor -%}
+        </div>
+
+        {%- if paginate.pages > 1 -%}{% render 'mts-pagination', paginate: paginate %}{%- endif -%}
+      {%- else -%}
+        <p class="blogx__empty">
+          No articles in this topic yet. <a href="{{ blog.url }}">See all articles</a>.
+        </p>
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</main>
+
+{% schema %}
+{
+  "name": "Blog",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "The tape journal" },
+    {
+      "type": "textarea", "id": "topics", "label": "Topic rail",
+      "info": "One topic per line, most important first. Written as \"Topic|article count\"; only the name is shown. Each links to /blogs/news/tagged/<topic>."
+    },
+    {
+      "type": "textarea", "id": "intro", "label": "Intro",
+      "default": "Practical guidance on choosing, applying and getting the most out of adhesive tape — written by the team that stocks it."
+    }
+  ]
+}
+{% endschema %}

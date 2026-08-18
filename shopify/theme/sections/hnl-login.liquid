@@ -1,0 +1,74 @@
+{%- comment -%}
+  Login + password recovery. Replaces Suruchi's main-login.
+
+  Both forms live on one page, as Shopify's classic flow expects: posting the
+  recover form reloads this template with form.posted_successfully?, and
+  #recover in the URL is what reveals the recovery panel.
+{%- endcomment -%}
+
+{% render 'hnl-account-shell', part: 'open', nav: false,
+   eyebrow: 'Your account', title: 'Sign In',
+   subtitle: 'Order history, invoices and saved addresses in one place.' %}
+
+<div class="acct__solo">
+  {%- form 'recover_customer_password', class: 'acct__card acct__form', id: 'recover' -%}
+    <h2>Reset Your Password</h2>
+    {%- if form.posted_successfully? -%}
+      <p class="acct__ok">&#10003; We've sent you an email with a link to update your password.</p>
+    {%- else -%}
+      <p class="acct__hint">Enter your email and we'll send a reset link.</p>
+      {%- if form.errors -%}
+        <p class="acct__err" role="alert">{{ form.errors.messages['form'] | default: 'Please check your email address.' }}</p>
+      {%- endif -%}
+      <label class="fld">
+        <span>Email</span>
+        <input type="email" name="email" autocomplete="email" required placeholder="you@company.com.au">
+      </label>
+      <button type="submit" class="btn btn--primary acct__submit">Send reset link</button>
+    {%- endif -%}
+    <p class="acct__alt"><a href="#login" data-hnl-show-login>&larr; Back to sign in</a></p>
+  {%- endform -%}
+
+  {%- form 'customer_login', class: 'acct__card acct__form', id: 'login' -%}
+    <h2>Sign In</h2>
+    {%- if form.errors -%}
+      <p class="acct__err" role="alert">{{ form.errors | default_errors }}</p>
+    {%- endif -%}
+    <label class="fld">
+      <span>Email</span>
+      <input type="email" name="customer[email]" autocomplete="email" required placeholder="you@company.com.au">
+    </label>
+    <label class="fld">
+      <span>Password</span>
+      <input type="password" name="customer[password]" autocomplete="current-password" required placeholder="Your password">
+    </label>
+    <button type="submit" class="btn btn--primary acct__submit">Sign in</button>
+    <p class="acct__alt">
+      <a href="#recover" data-hnl-show-recover>Forgot your password?</a>
+      <span>New here? <a href="{{ routes.account_register_url }}">Create an account</a></span>
+    </p>
+  {%- endform -%}
+</div>
+
+{% render 'hnl-account-shell', part: 'close' %}
+
+<script>
+(function () {
+  /* Shopify's classic flow toggles these two panels with the #recover hash.
+     Without JS the recover form is still reachable — it is a real form on the
+     page, and CSS only hides it when JS has marked the page as ready. */
+  var root = document.querySelector('.acct__solo');
+  if (!root) return;
+  root.classList.add('is-ready');
+  var show = function (which) { root.classList.toggle('show-recover', which === 'recover'); };
+  show(location.hash === '#recover' ? 'recover' : 'login');
+  root.addEventListener('click', function (e) {
+    if (e.target.closest('[data-hnl-show-recover]')) { e.preventDefault(); show('recover'); }
+    if (e.target.closest('[data-hnl-show-login]'))   { e.preventDefault(); show('login'); }
+  });
+})();
+</script>
+
+{% schema %}
+{ "name": "HooknLoop login", "settings": [] }
+{% endschema %}

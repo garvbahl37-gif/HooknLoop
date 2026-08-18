@@ -1,0 +1,10 @@
+.deals__banner--countdown > .countdown__item + .countdown__item:before {
+  right: -2rem;
+  left: auto;
+}
+@media only screen and (min-width: 992px) {
+  .deals__banner--countdown > .countdown__item + .countdown__item:before {
+    left: auto;
+    right: -2.6rem;
+  }
+}

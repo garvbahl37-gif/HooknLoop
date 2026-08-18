@@ -1,0 +1,110 @@
+{%- comment -%}
+  "Covering diverse industries" — ported from IndustriesShowcase in home.jsx.
+  A hero panel, then the auto-advancing tile carousel.
+
+  The React strip re-paginated on resize (2/3/4/5 tiles per page by viewport).
+  Liquid can't know the viewport, so every tile is rendered once into a flat
+  track and mts-theme.js chunks them into pages — same arithmetic, same markup.
+  Without JS the tiles simply sit in a scrollable row rather than disappearing.
+
+  Industries are Shopify collections. Point this at a metaobject-free list by
+  choosing them as blocks, or let it read every collection in a chosen menu.
+{%- endcomment -%}
+<section class="section section--paper">
+  <div class="wrap">
+    <div class="indx-hero">
+      {%- if section.settings.image != blank -%}
+        <img class="indx-hero__img" src="{{ section.settings.image | image_url: width: 1800 }}"
+             alt="{{ section.settings.image_alt | escape }}" loading="lazy" decoding="async" width="1800" height="760">
+      {%- else -%}
+        <img class="indx-hero__img" src="{{ 'mts-industries.jpg' | asset_url }}"
+             alt="{{ section.settings.image_alt | escape }}" loading="lazy" decoding="async" width="1800" height="760">
+      {%- endif -%}
+      <div class="indx-hero__panel">
+        {%- if section.settings.eyebrow != blank -%}<span class="eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
+        {%- if section.settings.heading != blank -%}<h2>{{ section.settings.heading }}</h2>{%- endif -%}
+        {%- if section.settings.text != blank -%}<p>{{ section.settings.text }}</p>{%- endif -%}
+      </div>
+    </div>
+
+    {%- assign menu = linklists[section.settings.menu] -%}
+    {%- if menu.links.size > 0 -%}
+      <div class="indx-strip" data-mts-industries data-interval="{{ section.settings.interval | times: 1000 }}">
+        <div class="indx-strip__viewport">
+          <div class="indx-strip__track" data-mts-industries-track>
+            {%- for link in menu.links -%}
+{%- comment -%}
+                A menu link created as an HTTP link exposes no `link.object`, so
+                the collection is resolved from the last path segment of its URL
+                instead. This works for both HTTP and COLLECTION link types.
+              {%- endcomment -%}
+              {%- assign _parts = link.url | split: '/' -%}
+              {%- assign _handle = _parts | last | split: '?' | first -%}
+              {%- assign coll = collections[_handle] -%}
+              <a href="{{ link.url }}" class="indx-tile" data-mts-industry-tile>
+                <div class="indx-tile__media">
+                  {%- if coll.image -%}
+                    <img src="{{ coll.image | image_url: width: 520 }}"
+                     srcset="{{ coll.image | image_url: width: 200 }} 200w, {{ coll.image | image_url: width: 320 }} 320w, {{ coll.image | image_url: width: 480 }} 480w, {{ coll.image | image_url: width: 640 }} 640w"
+                     sizes="(min-width:1220px) 260px, (min-width:900px) 24vw, 46vw" alt="{{ link.title | escape }}" loading="lazy" decoding="async" width="520" height="520">
+                  {%- elsif coll.products.first.featured_media -%}
+                    <img src="{{ coll.products.first.featured_media | image_url: width: 520 }}" alt="{{ link.title | escape }}" loading="lazy" decoding="async" width="520" height="520">
+                  {%- else -%}
+                    {{ 'collection-1' | placeholder_svg_tag }}
+                  {%- endif -%}
+                </div>
+                <div class="indx-tile__body">
+                  <b class="indx-tile__name">{{ link.title }}</b>
+                  {%- if coll.all_products_count > 0 -%}
+                    <span class="indx-tile__num num">
+                      {{ 'collections.general.products_count' | t: count: coll.all_products_count }}
+                      {% render 'mts-icon', name: 'arrowRight', size: 14 %}
+                    </span>
+                  {%- endif -%}
+                </div>
+              </a>
+            {%- endfor -%}
+          </div>
+        </div>
+        <div class="indx-strip__dots" data-mts-industries-dots></div>
+      </div>
+    {%- endif -%}
+
+    {%- if section.settings.cta_label != blank -%}
+      <div class="section-cta">
+        <a href="{{ section.settings.cta_url }}" class="btn btn--brand btn--lg">
+          {{ section.settings.cta_label }} {% render 'mts-icon', name: 'arrowRight', size: 18 %}
+        </a>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Industries",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Industries menu",
+      "info": "Each link should point at an industry collection — the tile reads its image and product count."
+    },
+    { "type": "image_picker", "id": "image", "label": "Hero image" },
+    {
+      "type": "text", "id": "image_alt", "label": "Hero image alt text",
+      "default": "Adhesive tapes for every trade — hard hat, blueprints, packaging, foil and craft tapes on a workbench"
+    },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Covering diverse industries" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "From construction to crafting" },
+    {
+      "type": "textarea", "id": "text", "label": "Text",
+      "default": "The right adhesive for your trade — quality-checked tapes across every industry we serve."
+    },
+    { "type": "range", "id": "interval", "label": "Seconds per page", "min": 2, "max": 10, "step": 1, "default": 3, "unit": "s" },
+    { "type": "text", "id": "cta_label", "label": "Button", "default": "Explore all industries" },
+    { "type": "url", "id": "cta_url", "label": "Button link" }
+  ],
+  "presets": [{ "name": "Industries" }]
+}
+{% endschema %}

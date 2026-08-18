@@ -1,0 +1,168 @@
+{%- comment -%}
+  Newsletter signup popup.
+
+  Not in the React app — new work, built in the redesign's own language rather
+  than copied from the reference screenshot: navy brand panel with the ember
+  glow the hero uses, white form panel, machined 14px radii, DM Sans, one orange
+  flare on the submit button.
+
+  The form is Shopify's native {% form 'customer' %}, the same one the footer
+  uses, because that is what feeds the Klaviyo "Email List" through the Shopify
+  integration. A custom endpoint here would collect addresses that never reach
+  any flow.
+
+  Manners, which is most of what separates a premium popup from an irritating
+  one:
+    - waits (default 20s) rather than ambushing on load
+    - never shown to someone who already subscribed, or who dismissed it
+      (remembered in localStorage, for a configurable number of days)
+    - never shown on the cart or checkout — do not interrupt a purchase
+    - Escape closes it, focus is trapped while open, focus returns on close
+    - honours prefers-reduced-motion
+{%- endcomment -%}
+
+{%- liquid
+  assign delay = section_delay | default: settings.hnl_popup_delay | default: 20
+  assign enabled = settings.hnl_popup_enabled
+-%}
+
+{%- if enabled -%}
+<div class="nlp" data-hnl-popup
+     data-delay="{{ delay }}"
+     data-remember="{{ settings.hnl_popup_remember | default: 30 }}"
+     role="dialog" aria-modal="true" aria-labelledby="nlp-h" hidden>
+  <div class="nlp__panel" data-hnl-popup-panel tabindex="-1">
+    <button class="nlp__close" data-hnl-popup-close aria-label="Close">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+
+    <div class="nlp__brand">
+      <span class="nlp__glow" aria-hidden="true"></span>
+      <img class="nlp__logo" src="{{ 'hnl-logo-footer.svg' | asset_url }}" alt="{{ shop.name | escape }}" width="389" height="69">
+      <p class="nlp__kicker">{{ settings.hnl_popup_kicker }}</p>
+      <ul class="nlp__points">
+        {%- assign points = settings.hnl_popup_points | newline_to_br | split: '<br />' -%}
+        {%- for point in points -%}
+          {%- assign line = point | strip -%}
+          {%- if line != blank -%}
+            <li>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg>
+              {{ line }}
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    </div>
+
+    <div class="nlp__form">
+      {%- form 'customer', id: 'hnl-popup-form', class: 'nlp__formwrap' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter,popup">
+
+        {%- if form.posted_successfully? -%}
+          <div class="nlp__ok" role="status">
+            <span class="nlp__ok-icn" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>
+            </span>
+            <h2 id="nlp-h">{{ settings.hnl_popup_ok_heading }}</h2>
+            <p>{{ settings.hnl_popup_ok_body }}</p>
+          </div>
+        {%- else -%}
+          <span class="nlp__eyebrow">{{ settings.hnl_popup_eyebrow }}</span>
+          <h2 id="nlp-h" class="nlp__h">{{ settings.hnl_popup_heading }}</h2>
+          <p class="nlp__sub">{{ settings.hnl_popup_sub }}</p>
+
+          {%- if form.errors -%}
+            <p class="nlp__err" role="alert">{{ form.errors.messages['email'] | default: 'Please check your email and try again.' }}</p>
+          {%- endif -%}
+
+          <label class="nlp__field">
+            <span class="visually-hidden">Email address</span>
+            <input type="email" name="contact[email]" required
+                   placeholder="{{ settings.hnl_popup_placeholder }}"
+                   aria-label="Email address" autocomplete="email">
+          </label>
+
+          <button type="submit" class="btn btn--primary nlp__submit">
+            {{ settings.hnl_popup_button }}
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+
+          <button type="button" class="nlp__decline" data-hnl-popup-close>{{ settings.hnl_popup_decline }}</button>
+          <p class="nlp__legal">{{ settings.hnl_popup_legal }}</p>
+        {%- endif -%}
+      {%- endform -%}
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var modal = document.querySelector('[data-hnl-popup]');
+  if (!modal) return;
+
+  var KEY = 'hnl_nlp_dismissed_until';
+  var panel = modal.querySelector('[data-hnl-popup-panel]');
+  var lastFocus = null, timer = null;
+
+  /* Never interrupt someone who is buying. */
+  var path = window.location.pathname;
+  if (/\/(cart|checkout|account)/.test(path)) return;
+
+  function seen() {
+    try {
+      var until = parseInt(localStorage.getItem(KEY) || '0', 10);
+      return until && Date.now() < until;
+    } catch (e) { return false; }   /* private mode: just show it */
+  }
+
+  function remember() {
+    try {
+      var days = parseInt(modal.getAttribute('data-remember'), 10) || 30;
+      localStorage.setItem(KEY, String(Date.now() + days * 864e5));
+    } catch (e) {}
+  }
+
+  function open() {
+    lastFocus = document.activeElement;
+    modal.removeAttribute('hidden');
+    document.body.style.overflow = 'hidden';
+    panel.focus();
+  }
+
+  function close() {
+    modal.setAttribute('hidden', '');
+    document.body.style.overflow = '';
+    remember();
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+
+  modal.addEventListener('click', function (e) {
+    if (e.target === modal || e.target.closest('[data-hnl-popup-close]')) close();
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && !modal.hasAttribute('hidden')) close();
+  });
+
+  /* Keep Tab inside the dialog while it is open. */
+  panel.addEventListener('keydown', function (e) {
+    if (e.key !== 'Tab') return;
+    var f = panel.querySelectorAll('a[href], button, input, [tabindex]:not([tabindex="-1"])');
+    if (!f.length) return;
+    var first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
+
+  /* A successful submit re-renders the page with the thank-you state, so show
+     it immediately and do not make them wait another 20 seconds for it. */
+  if (modal.querySelector('.nlp__ok')) {
+    open();
+    remember();
+    return;
+  }
+
+  if (seen()) return;
+  timer = setTimeout(open, (parseInt(modal.getAttribute('data-delay'), 10) || 20) * 1000);
+})();
+</script>
+{%- endif -%}

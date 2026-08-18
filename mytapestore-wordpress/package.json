@@ -1,0 +1,15 @@
+{
+  "name": "mytapestore-wordpress",
+  "private": true,
+  "version": "0.1.0",
+  "description": "MyTapeStore WordPress theme — the React/Shopify redesign ported to WooCommerce",
+  "scripts": {
+    "_comment": "Binaries are called by explicit path, not by name: this repo lives under a directory containing a colon (HooknLoop:MyTapeStore), and npm's injected node_modules/.bin PATH entry gets split at that colon into two nonexistent paths.",
+    "start": "./node_modules/.bin/wp-playground-cli server --blueprint=blueprint.json --mount-before-install=./theme:/wordpress/wp-content/themes/mytapestore --port=9400",
+    "build:css": "./scripts/build-css.sh",
+    "export": "python3 scripts/export-content.py"
+  },
+  "devDependencies": {
+    "@wp-playground/cli": "^3.1.48"
+  }
+}

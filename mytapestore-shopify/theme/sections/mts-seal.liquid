@@ -1,0 +1,60 @@
+{%- comment -%}
+  "Seal the deal" promo band — ported from SealTheDeal in home.jsx.
+  Full-bleed image behind a dark grain overlay, centred copy and two CTAs.
+{%- endcomment -%}
+<section class="seal grain">
+  {%- comment -%}
+    This image is the section's background, not content — the copy sits on top of
+    it. The React version loads it eagerly; deferring it leaves the band as a flat
+    grey block until it arrives, which is very visible on a full-bleed panel. Keep
+    it eager to match.
+  {%- endcomment -%}
+  <div class="seal__media">
+    {%- if section.settings.image != blank -%}
+      <img src="{{ section.settings.image | image_url: width: 2400 }}" alt="" aria-hidden="true" width="2400" height="1200">
+    {%- else -%}
+      <img src="{{ 'mts-seal-deal.jpg' | asset_url }}" alt="" aria-hidden="true" width="2400" height="1200">
+    {%- endif -%}
+  </div>
+  <div class="wrap seal__inner">
+    {%- if section.settings.eyebrow != blank -%}
+      <span class="eyebrow eyebrow--onink">{{ section.settings.eyebrow }}</span>
+    {%- endif -%}
+    {%- if section.settings.heading != blank -%}
+      <h2 class="seal__title">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+    {%- if section.settings.text != blank -%}
+      <p class="seal__lead">{{ section.settings.text }}</p>
+    {%- endif -%}
+    <div class="seal__cta">
+      {%- if section.settings.cta_label != blank -%}
+        <a href="{{ section.settings.cta_url | default: routes.all_products_collection_url }}" class="btn btn--brand btn--lg">
+          {{ section.settings.cta_label }} {% render 'mts-icon', name: 'arrowRight', size: 18 %}
+        </a>
+      {%- endif -%}
+      {%- if section.settings.alt_label != blank -%}
+        <a href="{{ section.settings.alt_url }}" class="btn btn--onink-ghost btn--lg">{{ section.settings.alt_label }}</a>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Promo band",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Background image" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Ready when you are" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Seal the deal today" },
+    {
+      "type": "textarea", "id": "text", "label": "Text",
+      "default": "Shop our wide range of tapes and elevate your projects — fast dispatch Australia-wide."
+    },
+    { "type": "text", "id": "cta_label", "label": "Primary button", "default": "Shop now" },
+    { "type": "url", "id": "cta_url", "label": "Primary button link" },
+    { "type": "text", "id": "alt_label", "label": "Secondary button", "default": "Bulk & trade pricing" },
+    { "type": "url", "id": "alt_url", "label": "Secondary button link" }
+  ],
+  "presets": [{ "name": "Promo band" }]
+}
+{% endschema %}

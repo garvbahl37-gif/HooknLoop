@@ -1,0 +1,67 @@
+{% liquid
+  assign gift_wrap_product = linklists['gift-wrapping'].links.first.object
+  assign gift_wrap_product_first_variant_id = gift_wrap_product.variants.first.id
+
+  assign gift_wraps_in_cart = 0
+  for item in cart.items
+    if item.id == gift_wrap_product_first_variant_id
+      assign gift_wraps_in_cart = item.quantity
+    endif
+  endfor
+
+  assign gift_card_wrap = false
+  if cart.attributes['gift-wrapping'] or gift_wraps_in_cart > 0
+    assign gift_card_wrap = true
+  endif
+%}
+{% if linklists['gift-wrapping'].links.size > 0 and linklists['gift-wrapping'].links.first.type == 'product_link' %}
+  <add-gift-wrap
+    data-gift-wrap-product-id="{{ gift_wrap_product.variants.first.id }}"
+    data-gift-wrap-in-cart="{{ gift_wraps_in_cart }}"
+    data-cart-items-size="{{ cart.items.size }}"
+    data-gift-wrap-product="{{ gift_card_wrap }}"
+  >
+    <div id="is-a-gift">
+      <label
+        for="gift-wrapping-check"
+        class="facet-checkbox"
+      >
+        <input
+          id="gift-wrapping-check"
+          type="checkbox"
+          name="attributes[gift-wrapping]"
+          value="yes"
+          {% if cart.attributes['gift-wrapping'] or gift_wraps_in_cart > 0 %}
+            checked="checked"
+          {% endif %}
+        >
+
+        <span class="checkbox-facet-check"></span>
+
+        <svg
+          class="icon icon-checkmark"
+          width="1.1rem"
+          height="0.7rem"
+          viewBox="0 0 11 7"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path d="M1.5 3.5L2.83333 4.75L4.16667 6L9.5 1"
+            stroke="currentColor"
+            stroke-width="1.75"
+            stroke-linecap="round"
+            stroke-linejoin="round" />
+        </svg>
+
+        <span aria-hidden="true">
+          For {{ linklists['gift-wrapping'].links.first.object.price | money }} per item, please wrap the products in
+          this order.
+        </span>
+        <span class="visually-hidden">
+          For {{ linklists['gift-wrapping'].links.first.object.price | money }} per item, please wrap the products in
+          this order.
+        </span>
+      </label>
+    </div>
+  </add-gift-wrap>
+{% endif %}

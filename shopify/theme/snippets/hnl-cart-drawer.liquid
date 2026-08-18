@@ -1,0 +1,336 @@
+{%- comment -%}
+  Cart drawer — port of storefront/src/components/CartDrawer.jsx.
+
+  cartdrawer.css shipped in the bundle from the very first build, but nothing
+  ever rendered .cd markup, so the styles were dead and every add-to-cart left
+  the page. This is the missing half.
+
+  Two departures from React, both because Shopify owns the cart here:
+
+  1. React held the cart in module state and re-rendered. This reads /cart.js
+     and writes through /cart/change.js, so the drawer, the header badge and
+     /cart can never disagree — the cart is Shopify's, not ours.
+
+  2. React's Checkout button was an alert() stub. It posts to /checkout.
+
+  Rendered once from theme.liquid so it is available on every page: a card's
+  Quick Add can open it from the homepage or a collection, not just the PDP.
+
+  Empty until opened — no cart request is made on page load.
+{%- endcomment -%}
+
+<div class="cd" id="hnl-cart-drawer" role="dialog" aria-label="Cart" aria-modal="true" hidden>
+  <div class="cd__backdrop" data-hnl-cd-close></div>
+  <div class="cd__panel">
+    <div class="cd__head">
+      <h2 data-hnl-cd-title>Added to cart</h2>
+      <button class="cd__close" type="button" data-hnl-cd-close aria-label="Close cart">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div class="cd__body" data-hnl-cd-body></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var root = document.getElementById('hnl-cart-drawer');
+  if (!root) return;
+
+  var body     = root.querySelector('[data-hnl-cd-body]');
+  var titleEl  = root.querySelector('[data-hnl-cd-title]');
+  var lastFocus = null;
+  var FREE_SHIP = {{ settings.hnl_free_ship_threshold | default: 30000 }};   /* cents */
+
+  function money(c) { return '$' + (c / 100).toFixed(2); }
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (m) {
+      return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[m];
+    });
+  }
+
+  function render(cart) {
+    /* Header badge tracks the same payload, so they cannot drift. */
+    [].forEach.call(document.querySelectorAll('[data-hnl-cart-count]'), function (el) {
+      el.textContent = cart.item_count;
+      el.classList.toggle('is-on', cart.item_count > 0);
+    });
+
+    if (!cart.items.length) {
+      titleEl.textContent = 'Your cart';
+      body.innerHTML =
+        '<div class="cd__empty"><p>Your cart is empty.</p>' +
+        '<a class="btn btn--primary" href="/collections/all">Shop all products &rarr;</a></div>';
+      return;
+    }
+
+    titleEl.textContent = 'Added to cart';
+    var rows = cart.items.map(function (it, i) {
+      /* it.image is null when a product has no photo — the CSS box stays, so
+         the row keeps its grid and does not collapse. */
+      var img = it.image
+        ? '<img src="' + esc(it.image.replace(/(\.[a-z]+)(\?|$)/i, '_136x$1$2')) + '" alt="' + esc(it.product_title) + '">'
+        : '';
+      var variant = (it.variant_title && it.variant_title !== 'Default Title') ? esc(it.variant_title) : '';
+      return '' +
+        '<div class="cd__row" data-key="' + esc(it.key) + '">' +
+          '<div class="cd__media">' + img + '</div>' +
+          '<div class="cd__info">' +
+            '<h3>' + esc(it.product_title) + '</h3>' +
+            (variant ? '<span class="cd__variant">' + variant + '</span>' : '') +
+            '<div class="cd__row-bottom">' +
+              '<div class="cd__qty">' +
+                '<button type="button" data-hnl-cd-qty="' + (it.quantity - 1) + '" data-key="' + esc(it.key) + '" aria-label="Decrease quantity">&minus;</button>' +
+                '<span>' + it.quantity + '</span>' +
+                '<button type="button" data-hnl-cd-qty="' + (it.quantity + 1) + '" data-key="' + esc(it.key) + '" aria-label="Increase quantity">+</button>' +
+              '</div>' +
+              '<button type="button" class="cd__remove" data-hnl-cd-qty="0" data-key="' + esc(it.key) + '">Remove</button>' +
+            '</div>' +
+          '</div>' +
+          '<div class="cd__line">' + money(it.line_price) + '</div>' +
+        '</div>';
+    }).join('');
+
+    /* The same .cart__ship bar the cart page uses, so the drawer and /cart
+       show one progress indicator, not two different ones. The bare sentence
+       that used to sit here gave no sense of how close the shopper was. */
+    var remaining = FREE_SHIP - cart.total_price;
+    var pct = FREE_SHIP > 0 ? Math.min(100, (cart.total_price / FREE_SHIP) * 100) : 100;
+    var shipMsg = remaining > 0
+      ? '<span><b>' + money(remaining) + ' AUD</b> away from <b>Free Standard Shipping</b>.</span>'
+      : '<span>You&rsquo;ve unlocked <b>Free Standard Shipping</b>.</span>';
+    var shipBar = FREE_SHIP > 0
+      ? '<div class="cd__ship cart__ship">' + shipMsg +
+          '<div class="cart__ship-bar" role="progressbar" aria-valuenow="' + Math.round(pct) + '" aria-valuemin="0" aria-valuemax="100">' +
+            '<span style="width: ' + pct + '%"></span>' +
+            '<i class="cart__ship-truck" style="left: ' + pct + '%" aria-hidden="true">' +
+              '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6h11v11H2zM13 9h4l3 3v5h-7"/><circle cx="6" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg>' +
+            '</i>' +
+          '</div>' +
+        '</div>'
+      : '';
+
+    body.innerHTML =
+      '<div class="cd__items">' + rows + '</div>' +
+      '<div class="cd__foot">' +
+        shipBar +
+        '<div class="cd__sumrow"><span>Subtotal</span><b>' + money(cart.total_price) + ' AUD</b></div>' +
+        '<p class="cd__taxnote">Tax included. Shipping calculated at checkout.</p>' +
+        '<a class="btn btn--primary cd__checkout" href="/checkout">Checkout</a>' +
+        '<a class="cd__viewcart" href="/cart">View cart (' + cart.item_count + ')</a>' +
+      '</div>';
+  }
+
+  function refresh() {
+    /* Not named `cart` — that would shadow the module-level snapshot the
+       optimistic path reads from, and leave it stale. */
+    return fetch('/cart.js', { credentials: 'same-origin' })
+      .then(function (r) { return r.json(); })
+      .then(function (data) { cart = data; render(data); return data; });
+  }
+
+  {%- comment -%}
+    body { overflow: hidden } does not lock scrolling in mobile Safari — the
+    page still rubber-bands behind the panel, and because the drawer is
+    position: fixed against a viewport that changes height as the URL bar
+    collapses, the whole sheet visibly slides while you drag. That is the
+    "moves up" symptom.
+
+    Pinning the body at its current offset is what actually holds it. The
+    scroll position is restored on close, so the shopper returns to exactly
+    where they were rather than to the top of the page.
+  {%- endcomment -%}
+  var lockedAt = 0;
+
+  function lockScroll() {
+    lockedAt = window.pageYOffset || document.documentElement.scrollTop || 0;
+    document.body.style.top = '-' + lockedAt + 'px';
+    document.body.classList.add('drawer-open');
+  }
+
+  function unlockScroll() {
+    document.body.classList.remove('drawer-open');
+    document.body.style.top = '';
+    /* 'auto' — an animated jump back up would look like a second bug. */
+    window.scrollTo({ top: lockedAt, behavior: 'auto' });
+  }
+
+  function open() {
+    lastFocus = document.activeElement;
+    root.hidden = false;
+    lockScroll();
+    refresh().then(function () {
+      var f = root.querySelector('.cd__close');
+      if (f) f.focus();
+    });
+  }
+
+  function close() {
+    root.hidden = true;
+    unlockScroll();
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+
+  {%- comment -%}
+    Quantity and Remove used to POST and wait, so every press sat still for a
+    full round trip before anything moved — which is what made Remove feel
+    slow. The panel now repaints immediately from a local copy of the cart and
+    reconciles when the server answers.
+
+    Two other changes come with it:
+
+    - Lines are addressed by `key`, not by index. /cart/change.js line numbers
+      shift the moment something is removed, so a queued change could have hit
+      the wrong row. Keys are stable.
+
+    - Rapid presses coalesce. Tapping + four times used to fire four requests
+      that could land out of order and fight each other; they now collapse into
+      one /cart/update.js call carrying the final quantities.
+  {%- endcomment -%}
+  var cart = null;              /* last state we believe is true */
+  var pending = {};             /* key -> desired quantity, not yet sent */
+  var flushTimer = null;
+
+  function recalc(c) {
+    c.item_count  = c.items.reduce(function (n, x) { return n + x.quantity; }, 0);
+    c.total_price = c.items.reduce(function (n, x) { return n + x.line_price; }, 0);
+    return c;
+  }
+
+  function optimistic(key, qty) {
+    if (!cart) return false;
+    var items = [];
+    var found = false;
+    cart.items.forEach(function (it) {
+      if (it.key !== key) { items.push(it); return; }
+      found = true;
+      if (qty <= 0) return;                       /* removed */
+      var unit = it.quantity ? (it.line_price / it.quantity) : it.price;
+      var copy = {};
+      for (var k in it) { if (Object.prototype.hasOwnProperty.call(it, k)) copy[k] = it[k]; }
+      copy.quantity = qty;
+      copy.line_price = Math.round(unit * qty);
+      items.push(copy);
+    });
+    if (!found) return false;
+    var next = {};
+    for (var k2 in cart) { if (Object.prototype.hasOwnProperty.call(cart, k2)) next[k2] = cart[k2]; }
+    next.items = items;
+    var removed = items.length !== cart.items.length;
+    cart = recalc(next);
+
+    /* A full re-render replaces the panel's innerHTML, which destroys the very
+       button being pressed — press again quickly and mousedown and mouseup
+       land on different elements, so the click is swallowed. That is the other
+       half of why +/- felt buggy.
+
+       A quantity change patches the row in place, so the button under the
+       cursor survives. Only a removal changes the structure enough to need a
+       real re-render. */
+    if (removed) { render(cart); return true; }
+    patch(cart, key);
+    return true;
+  }
+
+  function patch(c, key) {
+    var it = null;
+    for (var i = 0; i < c.items.length; i++) { if (c.items[i].key === key) { it = c.items[i]; break; } }
+    var row = body.querySelector('.cd__row[data-key="' + (window.CSS && CSS.escape ? CSS.escape(key) : key) + '"]');
+    if (it && row) {
+      var num = row.querySelector('.cd__qty span');
+      if (num) num.textContent = it.quantity;
+      var btns = row.querySelectorAll('.cd__qty button');
+      if (btns.length === 2) {
+        btns[0].setAttribute('data-hnl-cd-qty', it.quantity - 1);
+        btns[1].setAttribute('data-hnl-cd-qty', it.quantity + 1);
+      }
+      var lp = row.querySelector('.cd__line');
+      if (lp) lp.textContent = money(it.line_price);
+    }
+
+    var sub = body.querySelector('.cd__sumrow b');
+    if (sub) sub.textContent = money(c.total_price) + ' AUD';
+
+    var vc = body.querySelector('.cd__viewcart');
+    if (vc) vc.textContent = 'View cart (' + c.item_count + ')';
+
+    /* Shipping bar tracks the new subtotal. */
+    var wrap = body.querySelector('.cd__ship');
+    if (wrap && FREE_SHIP > 0) {
+      var remaining = FREE_SHIP - c.total_price;
+      var pct = Math.min(100, (c.total_price / FREE_SHIP) * 100);
+      var msg = wrap.querySelector('span');
+      if (msg) {
+        msg.innerHTML = remaining > 0
+          ? '<b>' + money(remaining) + ' AUD</b> away from <b>Free Standard Shipping</b>.'
+          : 'You&rsquo;ve unlocked <b>Free Standard Shipping</b>.';
+      }
+      var bar = wrap.querySelector('.cart__ship-bar');
+      if (bar) bar.setAttribute('aria-valuenow', Math.round(pct));
+      var fill = wrap.querySelector('.cart__ship-bar > span');
+      if (fill) fill.style.width = pct + '%';
+      var truck = wrap.querySelector('.cart__ship-truck');
+      if (truck) truck.style.left = pct + '%';
+    }
+
+    [].forEach.call(document.querySelectorAll('[data-hnl-cart-count]'), function (el) {
+      el.textContent = c.item_count;
+      el.classList.toggle('is-on', c.item_count > 0);
+    });
+  }
+
+  var seq = 0;
+
+  function flush() {
+    var updates = pending;
+    pending = {};
+    if (!Object.keys(updates).length) return;
+    var mine = ++seq;
+    fetch('/cart/update.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      credentials: 'same-origin',
+      body: JSON.stringify({ updates: updates })
+    })
+      .then(function (r) { return r.ok ? r.json() : Promise.reject(r); })
+      .then(function (server) {
+        /* Only the newest write may repaint. Without this a slow response
+           from an earlier press lands after a later one and snaps the
+           quantity back to a stale number — which is what made + and - feel
+           buggy when pressed quickly. A press queued while this was in
+           flight owns the screen, so leave its optimistic view alone. */
+        if (mine !== seq) return;
+        if (Object.keys(pending).length) return;
+        cart = server;
+        render(server);
+      })
+      /* Server is the authority: if the write failed, show what is really
+         there rather than leaving the optimistic view standing. */
+      .catch(function () { if (mine === seq) refresh(); });
+  }
+
+  root.addEventListener('click', function (e) {
+    if (e.target.closest('[data-hnl-cd-close]')) { close(); return; }
+
+    var q = e.target.closest('[data-hnl-cd-qty]');
+    if (!q) return;
+    var key = q.getAttribute('data-key');
+    var qty = Math.max(0, parseInt(q.getAttribute('data-hnl-cd-qty'), 10) || 0);
+    if (!key) return;
+
+    pending[key] = qty;
+    if (!optimistic(key, qty)) { flush(); return; }   /* unknown row: just ask */
+
+    clearTimeout(flushTimer);
+    flushTimer = setTimeout(flush, 220);
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && !root.hidden) close();
+  });
+
+  /* Public hook: anything that adds to the cart calls this. */
+  document.addEventListener('hnl:cart:open', open);
+  window.hnlOpenCartDrawer = open;
+})();
+</script>

@@ -1,0 +1,137 @@
+{%- comment -%}
+  Breadcrumbs for every page except the homepage.
+
+  New work — the redesign shipped without any, and Suruchi's own breadcrumb
+  section is only wired into a handful of legacy templates and renders in its
+  own blue (#194cbf), which is not a colour in this palette.
+
+  Two jobs at once:
+
+  1. Navigation. A trail back up, so a shopper landing from Google Ads on a
+     deep product page has somewhere to go other than the back button.
+
+  2. Search. The same trail is emitted as BreadcrumbList JSON-LD, which is what
+     Google reads to draw the breadcrumb line in a result instead of a bare
+     URL. The store had no BreadcrumbList markup at all.
+
+  Product trail prefers collection.title when the shopper actually arrived via
+  a collection — Shopify sets `collection` on /collections/x/products/y — and
+  falls back to the product type, which is the honest generic parent.
+
+  Deliberately NOT shown on the homepage (a single "Home" crumb is noise) or in
+  the checkout, which is not ours to touch.
+{%- endcomment -%}
+
+{%- liquid
+  assign show = true
+  if request.page_type == 'index' or request.page_type == 'cart'
+    assign show = false
+  endif
+-%}
+
+{%- if show -%}
+  {%- capture crumbs -%}
+    {%- case request.page_type -%}
+
+      {%- when 'product' -%}
+        {%- if collection.url != blank -%}
+          <li class="bc__item"><a href="{{ collection.url }}">{{ collection.title }}</a></li>
+        {%- elsif product.type != blank -%}
+          <li class="bc__item"><a href="{{ routes.all_products_collection_url }}">{{ product.type }}</a></li>
+        {%- endif -%}
+        <li class="bc__item" aria-current="page">{{ product.title }}</li>
+
+      {%- when 'collection' -%}
+        <li class="bc__item" aria-current="page">{{ collection.title }}</li>
+
+      {%- when 'list-collections' -%}
+        <li class="bc__item" aria-current="page">Collections</li>
+
+      {%- when 'page' -%}
+        {%- comment -%}
+          The eight industry guides sit under the Industries index, so the
+          trail reflects how the nav is actually organised.
+        {%- endcomment -%}
+        {%- assign guides = 'clothing-garments,upholstery-furniture,schools-education,signage-displays,automotive-caravan-rv,medical-aged-care,warehousing-logistics,construction-industrial' | split: ',' -%}
+        {%- if guides contains page.handle and pages['industries'] != blank -%}
+          <li class="bc__item"><a href="/pages/industries">Industries</a></li>
+        {%- endif -%}
+        <li class="bc__item" aria-current="page">{{ page.title }}</li>
+
+      {%- when 'blog' -%}
+        <li class="bc__item" aria-current="page">{{ blog.title }}</li>
+
+      {%- when 'article' -%}
+        <li class="bc__item"><a href="{{ blog.url }}">{{ blog.title }}</a></li>
+        <li class="bc__item" aria-current="page">{{ article.title }}</li>
+
+      {%- when 'search' -%}
+        <li class="bc__item" aria-current="page">Search</li>
+
+      {%- when '404' -%}
+        <li class="bc__item" aria-current="page">Page not found</li>
+
+      {%- when 'customers/account' -%}
+        <li class="bc__item" aria-current="page">Your account</li>
+      {%- when 'customers/order' -%}
+        <li class="bc__item"><a href="{{ routes.account_url }}">Your account</a></li>
+        <li class="bc__item" aria-current="page">Order {{ order.name }}</li>
+      {%- when 'customers/addresses' -%}
+        <li class="bc__item"><a href="{{ routes.account_url }}">Your account</a></li>
+        <li class="bc__item" aria-current="page">Addresses</li>
+      {%- when 'customers/login' -%}
+        <li class="bc__item" aria-current="page">Sign in</li>
+      {%- when 'customers/register' -%}
+        <li class="bc__item" aria-current="page">Create account</li>
+
+      {%- else -%}
+        {%- if page_title != blank -%}
+          <li class="bc__item" aria-current="page">{{ page_title }}</li>
+        {%- endif -%}
+    {%- endcase -%}
+  {%- endcapture -%}
+
+  {%- if crumbs != blank -%}
+    <nav class="bc" aria-label="Breadcrumb">
+      <div class="wrap">
+        <ol class="bc__list">
+          <li class="bc__item"><a href="{{ routes.root_url }}">Home</a></li>
+          {{ crumbs }}
+        </ol>
+      </div>
+    </nav>
+
+    {%- comment -%}
+      The same trail for Google. Positions are assigned in order; the current
+      page is included without a URL, per schema.org's guidance for the last
+      item being the page itself.
+    {%- endcomment -%}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": {{ shop.url | json }} }
+        {%- case request.page_type -%}
+          {%- when 'product' -%}
+            {%- if collection.url != blank -%}
+            ,{ "@type": "ListItem", "position": 2, "name": {{ collection.title | json }}, "item": {{ shop.url | append: collection.url | json }} }
+            ,{ "@type": "ListItem", "position": 3, "name": {{ product.title | json }} }
+            {%- else -%}
+            ,{ "@type": "ListItem", "position": 2, "name": {{ product.title | json }} }
+            {%- endif -%}
+          {%- when 'collection' -%}
+            ,{ "@type": "ListItem", "position": 2, "name": {{ collection.title | json }} }
+          {%- when 'page' -%}
+            ,{ "@type": "ListItem", "position": 2, "name": {{ page.title | json }} }
+          {%- when 'blog' -%}
+            ,{ "@type": "ListItem", "position": 2, "name": {{ blog.title | json }} }
+          {%- when 'article' -%}
+            ,{ "@type": "ListItem", "position": 2, "name": {{ blog.title | json }}, "item": {{ shop.url | append: blog.url | json }} }
+            ,{ "@type": "ListItem", "position": 3, "name": {{ article.title | json }} }
+        {%- endcase -%}
+      ]
+    }
+    </script>
+  {%- endif -%}
+{%- endif -%}

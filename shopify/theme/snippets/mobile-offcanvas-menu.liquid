@@ -1,0 +1,268 @@
+{% liquid
+  assign theme_rtl = false
+  if settings.enable_rtl and settings.langauges_rtl == blank
+    assign theme_rtl = true
+  endif
+
+  if settings.enable_rtl and settings.langauges_rtl != blank
+    assign rtl_languages = settings.langauges_rtl | split: ','
+    for language in rtl_languages
+      if language == request.locale.iso_code
+        assign theme_rtl = true
+      endif
+    endfor
+  endif
+%}
+<link rel="stylesheet" href="{{ 'mobile-offcanvas-menu.css' | asset_url }}" media="print" onload="this.media='all'">
+<noscript>{{ 'mobile-offcanvas-menu.css' | asset_url | stylesheet_tag }}</noscript>
+{% if theme_rtl %}
+  {{ 'mobile-offcanvas-menu-rtl.css' | asset_url | stylesheet_tag }}
+{% endif %}
+<style>
+      .offcanvas-header {
+            position: fixed;
+            z-index: 9999;
+            top: 0;
+            right: auto;
+            left: 0;
+            width: 100%;
+            max-height: 100vh;
+            transition: var(--transition);
+            transform: translateX(-100%);
+            background-color: rgba(var(--color-background));
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+            overflow-y: scroll;
+            visibility: hidden;
+          }
+          .offcanvas-overlay {
+            position: fixed;
+            z-index: 9998;
+            top: 0;
+            left: 0;
+            visibility: hidden;
+            width: 100%;
+            height: 100%;
+            transition: var(--transition);
+            opacity: 0;
+            background-color: rgba(var(--color-foreground));
+          }
+          .offcanvas__inner {
+              position: relative;
+              min-height: 100vh;
+              padding-bottom: 2rem;
+              display: flex;
+              flex-direction: column;
+          }
+          /* Offacnvas Logo */
+          .offcanvas__logo {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            padding: 20px;
+            background-color: rgba(var(--color-background));
+          }
+          .offcanvas__logo_link {
+              position: relative;
+              display: flex;
+              max-width: 100%;
+              word-break: break-word;
+              padding-right: 10px;
+          }
+          .offcanvas__close_btn {
+            position: relative;
+            align-self: center;
+            width: 22px;
+            height: 24px;
+            padding: 0;
+            text-indent: -9999px;
+            border: none;
+            background-color: transparent;
+            flex-shrink: 0;
+        }
+          .offcanvas__close_btn::before, .offcanvas__close_btn::after {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            margin-top: -1px;
+            content: "";
+            transform: rotate(45deg);
+           background-color: rgba(var(--color-foreground));
+          }
+          .offcanvas__close_btn::after {
+            transform: rotate(-45deg);
+          }
+
+          /* Mobile Menu */
+            .offcanvas__menu {
+              overflow-y: auto;
+              height: 100%;
+              flex-grow: 1;
+          }
+
+          .offcanvas__menu_ul {
+            overflow: auto;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+          }
+
+          .offcanvas__menu_li {
+            position: relative;
+            border-bottom: 1px solid rgba(var(--color-foreground), 0.2);
+          }
+          .offcanvas__menu_li:first-child {
+            border-top: 1px solid rgba(var(--color-foreground), 0.2);
+          }
+          .offcanvas__menu_item {
+            line-height: 1;
+            display: block;
+            padding: 15px 20px;
+            word-break: break-word;
+          }
+          /* Mobile Sub Menu */
+          .offcanvas__sub_menu {
+            display: none;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+          }
+          {% if theme_rtl %}
+            .offcanvas__sub_menu_toggle {
+              font-size: 20px;
+              position: absolute;
+              z-index: 9;
+              top: 0;
+              left: 0;
+              width: 40px;
+              height: 46px;
+              padding: 0;
+              border: none;
+              border-radius: 0;
+              background-color: transparent;
+            }
+            {% else %}
+             .offcanvas__sub_menu_toggle {
+              font-size: 20px;
+              position: absolute;
+              z-index: 9;
+              top: 0;
+              right: 0;
+              width: 40px;
+              height: 46px;
+              padding: 0;
+              border: none;
+              border-radius: 0;
+              background-color: transparent;
+            }
+            {% endif %}
+          .offcanvas__sub_menu_toggle::before, .offcanvas__sub_menu_toggle::after {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 12px;
+            height: 2px;
+            content: "";
+            transition: var(--transition);
+            transform: translateX(-50%) translateY(-50%);
+            background-color: rgba(var(--color-foreground), 0.5);
+          }
+          .offcanvas__sub_menu_toggle:not(.active)::after {
+            transform: translateX(-50%) translateY(-50%) rotate(90deg);
+          }
+          .offcanvas__logo span.h2 {
+              margin: 0;
+          }
+         @media only screen and (min-width: 575px){
+           .offcanvas-header {
+              max-width: 55rem;
+           }
+         }
+        .mobile--menu-header-button {
+      background: transparent;
+      border: 0.15rem solid rgba(var(--color-foreground), 0.3);
+      font-size: 1.5rem;
+      padding: 0.2rem 1.5rem;
+      border-radius: 0.4rem;
+  }
+           .mobile--menu-header-button.active{
+               background-color: rgba(var(--color-button),var(--alpha-button-background));
+               border-color: rgba(var(--color-button),var(--alpha-button-background));
+               color: rgb(var(--color-button-text));
+           }
+      .mobile--menu-header-button + .mobile--menu-header-button {
+        margin-left: 0.5rem;
+    }
+</style>
+
+<div class="offcanvas-header" tabindex="-1">
+  <div class="offcanvas__inner">
+    <div class="offcanvas__logo">
+      {% if section.settings.vertical_menu %}
+        <div class="offcanvas__header--menu--type">
+          <button class="mobile__main--menu mobile--menu-header-button active">{{ 'sections.header.menu' | t }}</button>
+          <button class="mobile__categories--menu mobile--menu-header-button">
+            {{ 'sections.header.categories_menu' | t }}
+          </button>
+        </div>
+      {% else %}
+        {%- render 'header-logo', className: 'offcanvas__logo_link' -%}
+      {% endif %}
+      <button class="offcanvas__close_btn">close</button>
+    </div>
+    <nav class="offcanvas__menu mobile__main-menu--list">
+      {%- render 'mobile-menu-nav', account_icon: account_icon, wishlist_icon: wishlist_icon -%}
+    </nav>
+
+    <!-- s -->
+    
+
+    <!-- e -->
+
+    <div class="offcanvas__footer">
+      {%- if shop.customer_accounts_enabled and account_icon -%}
+        <h4 class="mb-0">{{ 'customer.my_account' | t }}</h4>
+        <a
+          href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}"
+          class="button button--primary button--full-width button--with-icon"
+        >
+          {%- if customer -%}
+            <span class="button--icon button--icon-right">
+              {% render 'icon-account' %}
+            </span>
+          {%- else -%}
+            <span class="button--icon button--icon-right">
+              {% render 'icon-account' %}
+            </span>
+          {%- endif -%}
+          <span class="offcanvas__menu_text__icon">
+            {%- if customer -%}{{ 'customer.go_to_dashboard' | t }}{%- else -%}{{ 'customer.log_in' | t }}{%- endif -%}
+          </span>
+        </a>
+
+        {%- unless customer -%}
+          <a
+            href="{{ routes.account_register_url }}"
+            class="button button--secondary button--full-width"
+          >
+            <span class="offcanvas__menu_text__icon">
+              {{ 'customer.register.name' | t }}
+            </span>
+          </a>
+        {%- endunless -%}
+      {%- endif -%}
+    </div>
+    <div class="offcanvas__localziation">
+      {% render 'localization-form',
+        form_currency_id: 'mobileCountryForm',
+        form_language_id: 'mobileLanguageForm',
+        dropdown_position: 'dropdown__top--left-position',
+        enable_country_selector: section.settings.enable_country_selector,
+        enable_language_selector: section.settings.enable_language_selector,
+        place: 'header'
+      %}
+    </div>
+  </div>
+</div>
+<div class="offcanvas-overlay"></div>

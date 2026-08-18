@@ -1,0 +1,276 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "My Tape Store Redesign",
+    "theme_version": "1.0.0",
+    "theme_author": "My Tape Store",
+    "theme_documentation_url": "https://mytapestore.com.au",
+    "theme_support_url": "https://mytapestore.com.au/pages/contact"
+  },
+  {
+    "name": "Brand",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Colours, type and spacing come from the design system in mts-theme.css and are deliberately not editable here — changing them piecemeal is how a considered palette turns into a generic one. The brand colour below only feeds the browser theme-colour meta tag."
+      },
+      {
+        "type": "color",
+        "id": "brand_colour",
+        "label": "Browser theme colour",
+        "default": "#df3c22"
+      },
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo (dark header)",
+        "info": "Leave empty to use the packaged logo. 196×34 renders 1:1."
+      },
+      {
+        "type": "image_picker",
+        "id": "logo_light",
+        "label": "Logo (light, for the footer)"
+      },
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon"
+      },
+      {
+        "type": "checkbox",
+        "id": "splash_enabled",
+        "label": "Intro splash on first visit",
+        "default": false,
+        "info": "A 0.9s logo title card, shown once per session. Skipped for visitors who prefer reduced motion."
+      },
+      {
+        "type": "textarea",
+        "id": "home_meta_description",
+        "label": "Home page meta description",
+        "info": "Used only when Online Store > Preferences has none. Aim for 150-160 characters.",
+        "default": "Shop premium adhesive tapes online at My Tape Store. Double-sided, foam, foil, masking, packaging and safety tapes — trade-grade brands, fast Australia-wide delivery."
+      }
+    ]
+  },
+  {
+    "name": "Contact",
+    "settings": [
+      {
+        "type": "text",
+        "id": "phone",
+        "label": "Phone number",
+        "default": "+61 3 4061 6287"
+      },
+      {
+        "type": "text",
+        "id": "phone_href",
+        "label": "Phone number (dial format)",
+        "default": "+61340616287"
+      },
+      {
+        "type": "text",
+        "id": "email",
+        "label": "Email address",
+        "default": "info@mytapestore.com.au"
+      },
+      {
+        "type": "text",
+        "id": "hours",
+        "label": "Opening hours",
+        "default": "Mon–Fri · 9:00 AM – 5:00 PM AEST"
+      },
+      {
+        "type": "text",
+        "id": "abn",
+        "label": "ABN",
+        "default": "93 878 995 217"
+      }
+    ]
+  },
+  {
+    "name": "Cart",
+    "settings": [
+      {
+        "type": "number",
+        "id": "free_shipping_threshold",
+        "label": "Free shipping threshold",
+        "default": 100,
+        "info": "In dollars. Drives the progress bar on the cart page."
+      },
+      {
+        "type": "header",
+        "content": "Volume pricing"
+      },
+      {
+        "type": "paragraph",
+        "content": "Each product's price breaks come from its own mts.volume_tiers metafield, scraped from mytapestore.com.au by scripts/push_tiers.py — 81 of 131 products have them, in nine different shapes. Products without the metafield show nothing. Re-run that script whenever the breaks change on the original store."
+      },
+      {
+        "type": "paragraph",
+        "content": "IMPORTANT: the theme only DISPLAYS these prices. Nothing discounts the cart yet, so until a matching discount is live in Shopify Admin → Discounts, the table is a price guide, not a promise. Turn it off below if that gap is a problem."
+      },
+      {
+        "type": "checkbox",
+        "id": "show_volume_tiers",
+        "label": "Show the volume price-break table",
+        "default": true
+      },
+      {
+        "type": "image_picker",
+        "id": "default_collection_banner",
+        "label": "Default collection banner",
+        "info": "Used only by collections with no banner of their own — including /collections/all, which Shopify generates without a collection record."
+      }
+    ]
+  },
+  {
+    "name": "Social",
+    "settings": [
+      {
+        "type": "text",
+        "id": "social_facebook",
+        "label": "Facebook URL"
+      },
+      {
+        "type": "text",
+        "id": "social_instagram",
+        "label": "Instagram URL"
+      },
+      {
+        "type": "text",
+        "id": "social_youtube",
+        "label": "YouTube URL"
+      },
+      {
+        "type": "text",
+        "id": "social_x",
+        "label": "X URL"
+      },
+      {
+        "type": "text",
+        "id": "social_linkedin",
+        "label": "LinkedIn URL"
+      }
+    ]
+  },
+  {
+    "name": "Product card",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "show_wishlist",
+        "label": "Show the wishlist heart",
+        "default": true,
+        "info": "Wishlists are stored in the browser only — they do not sync to a customer account."
+      },
+      {
+        "type": "text",
+        "id": "bestseller_tag",
+        "label": "Bestseller tag",
+        "default": "bestseller",
+        "info": "Products carrying this tag show the Bestseller badge."
+      }
+    ]
+  },
+  {
+    "name": "Newsletter popup",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "popup_enabled",
+        "label": "Show the newsletter popup",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "popup_delay",
+        "label": "Show after",
+        "min": 3,
+        "max": 60,
+        "step": 1,
+        "default": 10,
+        "unit": "s"
+      },
+      {
+        "type": "range",
+        "id": "popup_snooze",
+        "label": "Don't show again for",
+        "min": 1,
+        "max": 90,
+        "step": 1,
+        "default": 30,
+        "unit": "d",
+        "info": "After someone dismisses it. A successful signup hides it permanently."
+      },
+      {
+        "type": "text",
+        "id": "popup_title",
+        "label": "Heading",
+        "default": "Join our newsletter"
+      },
+      {
+        "type": "textarea",
+        "id": "popup_text",
+        "label": "Text",
+        "default": "New stock, bulk pricing and the occasional job-site tip. Unsubscribe anytime."
+      },
+      {
+        "type": "text",
+        "id": "popup_cta",
+        "label": "Button",
+        "default": "Subscribe"
+      }
+    ]
+  },
+  {
+    "name": "Chat",
+    "settings": [
+      {
+        "type": "select",
+        "id": "chat_mode",
+        "label": "Chat backend",
+        "default": "app",
+        "options": [
+          {
+            "value": "app",
+            "label": "SmartBot (the installed app)"
+          },
+          {
+            "value": "builtin",
+            "label": "Built-in FAQ assistant"
+          }
+        ],
+        "info": "SmartBot needs its app embed switched on for this theme (Customize → App embeds). If it never loads, the button falls back to the built-in assistant so there is always a working chat."
+      },
+      {
+        "type": "checkbox",
+        "id": "chat_nudge",
+        "label": "Show SmartBot's pop-up greeting",
+        "default": false,
+        "info": "SmartBot's unprompted bubble follows the shopper between pages and covers product cards."
+      }
+    ]
+  },
+  {
+    "name": "Accounts",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Storefront API token for the themed sign-in. This token is PUBLIC by design — it is meant to be read by the browser and grants only unauthenticated storefront access. It is not the Admin token and must never be replaced with one."
+      },
+      {
+        "type": "text",
+        "id": "storefront_token",
+        "label": "Storefront API access token",
+        "info": "Admin > Apps > your app > API credentials > Storefront API access token."
+      },
+      {
+        "type": "checkbox",
+        "id": "custom_auth",
+        "label": "Use the themed sign-in form",
+        "default": false,
+        "info": "Off = hand off to Shopify's hosted sign-in. On = sign in on this site. Note: a themed session does NOT carry into checkout."
+      }
+    ]
+  }
+]

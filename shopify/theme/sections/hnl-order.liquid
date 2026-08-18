@@ -1,0 +1,106 @@
+{%- comment -%}
+  Single order detail. Replaces Suruchi's main-order.
+
+  Line items carry their image and variant title, so a trade buyer can see at a
+  glance which width and side they ordered last time — the single most common
+  reason for opening an old order.
+
+  Fulfilment tracking is printed per line item because a split shipment gets
+  more than one tracking number, and showing only the first would be wrong.
+{%- endcomment -%}
+
+{% render 'hnl-account-shell', part: 'open', current: 'orders',
+   eyebrow: 'Order ' | append: order.name,
+   title: order.created_at | date: 'Placed %d %B %Y' %}
+
+<p class="acct__back"><a href="{{ routes.account_url }}">&larr; All orders</a></p>
+
+<div class="acct__card acct__card--flush">
+  <div class="acct__ordhead">
+    <div>
+      <span class="acct__pill{% if order.financial_status == 'paid' %} acct__pill--ok{% endif %}">{{ order.financial_status_label }}</span>
+      <span class="acct__pill{% if order.fulfillment_status == 'fulfilled' %} acct__pill--ok{% endif %}">{{ order.fulfillment_status_label }}</span>
+    </div>
+    {%- if order.cancelled -%}
+      <p class="acct__err">Cancelled {{ order.cancelled_at | date: '%d %b %Y' }} &mdash; {{ order.cancel_reason_label }}</p>
+    {%- endif -%}
+  </div>
+
+  <table class="acct__table acct__table--items">
+    <caption class="visually-hidden">Items in order {{ order.name }}</caption>
+    <thead>
+      <tr>
+        <th scope="col">Item</th>
+        <th scope="col" class="acct__num">Qty</th>
+        <th scope="col" class="acct__num">Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for line in order.line_items -%}
+        <tr>
+          <th scope="row" data-label="Item">
+            <div class="acct__line">
+              {%- if line.image -%}
+                <span class="acct__line-img">
+                  {{ line.image | image_url: width: 140 | image_tag: alt: line.title, loading: 'lazy', widths: '70, 140' }}
+                </span>
+              {%- endif -%}
+              <span class="acct__line-txt">
+                <b>{{ line.product.title | default: line.title }}</b>
+                {%- if line.variant.title and line.variant.title != 'Default Title' -%}
+                  <span class="acct__line-var">{{ line.variant.title }}</span>
+                {%- endif -%}
+                {%- if line.sku != blank -%}<span class="acct__line-sku">SKU {{ line.sku }}</span>{%- endif -%}
+                {%- if line.fulfillment -%}
+                  <span class="acct__line-track">
+                    Shipped {{ line.fulfillment.created_at | date: '%d %b' }}
+                    {%- if line.fulfillment.tracking_url -%}
+                      &middot; <a href="{{ line.fulfillment.tracking_url }}" rel="noopener" target="_blank">Track {{ line.fulfillment.tracking_number }}</a>
+                    {%- endif -%}
+                  </span>
+                {%- endif -%}
+              </span>
+            </div>
+          </th>
+          <td data-label="Qty" class="acct__num">{{ line.quantity }}</td>
+          <td data-label="Total" class="acct__num">{{ line.final_line_price | money }}</td>
+        </tr>
+      {%- endfor -%}
+    </tbody>
+  </table>
+
+  <div class="acct__totals">
+    <div class="acct__sumrow"><span>Subtotal</span><b>{{ order.line_items_subtotal_price | money }}</b></div>
+    {%- for discount in order.cart_level_discount_applications -%}
+      <div class="acct__sumrow acct__sumrow--disc"><span>{{ discount.title }}</span><b>&minus;{{ discount.total_allocated_amount | money }}</b></div>
+    {%- endfor -%}
+    {%- for line in order.shipping_methods -%}
+      <div class="acct__sumrow"><span>Shipping &mdash; {{ line.title }}</span><b>{{ line.price | money }}</b></div>
+    {%- endfor -%}
+    {%- for tax in order.tax_lines -%}
+      <div class="acct__sumrow"><span>{{ tax.title }}</span><b>{{ tax.price | money }}</b></div>
+    {%- endfor -%}
+    <div class="acct__sumrow acct__sumrow--total"><span>Total</span><b>{{ order.total_price | money }} {{ order.currency }}</b></div>
+  </div>
+</div>
+
+<div class="acct__addrgrid">
+  {%- if order.shipping_address -%}
+    <section class="acct__card">
+      <div class="acct__card-head"><h2>Delivery Address</h2></div>
+      <address class="acct__address">{{ order.shipping_address | format_address }}</address>
+    </section>
+  {%- endif -%}
+  {%- if order.billing_address -%}
+    <section class="acct__card">
+      <div class="acct__card-head"><h2>Billing Address</h2></div>
+      <address class="acct__address">{{ order.billing_address | format_address }}</address>
+    </section>
+  {%- endif -%}
+</div>
+
+{% render 'hnl-account-shell', part: 'close' %}
+
+{% schema %}
+{ "name": "HooknLoop order", "settings": [] }
+{% endschema %}

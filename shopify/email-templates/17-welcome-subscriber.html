@@ -1,0 +1,173 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="color-scheme" content="light only">
+  <title>Thanks for signing up</title>
+  <!--
+    WELCOME — newsletter signup. Flow WHjLic, trigger: added to Email List.
+
+    LAYOUT NOTES
+    - The card is width="100%" with max-width:600px, NOT width="600". A fixed
+      600 relies on the media query firing; clients that strip <style> then
+      render a 600px card inside a 390px screen and clip the right edge.
+      max-width degrades safely everywhere.
+    - Product tiles stay 2-up on mobile. Stacking them full-width made four
+      square photos ~350px tall each and the email never ended.
+    - Application photos DO stack — they're landscape, so they read better wide.
+    - All four product images are square (verified), so the grid is even
+      without any cropping.
+  -->
+  <style type="text/css">
+    body,table,td,a{-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;}
+    table,td{mso-table-lspace:0pt;mso-table-rspace:0pt;}
+    img{-ms-interpolation-mode:bicubic;border:0;height:auto;line-height:100%;outline:none;text-decoration:none;}
+    body{margin:0!important;padding:0!important;width:100%!important;background:#efece6;}
+    a{color:#e8590c;}
+
+    @media only screen and (max-width:600px){
+      .px{padding-left:18px!important;padding-right:18px!important;}
+      .ctr{text-align:center!important;}
+      .btnw{width:100%!important;}
+      .btnw td{width:100%!important;}
+      .btnw a{display:block!important;text-align:center!important;padding-left:0!important;padding-right:0!important;}
+      /* landscape application photos stack full width */
+      .stack{display:block!important;width:100%!important;padding:0 0 16px 0!important;text-align:center!important;}
+      .stack img{width:100%!important;max-width:100%!important;}
+      .stack-last{padding-bottom:0!important;}
+      .h2{font-size:19px!important;}
+      .h1{font-size:24px!important;}
+    }
+  </style>
+</head>
+<body style="margin:0;padding:0;background:#efece6;">
+
+  <div style="display:none;font-size:1px;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;mso-hide:all;color:#efece6;">Here's what you'll get, and how often.</div>
+
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#efece6;">
+   <tr><td align="center" style="padding:22px 12px 26px;">
+
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;background:#ffffff;border-radius:18px;overflow:hidden;">
+
+      <!-- Masthead -->
+      <tr><td style="font-size:0;line-height:0;padding:0;background:#153fae;">
+        <a href="https://hooknloop.com.au" target="_blank" style="text-decoration:none;">
+          <img src="https://d3k81ch9hvuctc.cloudfront.net/company/SbHZqm/images/3955b0e1-6917-45d9-98ed-a42b66e0a180.jpeg" width="600" alt="HooknLoop — High Quality HooknLoop Solutions" style="display:block;width:100%;max-width:600px;height:auto;border:0;">
+        </a>
+      </td></tr>
+      <tr><td style="height:3px;line-height:3px;font-size:0;background:#e8590c;">&nbsp;</td></tr>
+
+      <!-- Lead -->
+      <tr><td class="px ctr" style="padding:36px 32px 0;">
+        <h1 class="h1" style="font-family:Georgia,'Times New Roman',serif;font-size:28px;font-weight:700;line-height:1.25;color:#0b2447;margin:0;">Thanks for signing up{% if first_name %}, {{ first_name }}{% endif %}</h1>
+        <p style="font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.7;color:#3a4152;margin:14px 0 0;">We'll email you when there's something worth knowing — new products, the odd offer, and tips for getting things to hold. Once or twice a month, no more.</p>
+      </td></tr>
+
+      <!-- Product grid — 2 up, stays 2 up on mobile -->
+      <tr><td class="px" style="padding:36px 32px 0;">
+        <div class="h2 ctr" style="font-family:Georgia,'Times New Roman',serif;font-size:21px;font-weight:700;color:#0b2447;">What we make</div>
+
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:18px;">
+          <tr>
+            <td width="50%" valign="top" style="padding:0 7px 14px 0;">
+              <a href="https://hooknloop.com.au/products/self-adhesive-hook-and-loop-roll" target="_blank" style="text-decoration:none;display:block;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border:1px solid #e9e4db;border-radius:14px;overflow:hidden;">
+                  <tr><td style="font-size:0;line-height:0;background:#f5f2ec;"><img src="https://cdn.shopify.com/s/files/1/0975/4509/3489/files/Untitled-1_29.jpg?width=600" width="262" alt="Self adhesive tape" style="display:block;width:100%;max-width:262px;height:auto;"></td></tr>
+                  <tr><td align="center" style="padding:12px 10px 14px;">
+                    <div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;font-weight:700;color:#0b2447;line-height:1.3;">Self adhesive tape</div>
+                    <div style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#6a7180;margin-top:3px;">Peel and stick</div>
+                  </td></tr>
+                </table>
+              </a>
+            </td>
+            <td width="50%" valign="top" style="padding:0 0 14px 7px;">
+              <a href="https://hooknloop.com.au/products/sew-on-hook-and-loop-fastener" target="_blank" style="text-decoration:none;display:block;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border:1px solid #e9e4db;border-radius:14px;overflow:hidden;">
+                  <tr><td style="font-size:0;line-height:0;background:#f5f2ec;"><img src="https://cdn.shopify.com/s/files/1/0975/4509/3489/files/black-hook-50-mm-copy.jpg?width=600" width="262" alt="Sew on tape" style="display:block;width:100%;max-width:262px;height:auto;"></td></tr>
+                  <tr><td align="center" style="padding:12px 10px 14px;">
+                    <div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;font-weight:700;color:#0b2447;line-height:1.3;">Sew on</div>
+                    <div style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#6a7180;margin-top:3px;">For fabric and gear</div>
+                  </td></tr>
+                </table>
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td width="50%" valign="top" style="padding:0 7px 0 0;">
+              <a href="https://hooknloop.com.au/products/hook-and-loop-dots" target="_blank" style="text-decoration:none;display:block;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border:1px solid #e9e4db;border-radius:14px;overflow:hidden;">
+                  <tr><td style="font-size:0;line-height:0;background:#f5f2ec;"><img src="https://cdn.shopify.com/s/files/1/0975/4509/3489/files/Untitled-12_1.jpg?width=600" width="262" alt="Hook and loop dots" style="display:block;width:100%;max-width:262px;height:auto;"></td></tr>
+                  <tr><td align="center" style="padding:12px 10px 14px;">
+                    <div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;font-weight:700;color:#0b2447;line-height:1.3;">Dots</div>
+                    <div style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#6a7180;margin-top:3px;">Fast, repeatable fixings</div>
+                  </td></tr>
+                </table>
+              </a>
+            </td>
+            <td width="50%" valign="top" style="padding:0 0 0 7px;">
+              <a href="https://hooknloop.com.au/products/hook-and-loop-adjustable-strap" target="_blank" style="text-decoration:none;display:block;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border:1px solid #e9e4db;border-radius:14px;overflow:hidden;">
+                  <tr><td style="font-size:0;line-height:0;background:#f5f2ec;"><img src="https://cdn.shopify.com/s/files/1/0975/4509/3489/files/Image_of_1.png?width=600" width="262" alt="Reusable straps" style="display:block;width:100%;max-width:262px;height:auto;"></td></tr>
+                  <tr><td align="center" style="padding:12px 10px 14px;">
+                    <div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;font-weight:700;color:#0b2447;line-height:1.3;">Straps</div>
+                    <div style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#6a7180;margin-top:3px;">Undo and reuse</div>
+                  </td></tr>
+                </table>
+              </a>
+            </td>
+          </tr>
+        </table>
+      </td></tr>
+
+      <!-- CTA -->
+      <tr><td align="center" class="px" style="padding:30px 32px 0;">
+        <table role="presentation" class="btnw" cellpadding="0" cellspacing="0" border="0"><tr><td align="center" bgcolor="#e8590c" style="border-radius:10px;">
+          <a href="https://hooknloop.com.au/collections/all" target="_blank" style="display:inline-block;padding:14px 32px;font-family:Arial,Helvetica,sans-serif;font-size:15px;font-weight:700;color:#ffffff;text-decoration:none;">Shop the range</a>
+        </td></tr></table>
+      </td></tr>
+
+      <!-- Applications — landscape, so these stack on mobile -->
+      <tr><td class="px" style="padding:36px 32px 0;">
+        <div class="h2 ctr" style="font-family:Georgia,'Times New Roman',serif;font-size:21px;font-weight:700;color:#0b2447;">Where people use it</div>
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:18px;"><tr>
+          <td width="33.33%" class="stack" valign="top" align="center" style="padding-right:7px;">
+            <img src="https://hooknloop-newsletter.vercel.app/img/industries/signage-displays-hero.jpg" width="174" alt="Signs and displays" style="display:block;width:100%;max-width:174px;height:auto;border-radius:12px;">
+            <div style="font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:700;color:#0b2447;margin-top:9px;">Signs and displays</div>
+          </td>
+          <td width="33.33%" class="stack" valign="top" align="center" style="padding:0 4px;">
+            <img src="https://hooknloop-newsletter.vercel.app/img/industries/automotive-caravan-rv-hero.jpg" width="174" alt="Cars and caravans" style="display:block;width:100%;max-width:174px;height:auto;border-radius:12px;">
+            <div style="font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:700;color:#0b2447;margin-top:9px;">Cars and caravans</div>
+          </td>
+          <td width="33.33%" class="stack stack-last" valign="top" align="center" style="padding-left:7px;">
+            <img src="https://hooknloop-newsletter.vercel.app/img/industries/warehousing-logistics-hero.jpg" width="174" alt="Warehouses" style="display:block;width:100%;max-width:174px;height:auto;border-radius:12px;">
+            <div style="font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:700;color:#0b2447;margin-top:9px;">Warehouses</div>
+          </td>
+        </tr></table>
+      </td></tr>
+
+      <tr><td style="height:36px;line-height:36px;font-size:0;">&nbsp;</td></tr>
+
+      <!-- Footer -->
+      <tr><td class="px ctr" style="background:#0b2447;padding:28px 32px;">
+        <img src="https://hooknloop-newsletter.vercel.app/img/logo-footer.png" width="132" alt="HooknLoop" style="display:block;width:132px;max-width:132px;height:auto;border:0;">
+        <p style="font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.9;margin:16px 0 0;">
+          <a href="https://hooknloop.com.au/collections/all" style="color:#ffffff;text-decoration:none;">Shop all</a> &nbsp;&middot;&nbsp;
+          <a href="https://hooknloop.com.au/pages/bulk-orders" style="color:#ffffff;text-decoration:none;">Bulk orders</a> &nbsp;&middot;&nbsp;
+          <a href="https://hooknloop.com.au/pages/contact" style="color:#ffffff;text-decoration:none;">Contact</a>
+        </p>
+        <p style="font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.9;margin:8px 0 0;">
+          <a href="mailto:info@hooknloop.com.au" style="color:#ffffff;text-decoration:none;">info@hooknloop.com.au</a> &nbsp;&middot;&nbsp;
+          <a href="tel:+61340616287" style="color:#ffffff;text-decoration:none;">+61 340 616 287</a>
+        </p>
+        <p style="font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:1.7;color:#6f86a8;margin:18px 0 0;">You're getting this because you signed up at hooknloop.com.au. <a href="{% unsubscribe_link %}" style="color:#9fb0cc;text-decoration:underline;">Unsubscribe</a></p>
+      </td></tr>
+
+    </table>
+
+   </td></tr>
+  </table>
+
+</body>
+</html>

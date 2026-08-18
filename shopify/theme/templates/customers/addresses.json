@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "main": {
+      "type": "hnl-addresses",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

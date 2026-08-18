@@ -1,0 +1,235 @@
+{%- comment -%}
+  HooknLoop — Abandoned CART
+  ==========================
+  For the Flow trigger "Cart abandoned" — added to cart, never reached checkout.
+  The sibling file abandoned-checkout.liquid covers the later moment (reached
+  checkout, entered details, didn't pay). Keep them separate; they are not the
+  same customer.
+
+  CART vs CHECKOUT — why the copy differs
+  A cart abandoner never gave you an address or a shipping choice. There is
+  nothing "saved" for them to resume, so promising that would be a lie. They
+  were still deciding. So this email re-presents what they picked and answers
+  the questions that stop a trade buyer mid-decision — stock, delivery cost,
+  custom sizing — rather than pushing them to finish something they never
+  started.
+
+  ⚠ VARIABLE NAMES — CHECK THESE FIRST
+  Shopify's Messaging/Flow marketing emails do not expose the same variables as
+  the classic Liquid notifications. The loop below uses the notification-style
+  names, which is the best-documented set:
+
+      line_items        the items in the cart
+      line.title / .variant.title / .quantity / .line_price
+      url               the link back to the cart
+      subtotal_price
+      customer.first_name
+
+  If the Messaging editor rejects any of these, or renders them blank, the
+  fastest fix is to delete the product loop from this file and drop Shopify's
+  own dynamic product block in its place — that block is populated server-side
+  and cannot be got wrong. Everything else here will still apply.
+
+  NO DISCOUNT, NO COUNTDOWN — see shopify/flows/abandoned-cart-email.md.
+{%- endcomment -%}
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="color-scheme" content="light only">
+  <meta name="supported-color-schemes" content="light only">
+  <title>You left something behind</title>
+  <style type="text/css">
+    body,table,td,a { -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; }
+    table,td { mso-table-lspace:0pt; mso-table-rspace:0pt; }
+    img { -ms-interpolation-mode:bicubic; border:0; height:auto; line-height:100%; outline:none; text-decoration:none; }
+    body { margin:0 !important; padding:0 !important; width:100% !important; background:#f4f7fb; }
+    a { color:#b8460a; }
+    @media only screen and (max-width:600px){
+      .full { width:100% !important; }
+      .px { padding-left:22px !important; padding-right:22px !important; }
+      .stack { display:block !important; width:100% !important; }
+      .stack-gap { height:22px !important; line-height:22px !important; font-size:22px !important; }
+      .btn a { display:block !important; text-align:center !important; }
+      .h1 { font-size:27px !important; line-height:1.18 !important; }
+    }
+  </style>
+</head>
+<body style="margin:0; padding:0; background:#f4f7fb;">
+
+  <div style="display:none; font-size:1px; line-height:1px; max-height:0; max-width:0; opacity:0; overflow:hidden; mso-hide:all; color:#f4f7fb;">
+    Still in your cart — stocked in Australia and ready to dispatch.
+  </div>
+
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f4f7fb;">
+    <tr>
+      <td align="center" style="padding:0 12px;">
+        <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" class="full"
+               style="width:600px; max-width:600px; margin:26px 0; background:#ffffff; border-radius:14px; overflow:hidden;">
+
+          <!-- ══ MASTHEAD ══════════════════════════════════════════════════ -->
+          <tr>
+            <td style="background:#ffffff; padding:26px 30px 22px;" class="px">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td align="left" valign="middle">
+                    <img src="https://cdn.shopify.com/s/files/1/0975/4509/3489/files/logo_5.png?v=1767767497" alt="HooknLoop" width="180" height="32" style="display:block; width:180px; height:32px; border:0;">
+                  </td>
+                  <td align="right" valign="middle">
+                    <div style="font-family:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace; font-size:9.5px; font-weight:600; letter-spacing:0.16em; color:#5a6b8c; text-transform:uppercase;">Your cart</div>
+                    <div style="font-family:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace; font-size:17px; font-weight:700; color:#142548; padding-top:3px;">
+                      {{ line_items.size }} item{% if line_items.size != 1 %}s{% endif %}
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr><td style="border-top:1px solid #e7ecf4; font-size:0; line-height:0;">&nbsp;</td></tr>
+
+          <!-- ══ MESSAGE ═══════════════════════════════════════════════════ -->
+          {%- comment -%}
+            No "we've saved your details" here — a cart abandoner never gave you
+            any. Claiming otherwise is the fastest way to lose a trade buyer's
+            trust before they have even bought anything.
+          {%- endcomment -%}
+          <tr>
+            <td style="padding:30px 30px 0;" class="px">
+              <h1 class="h1" style="margin:0; font-family:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif; font-size:31px; line-height:1.14; font-weight:800; letter-spacing:-0.02em; color:#142548;">
+                {%- if customer.first_name -%}{{ customer.first_name }}, you left{%- else -%}You left{%- endif -%}<br>something behind.
+              </h1>
+              <p style="margin:15px 0 0; font-family:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif; font-size:16px; line-height:1.62; color:#5a6b8c;">
+                Still in your cart, still in stock. Here's what you picked.
+              </p>
+            </td>
+          </tr>
+
+          <!-- ══ THE CART ══════════════════════════════════════════════════ -->
+          <tr>
+            <td style="padding:26px 30px 0;" class="px">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-top:2px solid #142548;">
+                {%- for line in line_items %}
+                  <tr>
+                    <td valign="top" width="62" style="padding:15px 14px 15px 0; border-bottom:1px solid #e7ecf4;">
+                      {%- if line.image %}
+                        <img src="{{ line | img_url: 'compact_cropped' }}" width="62" height="62" alt="" style="display:block; width:62px; height:62px; border-radius:8px; background:#f4f7fb;">
+                      {%- else %}
+                        <div style="width:62px; height:62px; border-radius:8px; background:#f4f7fb;">&nbsp;</div>
+                      {%- endif %}
+                    </td>
+                    <td valign="top" style="padding:15px 12px 15px 0; border-bottom:1px solid #e7ecf4;">
+                      <div style="font-family:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif; font-size:15px; font-weight:700; line-height:1.4; color:#142548;">{{ line.title | default: line.product.title }}</div>
+                      {%- if line.variant.title and line.variant.title != 'Default Title' %}
+                        <div style="font-family:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace; font-size:11.5px; color:#5a6b8c; padding-top:5px;">{{ line.variant.title }}</div>
+                      {%- endif %}
+                      <div style="font-family:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace; font-size:12px; font-weight:700; color:#142548; padding-top:7px;">&times;&nbsp;{{ line.quantity }}</div>
+                    </td>
+                    <td valign="top" align="right" style="padding:15px 0; border-bottom:1px solid #e7ecf4; white-space:nowrap;">
+                      <span style="font-family:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace; font-size:14.5px; font-weight:700; color:#142548;">{{ line.line_price | money }}</span>
+                    </td>
+                  </tr>
+                {%- endfor %}
+              </table>
+
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="padding-top:14px;">
+                <tr>
+                  <td style="padding:5px 0; font-family:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif; font-size:15px; font-weight:800; color:#142548;">Subtotal</td>
+                  <td align="right" style="padding:5px 0; font-family:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace; font-size:17px; font-weight:700; color:#142548;">{{ subtotal_price | money }}</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- ══ CTA ═══════════════════════════════════════════════════════ -->
+          <tr>
+            <td style="padding:24px 30px 0;" class="px">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0" class="btn">
+                <tr>
+                  <td align="center" bgcolor="#e87722" style="border-radius:10px;">
+                    <a href="{{ url | default: shop.url }}"
+                       style="display:inline-block; padding:15px 30px; font-family:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif; font-size:15.5px; font-weight:800; color:#142548; text-decoration:none; border-radius:10px;">
+                      Back to my cart &rarr;
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- ══ THREE FACTS ═══════════════════════════════════════════════ -->
+          {%- comment -%}
+            The three things that stop a trade buyer mid-decision: is it in
+            stock, what does delivery cost, and can I get my size. Free shipping
+            over $300 is a real threshold from the store's own rates.
+          {%- endcomment -%}
+          <tr>
+            <td style="padding:28px 30px 34px;" class="px">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f4f7fb; border-radius:12px;">
+                <tr>
+                  <td style="padding:18px 20px; font-family:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif; font-size:13.5px; line-height:1.85; color:#5a6b8c;">
+                    <span style="color:#142548; font-weight:700;">Stocked in Australia</span> — dispatched from our own warehouse, not drop-shipped.<br>
+                    <span style="color:#142548; font-weight:700;">Free shipping over $300</span> — on all standard domestic orders.<br>
+                    <span style="color:#142548; font-weight:700;">Need a custom size?</span> — we cut to length. Call before you order.
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- ══ FOOTER ════════════════════════════════════════════════════ -->
+          <tr>
+            <td style="background:#142548; padding:32px 30px;" class="px">
+              <img src="https://cdn.shopify.com/s/files/1/0975/4509/3489/files/hnl-email-logo-footer.png?v=1786003221" alt="HooknLoop" width="164" height="29" style="display:block; width:164px; height:29px; border:0;">
+              <div style="font-family:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif; font-size:13.5px; line-height:1.62; color:#8194b5; padding-top:14px; max-width:430px;">
+                Australian hook &amp; loop specialists — tapes, strips, dots and fasteners, stocked and dispatched locally.
+              </div>
+              <div style="border-top:1px solid rgba(255,255,255,0.13); margin-top:22px; padding-top:22px;">
+                <div style="font-family:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace; font-size:10px; font-weight:700; letter-spacing:0.16em; color:#f0842a; text-transform:uppercase; padding-bottom:12px;">Need a hand?</div>
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <td class="stack" valign="middle" style="white-space:nowrap; padding-right:18px;">
+                      <a href="tel:+61340616287" style="font-family:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace; font-size:16px; font-weight:700; color:#ffffff; text-decoration:none; white-space:nowrap;">+61&nbsp;3&nbsp;4061&nbsp;6287</a>
+                    </td>
+                    <td class="stack-gap" style="font-size:0; line-height:0; height:0;">&nbsp;</td>
+                    <td class="stack" valign="middle" align="right" style="white-space:nowrap;">
+                      <a href="mailto:info@hooknloop.com.au" style="font-family:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif; font-size:14px; color:#c9d3e6; text-decoration:none; border-bottom:1px solid rgba(201,211,230,0.38); white-space:nowrap;">info@hooknloop.com.au</a>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+              {%- comment -%}
+                unsubscribe_link is mandatory — Shopify rejects a marketing
+                template without it, and the Australian Spam Act requires a
+                working opt-out on commercial email regardless.
+
+                It is deliberately quiet rather than hidden: a hard-to-find
+                unsubscribe earns spam complaints, and a spam complaint costs
+                more deliverability than the subscriber was worth.
+              {%- endcomment -%}
+              <div style="border-top:1px solid rgba(255,255,255,0.13); margin-top:22px; padding-top:16px;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <td align="left">
+                      <a href="{{ shop.url }}" style="font-family:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif; font-size:13px; font-weight:700; color:#ffffff; text-decoration:none;">hooknloop.com.au</a>
+                    </td>
+                    <td align="right">
+                      <a href="{{ unsubscribe_link }}" style="font-family:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif; font-size:12px; color:#8194b5; text-decoration:underline;">Unsubscribe</a>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+
+  {%- comment -%} Required by Shopify: the open-tracking pixel. {%- endcomment -%}
+  {{ open_tracking_block }}
+
+</body>
+</html>

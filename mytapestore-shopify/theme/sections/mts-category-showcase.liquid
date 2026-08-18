@@ -1,0 +1,91 @@
+{%- comment -%}
+  "Our adhesive tapes collection" — ported from CategoryShowcase in home.jsx.
+  Eight category tiles, each with the category image, name and product count.
+
+  React picked the tiles automatically (top 8 by product count, excluding two
+  slugs). Shopify can't sort collections by product count in Liquid, so the
+  merchant picks them — which is also how the design actually wants to be
+  curated. The count still comes from the live collection.
+{%- endcomment -%}
+<section class="section section--paper">
+  <div class="wrap">
+    <div class="section-head">
+      {%- if section.settings.eyebrow != blank -%}<span class="eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
+      {%- if section.settings.heading != blank -%}<h2>{{ section.settings.heading }}</h2>{%- endif -%}
+      {%- if section.settings.text != blank -%}<p>{{ section.settings.text }}</p>{%- endif -%}
+    </div>
+
+    <div class="catx">
+      {%- for block in section.blocks -%}
+        {%- assign coll = collections[block.settings.collection] -%}
+        {%- if coll != empty -%}
+          <a href="{{ coll.url }}" class="catx__card" {{ block.shopify_attributes }}>
+            <div class="catx__imgwrap">
+              {%- if coll.image -%}
+                <img src="{{ coll.image | image_url: width: 480 }}"
+                     srcset="{{ coll.image | image_url: width: 200 }} 200w, {{ coll.image | image_url: width: 320 }} 320w, {{ coll.image | image_url: width: 480 }} 480w, {{ coll.image | image_url: width: 640 }} 640w"
+                     sizes="(min-width:1100px) 240px, (min-width:700px) 30vw, 44vw" alt="{{ coll.title | escape }}" loading="lazy" decoding="async" width="240" height="240">
+              {%- elsif coll.products.first.featured_media -%}
+                <img src="{{ coll.products.first.featured_media | image_url: width: 480 }}" alt="{{ coll.title | escape }}" loading="lazy" decoding="async" width="240" height="240">
+              {%- else -%}
+                {{ 'collection-1' | placeholder_svg_tag }}
+              {%- endif -%}
+            </div>
+            <div class="catx__body">
+              <div class="catx__text">
+                <b>{{ coll.title }}</b>
+                <span class="num">{{ 'collections.general.products_count' | t: count: coll.all_products_count }}</span>
+              </div>
+              <span class="catx__arrow">{% render 'mts-icon', name: 'arrowRight', size: 16 %}</span>
+            </div>
+          </a>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    {%- if section.settings.cta_label != blank -%}
+      <div class="section-cta">
+        <a href="{{ section.settings.cta_url | default: routes.all_products_collection_url }}" class="btn btn--ghost btn--lg">
+          {{ section.settings.cta_label }} {% render 'mts-icon', name: 'arrowRight', size: 18 %}
+        </a>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Category showcase",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Our adhesive tapes collection" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Discover the ideal tape for your job" },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text",
+      "default": "Browse our most popular categories — from double-sided and foam to hook & loop, safety and packaging."
+    },
+    { "type": "text", "id": "cta_label", "label": "Button", "default": "View all categories" },
+    { "type": "url", "id": "cta_url", "label": "Button link" }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category tile",
+      "limit": 12,
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Collection" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Category showcase",
+      "blocks": [
+        { "type": "category" }, { "type": "category" }, { "type": "category" }, { "type": "category" },
+        { "type": "category" }, { "type": "category" }, { "type": "category" }, { "type": "category" }
+      ]
+    }
+  ]
+}
+{% endschema %}

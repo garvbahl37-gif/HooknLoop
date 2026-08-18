@@ -1,0 +1,229 @@
+{%- comment -%}
+  Product FAQs — the real ones from hooknloop.com.au, scraped per product and
+  keyed by the store's own handles.
+
+  These replace a generic set I had written into templates/product.json. Those
+  were invented; these are the questions the store actually answers, in its own
+  words.
+
+  NOT every product has them: fire-retardant-adhesive, fire-retardant-sew-on,
+  heavy-duty-adhesive and hook-and-loop-for-fabric carry an FAQ section on the
+  live page with no items in it — the merchant never filled them. Those render
+  nothing here rather than borrowing another product's answers, which would put
+  words in the store's mouth. Worth filling in Shopify; until then this matches.
+
+  Regenerate by re-scraping if the store's FAQs change; there is no metafield to
+  read them from, and creating one needs the Admin API.
+{%- endcomment -%}
+
+<div class="pdp__faq-src" hidden></div>
+{%- case product.handle -%}
+  {%- when 'double-sided-hook-and-loop' -%}
+    <section class="pdp__block">
+      <h2>Questions, answered</h2>
+      <div class="pdp__faq">
+        <div class="pdp__faq-item is-open">
+          <button type="button" data-hnl-faq aria-expanded="true">What&#x27;s the difference between double-sided hook &amp; loop tape and regular hook and loop?<span aria-hidden="true">&minus;</span></button>
+          <p>Regular hook and loop needs two separate strips to work — one on each surface. Double-sided hook &amp; loop tape has one side with hook material and one side with loop material, which allows users to wrap it around objects for automatic attachment. One strip does the whole job.</p>
+        </div>
+        <div class="pdp__faq-item">
+          <button type="button" data-hnl-faq aria-expanded="false">What do people actually use back to back hook &amp; loop fastener for?<span aria-hidden="true">+</span></button>
+          <p hidden>Honestly, cable management is where most people reach for it first — wraps around a bundle of wires and holds them together just like a zip tie, except you can undo it. Workmanship for strapping gear; securing things in transition and all.</p>
+        </div>
+        <div class="pdp__faq-item">
+          <button type="button" data-hnl-faq aria-expanded="false">How many times can you reuse it before it stops holding?<span aria-hidden="true">+</span></button>
+          <p hidden>Considerably more than anybody would expect, it can withstand thousands of fastenings/unfastenings thanks to the hook-and-loop mechanism, yet the grip does not lose its strength. It&#x27;s not something you use once and toss — that&#x27;s the whole point of it.</p>
+        </div>
+        <div class="pdp__faq-item">
+          <button type="button" data-hnl-faq aria-expanded="false">Do I need to buy it in a fixed length, or can I cut it down?<span aria-hidden="true">+</span></button>
+          <p hidden>It comes on a roll, so you cut whatever length you need, nothing more. A pair of scissors handles it cleanly — no special tools, no fuss.</p>
+        </div>
+        <div class="pdp__faq-item">
+          <button type="button" data-hnl-faq aria-expanded="false">Will it work on cables or items that aren&#x27;t a uniform shape?<span aria-hidden="true">+</span></button>
+          <p hidden>That&#x27;s actually where double-sided hook &amp; loop tape performs really well. Since it wraps around the object and fastens to itself, it adjusts to whatever shape or diameter you&#x27;re working with — no flat surface needed.</p>
+        </div>
+      </div>
+    </section>
+  {%- when 'heavy-duty-hook-and-loop-strap' -%}
+    <section class="pdp__block">
+      <h2>Questions, answered</h2>
+      <div class="pdp__faq">
+        <div class="pdp__faq-item is-open">
+          <button type="button" data-hnl-faq aria-expanded="true">How much weight can these heavy-duty hook and loop straps actually hold?<span aria-hidden="true">&minus;</span></button>
+          <p>Our straps are generally made from thick and heavy nylon webbing and will use heavy industrial-grade fastenings, by virtue of which they are designed to bear weights of up to about 100 kilograms. The products work effectively for transporting palletised goods, heavy equipment and oversized items.</p>
+        </div>
+        <div class="pdp__faq-item">
+          <button type="button" data-hnl-faq aria-expanded="false">Do I need any tools or buckles to strap things down?<span aria-hidden="true">+</span></button>
+          <p hidden>Not at all — you just wrap it around whatever you&#x27;re securing and press the hook and loop together. The whole thing takes a few seconds, no ratchets or tensioners involved.</p>
+        </div>
+        <div class="pdp__faq-item">
+          <button type="button" data-hnl-faq aria-expanded="false">Can these replace plastic wrap or single-use strapping?<span aria-hidden="true">+</span></button>
+          <p hidden>Yes, and honestly, that&#x27;s where they make the most sense. Instead of going through rolls of plastic wrap every single time, you&#x27;re using the same straps over and over — better for your costs and way less wasteful.</p>
+        </div>
+        <div class="pdp__faq-item">
+          <button type="button" data-hnl-faq aria-expanded="false">Are they a fixed size, or can I adjust them?<span aria-hidden="true">+</span></button>
+          <p hidden>Fully adjustable, so different pallet sizes and load shapes aren&#x27;t a problem. You just wrap it where it sits right and fasten — no fiddling around trying to make a fixed size work.</p>
+        </div>
+        <div class="pdp__faq-item">
+          <button type="button" data-hnl-faq aria-expanded="false">Do they hold up with heavy daily use or wear out fast?<span aria-hidden="true">+</span></button>
+          <p hidden>They&#x27;re machine washable and made specifically for daily industrial use, so the grip stays consistent even after constant use. Way more durable than the cheap alternatives that start losing hold after a few weeks.</p>
+        </div>
+      </div>
+    </section>
+  {%- when 'hook-and-loop-adjustable-strap' -%}
+    <section class="pdp__block">
+      <h2>Questions, answered</h2>
+      <div class="pdp__faq">
+        <div class="pdp__faq-item is-open">
+          <button type="button" data-hnl-faq aria-expanded="true">What&#x27;s the hook and loop strap actually used for day to day?<span aria-hidden="true">&minus;</span></button>
+          <p>Most people use it for cable management — wrapping around cords, power strips, and extension leads to keep things neat and tangle-free. The equipment functions equally well in both home office environments and garage or workspace settings.</p>
+        </div>
+        <div class="pdp__faq-item">
+          <button type="button" data-hnl-faq aria-expanded="false">Is it genuinely reusable, or does the grip start to go after a while?<span aria-hidden="true">+</span></button>
+          <p hidden>It&#x27;s built for repeated use — the hook and loop doesn&#x27;t fray or lose its grip even with daily opening and closing. You&#x27;re not replacing these every few weeks like cheap cable ties.</p>
+        </div>
+        <div class="pdp__faq-item">
+          <button type="button" data-hnl-faq aria-expanded="false">Can it handle different cable thicknesses, or is it one fixed size?<span aria-hidden="true">+</span></button>
+          <p hidden>It&#x27;s fully adjustable, so thin cables and thicker bundles both work fine. You just wrap it where it sits comfortably and press it closed — no fiddling with fixed sizes.</p>
+        </div>
+        <div class="pdp__faq-item">
+          <button type="button" data-hnl-faq aria-expanded="false">Is it safe to use on delicate cables without scratching them?<span aria-hidden="true">+</span></button>
+          <p hidden>Yes, the loop side of the product, which connects to your cables, has a soft material that prevents any possibility of damaging your bundled items. The product has a strength that enables secure handling while its softness prevents any damage to surfaces.</p>
+        </div>
+        <div class="pdp__faq-item">
+          <button type="button" data-hnl-faq aria-expanded="false">How quickly can you actually fasten and remove these?<span aria-hidden="true">+</span></button>
+          <p hidden>A few seconds at most — wrap it around, press it together, and it&#x27;s done. When you need to access the cables, just pull them apart. No tools, no cutting, nothing complicated about it.</p>
+        </div>
+      </div>
+    </section>
+  {%- when 'hook-and-loop-dots' -%}
+    <section class="pdp__block">
+      <h2>Questions, answered</h2>
+      <div class="pdp__faq">
+        <div class="pdp__faq-item is-open">
+          <button type="button" data-hnl-faq aria-expanded="true">What exactly are hook and loop dots, and how are they different from tape?<span aria-hidden="true">&minus;</span></button>
+          <p>The two systems function as identical hook-and-loop systems that operate through round components instead of extended strips. The proposed reliable repair process increases the functionality for repairing the three problem areas. These include the remote, the light panel, and the display board.</p>
+        </div>
+        <div class="pdp__faq-item">
+          <button type="button" data-hnl-faq aria-expanded="false">What sizes do the dots come in, and how many are in a pack?<span aria-hidden="true">+</span></button>
+          <p hidden>Two product versions exist, available exclusively with 22mm and 15mm at 1000 or 5000 dots per roll. The hook-and-loop dots is available in both white and black color schemes. Another option would be to source the hook or loop pieces separately or together at the customer&#x27;s discretion.</p>
+        </div>
+        <div class="pdp__faq-item">
+          <button type="button" data-hnl-faq aria-expanded="false">What surfaces do these adhesive dots actually stick to properly?<span aria-hidden="true">+</span></button>
+          <p hidden>They hold so well on plastic, wood, metal, and glass. The surface must be cleaned and completely dry before sticking, leaving nothing else to prepare.</p>
+        </div>
+        <div class="pdp__faq-item">
+          <button type="button" data-hnl-faq aria-expanded="false">Are these reusable, or is it a one-time stick?<span aria-hidden="true">+</span></button>
+          <p hidden>A new adhesive layer sticks to a spot, while the hook and loop fastening opens and closes according to various behaviours, without losing its grip.</p>
+        </div>
+        <div class="pdp__faq-item">
+          <button type="button" data-hnl-faq aria-expanded="false">Good for bulk buying if I need a lot of dots regularly?<span aria-hidden="true">+</span></button>
+          <p hidden>Volume discounts go up to 30% off, depending on how many you order, and the discount applies automatically at checkout. The 5000-dot pack is popular with trade and commercial buyers for exactly this reason.</p>
+        </div>
+      </div>
+    </section>
+  {%- when 'self-adhesive-hook-and-loop-roll' -%}
+    <section class="pdp__block">
+      <h2>Questions, answered</h2>
+      <div class="pdp__faq">
+        <div class="pdp__faq-item is-open">
+          <button type="button" data-hnl-faq aria-expanded="true">Do I need to buy the hook and loop separately, or does it come together?<span aria-hidden="true">&minus;</span></button>
+          <p>No way, you don&#x27;t have to get them apart. You can choose the hook by itself, the loop by itself, or &quot;Both&quot; can be attached to your purchase; this breeds simplicity and the door of immediate usage for the user without any complexity.</p>
+        </div>
+        <div class="pdp__faq-item">
+          <button type="button" data-hnl-faq aria-expanded="false">What surfaces does this self-adhesive hook-and-loop tape stick to?<span aria-hidden="true">+</span></button>
+          <p hidden>Grabs smooth ones real good, like plastic bits, metal sheets, wood boards, and painted walls too. But hey, scrub that dirt off first, or it won&#x27;t hug as fiercely, trust me.</p>
+        </div>
+        <div class="pdp__faq-item">
+          <button type="button" data-hnl-faq aria-expanded="false">How many times can this sticky hook and loop fastener be reused?<span aria-hidden="true">+</span></button>
+          <p hidden>Pops open and close like 5,000 rounds; the grip doesn&#x27;t quit much at all. Handles daily pulls fine, stays tough without that wimpy fade over time.</p>
+        </div>
+        <div class="pdp__faq-item">
+          <button type="button" data-hnl-faq aria-expanded="false">Can I cut the self-adhesive hook &amp; loop tape roll to a shorter length?<span aria-hidden="true">+</span></button>
+          <p hidden>Totally, snip that 25-meter roll with plain scissors—it chops clean to your exact bit. Leaves heaps more for random fixes later on.</p>
+        </div>
+        <div class="pdp__faq-item">
+          <button type="button" data-hnl-faq aria-expanded="false">Does this adhesive hook-and-loop work outdoors or in warm conditions?<span aria-hidden="true">+</span></button>
+          <p hidden>You bet, shrugs off -10°C to 70°C, good for yards, garages, toasty closets, whatever. Buy out heavy-duty acrylic hook and loop if you need it for extremely high temperatures. Wipe clean for weather grip, but just dodge that brutal all-day bake in the sun, though.</p>
+        </div>
+      </div>
+    </section>
+  {%- when 'sew-on-hook-and-loop-fastener' -%}
+    <section class="pdp__block">
+      <h2>Questions, answered</h2>
+      <div class="pdp__faq">
+        <div class="pdp__faq-item is-open">
+          <button type="button" data-hnl-faq aria-expanded="true">Why use sew-on hook and loop on fabric instead of the adhesive one?<span aria-hidden="true">&minus;</span></button>
+          <p>The combination of adhesive backing and fabric materials results in poor performance because the adhesive detaches from the fabric after two washing cycles. Careful installation of a hook and loop fastener stitched affords greater endurance as opposed to other methods of installation.</p>
+        </div>
+        <div class="pdp__faq-item">
+          <button type="button" data-hnl-faq aria-expanded="false">What sizes does this sew-on hook and loop tape come in?<span aria-hidden="true">+</span></button>
+          <p hidden>The product comes in three different widths, which are 25mm, 50mm and 100mm, and each roll has a length of 25 metres. The product offers three options, which include black and white colors, and customers can select between hook and loop functions, and a combined purchase of both options.</p>
+        </div>
+        <div class="pdp__faq-item">
+          <button type="button" data-hnl-faq aria-expanded="false">Will it survive regular machine washing?<span aria-hidden="true">+</span></button>
+          <p hidden>Yep, the fabric of this material consists 100% of nylon, which makes it safe for washing machine cleaning. The main purpose of this whole material is to present the cloth that people require to manufacture their clothes, bags, and pillows.</p>
+        </div>
+        <div class="pdp__faq-item">
+          <button type="button" data-hnl-faq aria-expanded="false">Do I need to order hook and loop separately, or can I get both at once?<span aria-hidden="true">+</span></button>
+          <p hidden>There&#x27;s a &quot;Both&quot; option sitting right there on the product page, so you can sort it in one order. No need to come back and order the other side separately.</p>
+        </div>
+        <div class="pdp__faq-item">
+          <button type="button" data-hnl-faq aria-expanded="false">Any bulk discount if I need a lot of rolls?<span aria-hidden="true">+</span></button>
+          <p hidden>Starts at 5% off for 5 rolls and goes up to 30% off at 50 rolls. Discount hits automatically at checkout, nothing extra you need to do.</p>
+        </div>
+      </div>
+    </section>
+  {%- when 'velcoin-hook-and-loop-sticky-dots' -%}
+    <section class="pdp__block">
+      <h2>Questions, answered</h2>
+      <div class="pdp__faq">
+        <div class="pdp__faq-item is-open">
+          <button type="button" data-hnl-faq aria-expanded="true">How strong is the hold on these Velcro dots?<span aria-hidden="true">&minus;</span></button>
+          <p>Strong enough for everyday fastening — remote controls, lightweight frames, cable management and small displays. The adhesive on the backing is good once the surface is clean and dry before applying it.</p>
+        </div>
+        <div class="pdp__faq-item">
+          <button type="button" data-hnl-faq aria-expanded="false">Will they damage the surface when removed?<span aria-hidden="true">+</span></button>
+          <p hidden>On most smooth, painted surfaces, they come off clean. Just peel at a low angle slowly, and you won&#x27;t have an issue.</p>
+        </div>
+        <div class="pdp__faq-item">
+          <button type="button" data-hnl-faq aria-expanded="false">Are the hook and loop sides sold together?<span aria-hidden="true">+</span></button>
+          <p hidden>The two items need to be ordered together because they are sold as separate products. The fastener needs both components to function properly because it does not work with just one part.</p>
+        </div>
+        <div class="pdp__faq-item">
+          <button type="button" data-hnl-faq aria-expanded="false">Are Velcro sticky dots reusable?<span aria-hidden="true">+</span></button>
+          <p hidden>The hook and loop mechanism itself handles repeated use without a problem. The adhesive on the backside is for one-time application only. After the product is removed, the bond will not occur in the future.</p>
+        </div>
+        <div class="pdp__faq-item">
+          <button type="button" data-hnl-faq aria-expanded="false">What sizes do they come in?<span aria-hidden="true">+</span></button>
+          <p hidden>Available sizes are 16mm and 22mm. A 22mm size is recommended if one needs a slightly better fastening or a slightly greater contact area.</p>
+        </div>
+      </div>
+    </section>
+  {%- when 'velcro-self-adhesive-hook-and-loop-roll' -%}
+    <section class="pdp__block">
+      <h2>Questions, answered</h2>
+      <div class="pdp__faq">
+        <div class="pdp__faq-item is-open">
+          <button type="button" data-hnl-faq aria-expanded="true">Is this actually a genuine VELCRO® brand or just some generic tape?<span aria-hidden="true">&minus;</span></button>
+          <p>It&#x27;s the actual VELCRO® brand tape, 100% real thing, not some knockoff junk. And you realize that this is a much better pick of the two, whereas other daily lives would easily slip off.</p>
+        </div>
+        <div class="pdp__faq-item">
+          <button type="button" data-hnl-faq aria-expanded="false">What sizes can I get the self-adhesive velcro roll in?<span aria-hidden="true">+</span></button>
+          <p hidden>Choose from 19 mm wide, 25 mm wide, or 50 mm wide, with 25 meters on each roll, which amounts to ample stock. Black or white option, hook part only, loop part only, or snag both together. Fits whatever you&#x27;re working on.</p>
+        </div>
+        <div class="pdp__faq-item">
+          <button type="button" data-hnl-faq aria-expanded="false">Which surfaces does this adhesive Velcro tape stick to properly?<span aria-hidden="true">+</span></button>
+          <p hidden>Handles wood, metal, plastic, glass, all that smooth surface business, no sweat. Wipe the spot clean and dry it first, though, then it sticks solid and takes some yanking without budging.</p>
+        </div>
+        <div class="pdp__faq-item">
+          <button type="button" data-hnl-faq aria-expanded="false">Once stuck down, can the hook and loop part still be opened and closed?<span aria-hidden="true">+</span></button>
+          <p hidden>Totally yes, you pull the hooks and loops open and shut thousands of times, and they don&#x27;t quit on you. That sticky back stays glued to the surface forever, so it&#x27;s perfect for stuff you redo a lot.</p>
+        </div>
+        <div class="pdp__faq-item">
+          <button type="button" data-hnl-faq aria-expanded="false">Any bulk discounts if I need several rolls?<span aria-hidden="true">+</span></button>
+          <p hidden>You get 5% off at 5 rolls, ramps up to 30% when you hit 50 or more. Just pile &#x27;em in your cart, and the discount shows at checkout—no codes or extra nonsense.</p>
+        </div>
+      </div>
+    </section>
+{%- endcase -%}

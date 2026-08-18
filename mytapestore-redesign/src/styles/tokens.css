@@ -11,7 +11,12 @@
   --brand-cta:    #df3c22;   /* CTA fill w/ white text — exact brand (≈4.4:1)  */
   --brand-cta-hov:#c1301a;   /* CTA hover (darken)                             */
   --brand-ink:    #b62f18;   /* brand-coloured TEXT on white  → 6.16:1  ✓ AA  */
-  --brand-on-dark:#ee5f3a;   /* brand-coloured TEXT on charcoal → 4.97:1 ✓ AA */
+  --brand-on-dark:#fa3c22;   /* brand-coloured TEXT on charcoal → 4.50:1 ✓ AA */
+  /* Was #ee5f3a, which read visibly ORANGE next to the red CTAs in the footer.
+     The cause was its green channel: 95 against the brand's 60. #fa3c22 keeps
+     the brand's green (60) and blue (34) exactly and only lifts red 223→250 —
+     same hue, bright enough to clear AA on #1f1f1f, where the brand red itself
+     manages just 3.77:1 and is why a separate token exists at all. */
   --brand-wash:   #fdefeb;   /* faint tint surface                            */
   --brand-wash-2: #fbe1da;   /* deeper tint                                   */
 

@@ -1,0 +1,145 @@
+{%- comment -%}
+  Article page.
+
+  RELATED PRODUCTS are rendered here, from the article's topic tag, rather than
+  being baked into the body HTML. The migration left a hard-coded WooCommerce
+  block at the foot of 37 of the 54 articles and nothing on the other 17, so
+  coverage depended on which posts happened to have the old widget. Driving it
+  from the tag means every article has one, the prices and images are always
+  current, and a product going out of stock or being renamed cannot leave a
+  stale card behind.
+
+  The tag maps to a collection (see scripts/tag_blog_topics.py). "Industry
+  Insight" is the one tag with no collection behind it — those articles fall
+  back to the store's featured products so the section is never empty.
+{%- endcomment -%}
+{%- liquid
+  assign topic = article.tags.first
+  assign topic_handle = topic | handle
+  assign rel = collections[topic_handle]
+
+  if rel == blank or rel.products_count == 0
+    assign rel = collections[section.settings.fallback_collection]
+  endif
+
+  # Small topics (Flashing Tape has two products) left a one-card row, which
+  # reads as a broken widget rather than a short one. Top up from the fallback
+  # collection so the row is always full, skipping anything already shown.
+  assign filler = collections[section.settings.fallback_collection]
+  assign shown_keys = '|'
+
+  assign words = article.content | strip_html | split: ' ' | size
+  assign mins = words | divided_by: 200
+  if mins < 1
+    assign mins = 1
+  endif
+-%}
+
+<main id="main">
+  <div class="wrap page__crumbs">{% render 'mts-breadcrumbs' %}</div>
+
+  <section class="page-hero">
+    <div class="wrap">
+      <span class="eyebrow eyebrow--onink">{{ article.published_at | date: '%d %B %Y' }}</span>
+      <h1>{{ article.title }}</h1>
+      {%- if article.excerpt != blank -%}<p>{{ article.excerpt | strip_html }}</p>{%- endif -%}
+      <p class="art__meta num">
+        {%- if topic != blank -%}
+          <a href="{{ blog.url }}/tagged/{{ topic_handle }}">{{ topic }}</a>
+          <span class="blogx__dot" aria-hidden="true"></span>
+        {%- endif -%}
+        {{ mins }} min read
+      </p>
+    </div>
+  </section>
+
+  <div class="wrap page-prose">
+    {%- if article.image -%}
+      <img src="{{ article.image | image_url: width: 1400 }}" alt="{{ article.title | escape }}" loading="lazy" width="1400" height="800">
+    {%- endif -%}
+    {{ article.content }}
+
+    {%- if rel != blank and rel.products.size > 0 -%}
+      <div class="blogprod">
+        <h2 class="blogprod__h">{{ section.settings.related_heading }}</h2>
+        <div class="blogprod__grid">
+          {%- liquid
+            assign want = section.settings.related_count
+            assign picked = ''
+            for p in rel.products limit: want
+              assign picked = picked | append: p.handle | append: '~|~'
+              assign shown_keys = shown_keys | append: p.handle | append: '|'
+            endfor
+            assign have = picked | split: '~|~' | size
+            if have < want and filler != blank
+              for p in filler.products
+                if have >= want
+                  break
+                endif
+                assign key = '|' | append: p.handle | append: '|'
+                unless shown_keys contains key
+                  assign picked = picked | append: p.handle | append: '~|~'
+                  assign shown_keys = shown_keys | append: p.handle | append: '|'
+                  assign have = have | plus: 1
+                endunless
+              endfor
+            endif
+            assign picked_handles = picked | split: '~|~'
+          -%}
+          {%- for handle in picked_handles -%}
+            {%- assign product = all_products[handle] -%}
+            <a class="blogprod__card" href="{{ product.url }}">
+              <span class="blogprod__media">
+                {%- if product.featured_image -%}
+                  <img src="{{ product.featured_image | image_url: width: 600 }}"
+                       srcset="{{ product.featured_image | image_url: width: 300 }} 300w,
+                               {{ product.featured_image | image_url: width: 600 }} 600w"
+                       sizes="(min-width: 901px) 22vw, 45vw"
+                       alt="{{ product.featured_image.alt | default: product.title | escape }}"
+                       width="600" height="600" loading="lazy" decoding="async">
+                {%- else -%}
+                  {{ 'product-1' | placeholder_svg_tag }}
+                {%- endif -%}
+              </span>
+              <span class="blogprod__name">{{ product.title }}</span>
+              <span class="blogprod__price num">
+                {%- if product.price_varies -%}
+                  {{ 'products.product.from_price' | t: price: product.price_min | money }}
+                {%- else -%}
+                  {{ product.price | money }}
+                {%- endif -%}
+              </span>
+            </a>
+          {%- endfor -%}
+        </div>
+        {%- if rel.handle != section.settings.fallback_collection -%}
+          <p class="blogprod__all">
+            <a href="{{ rel.url }}">{{ 'blogs.article.shop_all' | t: title: rel.title }}</a>
+          </p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <p class="art__back">
+      <a class="btn btn--ghost" href="{{ blog.url }}">{{ 'blogs.article.back_to_blog' | t: title: blog.title }}</a>
+    </p>
+  </div>
+</main>
+
+{% schema %}
+{
+  "name": "Article",
+  "settings": [
+    { "type": "text", "id": "related_heading", "label": "Related products heading", "default": "Related products" },
+    {
+      "type": "range", "id": "related_count", "label": "Products to show",
+      "min": 2, "max": 8, "step": 1, "default": 4
+    },
+    {
+      "type": "text", "id": "fallback_collection", "label": "Fallback collection",
+      "info": "Used when the article's topic has no collection behind it (e.g. Industry Insight).",
+      "default": "bestsellers"
+    }
+  ]
+}
+{% endschema %}

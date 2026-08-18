@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "main": {
+      "type": "hnl-register",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

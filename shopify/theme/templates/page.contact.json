@@ -1,0 +1,64 @@
+/*
+ * Contact — mirrors ContactPage() in ContentPages.jsx, with React's
+ * no-op form replaced by Shopify's real contact form.
+ */
+{
+  "sections": {
+    "hnl_contact": {
+      "type": "hnl-contact",
+      "settings": {
+        "eyebrow": "We're here to help",
+        "phone": "+61 3 4061 6287",
+        "phone_note": "Mon–Fri, Australian business hours",
+        "email": "info@hooknloop.com.au",
+        "email_note": "Replies within 1 business day",
+        "address": "111 Cecil St",
+        "address_sub": "South Melbourne VIC 3205",
+        "abn": "ABN 93 878 995 217",
+        "abn_note": "GST tax invoice on every order",
+        "form_heading": "Send us a message",
+        "success_note": "We'll get back to you within 1 business day.",
+        "map_query": "111 Cecil St, South Melbourne VIC 3205"
+      },
+      "blocks": {
+        "s1": {
+          "type": "social",
+          "settings": {
+            "network": "facebook",
+            "url": "https://www.facebook.com/profile.php?id=61587201524181"
+          }
+        },
+        "s2": {
+          "type": "social",
+          "settings": {
+            "network": "instagram",
+            "url": "https://www.instagram.com/hooknloopshop"
+          }
+        },
+        "s3": {
+          "type": "social",
+          "settings": {
+            "network": "pinterest",
+            "url": "https://www.pinterest.com/hooknloopshop/"
+          }
+        },
+        "s4": {
+          "type": "social",
+          "settings": {
+            "network": "linkedin",
+            "url": "https://www.linkedin.com/company/hooknloop/"
+          }
+        }
+      },
+      "block_order": [
+        "s1",
+        "s2",
+        "s3",
+        "s4"
+      ]
+    }
+  },
+  "order": [
+    "hnl_contact"
+  ]
+}

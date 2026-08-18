@@ -1,0 +1,66 @@
+.collections--card-radius-true {
+  border-radius: 1rem;
+  overflow: hidden;
+}
+.collections--card-padded {
+  padding: 2rem;
+}
+.collections--card.card--border-line {
+    border: 0.1rem solid rgba(var(--color-foreground), 0.1);
+}
+.collections--card-content-padded .collections-card--content {
+  padding: 2rem;
+}
+.collections-card--button {
+  margin-top: 1.5rem;
+}
+.collections--card-text-link:hover {
+  color: rgba(var(--text-link-hover-color));
+  text-decoration: underline;
+}
+.collections--card-heading--link:hover {
+  color: rgba(var(--text-link-hover-color));
+}
+.collections--card {
+  display: flex;
+  gap: 1.5rem;
+}
+
+@media only screen and (min-width: 750px) {
+  .collections--card:not(.collections--card-media-top):not(
+      .collections--card-media-bottom
+    ) {
+    align-items: center;
+  }
+  .collections--card.collections--card-media-right {
+    flex-direction: row-reverse;
+  }
+  .collections-card--content {
+    flex-grow: 1;
+  }
+  .collections--card.collections--card-media-top,
+  .collections--card.collections--card-media-bottom {
+    flex-direction: column;
+  }
+  .collections--card:not(.collections--card-media-top):not(
+      .collections--card-media-bottom
+    )
+    .collections-card--content {
+    min-width: 50%;
+  }
+  .collections--card.collections--card-media-bottom {
+    flex-direction: column-reverse;
+  }
+}
+@media only screen and (max-width: 749px) {
+  .collections--card {
+    flex-direction: column;
+  }
+  .collections--card > * {
+    width: 100% !important;
+  }
+
+  .collections-card--button .link.with--icon.button--with-icon {
+    justify-content: initial;
+  }
+}

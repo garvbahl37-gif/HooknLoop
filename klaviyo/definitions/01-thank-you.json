@@ -1,0 +1,51 @@
+{
+  "data": {
+    "type": "flow",
+    "attributes": {
+      "name": "Thank you \u2014 first order",
+      "definition": {
+        "triggers": [
+          {
+            "type": "metric",
+            "id": "UeCTZn",
+            "trigger_filter": {
+              "condition_groups": []
+            }
+          }
+        ],
+        "entry_action_id": "wait-1-day",
+        "actions": [
+          {
+            "temporary_id": "wait-1-day",
+            "type": "time-delay",
+            "data": {
+              "unit": "days",
+              "value": 1
+            },
+            "links": {
+              "next": "send-thank-you"
+            }
+          },
+          {
+            "temporary_id": "send-thank-you",
+            "type": "send-email",
+            "data": {
+              "message": {
+                "name": "Thank you",
+                "subject_line": "Thanks for your order",
+                "preview_text": "We're packing your order now.",
+                "template_id": "XCka7Y",
+                "smart_sending_enabled": true,
+                "transactional": false
+              },
+              "status": "draft"
+            },
+            "links": {
+              "next": null
+            }
+          }
+        ]
+      }
+    }
+  }
+}

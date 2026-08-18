@@ -1,0 +1,361 @@
+{%- comment -%}
+  Header — ported from mytapestore-redesign/src/components/Header.jsx.
+  Three bands: the red utility strip, the sticky masthead (logo / search /
+  actions) and the mega-nav. Plus the mobile drawer.
+
+  The React version derived its mega-menus from NAV_GROUPS; here they come from
+  a Shopify link list. See mytapestore-shopify/sections-header-note.md for how
+  child counts map onto the 1- vs 3-column panels so the output matches.
+{%- endcomment -%}
+
+{%- liquid
+  assign menu = linklists[section.settings.menu]
+  assign threshold = section.settings.columns_threshold
+
+  # The right-aligned panel is the LAST multi-column item — a 3-column panel
+  # hanging off a right-hand trigger would run off the viewport otherwise.
+  assign last_wide_index = -1
+  for link in menu.links
+    if link.links.size > threshold
+      assign last_wide_index = forloop.index0
+    endif
+  endfor
+-%}
+
+<header class="hd">
+  {%- comment -%} branding strip (the original red bar) {%- endcomment -%}
+  {%- if section.blocks.size > 0 -%}
+    <div class="hd-util grain">
+      <div class="wrap hd-util__row">
+        <ul class="hd-util__feats">
+          {%- for block in section.blocks -%}
+            <li class="{% if forloop.first %}hd-util__lead{% else %}hd-util__sep{% endif %}" {{ block.shopify_attributes }}>
+              <span class="hd-util__ic">
+                {%- if block.settings.image != blank -%}
+                  <img src="{{ block.settings.image | image_url: width: 40 }}" alt="" width="{{ block.settings.icon_size }}" height="{{ block.settings.icon_size }}">
+                {%- elsif block.settings.packaged_icon != 'none' -%}
+                  {%- comment -%}
+                    Whether artwork survives being tinted white is a property of
+                    the FILE, not a merchant preference, so it is derived here
+                    rather than left to a checkbox. Single-colour glyphs must be
+                    tinted (a black icon is invisible on the red bar); full-colour
+                    artwork must not be (tinting the Australian flag white stops
+                    it being a flag). The checkbox remains as an override.
+                  {%- endcomment -%}
+                  {%- assign colour_icons = 'truck,secure,flag-au,best-price,fast-delivery,flag-australia,price,tape-measure' | split: ',' -%}
+                  {%- assign keep_colour = false -%}
+                  {%- if colour_icons contains block.settings.packaged_icon -%}
+                    {%- assign keep_colour = true -%}
+                  {%- endif -%}
+                  {%- if block.settings.icon_colour -%}
+                    {%- assign keep_colour = true -%}
+                  {%- endif -%}
+                  <img class="{% if keep_colour %}hd-util__ic--colour{% endif %}"
+                       src="{{ 'mts-ic-' | append: block.settings.packaged_icon | append: '.svg' | asset_url }}"
+                       alt="" width="{{ block.settings.icon_size }}" height="{{ block.settings.icon_size }}">
+                {%- elsif block.settings.icon != 'none' -%}
+                  {% render 'mts-icon', name: block.settings.icon, size: block.settings.icon_size %}
+                {%- endif -%}
+              </span>
+              {{ block.settings.text }}
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+    </div>
+  {%- endif -%}
+
+  <div class="hd-stick">
+    {%- comment -%} masthead {%- endcomment -%}
+    <div class="hd-mast">
+      <div class="wrap hd-mast__row">
+        {%- comment -%}
+          The menu button is a DIRECT child of the masthead row, before the
+          logo, so on a phone it sits hard left where a thumb expects it.
+
+          It used to live inside .hd-actions with the cart. CSS `order` could
+          only move it within that group, so it stayed right of the logo and —
+          once the row wrapped — dropped onto a second line entirely. Position
+          in the DOM is the fix; `display:none` above 900px keeps the desktop
+          header exactly as it was.
+        {%- endcomment -%}
+        <button class="hd-burger" data-mts-drawer-open aria-label="Open menu" aria-expanded="false" aria-controls="mts-drawer">
+          {% render 'mts-icon', name: 'menu', size: 24 %}
+        </button>
+
+        <a href="{{ routes.root_url }}" class="hd-logo" aria-label="{{ shop.name }} — home">
+          {%- if settings.logo != blank -%}
+            <img src="{{ settings.logo | image_url: width: 392 }}" alt="{{ shop.name }}" class="hd-logo__img" width="196" height="34">
+          {%- else -%}
+            <img src="{{ 'mts-logo.png' | asset_url }}" alt="{{ shop.name }}" class="hd-logo__img" width="196" height="34">
+          {%- endif -%}
+        </a>
+
+        {% render 'mts-search-form' %}
+
+        <div class="hd-actions">
+          {%- comment -%}
+            Our own dashboard at /pages/account — Shopify owns /account on this
+            store (new customer accounts), so linking there would bounce the
+            visitor straight out of our design.
+          {%- endcomment -%}
+          {%- comment -%}
+            Signed in, the outline user glyph becomes a filled initials disc —
+            the one place in the header that changes state, so "am I logged in?"
+            is answerable at a glance instead of by clicking through. Initials
+            come from the customer's name, falling back to the email's first
+            letter for accounts created at checkout with no name on file.
+          {%- endcomment -%}
+          {%- if customer -%}
+            {%- liquid
+              assign initials = ''
+              if customer.first_name != blank
+                assign initials = customer.first_name | slice: 0
+                if customer.last_name != blank
+                  assign initials = initials | append: customer.last_name | slice: 0, 1
+                endif
+              elsif customer.email != blank
+                assign initials = customer.email | slice: 0
+              endif
+              assign initials = initials | upcase
+            -%}
+            <a href="{{ routes.root_url }}pages/account"
+               class="hd-act hd-act--account is-in"
+               aria-label="{{ 'customer.account.title' | t }} — {{ customer.first_name | default: customer.email }}">
+              <span class="hd-avatar" aria-hidden="true">{{ initials | default: 'A' }}</span>
+              <span>{{ customer.first_name | default: 'customer.account.title' | t }}</span>
+            </a>
+          {%- else -%}
+            {%- comment -%}
+              Signed out AS FAR AS LIQUID KNOWS — which is always true when the
+              themed sign-in is on, because a Storefront customer token is not a
+              Shopify session and `customer` never populates. So this renders the
+              outline glyph and mts-theme.js swaps in the initials disc when it
+              finds a live session. The markup it swaps to is identical to the
+              Liquid branch above, so both routes produce the same header.
+            {%- endcomment -%}
+            <a href="{{ routes.root_url }}pages/account" class="hd-act hd-act--account"
+               data-mts-hd-account aria-label="{{ 'customer.login.title' | t }}">
+              {% render 'mts-icon', name: 'user', size: 22 %}<span>{{ 'customer.login.title' | t }}</span>
+            </a>
+          {%- endif -%}
+          <a href="{{ routes.root_url }}pages/wishlist" class="hd-act hd-act--wish" data-mts-wishlist-link aria-label="Wishlist">
+            <span class="hd-act__cart-icon">
+              {% render 'mts-icon', name: 'heart', size: 22 %}
+              <b class="hd-cart-badge num" data-mts-wish-count hidden>0</b>
+            </span>
+            <span>Wishlist</span>
+          </a>
+          <a href="{{ routes.cart_url }}" class="hd-act hd-act--cart" aria-label="Cart, {{ cart.item_count }} items">
+            <span class="hd-act__cart-icon">
+              {% render 'mts-icon', name: 'cart', size: 22 %}
+              <b class="hd-cart-badge num" data-mts-cart-count {% if cart.item_count == 0 %}hidden{% endif %}>{{ cart.item_count }}</b>
+            </span>
+            <span>Cart</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    {%- comment -%} mega-nav (desktop) {%- endcomment -%}
+    <nav class="hd-nav" data-mts-nav aria-label="Primary">
+      <div class="wrap hd-nav__row">
+        <ul class="hd-nav__list">
+          {%- for link in menu.links -%}
+            {%- liquid
+              assign kids = link.links
+              assign is_mega = false
+              if kids.size > 0
+                assign is_mega = true
+              endif
+              assign wide = false
+              if kids.size > threshold
+                assign wide = true
+              endif
+              assign right = false
+              if forloop.index0 == last_wide_index and wide
+                assign right = true
+              endif
+            -%}
+
+            {%- if is_mega -%}
+              {%- liquid
+                # ceil(n / 3), matching MENUS in Header.jsx
+                assign cols = 1
+                if wide
+                  assign cols = 3
+                endif
+                assign per = kids.size | plus: cols | minus: 1 | divided_by: cols
+              -%}
+              <li class="hd-nav__item{% if wide %} hd-nav__item--wide{% endif %}{% if right %} hd-nav__item--right{% endif %}" data-mts-menu>
+                {%- comment -%}
+                  A parent with children still gets a real href whenever the
+                  menu item points somewhere — the label is that section's own
+                  landing page. Rendering it as a <button> made every top-level
+                  entry a dead end; the panel still opens on hover, and on touch
+                  the first tap reveals the children (see initNav).
+                {%- endcomment -%}
+                {%- if link.url != blank and link.url != '#' -%}
+                  <a class="hd-nav__link" href="{{ link.url }}" aria-expanded="false"
+                     aria-haspopup="true" data-mts-menu-trigger
+                     {%- if link.current %} aria-current="page"{% endif %}>
+                    {{ link.title }} {% render 'mts-icon', name: 'chevronDown', size: 15 %}
+                  </a>
+                {%- else -%}
+                  <button class="hd-nav__link" aria-expanded="false" data-mts-menu-trigger>
+                    {{ link.title }} {% render 'mts-icon', name: 'chevronDown', size: 15 %}
+                  </button>
+                {%- endif -%}
+                <div class="hd-mega" role="menu">
+                  <div class="hd-mega__cols">
+                    {%- for c in (1..cols) -%}
+                      {%- assign start = forloop.index0 | times: per -%}
+                      {%- if start < kids.size -%}
+                        <ul>
+                          {%- for child in kids offset: start limit: per -%}
+                            <li><a href="{{ child.url }}" role="menuitem">{{ child.title }}</a></li>
+                          {%- endfor -%}
+                        </ul>
+                      {%- endif -%}
+                    {%- endfor -%}
+                  </div>
+                  <a class="hd-mega__all" href="{{ link.url }}">
+                    View all {{ link.title | downcase }} {% render 'mts-icon', name: 'arrowRight', size: 16 %}
+                  </a>
+                </div>
+              </li>
+            {%- else -%}
+              <li class="hd-nav__item">
+                <a class="hd-nav__link" href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title }}</a>
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      </div>
+    </nav>
+  </div>
+
+  {%- comment -%} mobile drawer {%- endcomment -%}
+  <div class="hd-drawer" id="mts-drawer" data-mts-drawer role="dialog" aria-modal="true" aria-label="Menu" hidden>
+    <div class="hd-drawer__scrim" data-mts-drawer-close></div>
+    <div class="hd-drawer__panel">
+      <div class="hd-drawer__top">
+        <b>Browse</b>
+        <button data-mts-drawer-close aria-label="Close menu">{% render 'mts-icon', name: 'close', size: 22 %}</button>
+      </div>
+      <div class="hd-drawer__search">
+        {% render 'mts-search-form', in_drawer: true %}
+      </div>
+      <nav class="hd-drawer__nav">
+        {%- for link in menu.links -%}
+          {%- if link.links.size > 0 -%}
+            <div class="hd-drawer__group">
+              <button class="hd-drawer__acc" aria-expanded="false" data-mts-acc>
+                {{ link.title }}
+                <span data-mts-acc-icon>{% render 'mts-icon', name: 'plus', size: 18 %}</span>
+              </button>
+              <ul class="hd-drawer__sub" hidden>
+                {%- for child in link.links -%}
+                  <li><a href="{{ child.url }}">{{ child.title }}</a></li>
+                {%- endfor -%}
+              </ul>
+            </div>
+          {%- else -%}
+            <a class="hd-drawer__link" href="{{ link.url }}">{{ link.title }}</a>
+          {%- endif -%}
+        {%- endfor -%}
+        {%- if section.settings.drawer_extra_menu != blank -%}
+          {%- for link in linklists[section.settings.drawer_extra_menu].links -%}
+            <a class="hd-drawer__link" href="{{ link.url }}">{{ link.title }}</a>
+          {%- endfor -%}
+        {%- endif -%}
+      </nav>
+    </div>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Main menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "link_list",
+      "id": "drawer_extra_menu",
+      "label": "Extra links (mobile drawer only)",
+      "info": "Appended below the main menu in the drawer — the React design had Bulk & Trade and Contact here."
+    },
+    {
+      "type": "range",
+      "id": "columns_threshold",
+      "label": "Single-column mega-menu up to",
+      "min": 4,
+      "max": 20,
+      "step": 1,
+      "default": 10,
+      "info": "Menus with more children than this split into three columns. The design has Double-Sided Tape (9) as one column and Single-Sided Tapes (26) as three."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Utility bar feature",
+      "limit": 6,
+      "settings": [
+        { "type": "text", "id": "text", "label": "Text", "default": "Fast delivery across Australia" },
+        {
+          "type": "select",
+          "id": "packaged_icon",
+          "label": "Packaged icon",
+          "info": "The illustrated icons from the redesign. Rendered white on the red bar.",
+          "options": [
+            { "value": "none", "label": "None (use line icon below)" },
+            { "value": "truck", "label": "Truck (colour)" },
+            { "value": "secure", "label": "Secure shield (colour)" },
+            { "value": "sale", "label": "Sale tag (mono)" },
+            { "value": "best-price", "label": "Best price (colour)" },
+            { "value": "flag-au", "label": "Australian flag (colour)" },
+            { "value": "fast-delivery", "label": "Fast delivery (legacy)" },
+            { "value": "secure-payment", "label": "Secure payment (legacy)" },
+            { "value": "price", "label": "Price (legacy)" },
+            { "value": "flag-australia", "label": "Australian flag (legacy)" },
+            { "value": "tape-measure", "label": "Tape measure (legacy)" }
+          ],
+          "default": "none"
+        },
+        {
+          "type": "checkbox",
+          "id": "icon_colour",
+          "label": "Keep the icon's own colours",
+          "default": false,
+          "info": "Off tints the icon white, which suits single-colour icons. On renders it as supplied — use for full-colour artwork like the flag, which a white silhouette would destroy."
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Line icon (fallback)",
+          "options": [
+            { "value": "none", "label": "None" },
+            { "value": "truck", "label": "Truck" },
+            { "value": "lock", "label": "Lock" },
+            { "value": "medal", "label": "Medal" },
+            { "value": "flag", "label": "Flag" },
+            { "value": "shield", "label": "Shield" },
+            { "value": "refresh", "label": "Refresh" },
+            { "value": "tag", "label": "Tag" }
+          ],
+          "default": "truck"
+        },
+        { "type": "image_picker", "id": "image", "label": "Icon image", "info": "Overrides the icon above. Rendered white." },
+        { "type": "range", "id": "icon_size", "label": "Icon size", "min": 12, "max": 24, "step": 1, "default": 16, "unit": "px" }
+      ]
+    }
+  ],
+  "enabled_on": { "groups": ["header"] }
+}
+{% endschema %}

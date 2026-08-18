@@ -1,0 +1,19 @@
+/*
+ * HooknLoop search — mirrors SearchPage() in ContentPages.jsx.
+ */
+{
+  "sections": {
+    "hnl_search": {
+      "type": "hnl-search",
+      "settings": {
+        "title": "Search products",
+        "placeholder": "Search by product, width, or type…",
+        "prompt": "Search the full range, or browse everything below.",
+        "per_page": 24
+      }
+    }
+  },
+  "order": [
+    "hnl_search"
+  ]
+}

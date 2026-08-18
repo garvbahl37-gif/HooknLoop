@@ -1,0 +1,19 @@
+{% assign labels = product.metafields.meta.product_badges.value %}
+
+{% if labels != null %}
+  <marquee-scroll
+    class="product--badge-marquee scrolling--text scrolling--text--{{ settings.product_marque_direction }} color-{{ settings.product_marquee_color }}"
+    style="--duration: {{ settings.product_marque_speed }}s"
+  >
+    <div class="scrolling--item scrolling--animated">
+      {% for label in labels %}
+        <div
+          class="product--badge-marquee-text"
+        >
+          {% render 'marquee-icon', icon: settings.p_card_marquee_icon_type %}
+          {{- label.badge_title -}}
+        </div>
+      {%- endfor -%}
+    </div>
+  </marquee-scroll>
+{% endif %}

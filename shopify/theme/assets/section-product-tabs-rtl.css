@@ -1,0 +1,19 @@
+@media only screen and (min-width: 1200px) {
+  .product__tab--btn__list {
+    margin-right: 0;
+    margin-left: 40px;
+  }
+}
+.product__tab--btn__list:last-child {
+  margin-left: 0;
+}
+@media only screen and (max-width: 1199px) {
+  .product__tab--btn__list:first-child {
+    margin-right: 0;
+  }
+}
+@media only screen and (max-width: 575px) {
+  .product__tab--btn__list:last-child {
+    margin-right: 10px;
+  }
+}

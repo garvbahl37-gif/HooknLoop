@@ -1,0 +1,306 @@
+{%- comment -%}
+  {% render 'product-card-item',
+            product_card_product: product,
+            media_size: settings.image_ratio,
+            show_secondary_image: settings.show_secondary_image,
+            show_vendor: settings.show_vendor,
+            show_badge: settings.show_badges,
+            show_cart_button: settings.show_cart_button,
+            show_quick_view: settings.show_quick_view_button,
+            show_quick_compare: settings.show_compare_view_button,
+            show_wishlist: settings.show_wishlist_button,
+            show_countdown: settings.show_countdown,
+            show_title: settings.show_title,
+            show_price: settings.show_price,
+            show_product_description: settings.show_product_description,
+            show_rating: settings.show_product_rating
+  %}
+
+  assign total_item = product_card_product.metafields.metaname.total_stock.value | default: 500
+  assign current_total_stock = 0
+
+  for variant in product_card_product.variants
+    assign current_total_stock = current_total_stock | plus: variant.inventory_quantity
+  endfor
+
+  assign itemsold = total_item | minus: current_total_stock
+  assign sales_progress = total_item | minus: current_total_stock | times: 100 | divided_by: total_item
+  assign sales_progress_percent = 100 | minus: sales_progress
+{%- endcomment -%}
+
+{%- liquid
+  assign variant = product_card_product.selected_or_first_available_variant
+
+  assign productCountdown = product_card_product.metafields.metaname.countdown_timer.value
+  assign todayDate = 'now' | date: '%s'
+  assign countDownDate = productCountdown | date: '%s'
+
+  assign first_variant_featured_media_check = false
+  if variant.featured_media == null
+    assign first_variant_featured_media_check = true
+  endif
+
+  assign second_img_position = 1
+
+  unless show_secondary_image
+    assign second_image_class = 'second--image__hide'
+  endunless
+
+  case settings.product_content_alignment
+    when 'left'
+      assign price_class = 'product__card__price justify-content-start'
+    when 'right'
+      assign price_class = 'product__card__price justify-content-end'
+    else
+      assign price_class = 'product__card__price justify-content-center'
+  endcase
+-%}
+
+<div class="product__card {{ className }} product__card--{{ card_style }} {% if box_shadow %} product__shadow {% endif %} {% if corner_radius %} product--corner-radius-true{% endif %} {% if show_border %} product--card-border card--client-height{% endif %} color-{{ color_scheme }}">
+  <div class="product__card__thumbnail {% unless show_border %}card--client-height{% endunless %} {{ second_image_class }}">
+    {%- if show_badge -%}
+      {%- render 'product-badge', product: product_card_product -%}
+    {%- endif -%}
+
+    {%- if product_card_product.featured_media -%}
+      {%- liquid
+        assign featured_media_aspect_ratio = product_card_product.featured_media.aspect_ratio
+
+        if product_card_product.featured_media.aspect_ratio == null
+          assign featured_media_aspect_ratio = 1
+        endif
+      -%}
+      <a
+        href="{{ product_card_product.url | default: '#' }}"
+        class="d-block product__media_thumbnail product__card--link"
+      >
+        {%- render 'product-card-media',
+          product_card_product: product_card_product,
+          variant: variant,
+          media_size: media_size,
+          featured_media_aspect_ratio: featured_media_aspect_ratio,
+          second_img_position: second_img_position,
+          show_secondary_image: show_secondary_image,
+          first_variant_featured_media_check: first_variant_featured_media_check
+        -%}
+      </a>
+
+    {%- else -%}
+      <div class="card__content">
+        <a href="{{ product_card_product.url | default: '#' }}" class="d-block">
+          <div class="placeholder placeholder_svg_parent" style="padding-bottom: 100%">
+            {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg-2' }}
+          </div>
+        </a>
+      </div>
+    {%- endif -%}
+
+    {%- if show_countdown -%}
+      {%- if todayDate < countDownDate -%}
+        <countdown-timer
+          class="product__grid_timer"
+          {% if product_card_product.metafields.meta.product_badges.value != null %}
+            style="--timer-padding-bottom: 37px;"
+          {% endif %}
+        >
+          <div class="deals__product--countdown d-flex" data-countdown="{{ productCountdown }}"></div>
+        </countdown-timer>
+      {%- endif -%}
+    {%- endif -%}
+
+    {% if card_style == 'style_1' and show_wishlist %}
+      {%- render 'button-wishlist',
+        product: product_card_product,
+        className: 'product__card--wishlist-btn',
+        tooltip: true,
+        tooltip_position: 'tooltip--left'
+      -%}
+    {%- endif -%}
+
+    {% liquid
+      assign card_wishlist = false
+      if card_style == 'style_2' or card_style == 'style_3'
+        assign card_wishlist = true
+      endif
+    %}
+
+    {% if card_wishlist and show_wishlist and settings.show_all_wishlist %}
+      <div class="d-md-only-visible">
+        {%- render 'button-wishlist',
+          product: product_card_product,
+          className: 'product__card--wishlist-btn',
+          tooltip: true,
+          tooltip_position: 'tooltip--left'
+        -%}
+      </div>
+    {%- endif -%}
+
+    {% comment %} Product badge marquee {% endcomment %}
+    {%- render 'product-badge-marquee', product: product_card_product -%}
+    {% comment %} Product badge marquee ./ {% endcomment %}
+
+    {% comment %} Add To cart button style 2 desktop {% endcomment %}
+    {% if show_cart_button and card_style == 'style_2' %}
+      {% render 'add-to-cart-form',
+        product_card_product: product_card_product,
+        variant: variant,
+        custom_class: 'product__card--style2 d-md-none',
+        button_class: 'button product__card--style2',
+        show_preorder_button: show_preorder_button
+      %}
+    {%- endif -%}
+    {% comment %} Add To cart button style 2 desktop ./ {% endcomment %}
+
+    <!-- Product action button style 2 -->
+    {% if card_style == 'style_2' or card_style == 'style_3' %}
+      <div class="product-card-action-buttons-style2 d-md-none">
+        {%- if show_wishlist and settings.show_all_wishlist -%}
+          {%- render 'button-wishlist',
+            product: product_card_product,
+            tooltip: true,
+            tooltip_position: 'tooltip--left',
+            className: 'product__card-style2--action-btn'
+          -%}
+        {%- endif -%}
+
+        {%- if show_quick_compare and settings.show_all_compare -%}
+          {%- render 'button-compare',
+            product: product_card_product,
+            tooltip: true,
+            tooltip_position: 'tooltip--left',
+            className: 'product__card-style2--action-btn'
+          -%}
+        {%- endif -%}
+
+        {%- if show_quick_view -%}
+          {%- render 'quick-view',
+            product_card_product: product_card_product,
+            variant: variant,
+            type: 'quick_view',
+            tooltip: true,
+            tooltip_position: 'tooltip--left',
+            className: 'product__card-style2--action-btn'
+          -%}
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+    <!-- Product action button style 2 ./ -->
+  </div>
+
+  <div class="product__card__content text-{{ settings.product_content_alignment }} {% if spacing %} product--card-spacing-true{% endif %}">
+    {%- if show_vendor -%}
+      <span class="visually-hidden">{{ 'accessibility.vendor' | t }}</span>
+      <div class="product__vendor">{{ product_card_product.vendor }}</div>
+    {%- endif -%}
+
+    {%- if show_title -%}
+      <h3 class="product__card__title {{ settings.product_title_size }}">
+        <a class="product__card-title--link" href="{{ product_card_product.url | default: '#' }}">
+          {% if section.settings.enable_word_limit %}
+            {{- product_card_product.title | truncatewords: word_counter, "" -}}
+          {% else %}
+            {{- product_card_product.title -}}
+          {% endif %}
+        </a>
+      </h3>
+    {%- endif -%}
+
+    {%- if show_price -%}
+      {% render 'price', product: product_card_product, price_class: price_class %}
+    {%- endif -%}
+
+    {% if settings.color_swatches %}
+      {% if color_swatches %}
+        {% render 'product-card-color-swatch', product: product_card_product, current_variant: variant %}
+      {% endif %}
+    {% endif %}
+
+    {%- if show_rating and product_card_product.metafields.reviews.rating.value != blank -%}
+      <div class="product-card--rating">
+        {% liquid
+          assign rating_decimal = 0
+          assign decimal = product_card_product.metafields.reviews.rating.value.rating | modulo: 1
+          if decimal >= 0.3 and decimal <= 0.7
+            assign rating_decimal = 0.5
+          elsif decimal > 0.7
+            assign rating_decimal = 1
+          endif
+        %}
+        <div
+          class="rating"
+          role="img"
+          aria-label="{{ 'accessibility.star_reviews_info' | t: rating_value: product_card_product.metafields.reviews.rating.value, rating_max: product_card_product.metafields.reviews.rating.value.scale_max }}"
+        >
+          <span
+            aria-hidden="true"
+            class="rating-star color-icon-{{ settings.accent_icons }}"
+            style="--rating: {{ product_card_product.metafields.reviews.rating.value.rating | floor }}; --rating-max: {{ product_card_product.metafields.reviews.rating.value.scale_max }}; --rating-decimal: {{ rating_decimal }};"
+          ></span>
+        </div>
+        <p class="rating-text caption">
+          <span aria-hidden="true">
+            {{- product_card_product.metafields.reviews.rating.value }} /
+            {{ product_card_product.metafields.reviews.rating.value.scale_max -}}
+          </span>
+        </p>
+        <p class="rating-count caption">
+          <span aria-hidden="true">({{ product_card_product.metafields.reviews.rating_count }})</span>
+          <span class="visually-hidden">
+            {{- product_card_product.metafields.reviews.rating_count }}
+            {{ 'accessibility.total_reviews' | t -}}
+          </span>
+        </p>
+      </div>
+    {%- endif -%}
+
+
+    {% comment %} Add To cart button style 3 desktop {% endcomment %}
+    {% if show_cart_button and card_style == 'style_3' %}
+      {% render 'add-to-cart-form',
+        product_card_product: product_card_product,
+        variant: variant,
+        custom_class: 'product__card--style3 d-md-none',
+        button_class: 'button button--primary product__card--style3',
+        show_preorder_button: show_preorder_button
+      %}
+    {%- endif -%}
+    {% comment %} Add To cart button style 3 desktop ./ {% endcomment %}
+
+    <!-- Product action button -->
+    <div class="product-card-action-buttons  {% if card_style != 'style_1' %}d-md-only-visible{% endif %}">
+      {% comment %} Add To cart button style 1 {% endcomment %}
+      {%- if show_cart_button -%}
+        {% render 'add-to-cart-form',
+          product_card_product: product_card_product,
+          variant: variant,
+          tooltip: true,
+          tooltip_position: 'tooltip--top',
+          tooltip_desktop: false,
+          show_preorder_button: show_preorder_button
+        %}
+      {%- endif -%}
+      {% comment %} Add To cart button style 1 ./ {% endcomment %}
+
+      {%- if show_quick_compare -%}
+        {%- render 'button-compare',
+          product: product_card_product,
+          className: 'product__card--action-btn product__card--action-btn-icon',
+          tooltip: true,
+          tooltip_position: 'tooltip--top'
+        -%}
+      {%- endif -%}
+
+      {%- if show_quick_view -%}
+        {%- render 'quick-view',
+          product_card_product: product_card_product,
+          variant: variant,
+          type: 'quick_view',
+          className: 'product__card--action-btn product__card--action-btn-icon',
+          tooltip: true,
+          tooltip_position: 'tooltip--top'
+        -%}
+      {%- endif -%}
+    </div>
+    <!-- Product action button ./ -->
+  </div>
+</div>

@@ -1,0 +1,460 @@
+{%- comment -%}
+  Collection — ported from CollectionPage.jsx. Banner, then the category rail +
+  filter panel beside the product grid, then the category SEO block.
+
+  Differences forced by the platform, all deliberate:
+    · Sorting is Shopify's (sort_by), not a client-side comparator. The option
+      labels are the design's own; "Top rated" maps to best-selling because
+      Shopify cannot sort by rating.
+    · The grid paginates. The React page rendered every product at once, which
+      is fine for 132 local objects and not fine for a live storefront.
+    · The SEO blocks come from the collection description rather than a
+      hand-authored block list.
+{%- endcomment -%}
+{%- assign per_page = section.settings.products_per_page -%}
+
+<main id="main" class="col">
+  {%- comment -%}
+    BANNER — a real <img>, not a CSS background.
+
+    A background-image is the slowest possible way to load the largest thing on
+    the page: the browser can't see it until the stylesheet has downloaded,
+    parsed and matched, so it starts late, downloads at low priority, and can't
+    be given a srcset — every phone was pulling the same 2000px file.
+
+    As an <img> it is discovered in the initial HTML scan, marked
+    fetchpriority="high", and sized per device. No compression is added beyond
+    Shopify's own CDN encoding; the widths below only stop a 390px phone
+    downloading a desktop-sized file.
+  {%- endcomment -%}
+  {%- comment -%}
+    BANNER SOURCE — three tiers, most specific first.
+
+    `custom.banner` exists because `collection.image` cannot serve two masters:
+    it is also the card art in mts-list-collections, mts-category-showcase,
+    mts-industries-index and mts-industries, where a 5:1 strip cropped to a
+    120px square shows a sliver of its own middle. The metafield holds the
+    art-directed 2000x400 banner; the collection image stays the card.
+
+    A collection with no metafield keeps falling back to its image, so this is
+    additive — nothing is blanked by introducing it.
+  {%- endcomment -%}
+  {%- liquid
+    assign banner = blank
+    assign banner_mf = collection.metafields.custom.banner.value
+    if section.settings.banner_image != blank
+      assign banner = section.settings.banner_image
+    elsif banner_mf != blank
+      assign banner = banner_mf
+    elsif collection.image
+      assign banner = collection.image
+    elsif settings.default_collection_banner != blank
+      assign banner = settings.default_collection_banner
+    endif
+  -%}
+  {%- comment -%}
+    The default sits LAST on purpose. It is the catch-all for a collection with
+    no art of its own — most importantly /collections/all, which is Shopify's
+    virtual all-products route: it has no collection record at all, so it can
+    carry neither an image nor a metafield, and was the one collection page
+    rendering with a bare header. Any collection that does have its own banner
+    is unaffected, because this branch is only reached when the other three
+    produce nothing.
+  {%- endcomment -%}
+  {%- comment -%}
+    The tiny inline background is a low-quality placeholder. `.colban` is
+    charcoal, so until the real banner decodes the whole band paints solid
+    black — which reads as a broken page rather than a loading one. A 24px-wide
+    copy of the SAME image arrives in a few hundred bytes and, blown up to full
+    width, gives an instantly-correct colour wash that the sharp image then
+    resolves into.
+  {%- endcomment -%}
+  <div class="colban grain{% if banner != blank %} colban--img{% endif %}"
+       {% if banner != blank %}style="background-image:url({{ banner | image_url: width: 24 }})"{% endif %}>
+    {%- if banner != blank -%}
+      <img class="colban__img"
+           src="{{ banner | image_url: width: 1600 }}"
+           srcset="{{ banner | image_url: width: 800 }} 800w,
+                   {{ banner | image_url: width: 1200 }} 1200w,
+                   {{ banner | image_url: width: 1600 }} 1600w,
+                   {{ banner | image_url: width: 2000 }} 2000w"
+           sizes="100vw"
+           alt=""
+           aria-hidden="true"
+           {%- comment -%}
+             The intrinsic ratio must describe the ART, not the band. These said
+             2000x560 (3.57:1) while the banners are 2000x400 (5:1), so any
+             browser inferring an aspect-ratio from the attributes got a shape
+             the file never had.
+
+             This cannot move the band: `.colban__img` is
+             position:absolute; inset:0; width:100%; height:100% — the band's
+             height comes from `.colban__inner`'s padding and its text, so the
+             attributes are advisory only and the height is untouched.
+           {%- endcomment -%}
+           width="2000" height="400"
+           fetchpriority="high"
+           decoding="async">
+    {%- endif -%}
+    <div class="colban__scrim"></div>
+    <div class="wrap colban__inner">
+      {% render 'mts-breadcrumbs', parent_title: section.settings.parent_label, parent_url: section.settings.parent_url %}
+      {%- if section.settings.parent_label != blank -%}
+        <span class="eyebrow eyebrow--onink">{{ section.settings.parent_label }}</span>
+      {%- endif -%}
+      {%- comment -%}
+        Do NOT write `collection.title | default: 'key' | t` — Liquid applies `t`
+        to whatever `default` returns, so a real title like "Butyl Tape" gets
+        translated and renders as "Translation missing: en.Butyl Tape".
+        Translate only the fallback.
+      {%- endcomment -%}
+      <h1 class="colban__title">
+        {%- if collection.title != blank -%}
+          {{ collection.title }}
+        {%- else -%}
+          {{ 'collections.general.all_products' | t }}
+        {%- endif -%}
+      </h1>
+      <span class="colban__count num">
+        {{ 'collections.general.available_count' | t: count: collection.products_count }}
+      </span>
+    </div>
+  </div>
+
+  <div class="wrap col__layout">
+    {%- comment -%}
+      On a phone the category rail and the filter groups stacked open above the
+      grid and pushed the first product to ~1,136px — well past an 844px
+      viewport, so the page opened on controls instead of stock. This toolbar
+      collapses both into one box that is closed by default; the aside itself is
+      unchanged for desktop, where there is a column to put it in.
+    {%- endcomment -%}
+    <div class="col__mobilebar" data-mts-colbar>
+      <button type="button" class="col__mobilebar-btn" data-mts-colbar-toggle="cats" aria-expanded="false">
+        {% render 'mts-icon', name: 'grid', size: 16 %}
+        <span>Category</span>
+        {% render 'mts-icon', name: 'chevronDown', size: 15, class: 'col__mobilebar-chev' %}
+      </button>
+      <button type="button" class="col__mobilebar-btn" data-mts-colbar-toggle="filters" aria-expanded="false">
+        {% render 'mts-icon', name: 'layers', size: 16 %}
+        <span>Filters</span>
+        {% render 'mts-icon', name: 'chevronDown', size: 15, class: 'col__mobilebar-chev' %}
+      </button>
+    </div>
+
+    <aside class="col__side" data-mts-colside>
+      {%- if section.settings.rail_menu != blank -%}
+        {% render 'mts-category-rail', menu_handle: section.settings.rail_menu, active_handle: collection.handle %}
+      {%- endif -%}
+      {% render 'mts-filter-panel' %}
+    </aside>
+
+    <div class="col__main">
+      <div class="col__toolbar">
+        <span class="col__count num">{{ 'collections.general.products_count' | t: count: collection.products_count }}</span>
+        <div class="col__tools">
+          <form class="col__sort-form" data-mts-sort>
+            {%- comment -%} preserve any active filters when the sort changes {%- endcomment -%}
+            {%- for filter in collection.filters -%}
+              {%- for value in filter.active_values -%}
+                <input type="hidden" name="{{ value.param_name }}" value="{{ value.value }}">
+              {%- endfor -%}
+              {%- if filter.type == 'price_range' -%}
+                {%- if filter.min_value.value -%}
+                  <input type="hidden" name="{{ filter.min_value.param_name }}" value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}">
+                {%- endif -%}
+                {%- if filter.max_value.value -%}
+                  <input type="hidden" name="{{ filter.max_value.param_name }}" value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}">
+                {%- endif -%}
+              {%- endif -%}
+            {%- endfor -%}
+            <label class="col__sort">
+              <span>{{ 'collections.general.sort_by' | t }}</span>
+              {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+              <select name="sort_by" aria-label="Sort products">
+                <option value="manual" {% if sort_by == 'manual' %}selected{% endif %}>{{ 'collections.sorting.featured' | t }}</option>
+                <option value="price-ascending" {% if sort_by == 'price-ascending' %}selected{% endif %}>{{ 'collections.sorting.price_ascending' | t }}</option>
+                <option value="price-descending" {% if sort_by == 'price-descending' %}selected{% endif %}>{{ 'collections.sorting.price_descending' | t }}</option>
+                <option value="best-selling" {% if sort_by == 'best-selling' %}selected{% endif %}>{{ 'collections.sorting.best_selling' | t }}</option>
+                <option value="title-ascending" {% if sort_by == 'title-ascending' %}selected{% endif %}>{{ 'collections.sorting.az' | t }}</option>
+              </select>
+              {% render 'mts-icon', name: 'chevronDown', size: 16 %}
+            </label>
+            <noscript><button type="submit" class="btn btn--ghost">Sort</button></noscript>
+          </form>
+        </div>
+      </div>
+
+      {%- paginate collection.products by per_page -%}
+        {%- if collection.products.size > 0 -%}
+          {%- comment -%}
+            PINNED ORDER
+
+            These categories are smart collections, so Shopify offers no manual
+            sort — but the old site put its bestsellers on the first row, and
+            returning customers navigate by that shape. `custom.product_order`
+            carries it: the listed products render first, in order, and anything
+            else follows in Shopify's own order.
+
+            Two rules keep it honest rather than a snapshot that rots:
+              · a pinned product renders only if it is still IN this collection
+                (checked against `member_keys`), so losing its tag removes it
+              · pinning is skipped once the grid paginates or the shopper picks
+                a sort — reordering page 1 of 3 would just scramble the set
+
+            Handles are compared pipe-delimited so `butyl-tape` cannot match
+            inside `butyl-tape-black`.
+          {%- endcomment -%}
+          {%- liquid
+            assign pinned = collection.metafields.custom.product_order.value
+
+            # `collection.sort_by` is set ONLY by ?sort_by= in the URL, so a
+            # blank value means the shopper has not chosen a sort and the pinned
+            # order should win. Do NOT fall back to `default_sort_by` here: that
+            # is the admin's default (best-selling on every category in this
+            # store), which would read as an explicit choice and disable pinning
+            # on every page.
+            # `manual` is what the sort dropdown's "Featured" option submits, and
+            # featured IS the pinned order — so it keeps pinning on rather than
+            # turning it off. Any other value is a real shopper choice (price,
+            # A–Z, best-selling) and Shopify's ordering must win.
+            assign shopper_sorted = false
+            if collection.sort_by != blank and collection.sort_by != 'manual'
+              assign shopper_sorted = true
+            endif
+
+            assign use_pinned = false
+            if pinned != blank and paginate.pages <= 1 and shopper_sorted == false
+              assign use_pinned = true
+            endif
+
+            if use_pinned
+              assign member_keys = '|'
+              for p in collection.products
+                assign member_keys = member_keys | append: p.handle | append: '|'
+              endfor
+            endif
+          -%}
+
+          {%- comment -%}
+            Visually hidden, but it closes the h1 -> h3 gap: the card titles are
+            H3 and had no H2 above them. Screen readers and crawlers get a
+            complete outline; nothing changes on screen.
+          {%- endcomment -%}
+          <h2 class="sr-only">{{ 'collections.general.products_in' | t: title: collection.title }}</h2>
+          <div class="grid-products col__grid">
+            {%- if use_pinned -%}
+              {%- assign shown = '|' -%}
+              {%- for product in pinned -%}
+                {%- assign key = '|' | append: product.handle | append: '|' -%}
+                {%- if member_keys contains key -%}
+                  {%- unless shown contains key -%}
+                    {%- assign shown = shown | append: product.handle | append: '|' -%}
+                    {% render 'mts-product-card', product: product, index: forloop.index0, hide_cat: true %}
+                  {%- endunless -%}
+                {%- endif -%}
+              {%- endfor -%}
+              {%- for product in collection.products -%}
+                {%- assign key = '|' | append: product.handle | append: '|' -%}
+                {%- unless shown contains key -%}
+                  {% render 'mts-product-card', product: product, index: forloop.index0, hide_cat: true %}
+                {%- endunless -%}
+              {%- endfor -%}
+            {%- else -%}
+              {%- for product in collection.products -%}
+                {% render 'mts-product-card', product: product, index: forloop.index0, hide_cat: true %}
+              {%- endfor -%}
+            {%- endif -%}
+          </div>
+
+          {%- if paginate.pages > 1 -%}
+            {% render 'mts-pagination', paginate: paginate %}
+          {%- endif -%}
+        {%- else -%}
+          <div class="col__empty">
+            {% render 'mts-icon', name: 'layers', size: 40 %}
+            <p>{{ 'collections.general.no_matches' | t }}</p>
+            <a class="btn btn--ghost" href="{{ collection.url }}">{{ 'collections.general.clear_filters' | t }}</a>
+          </div>
+        {%- endif -%}
+      {%- endpaginate -%}
+    </div>
+  </div>
+
+  {%- liquid
+    assign seo_blocks = collection.metafields.custom.seo_blocks.value
+
+    # An "Overview" card whose entire contents is the category name repeats the
+    # H1 the reader just passed and frames it as if it were a summary. Two
+    # categories are in exactly that state, and they render as a large empty
+    # panel with a heading and nothing under it. Compare the stripped text to
+    # the title and drop the card when it adds nothing.
+    assign intro_text = collection.description | strip_html | strip
+    assign show_intro = false
+    if intro_text != blank
+      assign a = intro_text | downcase | replace: '.', '' | strip
+      assign b = collection.title | downcase | strip
+      if a != b and intro_text.size > 40
+        assign show_intro = true
+      endif
+    endif
+
+    assign has_body = false
+    if show_intro or seo_blocks.size > 0
+      assign has_body = true
+    endif
+  -%}
+  {%- if has_body or section.settings.show_seo_close -%}
+    <section class="section catseo{% unless has_body %} catseo--bare{% endunless %}">
+      <div class="wrap catseo__main">
+        {%- if has_body -%}
+        <div class="catseo__card">
+          {%- if show_intro -%}
+            <div class="catseo__intro">
+              {%- comment -%}
+                No "Overview" eyebrow. It labelled the intro without adding
+                anything a reader needs, and it was the first text Shopify found
+                when auto-generating the meta description for this page.
+              {%- endcomment -%}
+              {{ collection.description }}
+            </div>
+          {%- endif -%}
+
+          {%- comment -%}
+            The typed blocks, rebuilt with the SAME markup the React CatBlock
+            component produced — headings get .catseo__heading, bullets get
+            .catseo__list with a check icon each, titled entries get
+            .catseo__items, and the FAQ is a real accordion rather than a run of
+            headings. Rendering these from JSON (rather than flattened rich text)
+            is what makes the page structurally identical to the original.
+          {%- endcomment -%}
+          {%- if seo_blocks -%}
+            {%- for block in seo_blocks -%}
+              {%- case block.type -%}
+
+                {%- when 'heading' -%}
+                  {%- comment -%}
+                    H2: these are the page's own sections, the same role the
+                    tab labels play on a product page. Anything nested inside
+                    them is H3.
+
+                    A "FAQs:" heading is skipped — the migrated copy introduces
+                    the questions with one, and the accordion that follows is
+                    self-evident. Matching on the text rather than editing the
+                    stored copy means nothing is lost if it is ever wanted back.
+                  {%- endcomment -%}
+                  {%- comment -%}
+                    Strip trailing punctuation before comparing — the migrated
+                    copy writes this heading as "FAQs:", "FAQs-" and "FAQs."
+                    on different categories.
+                  {%- endcomment -%}
+                  {%- assign htext = block.text | downcase | strip | replace: ':', '' | replace: '-', '' | replace: '–', '' | replace: '.', '' | strip -%}
+                  {%- unless htext == 'faq' or htext == 'faqs' or htext == 'frequently asked questions' -%}
+                    <h2 class="catseo__heading">{{ block.text }}</h2>
+                  {%- endunless -%}
+
+                {%- when 'p' -%}
+                  <p>{{ block.text }}</p>
+
+                {%- when 'list' -%}
+                  <ul class="catseo__list">
+                    {%- for item in block.items -%}
+                      <li>{% render 'mts-icon', name: 'check', size: 14 %}<span>{{ item }}</span></li>
+                    {%- endfor -%}
+                  </ul>
+
+                {%- when 'items' -%}
+                  <ul class="catseo__items">
+                    {%- for item in block.items -%}
+                      <li>
+                        {% render 'mts-icon', name: 'check', size: 15 %}
+                        <span>{% if item.title != blank %}<b>{{ item.title }} </b>{% endif %}{{ item.text }}</span>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+
+                {%- when 'faq' -%}
+                  {%- if block.qas.size > 0 -%}
+                    {%- comment -%}
+                      No heading here. The questions were introduced twice — a
+                      "FAQs:" heading block from the migrated copy AND this one —
+                      and neither is wanted on a category page. The accordion
+                      keeps its eyebrow, which labels it without adding to the
+                      document outline.
+                    {%- endcomment -%}
+                    <div class="catseo__faqs">
+                      <h2 class="catseo__faqs-title">FAQs</h2>
+                      <ul class="faq__list" data-mts-faq>
+                        {%- for qa in block.qas -%}
+                          <li class="faq__item{% if forloop.first %} is-open{% endif %}">
+                            {%- comment -%}
+                              The question is a heading that wraps the control,
+                              which is the ARIA accordion pattern: the h3 puts
+                              each question in the document outline under the
+                              FAQs h2, and the button keeps the expand/collapse
+                              semantics. .faq__qh carries no styling of its own.
+                            {%- endcomment -%}
+                            <h3 class="faq__qh">
+                              <button class="faq__q" data-mts-faq-q
+                                      aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}">
+                                <span>{{ qa.q }}</span>
+                                <span data-mts-faq-icon>
+                                  {%- if forloop.first -%}
+                                    {% render 'mts-icon', name: 'minus', size: 18 %}
+                                  {%- else -%}
+                                    {% render 'mts-icon', name: 'plus', size: 18 %}
+                                  {%- endif -%}
+                                </span>
+                              </button>
+                            </h3>
+                            <div class="faq__a" data-mts-faq-a {% unless forloop.first %}hidden{% endunless %}>
+                              <p>{{ qa.a }}</p>
+                            </div>
+                          </li>
+                        {%- endfor -%}
+                      </ul>
+                    </div>
+                  {%- endif -%}
+              {%- endcase -%}
+            {%- endfor -%}
+          {%- endif -%}
+        </div>
+        {%- endif -%}
+
+        {%- comment -%}
+          The CTA sits OUTSIDE the copy card now. It used to be the last child
+          of it, so on a category with no copy the only way to show the CTA was
+          to render an empty card around it — which is what produced a large
+          blank panel with a heading and nothing beneath. Out here it stands on
+          its own and needs no container.
+        {%- endcomment -%}
+        {%- if section.settings.show_seo_close -%}
+          <div class="catseo__close">
+            <p>{{ section.settings.close_text }}</p>
+            <a href="{{ section.settings.close_url }}" class="btn btn--brand catseo__contact">
+              {{ section.settings.close_cta }} {% render 'mts-icon', name: 'arrowRight', size: 16 %}
+            </a>
+          </div>
+        {%- endif -%}
+      </div>
+    </section>
+  {%- endif -%}
+</main>
+
+{% schema %}
+{
+  "name": "Collection",
+  "settings": [
+    { "type": "link_list", "id": "rail_menu", "label": "\"Shop by category\" rail menu", "info": "A nested menu: each top-level link is a group heading, its children are the categories." },
+    { "type": "range", "id": "products_per_page", "label": "Products per page", "min": 12, "max": 60, "step": 4, "default": 48 },
+    { "type": "image_picker", "id": "banner_image", "label": "Banner image override", "info": "Applies to every collection. Per collection, set the Banner metafield instead; failing both, the collection's own image is used." },
+    { "type": "text", "id": "parent_label", "label": "Banner eyebrow / breadcrumb parent", "info": "e.g. \"Single-Sided Tapes\"." },
+    { "type": "url", "id": "parent_url", "label": "Breadcrumb parent link" },
+    { "type": "header", "content": "Category copy footer" },
+    { "type": "checkbox", "id": "show_seo_close", "label": "Show the \"talk to our experts\" close", "default": true },
+    { "type": "text", "id": "close_text", "label": "Close text", "default": "Still not sure which tape is right for the job?" },
+    { "type": "text", "id": "close_cta", "label": "Close button", "default": "Talk to our tape experts" },
+    { "type": "url", "id": "close_url", "label": "Close button link" }
+  ]
+}
+{% endschema %}

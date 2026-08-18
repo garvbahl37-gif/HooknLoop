@@ -1,0 +1,82 @@
+.product--tooltip {
+  position: relative;
+}
+.product--tooltip-label {
+  position: absolute;
+  background: rgb(var(--color-foreground));
+  color: rgb(var(--color-background));
+  padding: 6px 12px;
+  border-radius: 0.3rem;
+  transition-property: opacity, transform;
+  transition-duration: 0.3s;
+  transition-timing-function: ease;
+  pointer-events: none;
+  line-height: 1;
+  opacity: 0;
+  font-size: 1.3rem;
+  z-index: 9;
+  height: 3rem;
+  white-space: nowrap;
+  min-width: max-content;
+}
+.product--tooltip-label.tooltip--left {
+  top: 50%;
+  transform: translateY(-50%);
+  right: calc(100% + 8px);
+}
+
+.product--tooltip-label:after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 1rem;
+}
+.product--tooltip-label.tooltip--left:after {
+  bottom: -1.6rem;
+  border-color: transparent transparent transparent;
+  border-left-color: rgba(var(--color-foreground));
+  transform: translateY(-50%);
+  right: -1.7rem;
+  top: 50%;
+}
+.product--tooltip:hover .product--tooltip-label {
+  opacity: 1;
+}
+.wishlist__button.product--tooltip:not(.active)
+  .product__card--remove-wishlist {
+  display: none;
+}
+
+.wishlist__button.product--tooltip.active .product__card--add-wishlist {
+  display: none;
+}
+.product--tooltip:hover .product--tooltip-label.tooltip--top {
+  transform: translate(-50%, -40%);
+}
+.product--tooltip-label.tooltip--top {
+  bottom: 100%;
+  transform: translate(-50%, -70%);
+  left: 50%;
+}
+.product--tooltip-label.tooltip--top::after {
+  border-color: transparent transparent transparent;
+  border-top-color: rgba(var(--color-foreground));
+  bottom: -1.6rem;
+  left: 50%;
+  transform: translate(-50%);
+}
+@media only screen and (min-width: 992px) {
+  .product--tooltip-label.desktop--tooltip-disable {
+    display: none;
+  }
+}
+@media only screen and (max-width: 992px) {
+  .product--tooltip-label {
+    padding: 0 5px;
+    height: 2.8rem;
+    display: flex;
+    align-items: center;
+  }
+}

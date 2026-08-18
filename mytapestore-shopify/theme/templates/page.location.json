@@ -1,0 +1,14 @@
+{
+  "sections": {
+    "main": {
+      "type": "mts-page-location",
+      "settings": {
+        "eyebrow": "Local delivery",
+        "form_eyebrow": "Trade enquiries",
+        "form_heading": "Get a quote",
+        "form_cta": "Request a quote"
+      }
+    }
+  },
+  "order": ["main"]
+}

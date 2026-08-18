@@ -1,0 +1,30 @@
+{% if product_card != blank %}
+  <div class="gallery--product-card color-{{ color_scheme }} {% if card_radius %}gallery--card-radius{% endif %}">
+    <a href="{{ product_card.url }}" class="gallery--product-card-link media">
+      {%- if product_card.featured_media -%}
+        {{
+          product_card.featured_media
+          | image_url: width: '120x'
+          | image_tag:
+            class: 'gallery--product-card-image',
+            widths: '40, 80, 120, 150, 200, 250',
+            height: 80,
+            width: 80,
+            loading: 'lazy',
+            alt: product_card.featured_media.alt
+          | escape
+        }}
+      {%- endif -%}
+    </a>
+    <div class="gallery--product-card-info">
+      <a href="{{ product_card.url }}" class="gallery--product-card-title h6 mb-0">{{ product_card.title }}</a>
+
+      <div class="gallery--product-card-price">
+        {%- render 'price', product: product_card, use_variant: true -%}
+      </div>
+      <div class="gallery--product-card-actions">
+        <a href="{{ product_card.url }}" class="link">View details</a>
+      </div>
+    </div>
+  </div>
+{% endif %}

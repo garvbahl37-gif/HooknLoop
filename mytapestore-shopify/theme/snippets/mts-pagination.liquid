@@ -1,0 +1,50 @@
+{%- comment -%}
+  Pagination. The React redesign had none — it rendered all 132 local products in
+  one go — so there is no ported markup to match. This uses the design's own
+  button and hairline vocabulary rather than inventing a new one; the styles live
+  in mts-shopify-overrides.css.
+
+  Params: paginate
+{%- endcomment -%}
+{%- if paginate.pages > 1 -%}
+  <nav class="mts-pager" aria-label="{{ 'general.pagination.label' | t }}">
+    {%- if paginate.previous -%}
+      <a class="mts-pager__step" href="{{ paginate.previous.url }}" rel="prev">
+        {% render 'mts-icon', name: 'chevronRight', size: 15, class: 'mts-pager__back' %}
+        {{ 'general.pagination.previous' | t }}
+      </a>
+    {%- else -%}
+      <span class="mts-pager__step is-disabled">
+        {% render 'mts-icon', name: 'chevronRight', size: 15, class: 'mts-pager__back' %}
+        {{ 'general.pagination.previous' | t }}
+      </span>
+    {%- endif -%}
+
+    <ol class="mts-pager__list">
+      {%- for part in paginate.parts -%}
+        <li>
+          {%- if part.is_link -%}
+            <a class="mts-pager__num num" href="{{ part.url }}"
+               aria-label="{{ 'general.pagination.page' | t: number: part.title }}">{{ part.title }}</a>
+          {%- elsif part.title == hellip -%}
+            <span class="mts-pager__gap">{{ part.title }}</span>
+          {%- else -%}
+            <span class="mts-pager__num num is-current" aria-current="page">{{ part.title }}</span>
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ol>
+
+    {%- if paginate.next -%}
+      <a class="mts-pager__step" href="{{ paginate.next.url }}" rel="next">
+        {{ 'general.pagination.next' | t }}
+        {% render 'mts-icon', name: 'chevronRight', size: 15 %}
+      </a>
+    {%- else -%}
+      <span class="mts-pager__step is-disabled">
+        {{ 'general.pagination.next' | t }}
+        {% render 'mts-icon', name: 'chevronRight', size: 15 %}
+      </span>
+    {%- endif -%}
+  </nav>
+{%- endif -%}

@@ -1,0 +1,83 @@
+/*
+ * HooknLoop redesign — Suruchi's `footer` section replaced by `hnl-footer`,
+ * the port of storefront/src/sections/Footer.jsx.
+ *
+ * Suruchi's own footer, its five link_list blocks and the email-popup are
+ * preserved in git at the pristine backup commit; restore this file from there
+ * to put the stock footer back.
+ *
+ * mobile-navigation-bar is REMOVED. Its five destinations are all reachable
+ * without it: Home, the product menus, Account, Contact and Shipping are in
+ * the hamburger drawer, and search and cart sit in the header bar itself. It
+ * was costing ~70px at the bottom of every phone screen to duplicate them.
+ *
+ * email-popup is dropped: the redesign's footer already carries the signup,
+ * and it was set to "disable" anyway, so nothing is lost.
+ */
+{
+  "type": "footer",
+  "name": "Footer",
+  "sections": {
+    "hnl_footer": {
+      "type": "hnl-footer",
+      "blocks": {
+        "c1": {
+          "type": "column",
+          "settings": {
+            "heading": "Shop tape",
+            "links": "Self-Adhesive Roll | /products/self-adhesive-hook-and-loop-roll\nHeavy-Duty Adhesive | /products/heavy-duty-adhesive-hook-and-loop\nVELCRO® Brand Roll | /products/velcro-self-adhesive-hook-and-loop-roll\nSew-On Hook & Loop | /products/sew-on-hook-and-loop-fastener\nHook & Loop Dots | /products/hook-and-loop-dots\nReusable Cable Straps | /products/hook-and-loop-adjustable-strap"
+          }
+        },
+        "c2": {
+          "type": "column",
+          "settings": {
+            "heading": "More products",
+            "links": "Fire Retardant Adhesive | /products/fire-retardant-adhesive-hook-and-loop\nFire Retardant Sew-On | /products/fire-retardant-sew-on-hook-and-loop\nDouble-Sided Hook & Loop | /products/double-sided-hook-and-loop\nHeavy-Duty Strap | /products/heavy-duty-hook-and-loop-strap\nHook & Loop for Fabric | /products/hook-and-loop-for-fabric\nBrowse All Products | /collections/all"
+          }
+        },
+        "c3": {
+          "type": "column",
+          "settings": {
+            "heading": "Help",
+            "links": "Bulk & Trade Quotes | /pages/bulk-orders\nShipping & Delivery | /pages/shipping-delivery\nReturns & Exchanges | /pages/return-policy\nAbout Us | /pages/about-us\nCustomer Service | /pages/customer-service\nContact Us | /pages/contact\nIndustries | /pages/industries\nBlog | /pages/blog"
+          }
+        },
+        "c4": {
+          "type": "column",
+          "settings": {
+            "heading": "Industries",
+            "links": "Clothing & Garments | /pages/clothing-garments\nUpholstery & Furniture | /pages/upholstery-furniture\nSchools & Education | /pages/schools-education\nSignage & Displays | /pages/signage-displays\nAutomotive, Caravan & RV | /pages/automotive-caravan-rv\nMedical & Aged Care | /pages/medical-aged-care\nWarehousing & Logistics | /pages/warehousing-logistics\nConstruction & Industrial | /pages/construction-industrial\nAll Industries | /pages/industries"
+          }
+        }
+      },
+      "block_order": [
+        "c1",
+        "c2",
+        "c3",
+        "c4"
+      ],
+      "settings": {
+        "tagline": "Industrial hook & loop, dispatched fast across Australia.",
+        "phone": "+61 3 4061 6287",
+        "phone_sub": "Call our Australian team",
+        "email": "info@hooknloop.com.au",
+        "abn": "ABN 93 878 995 217",
+        "signup_heading": "Stay in touch",
+        "signup_blurb": "Trade tips & bulk price drops. No spam — unsubscribe any time.",
+        "signup_placeholder": "you@company.com.au",
+        "signup_button": "Notify me",
+        "signup_ok": "You're on the list — check your inbox.",
+        "legal_name": "HooknLoop Australia · All rights reserved",
+        "legal_links": "Privacy | /pages/privacy-policy\nTerms | /pages/terms-conditions\nShipping | /pages/shipping-delivery\nReturns | /pages/return-policy",
+        "trademark": "VELCRO® is a registered trademark of Velcro IP Holdings LLC. HooknLoop stocks genuine VELCRO® Brand product; other products are our own brand.",
+        "social_facebook": "https://www.facebook.com/profile.php?id=61587201524181",
+        "social_instagram": "https://www.instagram.com/hooknloopshop",
+        "social_pinterest": "https://www.pinterest.com/hooknloopshop/",
+        "social_linkedin": "https://www.linkedin.com/company/hooknloop/"
+      }
+    }
+  },
+  "order": [
+    "hnl_footer"
+  ]
+}

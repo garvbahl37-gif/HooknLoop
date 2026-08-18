@@ -1,0 +1,39 @@
+{%- comment -%}
+  One colour name -> one CSS colour. Black/White/Orange come from the React
+  SWATCH_HEX map; the rest are here so a new colour value in Shopify renders as
+  itself rather than as an empty swatch. Anything unrecognised falls back to a
+  neutral grey, which reads as "no colour set" instead of silently showing white
+  and looking like a real White option.
+{%- endcomment -%}
+
+{%- liquid
+  assign c = value | strip | downcase
+  case c
+    when 'black'
+      echo '#1a1a1a'
+    when 'white'
+      echo '#ffffff'
+    when 'orange'
+      echo '#e8600a'
+    when 'grey', 'gray'
+      echo '#8b96ab'
+    when 'beige', 'cream'
+      echo '#d9cbb3'
+    when 'navy'
+      echo '#16264a'
+    when 'red'
+      echo '#b3261e'
+    when 'blue'
+      echo '#2e6ae0'
+    when 'green'
+      echo '#3d6456'
+    when 'yellow'
+      echo '#e0b02e'
+    when 'brown'
+      echo '#6b4a2f'
+    when 'pink'
+      echo '#e08fa8'
+    else
+      echo '#c9d3e6'
+  endcase
+-%}

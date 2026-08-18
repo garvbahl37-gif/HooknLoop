@@ -39,8 +39,18 @@ strong { font-weight: 700; color: var(--ink); }
 }
 .skip:focus { top: 8px; }
 
-/* global focus ring */
-:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+/* global focus ring.
+   `[tabindex]` matches on attribute PRESENCE, so a bare `[tabindex]` also rings
+   every `tabindex="-1"` element — and `-1` means the exact opposite of what a
+   focus ring communicates: programmatically focusable, deliberately NOT in the
+   tab order. Nobody can ever reach one with a keyboard, so a keyboard focus
+   indicator on it is noise, not affordance.
+   That is not hypothetical here: the account area moves focus to each panel's
+   heading after a nav click so screen readers announce the new panel, and the
+   bare selector drew a red rectangle around "Your orders", "Downloads",
+   "Addresses", "Account details" and "Wishlist" every time. Excluding -1 keeps
+   the ring on everything a keyboard can actually land on. */
+:where(a, button, input, select, textarea, [tabindex]:not([tabindex="-1"])):focus-visible {
   outline: 3px solid var(--brand);
   outline-offset: 2px;
   border-radius: 3px;
