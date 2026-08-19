@@ -221,16 +221,20 @@
         <dl class="cart__sum-rows">
           <div>
             <dt>{{ 'cart.general.subtotal' | t }} <span data-mts-cart-items>{{ 'cart.general.items_count' | t: count: cart.item_count }}</span></dt>
-            <dd class="num" data-mts-cart-subtotal>{{ cart.items_subtotal_price | money }}</dd>
+            {%- comment -%}
+              original_total_price, NOT items_subtotal_price. items_subtotal_price
+              is already net of line-level discounts, so pairing it with the
+              "You saved" row below produced Subtotal == Total and made the
+              saving read as though it had been ignored. original − saved = total.
+            {%- endcomment -%}
+            <dd class="num" data-mts-cart-subtotal>{{ cart.original_total_price | money }}</dd>
           </div>
-          {%- if cart.cart_level_discount_applications.size > 0 -%}
-            {%- for discount in cart.cart_level_discount_applications -%}
-              <div>
-                <dt>{{ discount.title }}</dt>
-                <dd class="num">−{{ discount.total_allocated_amount | money }}</dd>
-              </div>
-            {%- endfor -%}
-          {%- endif -%}
+          {%- comment -%}
+            No per-application rows here on purpose. cart.total_discount (the
+            "You saved" row below) already includes every cart-level discount,
+            so itemising them here as well would subtract the same money twice
+            on screen. Line-level bulk savings are shown on each cart line.
+          {%- endcomment -%}
 
           {%- comment -%}
             Bulk savings are allocated per line, not at cart level, so they never
@@ -263,6 +267,29 @@
             <dd class="cart__sum-note">{{ 'cart.general.gst_note' | t }}</dd>
           </div>
         </dl>
+
+        {%- comment -%}
+          Discount code. Shopify only applies manual codes at CHECKOUT — they are
+          deliberately not exposed through cart.discount_applications — so this
+          field cannot change the total on this page and must not pretend to.
+          Submitting sends the shopper through /discount/<code>?redirect=/cart,
+          the same route Shopify uses for discount links in email, which stores
+          the code against the session so checkout picks it up. The note says so
+          plainly rather than showing a saving that will not move.
+        {%- endcomment -%}
+        <form class="cart__coupon" data-mts-coupon novalidate>
+          <label class="cart__coupon-lbl" for="cart-coupon">{{ 'cart.general.discount_code' | t }}</label>
+          <div class="cart__coupon-row">
+            <input class="cart__coupon-input" id="cart-coupon" name="discount" type="text"
+                   autocomplete="off" autocapitalize="characters" autocorrect="off" spellcheck="false"
+                   placeholder="{{ 'cart.general.discount_placeholder' | t }}"
+                   aria-describedby="cart-coupon-note">
+            <button type="submit" class="btn btn--ghost cart__coupon-btn">{{ 'cart.general.apply' | t }}</button>
+          </div>
+          <p class="cart__coupon-note" id="cart-coupon-note" data-mts-coupon-note role="status" aria-live="polite">
+            {{ 'cart.general.discount_note' | t }}
+          </p>
+        </form>
 
         <div class="cart__total">
           <span>{{ 'cart.general.total' | t }}</span>

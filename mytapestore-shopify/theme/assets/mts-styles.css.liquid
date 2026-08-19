@@ -941,6 +941,15 @@ strong { font-weight: 700; color: var(--ink); }
 .ft-bottom { background: rgba(0,0,0,0.28); border-top: 1px solid var(--line-ink); }
 .ft-bottom__row { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 13px; flex-wrap: wrap; }
 .ft-bottom p { font-size: var(--t-xs); color: var(--on-ink-mute); }
+/* Legal line — the ABN is one identifier and must never break mid-number.
+   It stays nowrap, and on narrow screens moves onto its own line rather than
+   wrapping, so "ABN 93 878 995 217" always reads as a single unit. */
+.ft-legal__abn { white-space: nowrap; }
+.ft-legal__sep { margin-inline: 5px; }
+@media (max-width: 600px) {
+  .ft-legal__sep { display: none; }
+  .ft-legal__abn { display: block; margin-top: 4px; }
+}
 .ft-pay__marks { display: flex; gap: 6px; flex-wrap: wrap; }
 .ft-pay__marks img { height: 24px; background: #fff; border-radius: 4px; padding: 2px 4px; }
 
@@ -1676,6 +1685,22 @@ strong { font-weight: 700; color: var(--ink); }
 .cart__total span { font-family: var(--f-head); font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
 .cart__total b { font-family: var(--f-display); font-size: 2rem; color: var(--brand-ink); }
 .cart__free-tag { font-family: var(--f-head); font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; font-size: var(--t-xs); color: var(--stock); }
+
+/* ---- cart discount code ----
+   Sits between the summary rows and the total. Shopify only applies manual
+   codes at checkout, so the note under the field says so rather than implying
+   the total above it is about to move. Input and button share one row and the
+   input carries min-width:0 so a long code cannot widen the sticky summary. */
+.cart__coupon { padding: 16px 0; border-bottom: 1px solid var(--line); }
+.cart__coupon-lbl { display: block; font-family: var(--f-head); font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; font-size: var(--t-xs); color: var(--muted); margin-bottom: 8px; }
+.cart__coupon-row { display: flex; gap: 8px; align-items: stretch; }
+.cart__coupon-input { flex: 1 1 auto; min-width: 0; border: 1px solid var(--line-2); border-radius: var(--r); padding: 10px 12px; font: inherit; font-size: var(--t-sm); text-transform: uppercase; letter-spacing: 0.02em; background: #fff; color: var(--ink); }
+.cart__coupon-input::placeholder { text-transform: none; letter-spacing: 0; color: var(--faint); }
+.cart__coupon-input:focus-visible { outline: 2px solid var(--brand); outline-offset: 1px; border-color: var(--brand); }
+.cart__coupon-btn { flex: 0 0 auto; padding-inline: 18px; white-space: nowrap; }
+.cart__coupon-note { margin-top: 8px; font-size: var(--t-xs); color: var(--faint); line-height: 1.45; }
+.cart__coupon-note.is-ok { color: #1d6b3d; font-weight: 600; }
+.cart__coupon-note.is-err { color: var(--brand-ink); font-weight: 600; }
 .cart__cutoff { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 12px; font-size: var(--t-xs); color: var(--muted); text-align: center; }
 .cart__cutoff svg { color: var(--brand-ink); flex-shrink: 0; }
 .cart__cutoff b { color: var(--ink-2); }

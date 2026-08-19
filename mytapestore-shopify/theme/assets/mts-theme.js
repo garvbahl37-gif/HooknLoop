@@ -159,6 +159,65 @@
      login, register, activate, reset, the storefront gate and the two in the
      account panel. A shopper who cannot see what they typed retypes it, and on
      a phone keyboard that is where sign-ups are abandoned. */
+  /* ---- discount code -------------------------------------------------------
+     Shopify applies manual codes at CHECKOUT only; they are not exposed through
+     the cart object, so this cannot show a saving here and does not claim to.
+     /discount/<code>?redirect=/cart is Shopify's own route (the one behind
+     discount links in email): it stores the code against the session, bounces
+     back to the cart, and checkout then picks it up. Codes are changed by
+     entering another, and removed at checkout, because the session cookie the
+     route sets is not readable or clearable from script. */
+  function initCoupon() {
+    var form = document.querySelector('[data-mts-coupon]');
+    if (!form || form._mtsBound) return;
+    form._mtsBound = true;
+
+    var input = form.querySelector('input[name="discount"]');
+    var note = form.querySelector('[data-mts-coupon-note]');
+    var base = note ? note.textContent.trim() : '';
+    var KEY = 'mts_discount_code';
+
+    function say(msg, tone) {
+      if (!note) return;
+      note.textContent = msg;
+      note.classList.toggle('is-err', tone === 'err');
+      note.classList.toggle('is-ok', tone === 'ok');
+    }
+
+    // Coming back from /discount/<code> the page is a fresh load, so the only
+    // record of what was submitted is the one we left ourselves.
+    try {
+      var saved = sessionStorage.getItem(KEY);
+      if (saved) {
+        say(saved + ' \u2014 will be applied at checkout.', 'ok');
+        if (input) input.value = saved;
+      }
+    } catch (e) { /* private mode: fall back to the static note */ }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var code = (input && input.value || '').trim();
+      if (!code) {
+        say('Enter a discount code first.', 'err');
+        if (input) input.focus();
+        return;
+      }
+      try { sessionStorage.setItem(KEY, code); } catch (e2) {}
+      say('Applying\u2026');
+      window.location.href = '/discount/' + encodeURIComponent(code) + '?redirect=/cart';
+    });
+
+    // Typing a new code clears the previous confirmation so the note never
+    // describes a code other than the one in the box.
+    if (input) {
+      input.addEventListener('input', function () {
+        var saved2 = null;
+        try { saved2 = sessionStorage.getItem(KEY); } catch (e3) {}
+        if (input.value.trim() !== (saved2 || '')) say(base);
+      });
+    }
+  }
+
   function initPasswordToggles() {
     $$('input[type="password"]').forEach(function (input) {
       if (input.getAttribute('data-mts-pw')) return;
@@ -1743,7 +1802,10 @@
         if (q && document.activeElement !== q && !li._mtsPending) q.value = item.quantity;
       });
 
-      $$('[data-mts-cart-subtotal]').forEach(function (el) { el.textContent = money(cart.items_subtotal_price); });
+      // original_total_price, not items_subtotal_price: the latter is already net
+      // of line discounts, which made Subtotal and Total print the same number
+      // with a "You saved" row stranded between them. Must match mts-cart.liquid.
+      $$('[data-mts-cart-subtotal]').forEach(function (el) { el.textContent = money(cart.original_total_price); });
       $$('[data-mts-cart-total]').forEach(function (el) { el.textContent = money(cart.total_price); });
       // Bulk savings change with every quantity edit, so the saved row has to be
       // repainted here rather than only on page load.
@@ -3985,6 +4047,7 @@
     initWishlistPage();
     paintWish();
     initPasswordToggles();
+    initCoupon();
     initNav();
     initStickyHeader();
     initVisibilityPausing();

@@ -34,7 +34,7 @@
     },
     "newsletter": {
       "label": "Newsletter",
-      "heading": "Trade tips & tape deals — no spam.",
+      "heading": "Join Us For Exclusive Deals",
       "placeholder": "Your email",
       "submit": "Subscribe",
       "success": "You're subscribed!"
@@ -209,7 +209,11 @@
         "volume": "Volume discounts applied automatically"
       },
       "you_saved": "You saved",
-      "bulk_nudge_html": "Add {{ count }} more to save {{ percent }}%"
+      "bulk_nudge_html": "Add {{ count }} more to save {{ percent }}%",
+      "discount_code": "Discount code",
+      "discount_placeholder": "Enter code",
+      "apply": "Apply",
+      "discount_note": "Codes are applied at checkout — you can change or remove yours there."
     }
   },
   "customer": {

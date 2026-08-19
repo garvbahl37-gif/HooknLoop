@@ -136,9 +136,17 @@
 
   <div class="ft-bottom">
     <div class="wrap ft-bottom__row">
-      <p class="num">
-        {{ shop.name }} &copy; {{ 'now' | date: '%Y' }} &middot; All rights reserved
-        {%- if settings.abn != blank %} &middot; ABN {{ settings.abn }}{% endif -%}
+      {%- comment -%}
+        The ABN is a single identifier, so it is wrapped and marked nowrap: it
+        must never split across lines mid-number the way "…995 / 217" did on a
+        narrow screen. Below 600px it drops to its own line instead, and the
+        middot separator is hidden so no stray dot is left dangling.
+      {%- endcomment -%}
+      <p class="num ft-legal">
+        <span>{{ shop.name }} &copy; {{ 'now' | date: '%Y' }} &middot; All rights reserved</span>
+        {%- if settings.abn != blank -%}
+          <span class="ft-legal__sep" aria-hidden="true">&middot;</span><span class="ft-legal__abn">ABN {{ settings.abn }}</span>
+        {%- endif -%}
       </p>
       {%- if section.settings.show_payment_marks -%}
         <div class="ft-pay__marks">
@@ -169,7 +177,7 @@
       "type": "text",
       "id": "newsletter_heading",
       "label": "Newsletter heading",
-      "default": "Trade tips & tape deals — no spam."
+      "default": "Join Us For Exclusive Deals"
     },
     {
       "type": "checkbox",
