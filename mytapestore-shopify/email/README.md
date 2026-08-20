@@ -40,8 +40,9 @@ Sources: [Send internal email](https://help.shopify.com/en/manual/shopify-flow/r
 | File | Notification | Status |
 |---|---|---|
 | [01-order-confirmation.html](01-order-confirmation.html) | Order confirmation | ready to paste |
+| [02-abandoned-checkout.html](02-abandoned-checkout.html) | Abandoned checkout | ready to paste — **third-party app, not Notifications** |
 
-More to come: shipping confirmation, draft order invoice, refund, abandoned checkout.
+More to come: shipping confirmation, draft order invoice, refund.
 
 ### Design decisions baked in
 
@@ -76,3 +77,65 @@ To roll back, the editor has **Revert to default** on every template.
 
 Send a test to at least: Gmail (web + app), Outlook, and Apple Mail. Outlook is
 the one that breaks layouts — if it looks right there, it looks right everywhere.
+
+
+---
+
+## 02 — Abandoned checkout
+
+Goes into a **third-party messaging/email app**, not Settings → Notifications.
+Shopify's own abandoned-checkout automation is drag-and-drop only (see the table
+at the top), which is why this one lives elsewhere.
+
+### Variables the app requires
+
+Both are already in the template — do not delete either:
+
+| Variable | Where it sits | Why |
+|---|---|---|
+| `unsubscribe_link` | footer | legally required on marketing email |
+| `open_tracking_block` | last line before `</body>` | the app's open-tracking pixel |
+
+### Variables to check against your app's docs
+
+The template uses Shopify's standard abandoned-checkout names, which most apps
+mirror. If the preview renders blank, these are the only lines to change:
+
+| Used | Fallback if blank |
+|---|---|
+| `checkout.abandoned_checkout_url` | `abandoned_checkout_url` |
+| `checkout.customer.first_name` | `customer.first_name` |
+| `checkout.line_items` | `line_items` |
+| `checkout.subtotal_price` | `subtotal_price` |
+
+Some apps drop the `checkout.` prefix entirely. Try that first.
+
+`abandoned_checkout_url` is the one that actually matters — it is the link that
+restores the cart. If nothing else renders, that must.
+
+### Liquid runs inside HTML comments
+
+Worth knowing before editing: Liquid is processed across the whole file,
+including inside `<!-- -->`. Putting `{{ open_tracking_block }}` in a comment
+fires a second tracking pixel, and putting the recovery URL in one leaks it into
+the shipped source. That is why the header comment carries no variable braces.
+
+The one exception is the `<!--[if mso]>` block around the button — Outlook parses
+that conditional, so the Liquid inside it is meant to render.
+
+### Claims deliberately left out
+
+- **Free shipping.** Rates are flat ($12 standard / $18 express) and the theme's
+  free-shipping bar is switched off pending a decision on the threshold.
+- **A GST amount.** The store's Australia tax rate is currently 0%, so
+  "includes GST" would be a claim checkout does not back up.
+
+Add either back only once it is true at checkout.
+
+### Suggested send timing
+
+One email at **4–6 hours** recovers most of what is recoverable. If you add a
+second at ~24h and a third at ~72h, change the subject line each time — repeating
+it reads as a resend and gets ignored. Do not add a discount code to the first
+send; the volume tiers already give a reason to come back, and training people to
+abandon carts for a coupon is expensive.

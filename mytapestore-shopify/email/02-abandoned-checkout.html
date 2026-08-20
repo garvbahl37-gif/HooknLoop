@@ -1,0 +1,230 @@
+<!--
+  MY TAPE STORE — Abandoned checkout recovery.
+  Paste into your messaging app's HTML template editor.
+  Full setup + variable notes: see README.md in this folder.
+  Liquid renders inside HTML comments, so no variable braces appear here
+  on purpose — putting them in a comment would execute them.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<meta name="supported-color-schemes" content="light">
+<title>{{ shop.name }} — you left something in your cart</title>
+</head>
+<body style="margin:0; padding:0; background:#f4f2ef; -webkit-font-smoothing:antialiased;">
+
+<!-- preheader: shows in the inbox list, hidden in the body -->
+<div style="display:none; max-height:0; overflow:hidden; opacity:0; mso-hide:all;">
+  Your tape is still in your cart — pick up right where you left off.
+  &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;
+</div>
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f4f2ef;">
+<tr><td align="center" style="padding:24px 12px;">
+
+<table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px; max-width:100%; background:#ffffff; border-radius:14px; overflow:hidden;">
+
+  <!-- hazard stripe: the store's signature device -->
+  <tr><td style="height:6px; line-height:6px; font-size:0;
+      background:repeating-linear-gradient(45deg,#df3c22 0 14px,#1f1f1f 14px 28px);">&nbsp;</td></tr>
+
+  <!-- masthead -->
+  <tr><td style="padding:28px 32px 0 32px;">
+    <a href="{{ shop.url }}" style="text-decoration:none; display:inline-block;">
+      <img src="https://cdn.shopify.com/s/files/1/0783/2017/3161/files/mytapestore-email-logo-560.png?v=1787210157"
+           alt="{{ shop.name }}" width="186" height="32"
+           style="display:block; width:186px; height:32px; border:0; outline:none; text-decoration:none;">
+    </a>
+  </td></tr>
+
+  <!-- headline -->
+  <tr><td style="padding:22px 32px 0 32px; font-family:Helvetica,Arial,sans-serif;">
+    <p style="margin:0 0 6px 0; font-size:12px; font-weight:bold; letter-spacing:0.1em; text-transform:uppercase; color:#df3c22;">
+      Still in your cart
+    </p>
+    <h1 style="margin:0 0 10px 0; font-size:26px; line-height:1.2; color:#1f1f1f; font-weight:bold;">
+      You left something behind{% if checkout.customer.first_name %}, {{ checkout.customer.first_name }}{% endif %}.
+    </h1>
+    <p style="margin:0; font-size:15px; line-height:1.6; color:#555050;">
+      Your cart is saved and ready to go. Pick up exactly where you left off —
+      nothing has been lost.
+    </p>
+  </td></tr>
+
+  <!-- primary CTA, kept above the fold -->
+  <tr><td align="left" style="padding:24px 32px 0 32px;">
+    <!--[if mso]>
+    <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word"
+      href="{{ checkout.abandoned_checkout_url }}"
+      style="height:52px; v-text-anchor:middle; width:260px;" arcsize="14%" stroke="f" fillcolor="#df3c22">
+      <w:anchorlock/>
+      <center style="color:#ffffff; font-family:Helvetica,Arial,sans-serif; font-size:16px; font-weight:bold; letter-spacing:0.02em;">
+        Return to my cart
+      </center>
+    </v:roundrect>
+    <![endif]-->
+    <!--[if !mso]><!-- -->
+    <a href="{{ checkout.abandoned_checkout_url }}"
+       style="display:inline-block; background:#df3c22; color:#ffffff; text-decoration:none;
+              font-family:Helvetica,Arial,sans-serif; font-size:16px; font-weight:bold;
+              letter-spacing:0.02em; line-height:52px; height:52px; padding:0 34px;
+              border-radius:7px; mso-hide:all;">
+      Return to my cart
+    </a>
+    <!--<![endif]-->
+  </td></tr>
+
+  <!-- divider -->
+  <tr><td style="padding:28px 32px 0 32px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+      <tr><td style="height:1px; line-height:1px; font-size:0; background:#e3e1dd;">&nbsp;</td></tr>
+    </table>
+  </td></tr>
+
+  <!-- what's waiting -->
+  <tr><td style="padding:22px 32px 0 32px; font-family:Helvetica,Arial,sans-serif;">
+    <p style="margin:0 0 14px 0; font-size:12px; font-weight:bold; letter-spacing:0.1em; text-transform:uppercase; color:#8a8480;">
+      What's waiting
+    </p>
+
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+      {% for line in checkout.line_items %}
+      <tr>
+        <!-- thumbnail -->
+        <td width="104" valign="top" style="padding:0 16px 20px 0;">
+          {% if line.image %}
+            <!-- 208px source rendered at 104px: sharp on retina, which is most phones.
+                 'x208' scales to fit rather than cropping, so a long roll of tape is
+                 not chopped into an unrecognisable square. -->
+            <img src="{{ line.image | img_url: '208x208' }}"
+                 alt="{{ line.title | escape }}" width="104" height="104"
+                 style="display:block; width:104px; height:104px; border-radius:8px;
+                        border:1px solid #e3e1dd; background:#ffffff;">
+          {% else %}
+            <div style="width:104px; height:104px; border-radius:8px; background:#f4f2ef; border:1px solid #e3e1dd;">&nbsp;</div>
+          {% endif %}
+        </td>
+
+        <!-- title + variant -->
+        <td valign="middle" style="padding:0 12px 20px 0;">
+          <p style="margin:0 0 3px 0; font-size:16px; font-weight:bold; line-height:1.35; color:#1f1f1f;">
+            {{ line.title }}
+          </p>
+          {% if line.variant.title and line.variant.title != 'Default Title' %}
+            <p style="margin:0 0 3px 0; font-size:13px; line-height:1.4; color:#8a8480;">
+              {{ line.variant.title }}
+            </p>
+          {% endif %}
+          <p style="margin:0; font-size:13px; line-height:1.4; color:#555050;">
+            Qty {{ line.quantity }}
+          </p>
+        </td>
+
+        <!-- line price -->
+        <td width="92" valign="middle" align="right" style="padding:0 0 20px 0;">
+          <p style="margin:0; font-size:15px; font-weight:bold; color:#1f1f1f; white-space:nowrap;">
+            {{ line.line_price | money }}
+          </p>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+
+    <!-- subtotal -->
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"
+           style="border-top:1px solid #e3e1dd; margin-top:2px;">
+      <tr>
+        <td style="padding:14px 0 0 0; font-size:15px; font-weight:bold; color:#1f1f1f;">Subtotal</td>
+        <td align="right" style="padding:14px 0 0 0; font-size:19px; font-weight:bold; color:#b62f18; white-space:nowrap;">
+          {{ checkout.subtotal_price | money }}
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2" style="padding:5px 0 0 0; font-size:12px; color:#8a8480;">
+          Shipping calculated at checkout.
+        </td>
+      </tr>
+    </table>
+  </td></tr>
+
+  <!-- bulk-discount nudge: these tiers are real and apply automatically -->
+  <tr><td style="padding:22px 32px 0 32px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"
+           style="background:#fdf3f1; border:1px solid #f5d9d3; border-radius:10px;">
+      <tr><td style="padding:16px 18px; font-family:Helvetica,Arial,sans-serif;">
+        <p style="margin:0 0 5px 0; font-size:14px; font-weight:bold; color:#1f1f1f;">
+          Buying more than one? It gets cheaper.
+        </p>
+        <p style="margin:0; font-size:13px; line-height:1.6; color:#555050;">
+          Volume pricing is applied automatically at checkout — no code needed.
+          Most of our range steps down <strong style="color:#b62f18;">5%</strong> from 2 units,
+          <strong style="color:#b62f18;">10%</strong> from 6, and
+          <strong style="color:#b62f18;">15%</strong> from 10.
+        </p>
+      </td></tr>
+    </table>
+  </td></tr>
+
+  <!-- trust row -->
+  <tr><td style="padding:22px 32px 0 32px; font-family:Helvetica,Arial,sans-serif;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+      <tr>
+        <td width="33%" valign="top" style="padding-right:8px; font-size:12px; line-height:1.5; color:#555050;">
+          <strong style="color:#1f1f1f;">Secure checkout</strong><br>Encrypted, Shopify-hosted
+        </td>
+        <td width="34%" valign="top" style="padding:0 8px; font-size:12px; line-height:1.5; color:#555050;">
+          <strong style="color:#1f1f1f;">Australia-wide</strong><br>Dispatch to 3,600+ postcodes
+        </td>
+        <td width="33%" valign="top" style="padding-left:8px; font-size:12px; line-height:1.5; color:#555050;">
+          <strong style="color:#1f1f1f;">30-day returns</strong><br>On unopened stock
+        </td>
+      </tr>
+    </table>
+  </td></tr>
+
+  <!-- secondary CTA + help -->
+  <tr><td style="padding:26px 32px 30px 32px; font-family:Helvetica,Arial,sans-serif;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+      <tr><td style="height:1px; line-height:1px; font-size:0; background:#e3e1dd;">&nbsp;</td></tr>
+    </table>
+    <p style="margin:18px 0 0 0; font-size:14px; line-height:1.65; color:#555050;">
+      Not sure which tape is right for the job? Reply to this email, or call us on
+      <a href="tel:+61340616287" style="color:#b62f18; font-weight:bold; text-decoration:none;">+61 3 4061 6287</a>.
+      We'd rather help you pick the right one than sell you the wrong one twice.
+    </p>
+    <p style="margin:14px 0 0 0; font-size:14px;">
+      <a href="{{ checkout.abandoned_checkout_url }}" style="color:#b62f18; font-weight:bold; text-decoration:underline;">
+        Return to my cart &rarr;
+      </a>
+    </p>
+  </td></tr>
+
+</table>
+
+<!-- footer, outside the white card -->
+<table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px; max-width:100%;">
+  <tr><td style="padding:20px 32px 8px 32px; text-align:center; font-family:Helvetica,Arial,sans-serif; font-size:12px; line-height:1.7; color:#8a8480;">
+    <a href="{{ shop.url }}" style="color:#8a8480; text-decoration:none;">mytapestore.com.au</a>
+    &nbsp;&middot;&nbsp;
+    <a href="mailto:info@mytapestore.com.au" style="color:#8a8480; text-decoration:none;">info@mytapestore.com.au</a>
+    &nbsp;&middot;&nbsp;
+    <a href="tel:+61340616287" style="color:#8a8480; text-decoration:none;">+61 3 4061 6287</a>
+  </td></tr>
+  <tr><td style="padding:0 32px 6px 32px; text-align:center; font-family:Helvetica,Arial,sans-serif; font-size:12px; line-height:1.7; color:#a8a29c;">
+    {{ shop.name }} &copy; 2026 &middot; ABN&nbsp;93&nbsp;878&nbsp;995&nbsp;217
+  </td></tr>
+  <tr><td style="padding:0 32px 28px 32px; text-align:center; font-family:Helvetica,Arial,sans-serif; font-size:12px; line-height:1.7; color:#a8a29c;">
+    You're receiving this because you started a checkout at {{ shop.name }}.<br>
+    <a href="{{ unsubscribe_link }}" style="color:#8a8480; text-decoration:underline;">Unsubscribe</a>
+  </td></tr>
+</table>
+
+</td></tr>
+</table>
+
+{{ open_tracking_block }}
+</body>
+</html>
