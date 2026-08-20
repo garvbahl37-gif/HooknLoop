@@ -41,8 +41,9 @@ Sources: [Send internal email](https://help.shopify.com/en/manual/shopify-flow/r
 |---|---|---|
 | [01-order-confirmation.html](01-order-confirmation.html) | Order confirmation | ready to paste |
 | [02-abandoned-checkout.html](02-abandoned-checkout.html) | Abandoned checkout | ready to paste — **third-party app, not Notifications** |
+| [03-shipping-confirmation.html](03-shipping-confirmation.html) | Shipping confirmation | ready to paste |
 
-More to come: shipping confirmation, draft order invoice, refund.
+More to come: draft order invoice, refund.
 
 ### Design decisions baked in
 
