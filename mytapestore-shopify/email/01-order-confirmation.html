@@ -6,35 +6,36 @@
   Email clients are not browsers. Outlook renders with Word's HTML engine, Gmail
   strips <style> blocks on some clients, and flexbox/grid are unavailable almost
   everywhere. Everything here is nested tables with inline styles, which is the
-  only layout that survives all of them. The one <style> block carries the dark
-  mode and mobile rules, which are progressive enhancements — if a client drops
-  it, the email still reads correctly.
+  only layout that survives all of them. The one <style> block carries only the
+  mobile rules, which are a progressive enhancement — if a client drops it, the
+  email still reads correctly.
 
   Brand: ink #1f1f1f, brand red #df3c22, machined radii. Webfonts do not load in
   most email clients, so the stack is system faces that read close to Inter.
 
-  DARK MODE
-  Rebuilt on measured values. The previous version used a near-black brown that
-  failed in four ways: body #141312 against card #1d1b19 was 1.08:1, so the cards
-  were invisible and the whole email read as one flat black mass; links stayed
-  #b32f18 at 2.73:1; savings stayed #2b6b4f at 2.71:1; and both are inline styles,
-  so only an !important rule can reach them.
+  LIGHT ONLY
+  The dark-mode block was removed on request. color-scheme is declared light
+  in both the meta tags and CSS, which Apple Mail and Outlook.com honour.
+  Gmail on Android force-inverts regardless -- no email can opt out of that --
+  so it is the one client where this will still render dark.
 
-  The ground is now the brand's own charcoal #1f1f1f with two clearly separated
-  surfaces above it (1.76x then 1.58x in luminance). Every colour below was
-  measured against WCAG 2.1 on the surface it actually sits on.
 {% endcomment %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="color-scheme" content="light dark">
-<meta name="supported-color-schemes" content="light dark">
+<meta name="color-scheme" content="light">
+<meta name="supported-color-schemes" content="light">
 <title>{{ shop.name }} — order {{ order.name }}</title>
 <style>
   /* Progressive enhancement only — the inline styles carry the design. */
-  body { margin:0 !important; padding:0 !important; width:100% !important; }
+  /* Light only. Clients that honour color-scheme (Apple Mail, Outlook.com)
+     will not auto-darken this. Gmail on Android ignores it and inverts
+     anyway -- no email can prevent that -- but everywhere else stays light. */
+  :root { color-scheme: light; supported-color-schemes: light; }
+  body { margin:0 !important; padding:0 !important; width:100% !important;
+         background:#f3f1ee !important; color-scheme: light; }
   img { border:0; line-height:100%; outline:none; text-decoration:none; -ms-interpolation-mode:bicubic; }
   table { border-collapse:collapse !important; }
   a { color:#b32f18; }
@@ -46,32 +47,6 @@
     .mts-stack-gap { display:block !important; width:100% !important; height:20px !important; }
     .mts-h1 { font-size:23px !important; }
     .mts-cta a { display:block !important; }
-  }
-  @media (prefers-color-scheme: dark) {
-    /* Surfaces — charcoal, not black, and each step visibly lighter than the
-       one under it so the cards read as cards. */
-    .mts-body { background:#1f1f1f !important; }   /* the brand's own dark ground */
-    .mts-card { background:#2b2b2b !important; }   /* 1.76x lighter than the body */
-    .mts-soft { background:#373737 !important; }   /* 1.58x lighter again        */
-    .mts-rule { border-color:#464646 !important; }
-
-    /* Text — measured on #2b2b2b */
-    .mts-ink   { color:#ffffff !important; }       /* 14.16:1  AAA */
-    .mts-muted { color:#aba6a0 !important; }       /*  5.86:1  AA  */
-
-    /* These two are inline-styled in the body, so they need !important to be
-       reached at all. Both were unreadable before. */
-    a, .mts-link { color:#ff8264 !important; }     /*  5.82:1 on card, 4.89:1 on soft */
-    .mts-save    { color:#5fc27e !important; }     /*  6.41:1 on card, 5.39:1 on soft */
-
-    /* The eyebrow badge is a light chip in light mode; on charcoal it becomes a
-       tinted chip so it belongs to the surface instead of glaring off it. */
-    .mts-badge { background:#3a2621 !important; color:#ff8264 !important; }
-
-    /* The masthead stays white in dark mode on purpose: the logo is charcoal
-       and brand red on a transparent background, so it needs a light ground to
-       be legible at all. Letting a client invert it makes the logo disappear. */
-    .mts-mast { background:#ffffff !important; }
   }
 </style>
 </head>
