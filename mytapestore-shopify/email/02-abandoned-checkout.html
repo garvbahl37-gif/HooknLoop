@@ -168,29 +168,19 @@
     </table>
   </td></tr>
 
-  <!-- trust row -->
-  <tr><td style="padding:22px 32px 0 32px; font-family:Helvetica,Arial,sans-serif;">
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-      <tr>
-        <td width="33%" valign="top" style="padding-right:8px; font-size:12px; line-height:1.5; color:#555050;">
-          <strong style="color:#1f1f1f;">Secure checkout</strong><br>Encrypted, Shopify-hosted
-        </td>
-        <td width="34%" valign="top" style="padding:0 8px; font-size:12px; line-height:1.5; color:#555050;">
-          <strong style="color:#1f1f1f;">Australia-wide</strong><br>Dispatch to 3,600+ postcodes
-        </td>
-        <td width="33%" valign="top" style="padding-left:8px; font-size:12px; line-height:1.5; color:#555050;">
-          <strong style="color:#1f1f1f;">30-day returns</strong><br>On unopened stock
-        </td>
-      </tr>
+  <!-- trust row: one quiet line -->
+  <tr><td style="padding:22px 32px 0 32px; font-family:Helvetica,Arial,sans-serif; text-align:center;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"
+           style="border-top:1px solid #e3e1dd;">
+      <tr><td style="padding:16px 0 0 0; font-size:13px; line-height:1.8; color:#555050;">
+        Secure checkout<span style="color:#cfcac3;">&nbsp; &middot; &nbsp;</span>Australia-wide delivery<span style="color:#cfcac3;">&nbsp; &middot; &nbsp;</span>30-day returns
+      </td></tr>
     </table>
   </td></tr>
 
   <!-- secondary CTA + help -->
-  <tr><td style="padding:26px 32px 30px 32px; font-family:Helvetica,Arial,sans-serif;">
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-      <tr><td style="height:1px; line-height:1px; font-size:0; background:#e3e1dd;">&nbsp;</td></tr>
-    </table>
-    <p style="margin:18px 0 0 0; font-size:14px; line-height:1.65; color:#555050;">
+  <tr><td style="padding:20px 32px 30px 32px; font-family:Helvetica,Arial,sans-serif;">
+    <p style="margin:0; font-size:14px; line-height:1.65; color:#555050;">
       Not sure which tape is right for the job? Reply to this email, or call us on
       <a href="tel:+61340616287" style="color:#b62f18; font-weight:bold; text-decoration:none;">+61 3 4061 6287</a>.
       We'd rather help you pick the right one than sell you the wrong one twice.
@@ -214,11 +204,18 @@
     <a href="tel:+61340616287" style="color:#8a8480; text-decoration:none;">+61 3 4061 6287</a>
   </td></tr>
   <tr><td style="padding:0 32px 6px 32px; text-align:center; font-family:Helvetica,Arial,sans-serif; font-size:12px; line-height:1.7; color:#a8a29c;">
-    {{ shop.name }} &copy; 2026 &middot; ABN&nbsp;93&nbsp;878&nbsp;995&nbsp;217
+    {{ shop.name }} &copy; 2026
   </td></tr>
   <tr><td style="padding:0 32px 28px 32px; text-align:center; font-family:Helvetica,Arial,sans-serif; font-size:12px; line-height:1.7; color:#a8a29c;">
     You're receiving this because you started a checkout at {{ shop.name }}.<br>
-    <a href="{{ unsubscribe_link }}" style="color:#8a8480; text-decoration:underline;">Unsubscribe</a>
+    <!--
+      unsubscribe_link renders a COMPLETE anchor tag, not a bare URL, so it must
+      stand on its own. Wrapping it in href="..." nested one <a> inside another,
+      which browsers and mail clients resolve by closing the first tag early and
+      printing the rest as visible text ( ..."Unsubscribe" style=...>Unsubscribe ).
+      The app owns the link markup; the styles below are all we can influence.
+    -->
+    <span style="color:#8a8480; text-decoration:underline;">{{ unsubscribe_link }}</span>
   </td></tr>
 </table>
 
