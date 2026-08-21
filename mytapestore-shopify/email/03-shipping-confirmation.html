@@ -10,9 +10,9 @@
     the top rather than grey 11px text at the bottom, which is where the stock
     template puts it.
   * The stock template writes the headline twice — once as the title and again,
-    word for word, as the body sentence. The body now says something the title
-    does not: that the first carrier scan lags, which is the single most common
-    "my tracking isn't working" enquiry.
+    word for word, as the body sentence. The repeat is gone: when tracking is
+    present the card below carries it, so no body paragraph is needed at all.
+    The only body copy left is for the case where tracking is not yet attached.
   * Five headline variants collapsed to three. Shopify distinguishes one item
     from several in the wording; a shopper does not need that spelled out when
     the items are listed directly below.
@@ -85,13 +85,11 @@
     <h1 class="mts-h1" style="margin:16px 0 0 0; font-size:27px; line-height:1.22; font-weight:700; color:#1f1f1f; letter-spacing:-0.5px;">
       {{ ship_title }}.
     </h1>
-    <p style="margin:11px 0 0 0; font-size:15px; line-height:1.6; color:#5d5651;">
-      {%- if fulfillment.tracking_numbers.size > 0 -%}
-        Tracking is below. It can take a few hours for the first carrier scan to appear, so an empty result at first is normal.
-      {%- else -%}
+    {%- if fulfillment.tracking_numbers.size == 0 -%}
+      <p style="margin:11px 0 0 0; font-size:15px; line-height:1.6; color:#5d5651;">
         We'll follow up with tracking as soon as the carrier scans it in.
-      {%- endif -%}
-    </p>
+      </p>
+    {%- endif -%}
   </td></tr>
 
   {% comment %}
