@@ -1,0 +1,41 @@
+{%- comment -%}
+  TEMPORARY DIAGNOSTIC — not an email. Paste into the Custom Liquid block of the
+  browse-abandonment automation, open the PREVIEW, read what it prints, then
+  delete it and paste the real template back.
+
+  Why this exists: Shopify Email's browse-abandonment Liquid scope is not
+  documented and differs between stores. Rather than guess which object holds
+  the viewed products, this prints every plausible candidate so you can see
+  which one is actually populated.
+{%- endcomment -%}
+<div style="font-family:monospace;font-size:12px;line-height:1.7;background:#fff;padding:16px;color:#111;">
+<b style="font-size:14px;">BROWSE ABANDONMENT — WHAT IS AVAILABLE</b><br><br>
+
+<b>Singular product</b><br>
+product.title ......... [{{ product.title }}]<br>
+product.url ........... [{{ product.url }}]<br>
+product.featured_image  [{{ product.featured_image }}]<br>
+product.image ......... [{{ product.image }}]<br><br>
+
+<b>Collections that might hold several</b><br>
+products.size ......... [{{ products.size }}]<br>
+line_items.size ....... [{{ line_items.size }}]<br>
+product_recommendations.size [{{ product_recommendations.size }}]<br>
+viewed_products.size .. [{{ viewed_products.size }}]<br>
+recently_viewed.size .. [{{ recently_viewed.size }}]<br>
+abandonment.products.size [{{ abandonment.products.size }}]<br><br>
+
+<b>Customer + shop</b><br>
+customer.first_name ... [{{ customer.first_name }}]<br>
+customer.email ........ [{{ customer.email }}]<br>
+shop.name ............. [{{ shop.name }}]<br>
+shop.url .............. [{{ shop.url }}]<br><br>
+
+<b>First item of whichever collection is populated</b><br>
+{% for p in products %}products[{{ forloop.index0 }}] = [{{ p.title }}] img=[{{ p.image }}]<br>{% endfor %}
+{% for p in product_recommendations %}rec[{{ forloop.index0 }}] = [{{ p.title }}]<br>{% endfor %}
+{% for p in viewed_products %}viewed[{{ forloop.index0 }}] = [{{ p.title }}]<br>{% endfor %}
+{% for p in line_items %}line[{{ forloop.index0 }}] = [{{ p.title }}]<br>{% endfor %}
+
+<br><b>Anything in [ ] that is not empty is the object to use.</b>
+</div>
