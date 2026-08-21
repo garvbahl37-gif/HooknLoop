@@ -18,8 +18,13 @@ letterforms are correct by construction.
 | `mts-email-header-paper.png` | `#F4F2EF` | the light Custom Liquid block |
 | `mts-email-header-charcoal.png` | `#1F1F1F` | the dark Custom Liquid block |
 
-All 1200x300 — that renders at 600x150, the full container width, and stays
-sharp on retina.
+All 1200x260 — renders at 600x130, the full container width, sharp on retina,
+and shallow enough not to eat the top of the email.
+
+**No rule, no border.** An earlier version carried a brand-red line along the
+bottom. Once the Custom Liquid block sat underneath with its own stripe, the
+result was two red lines and two logos stacked. The banner is now the logo on a
+flat ground and nothing else — the block below carries no masthead at all.
 
 **Match the background to your email's**, or the banner shows as a visible
 rectangle instead of blending. That is the entire point of having three.

@@ -1,8 +1,9 @@
 mts-email-header-charcoal.png
-https://cdn.shopify.com/s/files/1/0783/2017/3161/files/mts-email-header-charcoal.png?v=1787309798
+https://cdn.shopify.com/s/files/1/0783/2017/3161/files/v2-mts-email-header-charcoal.png?v=1787310264
 
 mts-email-header-paper.png
-https://cdn.shopify.com/s/files/1/0783/2017/3161/files/mts-email-header-paper.png?v=1787309803
+https://cdn.shopify.com/s/files/1/0783/2017/3161/files/v2-mts-email-header-paper.png?v=1787310269
 
 mts-email-header-white.png
-https://cdn.shopify.com/s/files/1/0783/2017/3161/files/mts-email-header-white.png?v=1787309808
+https://cdn.shopify.com/s/files/1/0783/2017/3161/files/v2-mts-email-header-white.png?v=1787310275
+

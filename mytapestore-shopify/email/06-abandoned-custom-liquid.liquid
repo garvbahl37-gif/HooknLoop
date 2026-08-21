@@ -3,9 +3,13 @@
 
   WHERE THIS GOES
   Marketing > Automations > Abandoned checkout > edit the email, then:
-    1. delete EVERY other block (logo, heading, text, product grid, button, divider)
-    2. keep ONE Custom Liquid block
-    3. paste all of this into it
+    1. set the header/logo block's image to mts-email-header-white.png
+       (Shopify Files — see header-banners/URLS.txt) and width to maximum
+    2. delete every OTHER block (heading, text, product grid, button, divider)
+    3. keep ONE Custom Liquid block and paste all of this into it
+  This block deliberately carries no logo and no rules: the header image above
+  it supplies the masthead, and repeating either produced two logos and two red
+  lines stacked on top of each other.
   The footer carrying the unsubscribe link cannot be deleted and should not be —
   it is legally required. Everything above it is yours.
 
@@ -38,18 +42,9 @@
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"
            style="width:100%;max-width:600px;background:#ffffff;">
 
-      <!-- hazard stripe -->
-      <tr><td style="height:6px;line-height:6px;font-size:0;background:#df3c22;">&nbsp;</td></tr>
-
-      <!-- logo -->
-      <tr><td align="center" style="padding:26px 22px 0 22px;background:#ffffff;">
-        <img src="https://cdn.shopify.com/s/files/1/0783/2017/3161/files/mytapestore-email-logo-560.png"
-             alt="{{ shop.name }}" width="176"
-             style="display:block;width:176px;max-width:60%;height:auto;border:0;outline:none;">
-      </td></tr>
 
       <!-- headline -->
-      <tr><td style="padding:24px 22px 0 22px;background:#ffffff;
+      <tr><td style="padding:28px 22px 0 22px;background:#ffffff;
           font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
         <div style="display:inline-block;background:#fdeae5;color:#b62f18;font-size:11px;font-weight:700;
              letter-spacing:1.2px;text-transform:uppercase;padding:6px 11px;border-radius:6px;">
@@ -127,7 +122,7 @@
       </td></tr>
 
       <!-- help -->
-      <tr><td style="padding:24px 22px 30px 22px;background:#ffffff;
+      <tr><td style="padding:24px 22px 34px 22px;background:#ffffff;
           font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
         <div style="border-top:1px solid #e6e1da;padding-top:18px;font-size:14px;line-height:1.65;color:#555050;">
           Not sure which tape suits the job? Call us on
@@ -136,7 +131,6 @@
         </div>
       </td></tr>
 
-      <tr><td style="height:6px;line-height:6px;font-size:0;background:#df3c22;">&nbsp;</td></tr>
 
     </table>
   </td></tr>
