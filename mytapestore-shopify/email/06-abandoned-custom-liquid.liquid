@@ -1,6 +1,12 @@
 {%- comment -%}
   MY TAPE STORE — ABANDONED CHECKOUT  ·  Shopify Email "Custom Liquid" block
 
+  COPY NOTE
+  This is the abandoned CHECKOUT automation, not abandoned cart. The shopper
+  reached the checkout page and did not pay, so the copy says "checkout" and
+  "order" rather than "cart" — and the CTA says Complete my order, because
+  abandoned_checkout_url returns them to the checkout, not to the cart page.
+
   WHERE THIS GOES
   Marketing > Automations > Abandoned checkout > edit the email, then:
     1. set the header/logo block's image to mts-email-header-white.png
@@ -61,14 +67,14 @@
           font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
         <div style="display:inline-block;background:#fdeae5;color:#b62f18;font-size:11px;font-weight:700;
              letter-spacing:1.2px;text-transform:uppercase;padding:6px 11px;border-radius:6px;">
-          Still in your cart
+          Checkout not finished
         </div>
         <h1 style="margin:15px 0 0 0;font-size:25px;line-height:1.25;font-weight:700;color:#1f1f1f;
             letter-spacing:-0.4px;">
-          You left something behind{% if customer.first_name %}, {{ customer.first_name }}{% endif %}.
+          You didn't finish checking out{% if customer.first_name %}, {{ customer.first_name }}{% endif %}.
         </h1>
         <p style="margin:10px 0 0 0;font-size:15px;line-height:1.6;color:#555050;">
-          Your cart is saved and ready to go — pick up exactly where you left off.
+          Everything you selected is still saved. Pick up at checkout exactly where you left off.
         </p>
       </td></tr>
 
@@ -79,7 +85,7 @@
             <a href="{{ checkout.abandoned_checkout_url | default: abandoned_checkout_url }}"
                style="display:block;padding:16px 24px;font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
                       font-size:18px;font-weight:700;color:#ffffff;text-decoration:none;text-align:center;">
-              Return to my cart
+              Complete my order
             </a>
           </td>
         </tr></table>
@@ -90,7 +96,7 @@
           font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
         <div style="border-top:1px solid #e6e1da;padding-top:18px;font-size:11px;font-weight:700;
              letter-spacing:1.3px;text-transform:uppercase;color:#8a8480;">
-          What's waiting
+          In your order
         </div>
       </td></tr>
 
