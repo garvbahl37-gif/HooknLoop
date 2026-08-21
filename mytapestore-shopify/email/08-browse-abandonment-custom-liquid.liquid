@@ -1,0 +1,107 @@
+{%- comment -%}
+  MY TAPE STORE — BROWSE ABANDONMENT  ·  Shopify Email "Custom Liquid" block
+
+  THE THIRD AND COLDEST OF THE SET
+    06  abandoned CHECKOUT — entered payment details and stopped. Push:
+        "Complete my order."
+    07  abandoned CART     — added items, never reached checkout. Quiet:
+        "View my cart."
+    08  this one           — looked at a product and left. They have committed
+        nothing at all, so it makes no claim on them: it shows what they were
+        looking at and stops. Writing "don't miss out" to someone who merely
+        opened a page is what gets a sender marked as spam.
+
+  WHERE THIS GOES
+  Marketing > Automations > Browse abandonment > edit the email, then:
+    1. header/logo block image -> mts-email-header-white.png, width maximum
+    2. delete every OTHER block
+    3. keep ONE Custom Liquid block and paste all of this into it
+
+  CONSENT — READ THIS BEFORE SWITCHING IT ON
+  Browse abandonment can only fire for someone Shopify can identify, which in
+  practice means a logged-in customer or an existing marketing subscriber.
+  762 of 765 customers here are NOT_SUBSCRIBED, so this will reach very few
+  people until the subscriber list grows. Unlike abandoned checkout, there is
+  no Settings > Notifications path for it: no email address was ever entered,
+  so there is no transactional basis and no way to send it more widely.
+
+  VARIABLES — CHECK THE PREVIEW
+  Shopify Email's browse-abandonment scope is narrower than the checkout one
+  and the collection name differs between stores. The loop is written with
+  fallbacks; if the preview is empty, try the bare names. Same construction as
+  06 and 07 otherwise: fluid tables to 320px, explicit backgrounds, 128px
+  images in a 64px box with real alt text, 18px bold button label.
+{%- endcomment -%}
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"
+       style="background:#f4f2ef;margin:0;padding:0;width:100%;">
+  <tr><td align="center" style="padding:0;background:#f4f2ef;">
+
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"
+           style="width:100%;max-width:600px;background:#ffffff;">
+
+      <!-- headline -->
+      <tr><td style="padding:28px 22px 0 22px;background:#ffffff;
+          font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+        <div style="display:inline-block;background:#fdeae5;color:#b62f18;font-size:11px;font-weight:700;
+             letter-spacing:1.2px;text-transform:uppercase;padding:6px 11px;border-radius:6px;">
+          Recently viewed
+        </div>
+        <h1 style="margin:15px 0 0 0;font-size:25px;line-height:1.25;font-weight:700;color:#1f1f1f;
+            letter-spacing:-0.4px;">
+          You were looking at this{% if customer.first_name %}, {{ customer.first_name }}{% endif %}.
+        </h1>
+        <p style="margin:10px 0 0 0;font-size:15px;line-height:1.6;color:#555050;">
+          Here it is again, in case it's useful.
+        </p>
+      </td></tr>
+
+      <!-- viewed products -->
+      {%- assign viewed = product_recommendations | default: products | default: line_items -%}
+      {% for line in viewed %}
+      <tr><td style="padding:20px 22px 0 22px;background:#ffffff;
+          font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+          <td width="64" valign="top" style="width:64px;padding-right:14px;">
+            {% if line.image %}
+              <img src="{{ line.image | img_url: '128x128' }}"
+                   alt="{{ line.title | escape }}" width="64" height="64"
+                   style="display:block;width:64px;height:64px;border-radius:8px;
+                          border:1px solid #e6e1da;background:#f4f2ef;
+                          font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+                          font-size:10px;color:#8a8480;">
+            {% else %}
+              <div style="width:64px;height:64px;border-radius:8px;background:#f4f2ef;border:1px solid #e6e1da;">&nbsp;</div>
+            {% endif %}
+          </td>
+          <td valign="middle" style="font-size:14px;line-height:1.45;">
+            <div style="font-weight:600;color:#1f1f1f;font-size:15px;">{{ line.title }}</div>
+          </td>
+        </tr></table>
+      </td></tr>
+      {% endfor %}
+
+      <!-- CTA -->
+      <tr><td style="padding:24px 22px 0 22px;background:#ffffff;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+          <td align="center" style="background:#df3c22;border-radius:7px;">
+            <a href="{{ product.url | default: shop.url }}"
+               style="display:block;padding:16px 24px;font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+                      font-size:18px;font-weight:700;color:#ffffff;text-decoration:none;text-align:center;">
+              Take another look
+            </a>
+          </td>
+        </tr></table>
+      </td></tr>
+
+      <!-- the one useful thing to say to someone still researching -->
+      <tr><td style="padding:24px 22px 34px 22px;background:#ffffff;
+          font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+        <div style="border-top:1px solid #e6e1da;padding-top:18px;font-size:13.5px;line-height:1.6;color:#555050;">
+          Free samples on request — worth testing before you commit to a roll.
+        </div>
+      </td></tr>
+
+    </table>
+  </td></tr>
+</table>

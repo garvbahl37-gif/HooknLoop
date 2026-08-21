@@ -46,6 +46,7 @@ Sources: [Send internal email](https://help.shopify.com/en/manual/shopify-flow/r
 | [05-delivered.html](05-delivered.html) | Delivered | ready to paste |
 | [06-abandoned-custom-liquid.liquid](06-abandoned-custom-liquid.liquid) | Abandoned checkout | **Shopify Email → Custom Liquid block**, not Notifications |
 | [07-abandoned-cart-custom-liquid.liquid](07-abandoned-cart-custom-liquid.liquid) | Abandoned cart | **Shopify Email → Custom Liquid block** |
+| [08-browse-abandonment-custom-liquid.liquid](08-browse-abandonment-custom-liquid.liquid) | Browse abandonment | **Shopify Email → Custom Liquid block** |
 
 More to come: draft order invoice, refund, order cancelled.
 
