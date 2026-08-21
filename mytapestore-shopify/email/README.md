@@ -44,6 +44,7 @@ Sources: [Send internal email](https://help.shopify.com/en/manual/shopify-flow/r
 | [03-shipping-confirmation.html](03-shipping-confirmation.html) | Shipping confirmation | ready to paste |
 | [04-out-for-delivery.html](04-out-for-delivery.html) | Out for delivery | ready to paste |
 | [05-delivered.html](05-delivered.html) | Delivered | ready to paste |
+| [06-abandoned-custom-liquid.liquid](06-abandoned-custom-liquid.liquid) | Abandoned checkout | **Shopify Email → Custom Liquid block**, not Notifications |
 
 More to come: draft order invoice, refund, order cancelled.
 

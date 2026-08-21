@@ -1,0 +1,137 @@
+{%- comment -%}
+  MY TAPE STORE — ABANDONED CHECKOUT  ·  Shopify Email "Custom Liquid" block
+
+  WHERE THIS GOES
+  Marketing > Automations > Abandoned checkout > edit the email, then:
+    1. delete EVERY other block (logo, heading, text, product grid, button, divider)
+    2. keep ONE Custom Liquid block
+    3. paste all of this into it
+  The footer with the unsubscribe link cannot be deleted and should not be —
+  it is legally required. Everything above it is now yours.
+
+  WHY THIS IS DARK ON PURPOSE
+  A Custom Liquid block cannot reach the document head, so there is no way to declare
+  color-scheme or add a dark-mode media query. Gmail on Android force-inverts
+  light emails and ignores every opt-out — that is what produced the muddy
+  result you saw. It leaves genuinely dark emails alone. Building on the brand's
+  own charcoal (#1f1f1f, the same ground as the site header and footer) means
+  the email renders identically in every client instead of being re-coloured by
+  one of them.
+
+  Every colour below is measured against WCAG on the surface it sits on:
+    #ffffff on #1f1f1f  16.5:1     #c9c6c1 on #1f1f1f  9.7:1
+    #9c9893 on #1f1f1f   5.8:1     #fa3c22 on #1f1f1f  4.5:1
+  Button text is 18px bold so white on #df3c22 (4.37:1) clears the large-text bar.
+
+  VARIABLE NAMES — CHECK THE PREVIEW
+  Shopify Email exposes a limited Liquid scope. If a value renders blank, try the
+  bare form without the `checkout.` prefix. The cart link is the one that must work.
+{%- endcomment -%}
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"
+       style="background:#1f1f1f;margin:0;padding:0;">
+  <tr><td align="center" style="padding:0;">
+
+    <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0"
+           style="width:600px;max-width:600px;background:#1f1f1f;">
+
+      <!-- hazard stripe -->
+      <tr><td style="height:6px;line-height:6px;font-size:0;
+          background:repeating-linear-gradient(45deg,#df3c22 0 14px,#8c2612 14px 28px);">&nbsp;</td></tr>
+
+      <!-- logo: the LIGHT variant, or "mytape" disappears on charcoal -->
+      <tr><td align="center" style="padding:30px 32px 0 32px;">
+        <img src="https://cdn.shopify.com/s/files/1/0783/2017/3161/files/mytapestore-email-logo-light-793.png"
+             alt="{{ shop.name }}" width="190" height="33"
+             style="display:block;width:190px;height:33px;border:0;outline:none;">
+      </td></tr>
+
+      <!-- headline -->
+      <tr><td style="padding:26px 32px 0 32px;font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+        <div style="display:inline-block;background:#3a2621;color:#ff8264;font-size:11px;font-weight:700;
+             letter-spacing:1.3px;text-transform:uppercase;padding:6px 11px;border-radius:6px;">
+          Still in your cart
+        </div>
+        <h1 style="margin:16px 0 0 0;font-size:27px;line-height:1.22;font-weight:700;color:#ffffff;
+            letter-spacing:-0.5px;">
+          You left something behind{% if customer.first_name %}, {{ customer.first_name }}{% endif %}.
+        </h1>
+        <p style="margin:11px 0 0 0;font-size:15px;line-height:1.6;color:#c9c6c1;">
+          Your cart is saved and ready to go — pick up exactly where you left off.
+        </p>
+      </td></tr>
+
+      <!-- CTA. 18px bold so the white-on-brand-red contrast clears WCAG large text. -->
+      <tr><td style="padding:24px 32px 0 32px;">
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
+          <td style="background:#df3c22;border-radius:7px;">
+            <a href="{{ checkout.abandoned_checkout_url | default: abandoned_checkout_url }}"
+               style="display:inline-block;padding:15px 32px;font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+                      font-size:18px;font-weight:700;color:#ffffff;text-decoration:none;letter-spacing:0.2px;">
+              Return to my cart
+            </a>
+          </td>
+        </tr></table>
+      </td></tr>
+
+      <!-- what's waiting -->
+      <tr><td style="padding:30px 32px 0 32px;font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+        <div style="border-top:1px solid #3a3a3a;padding-top:20px;font-size:11px;font-weight:700;
+             letter-spacing:1.4px;text-transform:uppercase;color:#9c9893;">
+          What's waiting
+        </div>
+      </td></tr>
+
+      {% for line in checkout.line_items %}
+      <tr><td style="padding:16px 32px 0 32px;font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+          <td width="72" valign="top" style="padding-right:16px;">
+            {% if line.image %}
+              <img src="{{ line.image | img_url: '144x144' }}" alt="" width="72" height="72"
+                   style="display:block;width:72px;height:72px;border-radius:8px;background:#ffffff;">
+            {% else %}
+              <div style="width:72px;height:72px;border-radius:8px;background:#2b2b2b;">&nbsp;</div>
+            {% endif %}
+          </td>
+          <td valign="middle" style="font-size:14px;line-height:1.5;">
+            <div style="font-weight:600;color:#ffffff;font-size:15px;">{{ line.title }}</div>
+            {% if line.variant.title and line.variant.title != 'Default Title' %}
+              <div style="color:#9c9893;font-size:13px;margin-top:3px;">{{ line.variant.title }}</div>
+            {% endif %}
+            <div style="color:#c9c6c1;font-size:13px;margin-top:3px;">Qty {{ line.quantity }}</div>
+          </td>
+        </tr></table>
+      </td></tr>
+      {% endfor %}
+
+      <!-- bulk pricing: the real reason to come back -->
+      <tr><td style="padding:26px 32px 0 32px;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"
+               style="background:#2b2b2b;border-radius:10px;">
+          <tr><td style="padding:18px 20px;font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+            <div style="font-size:15px;font-weight:600;color:#ffffff;">Buying more than one? It gets cheaper.</div>
+            <div style="font-size:13.5px;line-height:1.6;color:#c9c6c1;margin-top:6px;">
+              Volume pricing applies automatically at checkout — no code needed. Most of our range steps down
+              <strong style="color:#ff8264;">5%</strong> from 2 units,
+              <strong style="color:#ff8264;">10%</strong> from 6, and
+              <strong style="color:#ff8264;">15%</strong> from 10.
+            </div>
+          </td></tr>
+        </table>
+      </td></tr>
+
+      <!-- help -->
+      <tr><td style="padding:26px 32px 34px 32px;font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+        <div style="border-top:1px solid #3a3a3a;padding-top:20px;font-size:14px;line-height:1.65;color:#c9c6c1;">
+          Not sure which tape suits the job? Call us on
+          <a href="tel:+61340616287" style="color:#ff8264;font-weight:700;text-decoration:none;">+61 3 4061 6287</a>
+          — we're happy to help.
+        </div>
+      </td></tr>
+
+      <tr><td style="height:6px;line-height:6px;font-size:0;
+          background:repeating-linear-gradient(45deg,#df3c22 0 14px,#8c2612 14px 28px);">&nbsp;</td></tr>
+
+    </table>
+  </td></tr>
+</table>
