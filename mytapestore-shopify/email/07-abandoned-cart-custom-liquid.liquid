@@ -1,0 +1,134 @@
+{%- comment -%}
+  MY TAPE STORE — ABANDONED CART  ·  Shopify Email "Custom Liquid" block
+
+  NOT THE SAME EMAIL AS 06
+  06 is abandoned CHECKOUT: they reached payment and stopped. Warm, close to
+  done, so that one pushes — "Complete my order".
+  This is abandoned CART: they added items and never started checkout. Colder,
+  often still comparing or unsure which product suits the job. Pushing a
+  half-decided buyer to "buy now" is what makes these emails feel like spam, so
+  this one offers help instead and lets the cart link do the asking.
+
+  WHERE THIS GOES
+  Marketing > Automations > Abandoned cart > edit the email, then:
+    1. header/logo block image -> mts-email-header-white.png, width maximum
+    2. delete every OTHER block
+    3. keep ONE Custom Liquid block and paste all of this into it
+  The footer with the unsubscribe link stays — it is legally required.
+
+  VARIABLES — CHECK THE PREVIEW
+  Shopify Email's abandoned-cart scope differs from abandoned-checkout. The
+  loop and the link are both written with fallbacks. If the preview comes back
+  empty, try the bare names without a prefix. The cart link must work; the rest
+  is decoration if it does not.
+
+  Same construction as 06: fluid tables so it reflows to 320px with no media
+  query, explicit backgrounds on every cell, 128px images in a 64px box with
+  real alt text, and an 18px bold button label so white on #df3c22 clears the
+  large-text contrast bar.
+{%- endcomment -%}
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"
+       style="background:#f4f2ef;margin:0;padding:0;width:100%;">
+  <tr><td align="center" style="padding:0;background:#f4f2ef;">
+
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"
+           style="width:100%;max-width:600px;background:#ffffff;">
+
+      <!-- headline -->
+      <tr><td style="padding:28px 22px 0 22px;background:#ffffff;
+          font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+        <div style="display:inline-block;background:#fdeae5;color:#b62f18;font-size:11px;font-weight:700;
+             letter-spacing:1.2px;text-transform:uppercase;padding:6px 11px;border-radius:6px;">
+          Saved in your cart
+        </div>
+        <h1 style="margin:15px 0 0 0;font-size:25px;line-height:1.25;font-weight:700;color:#1f1f1f;
+            letter-spacing:-0.4px;">
+          Still deciding{% if customer.first_name %}, {{ customer.first_name }}{% endif %}?
+        </h1>
+        <p style="margin:10px 0 0 0;font-size:15px;line-height:1.6;color:#555050;">
+          Your cart is saved, so there's no rush. If you're weighing up which tape suits the job,
+          tell us the surfaces and the conditions and we'll point you at the right one.
+        </p>
+      </td></tr>
+
+      <!-- CTA -->
+      <tr><td style="padding:22px 22px 0 22px;background:#ffffff;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+          <td align="center" style="background:#df3c22;border-radius:7px;">
+            <a href="{{ cart.url | default: checkout.abandoned_checkout_url | default: shop.url }}"
+               style="display:block;padding:16px 24px;font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+                      font-size:18px;font-weight:700;color:#ffffff;text-decoration:none;text-align:center;">
+              View my cart
+            </a>
+          </td>
+        </tr></table>
+      </td></tr>
+
+      <!-- items -->
+      <tr><td style="padding:28px 22px 0 22px;background:#ffffff;
+          font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+        <div style="border-top:1px solid #e6e1da;padding-top:18px;font-size:11px;font-weight:700;
+             letter-spacing:1.3px;text-transform:uppercase;color:#8a8480;">
+          In your cart
+        </div>
+      </td></tr>
+
+      {%- comment -%} assign first: `default` is a filter and cannot sit inside a for expression {%- endcomment -%}
+      {%- assign cart_lines = cart.line_items | default: checkout.line_items -%}
+      {% for line in cart_lines %}
+      <tr><td style="padding:14px 22px 0 22px;background:#ffffff;
+          font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+          <td width="64" valign="top" style="width:64px;padding-right:14px;">
+            {% if line.image %}
+              <img src="{{ line.image | img_url: '128x128' }}"
+                   alt="{{ line.title | escape }}" width="64" height="64"
+                   style="display:block;width:64px;height:64px;border-radius:8px;
+                          border:1px solid #e6e1da;background:#f4f2ef;
+                          font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+                          font-size:10px;color:#8a8480;">
+            {% else %}
+              <div style="width:64px;height:64px;border-radius:8px;background:#f4f2ef;border:1px solid #e6e1da;">&nbsp;</div>
+            {% endif %}
+          </td>
+          <td valign="middle" style="font-size:14px;line-height:1.45;">
+            <div style="font-weight:600;color:#1f1f1f;font-size:15px;">{{ line.title }}</div>
+            {% if line.variant.title and line.variant.title != 'Default Title' %}
+              <div style="color:#8a8480;font-size:13px;margin-top:2px;">{{ line.variant.title }}</div>
+            {% endif %}
+            <div style="color:#555050;font-size:13px;margin-top:2px;">Qty {{ line.quantity }}</div>
+          </td>
+        </tr></table>
+      </td></tr>
+      {% endfor %}
+
+      <!-- help: the differentiator at this stage, not a discount -->
+      <tr><td style="padding:24px 22px 0 22px;background:#ffffff;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"
+               style="background:#fdf3f1;border:1px solid #f5d9d3;border-radius:10px;">
+          <tr><td style="padding:16px 18px;font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+            <div style="font-size:15px;font-weight:600;color:#1f1f1f;">Not sure it's the right tape?</div>
+            <div style="font-size:13.5px;line-height:1.6;color:#555050;margin-top:5px;">
+              Tell us what you're bonding, whether it's indoors or out, and roughly what temperature it
+              lives at. We'll specify from the range rather than sell you the dearest option — and we can
+              send a sample length to test before you commit.
+            </div>
+          </td></tr>
+        </table>
+      </td></tr>
+
+      <!-- volume pricing -->
+      <tr><td style="padding:16px 22px 34px 22px;background:#ffffff;
+          font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+        <div style="font-size:13.5px;line-height:1.6;color:#555050;">
+          Buying more than one? Volume pricing applies automatically at checkout — most of the range steps
+          down <strong style="color:#b62f18;">5%</strong> from 2 units,
+          <strong style="color:#b62f18;">10%</strong> from 6, and
+          <strong style="color:#b62f18;">15%</strong> from 10.
+        </div>
+      </td></tr>
+
+    </table>
+  </td></tr>
+</table>
