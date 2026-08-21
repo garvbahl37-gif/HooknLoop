@@ -43,6 +43,7 @@ Sources: [Send internal email](https://help.shopify.com/en/manual/shopify-flow/r
 | [02-abandoned-checkout.html](02-abandoned-checkout.html) | Abandoned checkout | ready to paste — **third-party app, not Notifications** |
 | [03-shipping-confirmation.html](03-shipping-confirmation.html) | Shipping confirmation | ready to paste |
 | [04-out-for-delivery.html](04-out-for-delivery.html) | Out for delivery | ready to paste |
+| [05-delivered.html](05-delivered.html) | Delivered | ready to paste |
 
 More to come: draft order invoice, refund, order cancelled.
 
