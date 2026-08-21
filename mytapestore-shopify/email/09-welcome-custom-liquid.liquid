@@ -1,0 +1,98 @@
+{%- comment -%}
+  MY TAPE STORE — WELCOME  ·  Shopify Email "Custom Liquid" block
+
+  WHERE THIS GOES
+  Marketing > Automations > Welcome (new subscriber) > edit the email, then:
+    1. header/logo block image -> mts-email-header-white.png, width maximum
+    2. delete every OTHER block
+    3. keep ONE Custom Liquid block and paste all of this into it
+
+  CONSENT
+  This is the one automation with no consent question attached: it only fires
+  when somebody has just opted in. It is also the moment they are most willing
+  to hear from you, which is why it is four lines and a link rather than a
+  brochure.
+
+  EMOJI
+  Four, one per claim, each mapped to something the store actually promises on
+  its own announcement bar -- range, delivery, Australian ownership, volume
+  pricing. They are Unicode text, not images, so they render everywhere without
+  a download and survive an image-blocking client. Used as list markers only;
+  none appear in the headline, where they would read as consumer-retail on a
+  list that is 52% businesses and 13% schools.
+{%- endcomment -%}
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"
+       style="background:#f4f2ef;margin:0;padding:0;width:100%;">
+  <tr><td align="center" style="padding:0;background:#f4f2ef;">
+
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"
+           style="width:100%;max-width:600px;background:#ffffff;">
+
+      <!-- headline -->
+      <tr><td style="padding:28px 22px 0 22px;background:#ffffff;
+          font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+        <div style="display:inline-block;background:#fdeae5;color:#b62f18;font-size:11px;font-weight:700;
+             letter-spacing:1.2px;text-transform:uppercase;padding:6px 11px;border-radius:6px;">
+          Welcome
+        </div>
+        <h1 style="margin:15px 0 0 0;font-size:25px;line-height:1.25;font-weight:700;color:#1f1f1f;
+            letter-spacing:-0.4px;">
+          Welcome aboard{% if customer.first_name %}, {{ customer.first_name }}{% endif %}.
+        </h1>
+        <p style="margin:10px 0 0 0;font-size:15px;line-height:1.6;color:#555050;">
+          You're on the list. Here's what we're about.
+        </p>
+      </td></tr>
+
+      <!-- what MTS is, one emoji per claim -->
+      <tr><td style="padding:22px 22px 0 22px;background:#ffffff;
+          font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td width="30" valign="top" style="width:30px;font-size:19px;line-height:1.4;">&#128230;</td>
+            <td valign="top" style="font-size:14.5px;line-height:1.5;color:#555050;padding-bottom:12px;">
+              <strong style="color:#1f1f1f;">130+ tapes, dispensers and fasteners</strong><br>
+              Double-sided, foam, foil, cloth, safety and packaging — one supplier for the lot.
+            </td>
+          </tr>
+          <tr>
+            <td width="30" valign="top" style="width:30px;font-size:19px;line-height:1.4;">&#128666;</td>
+            <td valign="top" style="font-size:14.5px;line-height:1.5;color:#555050;padding-bottom:12px;">
+              <strong style="color:#1f1f1f;">Fast delivery across Australia</strong><br>
+              Dispatched from Victoria to 3,600+ postcodes.
+            </td>
+          </tr>
+          <tr>
+            <td width="30" valign="top" style="width:30px;font-size:19px;line-height:1.4;">&#127462;&#127482;</td>
+            <td valign="top" style="font-size:14.5px;line-height:1.5;color:#555050;padding-bottom:12px;">
+              <strong style="color:#1f1f1f;">Australian owned and stocked</strong><br>
+              Real stock here, not a six-week wait from offshore.
+            </td>
+          </tr>
+          <tr>
+            <td width="30" valign="top" style="width:30px;font-size:19px;line-height:1.4;">&#127991;</td>
+            <td valign="top" style="font-size:14.5px;line-height:1.5;color:#555050;">
+              <strong style="color:#1f1f1f;">Volume pricing, applied automatically</strong><br>
+              5% from 2 units, 10% from 6, 15% from 10 — no code needed.
+            </td>
+          </tr>
+        </table>
+      </td></tr>
+
+      <!-- CTA -->
+      <tr><td style="padding:26px 22px 34px 22px;background:#ffffff;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+          <td align="center" style="background:#df3c22;border-radius:7px;">
+            <a href="{{ shop.url }}/collections/all"
+               style="display:block;padding:16px 24px;font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+                      font-size:18px;font-weight:700;color:#ffffff;text-decoration:none;text-align:center;">
+              Shop the range
+            </a>
+          </td>
+        </tr></table>
+      </td></tr>
+
+    </table>
+  </td></tr>
+</table>
