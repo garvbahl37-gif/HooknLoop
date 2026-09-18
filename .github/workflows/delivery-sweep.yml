@@ -20,9 +20,12 @@ name: Delivery status sweep
 
 on:
   schedule:
-    # Every 15 minutes. GitHub treats schedules as best-effort and delays them
-    # under load, so read this as "about every 15-25 minutes", not a guarantee.
-    - cron: '*/15 * * * *'
+    # Every 15 minutes, deliberately NOT on :00/:15/:30/:45. GitHub queues every
+    # repo's on-the-hour jobs at once and drops or badly delays them; `*/15` sat
+    # for over two hours here without firing once. Odd minutes miss that stampede.
+    # Even so, GitHub schedules are best-effort -- read this as "usually within
+    # 15-30 minutes". The Vercel daily cron is the backstop underneath it.
+    - cron: '7,22,37,52 * * * *'
   workflow_dispatch: {}
 
 concurrency:
