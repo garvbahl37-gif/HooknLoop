@@ -21,9 +21,9 @@ name: Delivery status sweep
 on:
   schedule:
     # Every 15 minutes. GitHub treats schedules as best-effort and delays them
-    # under load, so treat this as "about every 15-25 minutes", not a guarantee.
+    # under load, so read this as "about every 15-25 minutes", not a guarantee.
     - cron: '*/15 * * * *'
-  workflow_dispatch:      # so it can be run by hand from the Actions tab
+  workflow_dispatch: {}
 
 concurrency:
   # A sweep can take over a minute when a carrier is rate-limiting us. Never let
@@ -40,50 +40,33 @@ jobs:
     timeout-minutes: 15
     steps:
       - name: My Tape Store
-        id: mts
         env:
           SECRET: ${{ secrets.MTS_SWEEP_SECRET }}
+          URL: https://mts-automation.vercel.app/api/sweep?days=30
         run: |
-          set -o pipefail
-          code=$(curl -sS --max-time 300 -o /tmp/mts.json -w '%{http_code}' \
-            -H "Authorization: Bearer $SECRET" \
-            "https://mts-automation.vercel.app/api/sweep?days=30")
+          code=$(curl -sS --max-time 300 -o body.json -w '%{http_code}' -H "Authorization: Bearer $SECRET" "$URL")
           echo "HTTP $code"
-          cat /tmp/mts.json; echo
+          cat body.json
+          echo
+          echo "My Tape Store: HTTP $code" >> "$GITHUB_STEP_SUMMARY"
+          echo '```json' >> "$GITHUB_STEP_SUMMARY"
+          cat body.json >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
           test "$code" = "200"
 
       - name: HooknLoop
-        id: hnl
         # always() so a My Tape Store failure never silently skips HooknLoop.
         if: always()
         env:
           SECRET: ${{ secrets.HNL_SWEEP_SECRET }}
+          URL: https://hnl-automation.vercel.app/api/sweep?days=30
         run: |
-          set -o pipefail
-          code=$(curl -sS --max-time 300 -o /tmp/hnl.json -w '%{http_code}' \
-            -H "Authorization: Bearer $SECRET" \
-            "https://hnl-automation.vercel.app/api/sweep?days=30")
+          code=$(curl -sS --max-time 300 -o body.json -w '%{http_code}' -H "Authorization: Bearer $SECRET" "$URL")
           echo "HTTP $code"
-          cat /tmp/hnl.json; echo
+          cat body.json
+          echo
+          echo "HooknLoop: HTTP $code" >> "$GITHUB_STEP_SUMMARY"
+          echo '```json' >> "$GITHUB_STEP_SUMMARY"
+          cat body.json >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
           test "$code" = "200"
-
-      - name: Summary
-        if: always()
-        run: |
-          {
-            echo "### Delivery sweep"
-            echo
-            for s in mts hnl; do
-              f=/tmp/$s.json
-              if [ -s "$f" ]; then
-                echo "**${s}** — $(python3 -c "
-import json,sys
-d=json.load(open('$f'))
-print(f\"checked {d.get('checked')}, marked {len(d.get('marked') or [])}, partial={d.get('partial')}, {d.get('tally')}\")
-" 2>/dev/null || cat "$f")"
-              else
-                echo "**${s}** — no response"
-              fi
-              echo
-            done
-          } >> "$GITHUB_STEP_SUMMARY"
